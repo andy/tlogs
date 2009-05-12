@@ -1,0 +1,35 @@
+<!-- template globals/_pagination -->
+<%
+  total_pages = pageable.page_count if pageable.respond_to?(:page_count)
+  total_pages ||= pageable.total_pages if pageable.respond_to?(:total_pages)
+  total_pages ||= 0
+  
+  previous_page = next_page = nil
+  
+  if total_pages > 0
+    previous_page = pageable.previous_page if (pageable.respond_to?(:previous_page?) && pageable.previous_page?) || pageable.previous_page
+    next_page = pageable.next_page if (pageable.respond_to?(:next_page?) && pageable.next_page?) || pageable.next_page
+
+    # search overflow
+    next_page = nil if next_page && next_page > 67 && params[:controller] == 'search'
+  end
+
+  
+  css_class ||= ''
+  reverse ||= false  
+  url_options ||= {}  
+ %>
+<% if total_pages > 1 %>
+	<div class='entry_pagination<%= " #{css_class}" unless css_class.blank? %>'>
+		<%= link_to('&#x2190; ранее', url_for({ :controller => params[:controller], :action => params[:action], :page => reverse ? (total_pages - next_page + 1) : next_page }.update(url_options)), :class => 'entry_paginate_prev') if next_page %>
+		<%=
+			if previous_page
+				if previous_page == 1
+					link_to 'сейчас &#x2192;', url_for({ :controller => params[:controller], :action => params[:action], :page => nil }.update(url_options)), :class => 'entry_paginate_next'
+ 				else
+					link_to 'позже &#x2192;', url_for({:controller => params[:controller], :action => params[:action], :page => reverse ? (total_pages - previous_page + 1) : previous_page}.update(url_options)), :class => 'entry_paginate_next'
+				end
+			end %>
+	</div>
+<% end %>
+<!-- /template globals/_pagination -->

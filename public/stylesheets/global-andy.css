@@ -1,0 +1,41 @@
+/* andy's */
+
+
+/* color picker */
+#y-picker #yui-picker-controls-label { display: none; }
+#y-picker .bd { font-size: 11px; border: 0; }
+#y-picker .hd { border: 0; }
+#y-panel div.bd { background-color: #333; }
+div#y-panel_h.hd { font-size: 12px; background-color: #3c3c3c; background-image: none; border: 0; padding-left: 15px; color: white; font-family: 'Trebuchet MS', serif; font-weight: normal; margin: 0; }
+#y-panel div.y-panel-bd { border: 0; color: white!important; padding-left: 10px; margin: 0; padding-top: 5px;}
+#y-panel div.ft { font-size: 12px; background-color: #333; margin: 0; padding: 0; border: 0; text-align: right; color: white; padding-right: 20px; }
+#y-panel div.ft a { padding-left: 4px; }
+#y-panel div.ft .button { height: 20px; margin-top: 10px; margin-bottom: 10px; margin-right: 10px; padding-top: 0; line-height: 11px; }
+#y-panel .yui-picker-controls { padding-left: 12px; padding-top: 12px; }
+
+
+/* settings/social */
+a.rss { padding-right: 18px; background:url(../images/feed-icon-14x14.png) no-repeat scroll 100% 50%; }
+
+/* comments formatting */
+div.comment_text p { margin-bottom: 1em; }
+
+/* personal sidebar */
+div#sidebar_personal ul { list-style-type: none; margin: 0; padding: 0; }
+div#sidebar_personal ul li a.highlight { font-size: 1.1em; font-weight: bold; }
+div#sidebar_personal ul li span { font-size: 0.8em; }
+
+/* sidebar about, paragraph fixes */
+div#sidebar_about_content p { display: block; padding-bottom: 1em; }
+div#sidebar_about_content div#about_submenu span { font-size: 0.8em; }
+
+/* anonymous entries page */
+.anonymous_entry_delete_link { margin-top: 20px!important; }
+
+/* feedback admin page */
+.onair .feedback { margin: 20px 10px 10px 20px; }
+.onair .feedback .feedback_buttons { font-size: 11px; color: #666; }
+
+/* quotes fix */
+div.quote_entry span.quote_entry_body p { display: inline; }
+div.quote_entry span.quote_entry_source p { display: inline; font-style: italic; font-size: 90%; }

@@ -1,0 +1,9 @@
+SHELL=/usr/local/bin/bash
+MAILTO=your.email@here
+TLOGS=/home/tlogs
+TLOGS_ROOT=/home/tlogs/production
+
+# SEARCH: reindex delta index every 10 minutes
+*/10 * * * * cd $TLOGS_ROOT/config && $TLOGS/sphinx/bin/indexer --rotate delta 1>/dev/null 2>&1
+# SEARCH: reindex everything at night
+0 6 * * * cd $TLOGS_ROOT/config && $TLOGS/sphinx/bin/indexer --rotate --all 1>/dev/null 2>&1

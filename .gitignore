@@ -1,0 +1,15 @@
+.DS_Store
+.svn
+public/uc
+tmp
+db/openid-store
+db/*sqlite3
+config/environment.rb
+config/sphinx.conf
+config/mail_fetcher.yml
+config/mongrel_cluster.yml
+config/database.yml
+config/thin.yml
+script/sync
+log/
+public/javascripts/all.js

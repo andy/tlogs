@@ -1,0 +1,77 @@
+<% content_for :sidebar_right do %>
+	<h2><span>Поиск по тлогам</span></h2>
+	<div class='sidebar_search'>
+		<form method='get' action='<%= search_url %>'>
+			<%= text_field_tag 'query', params[:query], :type => :search %>
+		</form>
+	</div>	
+<% end %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+   "http://www.w3.org/TR/html4/strict.dtd">
+<!-- layout main -->
+<html>
+<head>
+	<%= render 'globals/head' %>
+</head>
+<body class="main_page">
+	<div class="logo">
+		<%= link_to_if (params[:controller] != 'main' || params[:action] != 'index'), image_tag("logo.png", :size => '212x45', :alt => 'Mmm... tasty', :class => 'logo_img'), main_url, :class => 'logo_link' %>
+	</div>	
+	<div class="register_enter">
+		<% if current_user %>
+			<div class='top_hello'>
+					Рады снова видеть Вас, <%= link_to_tlog(current_user, :link => :username) %>!
+			</div>
+		<% end %>
+		
+		<div class='top_menu'>
+			<ul>
+				<%= menu_item 'Что это?', :about %>
+				<%= menu_item 'Новости', :news %>
+				<%= menu_item 'Люди', :new_users, %w(main/users main/new_users) %>
+				<%= menu_item 'Лучшее', :last %>
+				<%= menu_item 'Анонимки', :anonymous, %w(anonymous/*) %>
+				<%= menu_item 'Прямой эфир', :live, %w(main/live main/last_personalized) %>
+				<%= menu_item 'День из жизни', :random %>
+			</ul>
+		</div>
+	</div>
+	
+	<div id='wrapper'>
+		<% sidebar_left = capture do %><%= yield :sidebar_left %><% end %>
+		<% unless sidebar_left.blank? %>
+			<div class='sidebar_holder'>
+				<div class='sidebar<%= ' sidebar_left_short' if @sidebar_left_short %>'>
+					<div class="personal round">
+						<div class='content'>
+							<%= sidebar_left %>
+						</div>
+					</div>
+				</div>
+			</div>
+		<% end %>
+
+		<% sidebar_right = capture do %><%= yield :sidebar_right %><% end %>
+		<% unless sidebar_right.blank? %>
+			<div class='sidebar_holder'>
+				<div class='sidebar sidebar_right'>
+					<div class="personal round">
+						<div class='content'>
+							<%= sidebar_right %>
+						</div>
+					</div>
+				</div>
+			</div>
+		<% end %>
+
+		<div class="main_rounded_holder">
+			<div class="rounded_main_center">
+				<%= yield %>
+			</div>
+		</div>
+	</div>
+	<%= render 'globals/foot' %>
+
+	<%= render 'globals/top_nav' %>
+</body>
+</html>
