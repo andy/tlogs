@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20080916232304) do
+ActiveRecord::Schema.define(:version => 20090512183207) do
 
   create_table "attachments", :force => true do |t|
     t.integer "entry_id",     :default => 0,  :null => false
@@ -79,6 +79,24 @@ ActiveRecord::Schema.define(:version => 20080916232304) do
   end
 
   add_index "comments", ["entry_id", "user_id"], :name => "index_comments_on_entry_id_and_user_id"
+
+  create_table "delayed_jobs", :force => true do |t|
+    t.integer  "priority",   :default => 0
+    t.integer  "attempts",   :default => 0
+    t.text     "handler"
+    t.string   "last_error"
+    t.datetime "run_at"
+    t.datetime "locked_at"
+    t.string   "locked_by"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "delayed_jobs", ["priority"], :name => "index_delayed_jobs_on_priority"
+  add_index "delayed_jobs", ["attempts"], :name => "index_delayed_jobs_on_attempts"
+  add_index "delayed_jobs", ["run_at"], :name => "index_delayed_jobs_on_run_at"
+  add_index "delayed_jobs", ["locked_at"], :name => "index_delayed_jobs_on_locked_at"
+  add_index "delayed_jobs", ["locked_by"], :name => "index_delayed_jobs_on_locked_by"
 
   create_table "entries", :force => true do |t|
     t.integer  "user_id",          :default => 0,     :null => false
@@ -285,8 +303,6 @@ ActiveRecord::Schema.define(:version => 20080916232304) do
   create_table "tags", :force => true do |t|
     t.string "name", :default => "", :null => false
   end
-
-  add_index "tags", ["name"], :name => "index_tags_on_name", :unique => true
 
   create_table "tlog_backgrounds", :force => true do |t|
     t.integer "tlog_design_settings_id"
