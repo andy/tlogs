@@ -1,3 +1,13 @@
+# = Schema Information
+#
+# Table name: *sidebar_elements*
+#
+#  id                 :integer(4)      not null, primary key
+#  sidebar_section_id :integer(4)      not null
+#  type               :string(25)
+#  content            :text            not null
+#  position           :integer(4)
+########
 class SidebarElement < ActiveRecord::Base
   belongs_to :section, :class_name => 'SidebarSection', :foreign_key => 'sidebar_section_id'
   validates_length_of :content, :within => 1..8192

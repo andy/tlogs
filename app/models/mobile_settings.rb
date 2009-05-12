@@ -1,3 +1,13 @@
+# = Schema Information
+#
+# Table name: *mobile_settings*
+#
+#  id         :integer(4)      not null, primary key
+#  user_id    :integer(4)      default(0), not null
+#  keyword    :string(255)     default(""), not null
+#  created_at :datetime
+#  updated_at :datetime
+########
 class MobileSettings < ActiveRecord::Base
   belongs_to :user
   

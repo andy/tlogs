@@ -1,3 +1,15 @@
+# = Schema Information
+#
+# Table name: *feedbacks*
+#
+#  id           :integer(4)      not null, primary key
+#  user_id      :integer(4)      not null
+#  created_at   :datetime        not null
+#  updated_at   :datetime        not null
+#  message      :text            not null
+#  is_public    :boolean(1)      not null
+#  is_moderated :boolean(1)      not null
+########
 class Feedback < ActiveRecord::Base
   belongs_to :user
   

@@ -1,3 +1,18 @@
+# = Schema Information
+#
+# Table name: *tlog_backgrounds*
+#
+#  id                      :integer(4)      not null, primary key
+#  tlog_design_settings_id :integer(4)
+#  content_type            :string(255)
+#  filename                :string(255)
+#  size                    :integer(4)
+#  parent_id               :integer(4)
+#  thumbnail               :string(255)
+#  width                   :integer(4)
+#  height                  :integer(4)
+#  db_file_id              :integer(4)
+########
 class TlogBackground < ActiveRecord::Base
   belongs_to :tlog_design_settings
 

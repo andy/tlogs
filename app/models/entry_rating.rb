@@ -1,3 +1,14 @@
+# = Schema Information
+#
+# Table name: *entry_ratings*
+#
+#  id         :integer(4)      not null, primary key
+#  entry_id   :integer(4)      default(0), not null
+#  entry_type :string(20)      default(""), not null
+#  created_at :datetime        not null
+#  user_id    :integer(4)      default(0), not null
+#  value      :integer(4)      default(0), not null
+########
 class EntryRating < ActiveRecord::Base
   belongs_to :entry
   

@@ -1,3 +1,32 @@
+# = Schema Information
+#
+# Table name: *users*
+#
+#  id                      :integer(4)      not null, primary key
+#  email                   :string(255)
+#  is_confirmed            :boolean(1)      not null
+#  openid                  :string(255)
+#  url                     :string(255)     default(""), not null
+#  settings                :text
+#  is_disabled             :boolean(1)      not null
+#  created_at              :datetime        not null
+#  entries_count           :integer(4)      default(0), not null
+#  updated_at              :datetime
+#  is_anonymous            :boolean(1)      not null
+#  is_mainpageable         :boolean(1)      not null
+#  is_premium              :boolean(1)      not null
+#  domain                  :string(255)
+#  private_entries_count   :integer(4)      default(0), not null
+#  email_comments          :boolean(1)      default(TRUE), not null
+#  comments_auto_subscribe :boolean(1)      default(TRUE), not null
+#  gender                  :string(1)       default("m"), not null
+#  username                :string(255)
+#  salt                    :string(40)
+#  crypted_password        :string(40)
+#  messages_count          :integer(4)      default(0), not null
+#  faves_count             :integer(4)      default(0), not null
+#  entries_updated_at      :datetime
+########
 class User < ActiveRecord::Base
   RESERVED = %w( mmm-tasty mobile rest blog blogs www support help ftp http ed2k smtp pop pop3 adm mail admin test password restore backup sys system dev account register signup web wwww ww w mmm info ad archive status logs log guest debug demo podcast info tools guide preview svn example google yandex rambler goog googl goggle gugl )
   SIGNATURE_SECRET = 'kab00mmm, tasty!'

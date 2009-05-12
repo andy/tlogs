@@ -1,3 +1,27 @@
+# = Schema Information
+#
+# Table name: *tlog_settings*
+#
+#  id                     :integer(4)      not null, primary key
+#  user_id                :integer(4)      default(0), not null
+#  title                  :string(255)
+#  about                  :text
+#  updated_at             :datetime
+#  rss_link               :string(255)
+#  tasty_newsletter       :boolean(1)      default(TRUE), not null
+#  default_visibility     :string(255)     default("mainpageable"), not null
+#  comments_enabled       :boolean(1)
+#  css_revision           :integer(4)      default(1), not null
+#  sidebar_is_open        :boolean(1)      default(TRUE), not null
+#  is_daylog              :boolean(1)      not null
+#  sidebar_hide_tags      :boolean(1)      default(TRUE), not null
+#  sidebar_hide_calendar  :boolean(1)      not null
+#  sidebar_hide_search    :boolean(1)      not null
+#  sidebar_hide_messages  :boolean(1)      not null
+#  sidebar_messages_title :string(255)
+#  email_messages         :boolean(1)      default(TRUE), not null
+#  past_disabled          :boolean(1)      not null
+########
 class TlogSettings < ActiveRecord::Base
   belongs_to :user
   

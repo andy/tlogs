@@ -1,3 +1,19 @@
+# = Schema Information
+#
+# Table name: *comments*
+#
+#  id           :integer(4)      not null, primary key
+#  entry_id     :integer(4)      default(0), not null
+#  comment      :text
+#  user_id      :integer(4)      default(0)
+#  ext_username :string(255)
+#  ext_url      :string(255)
+#  is_disabled  :boolean(1)      not null
+#  created_at   :datetime        not null
+#  updated_at   :datetime
+#  comment_html :text
+#  remote_ip    :string(17)
+########
 class Comment < ActiveRecord::Base
   belongs_to :entry, :counter_cache => :comments_count
   belongs_to :user

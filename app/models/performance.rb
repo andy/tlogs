@@ -1,3 +1,18 @@
+# = Schema Information
+#
+# Table name: *performances*
+#
+#  id         :integer(4)      not null, primary key
+#  controller :string(255)     not null
+#  action     :string(255)     not null
+#  calls      :integer(4)      default(0), not null
+#  realtime   :float
+#  day        :date            not null
+#  stime      :float           default(0.0), not null
+#  utime      :float           default(0.0), not null
+#  cstime     :float           default(0.0), not null
+#  cutime     :float           default(0.0), not null
+########
 class Performance < ActiveRecord::Base
   # возвращает все записи в формате CSV
   # >> puts Performance.to_csv(:day => 1.day.ago.to_date)

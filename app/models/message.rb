@@ -1,3 +1,17 @@
+# = Schema Information
+#
+# Table name: *messages*
+#
+#  id          :integer(4)      not null, primary key
+#  user_id     :integer(4)      default(0), not null
+#  sender_id   :integer(4)      default(0), not null
+#  body        :text            not null
+#  body_html   :text
+#  is_private  :boolean(1)      not null
+#  is_disabled :boolean(1)      not null
+#  created_at  :datetime        not null
+#  updated_at  :datetime
+########
 class Message < ActiveRecord::Base
   belongs_to :user, :counter_cache => true # пользователь которому было отправлено сообщение
   belongs_to :sender, :class_name => 'User', :foreign_key => 'sender_id' # кто написал сообщение

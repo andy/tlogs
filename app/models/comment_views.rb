@@ -1,3 +1,12 @@
+# = Schema Information
+#
+# Table name: *comment_views*
+#
+#  id                  :integer(4)      not null, primary key
+#  entry_id            :integer(4)      default(0), not null
+#  user_id             :integer(4)      default(0), not null
+#  last_comment_viewed :integer(4)      default(0), not null
+########
 class CommentViews < ActiveRecord::Base
   belongs_to :entry
   belongs_to :user
