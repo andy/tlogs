@@ -26,8 +26,6 @@ Rails::Initializer.run do |config|
   # config.gem 'mysql'
 end
 
-require 'tasty_init'
-
 ActionController::CgiRequest::DEFAULT_SESSION_OPTIONS.update(:session_domain => '.mmm-tasty.ru')
 ActionView::Base.field_error_proc = Proc.new { |html_tag, instance| html_tag }
 
