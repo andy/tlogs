@@ -23,8 +23,3 @@ Rails::Initializer.run do |config|
   # if you plan on using mysql, uncomment this
   config.gem 'mysql'
 end
-
-ActionController::CgiRequest::DEFAULT_SESSION_OPTIONS.update(:session_domain => '.mmm-tasty.ru')
-ActionView::Base.field_error_proc = Proc.new { |html_tag, instance| html_tag }
-
-CGI::Session.expire_after 3.months
