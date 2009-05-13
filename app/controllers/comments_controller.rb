@@ -85,7 +85,6 @@ class CommentsController < ApplicationController
         page.call :clear_all_errors
         @comment.errors.each do |element, message|
           page.call :error_message_on, "comment_#{element}", message
-          page.call :error_message_on, "comment_ext_username", message if element == 'user_id' # добавляем
         end
       end
     end    

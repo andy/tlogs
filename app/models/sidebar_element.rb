@@ -5,7 +5,7 @@
 #  id                 :integer(4)      not null, primary key
 #  sidebar_section_id :integer(4)      not null
 #  type               :string(25)
-#  content            :text            not null
+#  content            :text            default(""), not null
 #  position           :integer(4)
 ########
 class SidebarElement < ActiveRecord::Base

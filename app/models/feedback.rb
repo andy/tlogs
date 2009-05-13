@@ -6,7 +6,7 @@
 #  user_id      :integer(4)      not null
 #  created_at   :datetime        not null
 #  updated_at   :datetime        not null
-#  message      :text            not null
+#  message      :text            default(""), not null
 #  is_public    :boolean(1)      not null
 #  is_moderated :boolean(1)      not null
 ########

@@ -226,7 +226,7 @@ class Entry < ActiveRecord::Base
   end
   
   def comments_grouped_by_authors
-    self.comments.group_by { |comment| comment.ext_username || comment.user_id }
+    self.comments.group_by(&:user_id)
   end
   
   

@@ -5,9 +5,7 @@
 #  id           :integer(4)      not null, primary key
 #  entry_id     :integer(4)      default(0), not null
 #  comment      :text
-#  user_id      :integer(4)      default(0)
-#  ext_username :string(255)
-#  ext_url      :string(255)
+#  user_id      :integer(4)      not null
 #  is_disabled  :boolean(1)      not null
 #  created_at   :datetime        not null
 #  updated_at   :datetime
@@ -26,6 +24,10 @@ class Comment < ActiveRecord::Base
 
   ## plugins
   ## named_scopes
+  named_scope                   :enabled,   :conditions => 'is_disabled = 0'
+  named_scope                   :disabled,  :conditions => 'is_disabled = 1'
+  
+  
   ## validations
   validates_presence_of         :entry_id
 

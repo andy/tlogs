@@ -21,7 +21,7 @@
 	</div>
 	<div class='comment_text'>
 		<!-- keep this for js reply_to code -->
-			<div style='display: none;' id='comment_author_<%= comment.id %>'><%= comment.user.nil? ? h(comment.ext_username) : h(comment.user.url) %></div>
+			<div style='display: none;' id='comment_author_<%= comment.id %>'><%= h(comment.user.url) %></div>
 		<!-- /keep -->
 		<div class='post_comment_author'><%= link_to_comment_author(comment, current_site && comment.user_id == current_site.id) %></div>
 		<div class='post_comment_time' title='<%= comment.created_at.to_timestamp_s %>'><%= comment.created_at.distance_between_in_words(Time.now, ' назад') %></div>

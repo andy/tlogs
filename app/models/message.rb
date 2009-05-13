@@ -5,7 +5,7 @@
 #  id          :integer(4)      not null, primary key
 #  user_id     :integer(4)      default(0), not null
 #  sender_id   :integer(4)      default(0), not null
-#  body        :text            not null
+#  body        :text            default(""), not null
 #  body_html   :text
 #  is_private  :boolean(1)      not null
 #  is_disabled :boolean(1)      not null
