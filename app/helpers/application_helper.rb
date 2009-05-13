@@ -135,4 +135,8 @@ END
   def mark(keyword)
     Entry.find_by_sql("/* #{keyword} */ SELECT id FROM entries WHERE id = 0")
   end
+  
+  def paginate(pageable, options = {})
+    render :file => 'globals/pagination', :locals => options.merge(:pageable => pageable)
+  end
 end

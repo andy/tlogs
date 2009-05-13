@@ -19,7 +19,7 @@
   	<% if params[:action] == 'day' || current_site.tlog_settings.is_daylog? && params[:action] == 'index' %>
   		<%= render :file => 'globals/day_pagination', :locals => { :entries => @entries }  %>
   	<% else %>
-  		<%= render :file => 'globals/pagination', :locals => { :pageable => @entries, :reverse => reverse } %>
+  		<%= paginate @entries, :reverse => reverse %>
   	<% end %>
   <% end %>
 	

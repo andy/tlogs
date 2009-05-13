@@ -1,6 +1,6 @@
 <% if params[:action] != 'users' %>
   <div class='onair'>
-  	<%= render :file => 'globals/pagination', :locals => { :pageable => @users, :css_class => 'top_nav_paginator' if @users.previous_page } %>
+  	<%= paginate @users, :css_class => 'top_nav_paginator' if @users.previous_page %>
   </div>
 <% end %>
 
@@ -21,7 +21,7 @@
 
 <% if params[:action] != 'users' %>
   <div class='onair'>
-  	<%= render :file => 'globals/pagination', :locals => { :pageable => @users } %>
+  	<%= paginate @users %>
   </div>
 <% end %>
 

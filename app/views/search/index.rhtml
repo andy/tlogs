@@ -13,13 +13,13 @@
 </div>
 
 <%= "<div class='onair'>" unless current_site %>
-<%= render :file => 'globals/pagination', :locals => { :pageable => @entries, :css_class => 'top_nav_paginator', :url_options => { :query => params[:query] } }) if @page > 1 %>
+<%= paginate @entries, :css_class => 'top_nav_paginator', :url_options => { :query => params[:query] } if @page > 1 %>
 
 <% @entries.each do |entry| %>
 	<%= render :file => 'entries/entry_display', :locals => { :entry => entry, :show_comments_bubble => true, :show_username => !current_site, :show_datetime => !!current_site } %>
 <% end %>
 
-<%= render :file => 'globals/pagination', :locals => { :pageable => @entries, :url_options => { :query => params[:query] } } %>
+<%= paginate @entries, :url_options => { :query => params[:query] } %>
 <%= "</div>" unless current_site %>
 
 <% if current_site %>

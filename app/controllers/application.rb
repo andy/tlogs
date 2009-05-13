@@ -44,16 +44,7 @@ class ApplicationController < ActionController::Base
   before_filter :preload_current_site # loads @current_site
   before_filter :preload_current_user # loads @current_user
   
-  before_filter :preload_essential_models
-  
   protected
-    def preload_essential_models
-      Entry
-      User
-      Avatar
-      Comment
-    end
-    
     def preload_current_site
       @standalone = false
       @current_site = nil
