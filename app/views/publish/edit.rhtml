@@ -10,5 +10,5 @@
 <% end %>
 
 <div>
-	<%= render 'entries/entry_edit', { :entry => @entry } %>
+	<%= render :file => 'entries/entry_edit', :locals => { :entry => @entry } %>
 </div>

@@ -7,7 +7,7 @@
 	<% Feedback.published.random.all(:include => [:user], :limit => 10).each do |feedback|
 		feedback = QuoteEntry.new :data_part_1 => feedback.message, :data_part_2 => link_to_tlog(feedback.user)
 	%>
-		<%= render 'entries/entry_display', :entry => feedback, :show_username => false %>
+		<%= render :file => 'entries/entry_display', :locals => { :entry => feedback, :show_username => false } %>
 	<% end %>
 </div>
 

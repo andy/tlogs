@@ -15,7 +15,7 @@
 <% end %>
 
 <% cache :owner => is_owner?, :date => Date.today, :updated_at => @entry.updated_at.to_i do %>
-  <%= render 'entries/entry_display', { :entry => @entry, :show_datetime => true, :show_tags => is_owner? } %>
+  <%= render :file => 'entries/entry_display', :locals => { :entry => @entry, :show_datetime => true, :show_tags => is_owner? } %>
 <% end %>
 <a name="comments"></a>
 <% if @entry.comments_enabled? || @entry.comments_count > 0 %>
@@ -53,5 +53,5 @@
 </div>
 
 <% content_for :sidebar do %>
-	<%= render 'tlog/_sidebar' %>
+	<%= render :partial => 'tlog/sidebar' %>
 <% end %>

@@ -1,16 +1,16 @@
 <% @title = 'прямой эфир как он есть' %>
 
 <div class='onair'>
-	<%= render('globals/pagination', { :pageable => @entry_ids, :reverse => true }) if @page > 1 %>
+	<%= render :file => 'globals/pagination', :locals => { :pageable => @entry_ids, :reverse => true } if @page > 1 %>
 
 	<%- google_ad_position = 1 + rand(3); prev_entry = nil -%>
 	<% @entries.each_with_index do |entry, index| %>
 		<%#= render 'globals/google_inline_text_ad' if index == google_ad_position %>
-		<%= render 'entries/anonymous_entry_display', :entry => entry, :show_datetime => !(prev_entry.created_at.same_day?(entry.created_at) rescue false) %>
+		<%= render :file => 'entries/anonymous_entry_display', :locals => { :entry => entry, :show_datetime => !(prev_entry.created_at.same_day?(entry.created_at) rescue false) } %>
 		<%- prev_entry = entry -%>
 	<% end %>
 
-	<%= render 'globals/pagination', { :pageable => @entry_ids, :reverse => true } %>	
+	<%= render :file => 'globals/pagination', :locals => { :pageable => @entry_ids, :reverse => true } %>	
 </div>
 
 <% content_for :sidebar_left do %>

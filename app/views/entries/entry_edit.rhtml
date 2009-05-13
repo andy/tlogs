@@ -8,7 +8,7 @@
 	<form method='post' name='entry_edit_form' action='<%= publish_url(empty_bookmarklet_url_options(:action => @entry[:type].underscore.split(/_/)[0], :bm => in_bookmarklet? ? true : nil)) %>' id='entry_edit_form' enctype="multipart/form-data" class='post'>
 		<%= hidden_field('entry', :id, :style => 'display: none') unless @new_record -%>
 		<%= hidden_field 'entry', :type, :style => 'display: none' %>
-		<%= render 'entries/edit/' + entry.class.to_s.underscore, { :entry => @entry } %>
+		<%= render :file => 'entries/edit/' + entry.class.to_s.underscore, :locals => { :entry => @entry } %>
 		<% unless @entry.is_anonymous? %>
 			<div id='entry_options_toggle'>
 				<% if @new_record %>

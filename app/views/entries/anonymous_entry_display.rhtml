@@ -12,9 +12,7 @@
 	</div>
 <% end %>
 
-<div class="post_body <%= "post_#{entry.class.to_s.underscore}" %>" id="<%= dom_id(entry) %>">
-	<!-- <div class='rel'><div class='post_anonymous_author'><%= link_to "Анонимка ##{entry.id}", anonymous_path(:action => :show, :id => entry.id) %></div></div> -->
-	
+<div class="post_body <%= "post_#{entry.class.to_s.underscore}" %>" id="<%= dom_id(entry) %>">	
 	<%- if entry.comments_enabled? || entry.comments.size > 0 -%>
 		<div class='service_comments<%= ' has_comments' if entry.comments.size > 0 %>'>
 			<div class="comment_cloud iePNG<%= ' has_comments' if entry.comments.size > 0 %>"><a href="/main/anonymous/show/<%= entry.id %>" title='читать комментарии / комментировать'><span id='entry_comments_count_<%= entry.id %>'><%= entry.comments.size %></span></a></div>

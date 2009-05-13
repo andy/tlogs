@@ -12,7 +12,7 @@
 
 <%= "<div class='onair'>" unless current_site %>
 <% if @entries.size > 0 %>
-	<%= render 'globals/pagination', { :pageable => @entries, :reverse => true } %>
+	<%= render :file => 'globals/pagination', :locals => { :pageable => @entries, :reverse => true } %>
 
 	<%- prev_entry = nil -%>
 	<% @entries.each do |entry| %>
@@ -20,10 +20,10 @@
 		<% prev_entry = entry %>
 	<% end %>
 
-	<%= render 'globals/pagination', { :pageable => @entries, :reverse => true } %>
+	<%= render :file => 'globals/pagination', :locals => { :pageable => @entries, :reverse => true } %>
 <% end %>
 <%= "</div>" unless current_site %>
 
 <% content_for :sidebar do %>
-	<%= render 'tlog/_sidebar', { :inline_tags => @tags } if current_site %>
+	<%= render :partial => 'tlog/sidebar', :locals => { :inline_tags => @tags } if current_site %>
 <% end %>

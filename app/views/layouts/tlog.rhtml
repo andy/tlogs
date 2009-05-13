@@ -3,7 +3,7 @@
 <!-- layout tlog_rounded_new -->
 <html>
 <head>
-	<%= render 'globals/head' %>
+	<%= render :file => 'globals/head' %>
 	<% cache :content_for => 'style', :revision => current_site.tlog_settings.css_revision do %>
   	<%= render :partial => 'tlog/style' %>
 	<% end if current_site.tlog_settings %>
@@ -45,8 +45,8 @@
 				</div>
 			</div>
 		</div>
-		<%= render 'globals/foot' %>
+		<%= render :file => 'globals/foot' %>
 	</div>	
-	<%= render 'globals/top_nav' %>
+	<%= render :file => 'globals/top_nav' %>
 </body>
 </html>

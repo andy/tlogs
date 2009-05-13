@@ -10,16 +10,16 @@
 
 	<% previous_date = nil -%>
 	<% @entries.each_with_index do |entry, index| -%>
-		<%= render 'entries/entry_display', { :entry => entry, :show_comments_bubble => true, :show_datetime => (previous_date.nil? || previous_date != entry.created_at.to_date), :index => index, :show_tags => is_owner? } %>
+		<%= render :file => 'entries/entry_display', :locals => { :entry => entry, :show_comments_bubble => true, :show_datetime => (previous_date.nil? || previous_date != entry.created_at.to_date), :index => index, :show_tags => is_owner? } %>
 		<% previous_date = entry.created_at.to_date -%>
 	<% end %>
 
   <%# показываем навигационные элементы если прошлое не выключено или если это владелец тлога %>
   <% if is_owner? || !current_site.tlog_settings.past_disabled? %>
   	<% if params[:action] == 'day' || current_site.tlog_settings.is_daylog? && params[:action] == 'index' %>
-  		<%= render 'globals/day_pagination', { :entries => @entries }  %>
+  		<%= render :file => 'globals/day_pagination', :locals => { :entries => @entries }  %>
   	<% else %>
-  		<%= render 'globals/pagination', { :pageable => @entries, :reverse => reverse } %>
+  		<%= render :file => 'globals/pagination', :locals => { :pageable => @entries, :reverse => reverse } %>
   	<% end %>
   <% end %>
 	

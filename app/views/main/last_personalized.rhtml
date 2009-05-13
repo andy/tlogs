@@ -14,11 +14,10 @@
 
 		<%- google_ad_position = 1 + rand(2) %>
 		<% @entries.each_with_index do |entry, index| %>
-			<%#= render 'globals/google_inline_text_ad' if index == google_ad_position %>
-			<%= render 'entries/entry_display', { :entry => entry, :show_comments_bubble => true, :show_username => true } %>
+			<%= render :file => 'entries/entry_display', :locals => { :entry => entry, :show_comments_bubble => true, :show_username => true } %>
 		<% end %>
 
-		<%= render 'globals/pagination', { :pageable => @entry_ids } %>	
+		<%= render :file => 'globals/pagination', :locals => { :pageable => @entry_ids } %>	
 	</div>
 <% end %>
 

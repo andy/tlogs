@@ -2,7 +2,7 @@
 
 <div class='onair'>
 	<% @entries.each do |entry| %>
-		<%= render 'entries/entry_display', { :entry => entry, :show_comments_bubble => true } %>
+		<%= render :file => 'entries/entry_display', :locals => { :entry => entry, :show_comments_bubble => true } %>
 	<% end %>
 </div>
 
@@ -43,7 +43,7 @@
 	
 	<div class='section sidebar_calendar'>
 		<h2><span>другие дни</span></h2>
-		<%= render 'globals/calendar', :calendar => @calendar, :time => @time %>
+		<%= render :file => 'globals/calendar', :locals => { :calendar => @calendar, :time => @time } %>
 	</div>
 
 	<div class='section sidebar_others'>

@@ -1,15 +1,15 @@
 <% @title = 'новости' %>
 <% @sidebar_left_short = true %>
 <div class='onair'>
-	<%= render('globals/pagination', { :pageable => @entries, :reverse => true, :css_class => 'top_nav_paginator' }) if @page > 1 %>	
+	<%= render :file => 'globals/pagination', :locals => { :pageable => @entries, :reverse => true, :css_class => 'top_nav_paginator' }) if @page > 1 %>	
 
 	<%- prev_entry = nil -%>
 	<% @entries.each do |entry| %>
-		<%= render 'entries/entry_display', { :entry => entry, :show_comments_bubble => true, :show_datetime => !(prev_entry.created_at.same_day?(entry.created_at) rescue false) } %>
+		<%= render :file => 'entries/entry_display', :locals => { :entry => entry, :show_comments_bubble => true, :show_datetime => !(prev_entry.created_at.same_day?(entry.created_at) rescue false) } %>
 		<%- prev_entry = entry -%>
 	<% end %>
 
-	<%= render 'globals/pagination', { :pageable => @entries, :reverse => true } %>	
+	<%= render :file => 'globals/pagination', :locals => { :pageable => @entries, :reverse => true } %>	
 </div>
 
 <% content_for :sidebar_left do %>

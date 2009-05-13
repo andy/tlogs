@@ -8,25 +8,26 @@ class ApplicationController < ActionController::Base
   # before_filter :prelaunch_megasecrecy
 
   # меряем производительность только на реальном сайте
-  if RAILS_ENV == 'production'
-    around_filter do |controller, action|
-      result = Benchmark.measure { action.call }
-
-      Performance.transaction do
-        perf = Performance.find_or_initialize_by_controller_and_action_and_day(controller.controller_name, controller.action_name, Time.now.to_date)
-        perf.increment(:calls)
-        perf.realtime ||= 0.0
-        perf.realtime += result.real
-        perf.stime += result.stime
-        perf.utime += result.utime
-        perf.cstime += result.cstime
-        perf.cutime += result.cutime      
-        perf.save!
-      end
-    end
-  end
+  # if RAILS_ENV == 'production'
+  #   around_filter do |controller, action|
+  #     result = Benchmark.measure { action.call }
+  # 
+  #     Performance.transaction do
+  #       perf = Performance.find_or_initialize_by_controller_and_action_and_day(controller.controller_name, controller.action_name, Time.now.to_date)
+  #       perf.increment(:calls)
+  #       perf.realtime ||= 0.0
+  #       perf.realtime += result.real
+  #       perf.stime += result.stime
+  #       perf.utime += result.utime
+  #       perf.cstime += result.cstime
+  #       perf.cutime += result.cutime      
+  #       perf.save!
+  #     end
+  #   end
+  # end
   
   include ExceptionNotifiable if RAILS_ENV == 'production'
+  include ProductionImages if RAILS_ENV == 'development'
 
   # MAIN FILTERS
   attr_accessor   :current_site

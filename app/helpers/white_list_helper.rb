@@ -14,6 +14,8 @@ module WhiteListHelper
   end
 
   def white_list_html(html, options = {})
+    require 'hpricot'
+
     html.gsub!('&amp;', '&')
     html.gsub!('amp;', '')
     
