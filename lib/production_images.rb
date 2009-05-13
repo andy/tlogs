@@ -1,5 +1,5 @@
 module ProductionImages
-  # Перехватывает отсутствующие картинки и пытается слить их с lookatme.ru
+  # Перехватывает отсутствующие картинки и пытается слить их с assets.mmm-tasty.ru
   def self.add_mongrel_images
     return unless defined?(Mongrel)
     return if Mongrel.instance_variable_get('@add_mongrel_images')
