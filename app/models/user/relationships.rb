@@ -1,6 +1,9 @@
 class User
+  ## included modules & attr_*
   USER_AND_RELATIONSHIP_COLUMNS = 'u.*,r.title,r.friendship_status,r.read_count,r.comment_count,r.position,r.last_viewed_entries_count,r.last_viewed_at,r.id AS relationship_id'
-  
+
+
+  ## associations
   has_many :relationships, :dependent => :destroy
     
   # лишь хорошие друзья
@@ -22,7 +25,14 @@ class User
     # same as previous, but only a relationship model which is much lighter as it fetches only from relationships table and does not include User
     has_many "listed_me_as_#{name.to_s.singularize}_r".to_sym, :class_name => 'Relationship', :finder_sql => "SELECT r.* FROM relationships AS r WHERE r.user_id = \#{id} #{param_filter}"
   end
-  
+
+
+  ## plugins
+  ## named_scopes
+  ## validations
+  ## callbacks
+  ## class methods
+  ## public methods  
   # Пользователь user читает текущего пользователя
   def reads(user)
     return if self.id == user.id
@@ -78,5 +88,11 @@ class User
     relationship.increment(:comment_count)
     relationship.last_comment_at = Time.now
     relationship.save!
-  end      
+  end
+
+  
+  ## private methods  
+  
+
+
 end

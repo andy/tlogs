@@ -1,4 +1,13 @@
 class User
+  ## included modules & attr_*
+  ## associations
+  ## plugins
+  ## named_scopes
+  ## validations
+  ## callbacks
+  ## class methods
+  ## public methods
+
   def is_admin?
     [1, 2].include?(self.id)
   end
@@ -31,5 +40,10 @@ class User
   # сила голоса пользователя. Пока что абсолютно равоне для всех
   def vote_power
     1
-  end  
+  end
+
+
+  ## private methods  
+  
+  
 end

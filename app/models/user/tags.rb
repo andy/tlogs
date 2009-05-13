@@ -1,9 +1,16 @@
 class User
-  #
-  # the following code comes from markaboo
-  #
+  ## included modules & attr_*
   DEFAULT_CATEGORY_OPTIONS = {:include_private => false, :max_rows => 10}.freeze
   DEFAULT_FIND_OPTIONS = {:owner => nil, :include_private => false}.freeze
+
+
+  ## associations
+  ## plugins
+  ## named_scopes
+  ## validations
+  ## callbacks
+  ## class methods
+  ## public methods
 
   # Get the tags for a user
   def tags(include_private=false)
@@ -89,4 +96,9 @@ class User
     options[:max_rows] = 50 unless options[:max_rows]
     Tag.cloud { self.top_categories(options) }
   end
+
+
+  ## private methods  
+
+
 end

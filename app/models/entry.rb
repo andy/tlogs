@@ -20,6 +20,17 @@
 #  comments_enabled :boolean(1)      not null
 ########
 class Entry < ActiveRecord::Base
+  ## included modules & attr_*
+  ## associations
+  ## plugins
+  ## named_scopes
+  ## validations
+  ## callbacks
+  ## class methods
+  ## public methods
+  ## private methods  
+  
+  
 	belongs_to :author, :class_name => 'User', :foreign_key => 'user_id', :counter_cache => true
 	has_many :comments, :dependent => :destroy, :order => 'comments.id'
 	has_many :comment_views, :class_name => 'CommentViews', :dependent => :destroy

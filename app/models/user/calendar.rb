@@ -1,4 +1,13 @@
 class User
+  ## included modules & attr_*
+  ## associations
+  ## plugins
+  ## named_scopes
+  ## validations
+  ## callbacks
+  ## class methods
+  ## public methods
+
   # User.find(1).calendar.each do |day, entries|
   def calendar(date=nil)
     date ||= Date.today
@@ -11,4 +20,7 @@ class User
       calendar.group_by { |entry| entry.created_at.month }.sort_by { |a| a }
     end
   end
+
+
+  ## private methods
 end

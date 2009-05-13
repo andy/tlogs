@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090512183207) do
+ActiveRecord::Schema.define(:version => 20090513143946) do
 
   create_table "attachments", :force => true do |t|
     t.integer "entry_id",     :default => 0,  :null => false
@@ -40,8 +40,8 @@ ActiveRecord::Schema.define(:version => 20090512183207) do
     t.integer "height"
   end
 
-  add_index "avatars", ["user_id"], :name => "index_avatars_on_user_id"
   add_index "avatars", ["parent_id"], :name => "index_avatars_on_parent_id"
+  add_index "avatars", ["user_id"], :name => "index_avatars_on_user_id"
 
   create_table "bookmarklets", :force => true do |t|
     t.integer  "user_id",                                         :null => false
@@ -54,8 +54,8 @@ ActiveRecord::Schema.define(:version => 20090512183207) do
     t.boolean  "is_public",                :default => false,     :null => false
   end
 
-  add_index "bookmarklets", ["user_id", "created_at"], :name => "index_bookmarklets_on_user_id_and_created_at"
   add_index "bookmarklets", ["is_public", "created_at"], :name => "index_bookmarklets_on_is_public_and_created_at"
+  add_index "bookmarklets", ["user_id", "created_at"], :name => "index_bookmarklets_on_user_id_and_created_at"
 
   create_table "comment_views", :force => true do |t|
     t.integer "entry_id",            :default => 0, :null => false
@@ -68,9 +68,7 @@ ActiveRecord::Schema.define(:version => 20090512183207) do
   create_table "comments", :force => true do |t|
     t.integer  "entry_id",                   :default => 0,     :null => false
     t.text     "comment"
-    t.integer  "user_id",                    :default => 0
-    t.string   "ext_username"
-    t.string   "ext_url"
+    t.integer  "user_id",                                       :null => false
     t.boolean  "is_disabled",                :default => false, :null => false
     t.datetime "created_at",                                    :null => false
     t.datetime "updated_at"
@@ -78,7 +76,9 @@ ActiveRecord::Schema.define(:version => 20090512183207) do
     t.string   "remote_ip",    :limit => 17
   end
 
-  add_index "comments", ["entry_id", "user_id"], :name => "index_comments_on_entry_id_and_user_id"
+  add_index "comments", ["created_at"], :name => "index_comments_on_created_at"
+  add_index "comments", ["entry_id"], :name => "index_comments_on_entry_id"
+  add_index "comments", ["user_id"], :name => "index_comments_on_user_id"
 
   create_table "delayed_jobs", :force => true do |t|
     t.integer  "priority",   :default => 0
@@ -92,11 +92,11 @@ ActiveRecord::Schema.define(:version => 20090512183207) do
     t.datetime "updated_at"
   end
 
-  add_index "delayed_jobs", ["priority"], :name => "index_delayed_jobs_on_priority"
   add_index "delayed_jobs", ["attempts"], :name => "index_delayed_jobs_on_attempts"
-  add_index "delayed_jobs", ["run_at"], :name => "index_delayed_jobs_on_run_at"
   add_index "delayed_jobs", ["locked_at"], :name => "index_delayed_jobs_on_locked_at"
   add_index "delayed_jobs", ["locked_by"], :name => "index_delayed_jobs_on_locked_by"
+  add_index "delayed_jobs", ["priority"], :name => "index_delayed_jobs_on_priority"
+  add_index "delayed_jobs", ["run_at"], :name => "index_delayed_jobs_on_run_at"
 
   create_table "entries", :force => true do |t|
     t.integer  "user_id",          :default => 0,     :null => false
@@ -116,13 +116,13 @@ ActiveRecord::Schema.define(:version => 20090512183207) do
     t.boolean  "comments_enabled", :default => false, :null => false
   end
 
-  add_index "entries", ["user_id", "created_at", "type"], :name => "index_entries_on_user_id_and_created_at_and_type"
+  add_index "entries", ["id", "user_id", "is_private"], :name => "tmpindex2"
+  add_index "entries", ["is_disabled"], :name => "index_entries_on_is_disabled"
   add_index "entries", ["is_mainpageable", "created_at", "type"], :name => "index_entries_on_is_mainpageable_and_created_at_and_type"
+  add_index "entries", ["is_mainpageable", "is_private", "id"], :name => "index_entries_on_is_mainpageable_and_is_private_and_id"
+  add_index "entries", ["user_id", "created_at", "type"], :name => "index_entries_on_user_id_and_created_at_and_type"
   add_index "entries", ["user_id", "is_private", "created_at"], :name => "index_entries_on_user_id_and_is_private_and_created_at"
   add_index "entries", ["user_id", "is_private", "id"], :name => "tmpindex"
-  add_index "entries", ["id", "user_id", "is_private"], :name => "tmpindex2"
-  add_index "entries", ["is_mainpageable", "is_private", "id"], :name => "index_entries_on_is_mainpageable_and_is_private_and_id"
-  add_index "entries", ["is_disabled"], :name => "index_entries_on_is_disabled"
 
   create_table "entry_ratings", :force => true do |t|
     t.integer  "entry_id",                 :default => 0,  :null => false
@@ -159,8 +159,8 @@ ActiveRecord::Schema.define(:version => 20090512183207) do
   end
 
   add_index "faves", ["user_id", "entry_id"], :name => "index_faves_on_user_id_and_entry_id", :unique => true
-  add_index "faves", ["user_id", "entry_user_id"], :name => "index_faves_on_user_id_and_entry_user_id"
   add_index "faves", ["user_id", "entry_type"], :name => "index_faves_on_user_id_and_entry_type"
+  add_index "faves", ["user_id", "entry_user_id"], :name => "index_faves_on_user_id_and_entry_user_id"
 
   create_table "feedbacks", :force => true do |t|
     t.integer  "user_id",                         :null => false
@@ -171,9 +171,9 @@ ActiveRecord::Schema.define(:version => 20090512183207) do
     t.boolean  "is_moderated", :default => false, :null => false
   end
 
-  add_index "feedbacks", ["user_id"], :name => "index_feedbacks_on_user_id", :unique => true
-  add_index "feedbacks", ["is_public", "created_at"], :name => "index_feedbacks_on_is_public_and_created_at"
   add_index "feedbacks", ["is_moderated", "created_at"], :name => "index_feedbacks_on_is_moderated_and_created_at"
+  add_index "feedbacks", ["is_public", "created_at"], :name => "index_feedbacks_on_is_public_and_created_at"
+  add_index "feedbacks", ["user_id"], :name => "index_feedbacks_on_user_id", :unique => true
 
   create_table "helps", :force => true do |t|
     t.string   "path",        :default => "", :null => false
@@ -207,8 +207,8 @@ ActiveRecord::Schema.define(:version => 20090512183207) do
     t.datetime "updated_at"
   end
 
-  add_index "mobile_settings", ["user_id"], :name => "index_mobile_settings_on_user_id", :unique => true
   add_index "mobile_settings", ["keyword"], :name => "index_mobile_settings_on_keyword", :unique => true
+  add_index "mobile_settings", ["user_id"], :name => "index_mobile_settings_on_user_id", :unique => true
 
   create_table "performances", :force => true do |t|
     t.string  "controller",                  :null => false
@@ -239,11 +239,11 @@ ActiveRecord::Schema.define(:version => 20090512183207) do
     t.string   "title",                     :limit => 128
   end
 
-  add_index "relationships", ["user_id", "reader_id"], :name => "index_relationships_on_user_id_and_reader_id", :unique => true
-  add_index "relationships", ["user_id", "reader_id", "position"], :name => "index_relationships_on_user_id_and_reader_id_and_position"
+  add_index "relationships", ["reader_id", "friendship_status"], :name => "index_relationships_on_reader_id_and_friendship_status"
   add_index "relationships", ["reader_id", "user_id", "position"], :name => "index_relationships_on_reader_id_and_user_id_and_position"
   add_index "relationships", ["reader_id", "votes_value"], :name => "index_relationships_on_reader_id_and_votes_value"
-  add_index "relationships", ["reader_id", "friendship_status"], :name => "index_relationships_on_reader_id_and_friendship_status"
+  add_index "relationships", ["user_id", "reader_id", "position"], :name => "index_relationships_on_user_id_and_reader_id_and_position"
+  add_index "relationships", ["user_id", "reader_id"], :name => "index_relationships_on_user_id_and_reader_id", :unique => true
 
   create_table "sessions", :force => true do |t|
     t.string   "session_id"
@@ -280,8 +280,8 @@ ActiveRecord::Schema.define(:version => 20090512183207) do
     t.boolean  "is_disabled", :default => false, :null => false
   end
 
-  add_index "social_ads", ["user_id", "entry_id"], :name => "index_social_ads_on_user_id_and_entry_id", :unique => true
   add_index "social_ads", ["created_at", "user_id"], :name => "index_social_ads_on_created_at_and_user_id"
+  add_index "social_ads", ["user_id", "entry_id"], :name => "index_social_ads_on_user_id_and_entry_id", :unique => true
 
   create_table "sphinx_counter", :id => false, :force => true do |t|
     t.integer "counter_id"
@@ -297,8 +297,8 @@ ActiveRecord::Schema.define(:version => 20090512183207) do
     t.datetime "created_at"
   end
 
-  add_index "taggings", ["taggable_id", "taggable_type", "tag_id"], :name => "index_taggings_on_taggable_id_and_taggable_type_and_tag_id", :unique => true
   add_index "taggings", ["tag_id"], :name => "index_taggings_on_tag_id"
+  add_index "taggings", ["taggable_id", "taggable_type", "tag_id"], :name => "index_taggings_on_taggable_id_and_taggable_type_and_tag_id", :unique => true
 
   create_table "tags", :force => true do |t|
     t.string "name", :default => "", :null => false
@@ -393,9 +393,9 @@ ActiveRecord::Schema.define(:version => 20090512183207) do
     t.datetime "entries_updated_at"
   end
 
+  add_index "users", ["domain"], :name => "index_users_on_domain"
   add_index "users", ["email"], :name => "index_users_on_email"
   add_index "users", ["openid"], :name => "index_users_on_openid"
   add_index "users", ["url"], :name => "index_users_on_url"
-  add_index "users", ["domain"], :name => "index_users_on_domain"
 
 end

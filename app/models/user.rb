@@ -28,32 +28,21 @@
 #  entries_updated_at      :datetime
 ########
 class User < ActiveRecord::Base
-	has_many :entries, :dependent => :destroy
-	has_one :avatar, :dependent => :destroy
-  has_one :tlog_settings, :dependent => :destroy
-  has_one :tlog_design_settings, :dependent => :destroy
-  has_one :mobile_settings, :dependent => :destroy
-  
-  has_many :sidebar_sections, :dependent => :destroy
-  has_many :bookmarklets, :dependent => :destroy
-  has_one :feedback, :dependent => :destroy
-  has_many :messages, :dependent => :destroy
-  has_many :faves, :dependent => :destroy
+  ## included modules & attr_*
+  ## associations
+	has_many      :entries, :dependent => :destroy
+	has_one       :avatar, :dependent => :destroy
+  has_one       :tlog_settings, :dependent => :destroy
+  has_one       :tlog_design_settings, :dependent => :destroy
+  has_one       :mobile_settings, :dependent => :destroy  
+  has_many      :sidebar_sections, :dependent => :destroy
+  has_many      :bookmarklets, :dependent => :destroy
+  has_one       :feedback, :dependent => :destroy
+  has_many      :messages, :dependent => :destroy
+  has_many      :faves, :dependent => :destroy
 
-  after_destroy { |user| user.disconnect! }
 
-	
-  validates_format_of :domain, :with => Format::DOMAIN, :if => Proc.new { |u| !u.domain.blank? }, :on => :save, :message => 'не похоже на домен'
-
-  after_create do |user|
-    user.tlog_settings = TlogSettings.create :user => user
-    user.tlog_design_settings = TlogDesignSettings.create :user => user
-    # добавляем новости автоматически
-    news = User.find_by_url('news')
-    Relationship.create(:user => news, :reader => user, :position => 0, :last_viewed_entries_count => news.entries_count_for(user), :last_viewed_at => Time.now, :friendship_status => Relationship::DEFAULT) if news
-  end
-  
-  
+  ## plugins
   concerned_with :authentication,
                   :relationships,
                   :settings,
@@ -62,6 +51,36 @@ class User < ActiveRecord::Base
                   :permissions,
                   :calendar  
   
+
+
+  ## named_scopes
+  named_scope   :confirmed, :conditions => 'is_confirmed = 1'
+  named_scope   :unconfirmed, :conditions => 'is_confirmed = 0'
+  named_scope   :active, :conditions => 'is_disabled = 0 AND is_confirmed = 1'
+  named_scope   :disabled, :conditions => 'is_disabled = 1'
+  
+  
+  ## validations
+  validates_format_of     :domain,
+                          :with => Format::DOMAIN,
+                          :on => :save,
+                          :message => 'не похоже на домен',
+                          :if => Proc.new { |u| !u.domain.blank? }
+
+
+  ## callbacks
+  after_destroy { |user| user.disconnect! }
+  after_create do |user|
+    user.tlog_settings = TlogSettings.create :user => user
+    user.tlog_design_settings = TlogDesignSettings.create :user => user
+    # добавляем новости автоматически
+    news = User.find_by_url('news')
+    Relationship.create(:user => news, :reader => user, :position => 0, :last_viewed_entries_count => news.entries_count_for(user), :last_viewed_at => Time.now, :friendship_status => Relationship::DEFAULT) if news
+  end
+
+
+  ## class methods
+  ## public methods
 
   # Пример: <%= user.gender("он", "она") %>
   def gender(he = nil, she = nil)
@@ -72,7 +91,6 @@ class User < ActiveRecord::Base
   def username
     @username ||= read_attribute(:username).blank? ? self.url : read_attribute(:username)
   end      
-
 
   # блокируем пользователя
   def disable!
@@ -110,4 +128,9 @@ class User < ActiveRecord::Base
     # удаляем все подписки
     self.connection.delete("DELETE FROM entry_subscribers WHERE user_id = #{self.id}")
   end
+
+  
+  ## private methods  
+
+
 end

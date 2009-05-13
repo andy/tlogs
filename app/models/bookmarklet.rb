@@ -13,16 +13,36 @@
 #  is_public  :boolean(1)      not null
 ########
 class Bookmarklet < ActiveRecord::Base
-  belongs_to :user
-
-  validates_presence_of :user_id
-  validates_length_of :name, :within => 1..200
-  validates_inclusion_of :entry_type, :in => Entry::KINDS_FOR_SELECT_SIGNULAR.map { |v| v[1] }.reject { |v| %w(song).include?(v) }
-  validates_inclusion_of :visibility, :in => Entry::VISIBILITY_FOR_SELECT_NEW.map { |v| v[1] }
-
+  ## included modules & attr_*
   attr_protected :user_id
 
+
+  ## associations
+  belongs_to :user
+
+
+  ## plugins
+  ## named_scopes
+  ## validations
+  validates_presence_of           :user_id
+
+  validates_length_of             :name,
+                                  :within => 1..200
+
+  validates_inclusion_of          :entry_type,
+                                  :in => Entry::KINDS_FOR_SELECT_SIGNULAR.map { |v| v[1] }.reject { |v| %w(song).include?(v) }
+
+  validates_inclusion_of          :visibility,
+                                  :in => Entry::VISIBILITY_FOR_SELECT_NEW.map { |v| v[1] }
+
+
+  ## callbacks
+  ## class methods
+  ## public methods
   def is_owner?(user)
     user.id == self.user_id
   end
+
+
+  ## private methods
 end

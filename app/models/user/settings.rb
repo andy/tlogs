@@ -1,6 +1,18 @@
 class User
+  ## included modules & attr_*
 	serialize :settings
+
+
+  ## associations
+  ## plugins
+  ## named_scopes
+  ## validations
+  ## callbacks
 	before_create :set_default_settings
+
+
+  ## class methods
+  ## public methods
 
   # выставляем пользователю ключ (и создаем новый если его не было еще)
   def last_personalized_key
@@ -13,6 +25,8 @@ class User
     end
   end
 
+
+  ## private methods
   private  
     def set_default_settings
       begin

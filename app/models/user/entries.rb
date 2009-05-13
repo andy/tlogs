@@ -1,10 +1,21 @@
 class User
+  ## included modules & attr_*
   attr_accessible :entries_updated_at
 
+
+  ## associations
+  ## plugins
+  ## named_scopes
+  ## validations
+  ## callbacks
+  ## class methods
   def self.popular(limit = 6)
     user_ids = Rails.cache.fetch('Users.popular', :expires_in => 1.day) { User.find_by_sql("SELECT user_id AS id,count(*) AS c FROM relationships WHERE friendship_status > 0 GROUP BY user_id ORDER BY c DESC LIMIT 100") }
     User.find_all_by_id(user_ids.map(&:id).shuffle[0...limit], :include => [:avatar, :tlog_settings])
   end
+
+
+  ## public methods
   
   # количество записей для пользователя user. либо entries_count, либо public_entries_count
   def entries_count_for(user = nil)
@@ -72,4 +83,7 @@ class User
     entries.find_by_sql("SELECT e.id,r.value FROM entries AS e LEFT JOIN entry_ratings AS r ON r.entry_id = e.id AND r.user_id = #{self.id} #{conditions_sql} ORDER BY e.id DESC LIMIT #{(page > 0 ? (page - 1) : 0)  * Entry::PAGE_SIZE}, #{Entry::PAGE_SIZE}")
   end
   
+  ## private methods  
+  
+
 end
