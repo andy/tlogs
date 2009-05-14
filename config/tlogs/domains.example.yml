@@ -1,0 +1,10 @@
+# Домены
+mmm-tasty.ru:
+  name: ммм...тейсти
+  
+tlogs.ru:
+  users: inline
+  
+localhost:
+  users: inline
+  url: http://localhost
