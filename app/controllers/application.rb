@@ -46,12 +46,17 @@ class ApplicationController < ActionController::Base
   
   protected
     def preload_current_site
-      @standalone = false
       @current_site = nil
+      @current_domain = nil
 
       # can be nil if web site is accessed by ip address or there was no 'Host:' header in request
       return true unless request.domain
       domain = request.host
+
+      @current_domain = Tlogs::Domains::CONFIGURATION.options_for(request.domain)
+      
+      
+
 
       # 1. если в домене mmm-tasty.ru ...
       #    1.a   если адрес - www.mmm-tasty.ru / mmm-tasty.ru - выходим (true)
