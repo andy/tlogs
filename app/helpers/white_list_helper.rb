@@ -1,6 +1,41 @@
 module WhiteListHelper
   VALID_FLASH_PARAMS = %w(movie allowfullscreen allowscriptaccess wmode flashvars)
 
+  def simple_tasty_format(text)
+    '<p>' + text.to_s.
+      gsub(/\r\n?/, "\n").                    # \r\n and \r -> \n
+      gsub(/\n\n+/, '</p><p>').          # 2+ newline  -> paragraph
+      gsub(/([^\n]\n)(?=[^\n])/, '\1<br />') + '</p>' # 1 newline   -> br
+  end
+
+  def simple_tasty_format_without_p(text)
+    text.to_s.
+      gsub(/\r\n?/, "\n").                    # \r\n and \r -> \n
+      gsub(/\n\n+/, '<br /><br />').          # 2+ newline  -> paragraph
+      gsub(/([^\n]\n)(?=[^\n])/, '\1<br/>') # 1 newline   -> br
+  end
+  
+  def white_list_video_entry(text)
+    white_list_html_with_rescue(text, :flash_width => 420)
+  end
+
+  
+  def white_list_entry(text, options = {})
+    white_list_html_with_rescue(text)
+  end
+  
+  def white_list_sidebar(text, options = {})
+    white_list_html_with_rescue(text)
+  end
+  
+  def white_list_comment(text)
+    white_list_html_with_rescue(text, :flash_width => 290)
+  end
+  
+  def white_list_anonymous_comment(text)
+    white_list_html_with_rescue(text, :flash_width => 290)
+  end
+
   def white_list_html_with_rescue(html, options = {})
     begin
       white_list_html(html, options)

@@ -7,7 +7,7 @@
 	<% end %>
 </div>
 
-<%= link_to 'все сообщения &#x2192;', messages_path, :id => 'messages_other', :class => 'messages_other', :style => (current_site.messages.size <= 2 ? 'display: none' : nil) %>
+<%= link_to 'все сообщения &#x2192;', user_path(current_site, messages_path), :id => 'messages_other', :class => 'messages_other', :style => (current_site.messages.size <= 2 ? 'display: none' : nil) %>
 
 <% if current_user && current_user.is_confirmed? %>
 	<div id='message_create'>

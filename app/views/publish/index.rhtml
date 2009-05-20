@@ -4,7 +4,7 @@
 		<% if in_bookmarklet? %>
 			Как запостим?
 		<% else %>
-			<%= link_to "&#x2190;", url_for_tlog, :title => 'На главную тлога' %>&nbsp;
+			<%= link_to "&#x2190;", user_url(current_site), :title => 'На главную тлога' %>&nbsp;
 			Ммм... что запостите?
 		<% end %>
 	</div>

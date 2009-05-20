@@ -56,7 +56,7 @@ class User < ActiveRecord::Base
   ## named_scopes
   named_scope   :confirmed, :conditions => 'is_confirmed = 1'
   named_scope   :unconfirmed, :conditions => 'is_confirmed = 0'
-  named_scope   :active, :conditions => 'is_disabled = 0 AND is_confirmed = 1'
+  named_scope   :active, :conditions => 'is_disabled = 0'
   named_scope   :disabled, :conditions => 'is_disabled = 1'
   
   

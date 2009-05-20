@@ -13,7 +13,7 @@ class Settings::MobileController < ApplicationController
     current_user.mobile_settings.update_attributes(:keyword => MobileSettings.generate_keyword) if request.post?
 
     # used in views
-    @private_email = "#{current_user.mobile_settings.keyword}@mmm-tasty.ru"
+    @private_email = "#{current_user.mobile_settings.keyword}@#{current_service.domain}"
 
     respond_to do |wants|
       logger.info wants.class

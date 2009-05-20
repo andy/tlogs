@@ -107,7 +107,7 @@ class AccountController < ApplicationController
     session[:user_id] = nil
     cookies['tsig'] = { :value => nil, :expires => Time.now, :domain => request.domain }
     reset_session
-    redirect_to main_url(:host => 'www.mmm-tasty.ru')
+    redirect_to service_path(main_path)
   end
 
   # регистрация, для новичков
@@ -244,7 +244,6 @@ class AccountController < ApplicationController
     end
     
     def login_user(user, options = {})
-      raise "ALERT, USER IS NOT USER IN LOGIN_USER, user='#{user.inspect}'" unless user.is_a?(User)
       cookies['login_field_value'] = { :value => options[:remember], :expires => 10.years.from_now, :domain => request.domain } if options[:remember]
       # удаляем comment_identity - кука, которая хранит данные об анонимных комментариях пользователя (имя/урл)
       cookies['comment_identity']  = { :value => '', :domain => request.domain }
@@ -254,11 +253,11 @@ class AccountController < ApplicationController
         redirect ||= session[:redirect_to]
         session[:redirect_to] = nil
       end
-      redirect_to redirect || url_for_tlog(user)
+      redirect_to redirect || user_url(user)
     end
     
     def redirect_home_if_current_user
-      redirect_to url_for_tlog(current_user) and return false if current_user
+      redirect_to user_url(current_user) and return false if current_user
       true
     end
 end

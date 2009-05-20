@@ -1,28 +1,28 @@
-xml.instruct! :xml, :version => '1.0', :encoding=>'UTF-8'
+xml.instruct! :xml, :version => '1.0', :encoding => 'UTF-8'
 
 xml.rss :version => '2.0' do
   xml.channel do
-    xml.title { xml.cdata!("Ммм... тейсти - прямой эфир со всего тейсти") }
-    xml.link main_url(:host => 'www.mmm-tasty.ru', :action => 'last')
+    xml.title { xml.cdata!("#{current_service.domain} – прямой эфир") }
+    xml.link service_url(main_path(:action => 'last'))
     xml.description { xml.cdata!("прямой эфир со всего тейсти") }
     xml.language 'ru-RU'
     xml.pubDate "#{@entries.first.created_at.to_s(:rfc822)}" if @entries.first
-    xml.generator "mmm...rss (http://www.mmm-tasty.ru/)"
+    xml.generator "tlogs rss (#{current_service.url})"
     xml.ttl 5
   
     @entries.each do |entry|
       xml.item do
         xml.title { xml.cdata!("#{entry.author.url} - #{white_list_entry(entry.excerpt)}") }
-        xml.link "#{url_for_tlog(entry.author) + entry_path(entry)}"
+        xml.link "#{user_url(entry.author, entry_path(entry))}"
         xml.description { xml.cdata!(render('entries/entry_embed', { :entry => entry })) }
-        xml.guid "#{url_for_tlog(entry.author) + entry_path(entry)}"
+        xml.guid "#{user_url(entry.author, entry_path(entry))}"
         xml.pubDate entry.created_at.to_s(:rfc822)
         
         # <enclosure ...>. Не делаем для картинок, потому что они и так уже включены в код и
         #  некоторые рсс-читалки будут показывать картинку дважды
         if entry[:type] != 'ImageEntry' && !entry.attachments.empty?
           att = entry.attachments.first
-          xml.enclosure :url => "#{url_for_tlog(entry.author) + att.public_filename}", :length => att.size, :type => att.content_type
+          xml.enclosure :url => "#{current_service.url + att.public_filename}", :length => att.size, :type => att.content_type
         end
       end
     end

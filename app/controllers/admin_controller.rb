@@ -6,14 +6,14 @@ class AdminController < ApplicationController
 
   # функция переключения между режимами
   def switch
-    redirect_to_address = request.env['HTTP_REFERER'] ? request.env['HTTP_REFERER'] : (current_user ? url_for_tlog(current_user) : 'http://www.mmm-tasty.ru/')
+    redirect_to_address = request.env['HTTP_REFERER'] ? request.env['HTTP_REFERER'] : (current_user ? url_for_tlog(current_user) : current_service.url)
     
     if RAILS_ENV == 'development'
       cookies[:css] = { :value => '', :expires => Time.now, :domain => request.domain }
       cookies[:env] = { :value => '', :expires => Time.now, :domain => request.domain }
       flash[:good] = "С возвращением в настоящий мир#{(', ' + current_user.url) if current_user}!"
     else
-      cookies[:css] = { :value => 'http://www.mmm-tasty.ru/stylesheets/genue/css/', :expires => 1.year.from_now, :domain => request.domain }
+      cookies[:css] = { :value => "#{current_service.url}/stylesheets/genue/css/", :expires => 1.year.from_now, :domain => request.domain }
       cookies[:env] = { :value => 'new-secret-for-the-future', :expires => 1.year.from_now, :domain => request.domain }
       flash[:good] = "Добро пожаловать в мир отладки#{(', ' + current_user.url) if current_user}!"
     end
@@ -30,10 +30,10 @@ class AdminController < ApplicationController
       else
         cookies[:css] = { :value => '', :expires => Time.now, :domain => request.domain }
       end
-      flash[:good] = "CSS файлы будут подгружаться с адреса: #{css || "http://www.mmm-tasty.ru/stylesheets/"}"
+      flash[:good] = "CSS файлы будут подгружаться с адреса: #{css || "#{current_service.url}/stylesheets/"}"
       redirect_to admin_url(:action => 'css')
     else
-      @css = !request.cookies['css'].blank? ? request.cookies['css'].value.to_s : "http://www.mmm-tasty.ru/stylesheets/"
+      @css = !request.cookies['css'].blank? ? request.cookies['css'].value.to_s : "#{current_service.url}/stylesheets/"
     end
   end
   

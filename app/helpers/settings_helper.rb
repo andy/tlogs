@@ -5,7 +5,7 @@ module SettingsHelper
   def menu_item(name, url, selected_action = nil, &block)
     link_options = {}
     action = url.to_s.split('/').last
-    url = settings_url(:host => host_for_tlog, :action => url.to_s) unless url.to_s.starts_with?('http://')
+    url = user_url(current_user, settings_path(:action => url.to_s)) unless url.to_s.starts_with?('http://') || url.to_s.starts_with?('/')
     selected_action = action if selected_action.nil?
 
     selected_action = selected_action.to_a unless selected_action.is_a?(Array)

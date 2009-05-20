@@ -14,7 +14,7 @@
 		<div class='form_string'>
 			<label for="user_url">новое имя / адрес:
 				<%= f.text_field :url, :class => "at_input" %>
-				<div class="rel"><div class="at"><h1>.mmm-tasty.ru</h1></div></div>
+				<div class="rel"><div class="at"><h1>.<%= current_service.domain %></h1></div></div>
 				<%= tasty_error_message_on('user', 'url') %>
 			</label>
 		</div>

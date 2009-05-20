@@ -1,4 +1,4 @@
-<% @title = 'Регистрация нового пользователя на mmm-tasty.ru' %>
+<% @title = "Регистрация нового пользователя на #{current_service.domain}" %>
 
 <div class='center_data_big_form'>
 	<% form_for :user, @user, :html => { :class => 'big' } do |f| %>
@@ -8,7 +8,7 @@
 		<div class='form_string'>
 			<label for="user_url">имя Вашего будущего сайта <em>(всегда можно изменить)</em>:
 				<%= f.text_field :url, :class => "at_input" %>
-				<div class="rel"><div class="at"><h1>.mmm-tasty.ru</h1></div></div>
+				<div class="rel"><div class="at"><h1>.<%= current_service.domain %></h1></div></div>
 				<%= tasty_error_message_on('user', 'url') %>
 			</label>
 		</div>

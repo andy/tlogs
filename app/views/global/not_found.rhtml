@@ -28,7 +28,7 @@
       <p>похоже что вы перешли по старой ссылке</p>
       <p><%= link_to 'вернуться в тлог', url_for_tlog(current_site) %></p>
     <% else %>
-      <p><%= link_to 'вернуться на главную тейсти', 'http://www.mmm-tasty.ru/' %></p>
+      <p><%= link_to 'вернуться на главную', current_service.url %></p>
     <% end %>
   </div>
 </body>

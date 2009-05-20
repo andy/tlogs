@@ -53,44 +53,6 @@ END
     "#{@audio_player_id}"
   end
   
-  def simple_tasty_format(text)
-    '<p>' + text.to_s.
-      gsub(/\r\n?/, "\n").                    # \r\n and \r -> \n
-      gsub(/\n\n+/, '</p><p>').          # 2+ newline  -> paragraph
-      gsub(/([^\n]\n)(?=[^\n])/, '\1<br />') + '</p>' # 1 newline   -> br
-  end
-
-  def simple_tasty_format_without_p(text)
-    text.to_s.
-      gsub(/\r\n?/, "\n").                    # \r\n and \r -> \n
-      gsub(/\n\n+/, '<br /><br />').          # 2+ newline  -> paragraph
-      gsub(/([^\n]\n)(?=[^\n])/, '\1<br/>') # 1 newline   -> br
-  end
-  
-  def white_list_video_entry(text)
-    white_list_html_with_rescue(text, :flash_width => 420)
-  end
-
-  
-  def white_list_entry(text, options = {})
-    white_list_html_with_rescue(text)
-  end
-  
-  def white_list_sidebar(text, options = {})
-    white_list_html_with_rescue(text)
-  end
-  
-  def white_list_comment(text)
-    white_list_html_with_rescue(text, :flash_width => 290)
-  end
-  
-  def white_list_anonymous_comment(text)
-    white_list_html_with_rescue(text, :flash_width => 290)
-  end
-
-  # Возвращает ссылку на тлог. Результат можно контролировать:
-  #  >> link_to_tlog(user, :link => :avatar, :to => :domain)
-  #
   def link_to_tlog(user, options = {}, html_options = nil)
     link_to_tlog_if(true, user, options, html_options)
   end
@@ -111,32 +73,14 @@ END
     css_class = html_options.delete(:class) || ''
     css_class += ' no_visited'
     html_options.merge!({ :class => css_class.strip })
-    link_to_if condition, username, url_for_tlog(user), html_options
+    link_to_if condition, username, user_url(user), html_options
   end
   
-  def host_for_tlog(user=nil, options = {})
-    user ||= current_user
-    to = options.delete(:to) || :tlog
-    return user.domain if to == :domain && user.is_a?(User) && !user.domain.blank?
-    url = user.url rescue user
-    the_url = "#{url}.mmm-tasty.ru"
-    the_url += ":#{request.port}" if request && request.port != 80
-    
-    the_url
-  end
-  
-  def url_for_tlog(user=nil, options = {})
-    page = options.delete(:page) || 0
-    fragment = options.delete(:fragment) || nil
-    fragment = (page > 0 ? '#' : '/#') + fragment if fragment
-    "http://#{host_for_tlog(user, options)}#{page > 0 ? "/page/#{page}" : ''}#{fragment}"
-  end
-    
   def mark(keyword)
     Entry.find_by_sql("/* #{keyword} */ SELECT id FROM entries WHERE id = 0")
   end
   
   def paginate(pageable, options = {})
     render :file => 'globals/pagination', :locals => options.merge(:pageable => pageable)
-  end
+  end  
 end

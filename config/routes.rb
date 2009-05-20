@@ -1,4 +1,34 @@
-require 'config/initializers/domains'
+tlog_settings = lambda { |tlog|
+  tlog.tlog '', :action => 'index'
+  tlog.page 'page/:page', :action => 'index', :page => /\d+/
+  tlog.style 'style/:revision', :action => 'style', :revision => nil, :requirements => { :revision => /\d+/ }
+
+  tlog.publish 'publish/:action/:id', :controller => 'publish'
+  tlog.settings_social 'settings/social/:action', :controller => 'settings/social'
+  tlog.settings_sidebar 'settings/sidebar/:action/:id', :controller => 'settings/sidebar'
+  tlog.settings_mobile 'settings/mobile/:action/:id', :controller => 'settings/mobile'
+  tlog.settings_premium 'settings/premium/:action/:id', :controller => 'settings/premium'
+  tlog.settings 'settings/:action', :controller => 'settings/default'
+  tlog.connect 'search/:action', :controller => 'search'
+  tlog.connect 'tag/*tags', :controller => 'tags', :action => 'view'
+  tlog.connect 'tags/:action/:id', :controller => 'tags'
+
+  tlog.day ':year/:month/:day', :controller => 'tlog', :action => 'day', :requirements => { :year => /\d{4}/, :month => /\d{1,2}/, :day => /\d{1,2}/ }
+
+  tlog.tlog_feed 'feed/:action.xml', :controller => 'tlog_feed'
+  tlog.tlog_feed_protected 'feed/:key/:action.xml', :controller => 'tlog_feed'
+
+  tlog.private_entries 'private', :action => 'private'
+  tlog.anonymous_entries 'anonymous', :action => 'anonymous'
+
+  tlog.resources :entries, :member => { :subscribe => :post, :unsubscribe => :post, :metadata => :get }, :collection => { :tags => :get, :relationship => :post } do |entry|
+    entry.resources :comments, :new => { :preview => :post }
+    entry.resources :tags, :controller => 'entry_tags' #, :name_prefix => 'entry_'
+  end
+
+  tlog.resources :messages, :controller => 'messages'
+  tlog.resources :faves, :controller => 'faves'
+}
 
 ActionController::Routing::Routes.draw do |map|
 
@@ -7,7 +37,7 @@ ActionController::Routing::Routes.draw do |map|
   map.global 'global/:action', :controller => 'global'
 
   # это главный сайт, mmm-tasty.ru или www.mmm-tasty.ru
-  map.with_options :conditions => { :subdomain => /^(www|)$/, :domain => Regexp.new(::DOMAINS.join('|'))  } do |www|
+  map.with_options :conditions => { :subdomain => /^(www|)$/, :domain => Regexp.new(Tlogs::Domains::CONFIGURATION.domains.join('|'))  } do |www|
     www.connect '', :controller => 'main', :action => 'index'
 
     www.main_feed 'main/feed/:action/:rating/:kind.xml', :controller => 'main_feed', :action => 'last', :rating => 'default', :kind => 'default', :requirements => { :rating => /[a-z]{3,20}/ }
@@ -33,40 +63,14 @@ ActionController::Routing::Routes.draw do |map|
     map.bookmarklet 'bookmarklet/:action', :controller => 'bookmarklet'
     
     www.resources :feedbacks, :member => { :publish => :post, :discard => :post }
+
   end
+
+  map.with_options :controller => 'tlog', :conditions => { :subdomain => /^(www|)$/, :domain => Regexp.new(Tlogs::Domains::CONFIGURATION.domains.join('|')) }, :path_prefix => 'users/:current_site', :name_prefix => 'current_site_', &tlog_settings
   
   # это домены пользователей: andy.mmm-tasty.ru, genue.mmm-tasty.ru и так далее
-  map.with_options :controller => 'tlog' do |tlog|
-    tlog.tlog '', :action => 'index'
-    tlog.connect 'page/:page', :action => 'index', :page => /\d+/
-    tlog.style 'style/:revision', :action => 'style', :revision => nil, :requirements => { :revision => /\d+/ }
+  map.with_options :controller => 'tlog', &tlog_settings
 
-    tlog.publish 'publish/:action/:id', :controller => 'publish'
-    tlog.settings_social 'settings/social/:action', :controller => 'settings/social'
-    tlog.settings_sidebar 'settings/sidebar/:action/:id', :controller => 'settings/sidebar'
-    tlog.settings_mobile 'settings/mobile/:action/:id', :controller => 'settings/mobile'
-    tlog.settings_premium 'settings/premium/:action/:id', :controller => 'settings/premium'
-    tlog.settings 'settings/:action', :controller => 'settings/default'
-    tlog.connect 'search/:action', :controller => 'search'
-    tlog.connect 'tag/*tags', :controller => 'tags', :action => 'view'
-    tlog.connect 'tags/:action/:id', :controller => 'tags'
-    
-    tlog.day ':year/:month/:day', :controller => 'tlog', :action => 'day', :requirements => { :year => /\d{4}/, :month => /\d{1,2}/, :day => /\d{1,2}/ }
-    
-    tlog.tlog_feed 'feed/:action.xml', :controller => 'tlog_feed'
-    tlog.tlog_feed_protected 'feed/:key/:action.xml', :controller => 'tlog_feed'
 
-    tlog.private_entries 'private', :action => 'private'
-    tlog.anonymous_entries 'anonymous', :action => 'anonymous'
-
-    tlog.resources :entries, :member => { :subscribe => :post, :unsubscribe => :post, :metadata => :get }, :collection => { :tags => :get, :relationship => :post } do |entry|
-      entry.resources :comments, :new => { :preview => :post }
-      entry.resources :tags, :controller => 'entry_tags', :name_prefix => 'entry_'
-    end
-    
-    tlog.resources :messages, :controller => 'messages'
-    tlog.resources :faves, :controller => 'faves'
-  end
-  
   map.catch_all "*anything", :controller => 'global', :action => 'not_found'
 end

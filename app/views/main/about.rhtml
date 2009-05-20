@@ -16,7 +16,7 @@
 
 	<h2>Обратная связь</h2>
 	<p>
-		Если у Вас возникли какие-то вопросы или предложения, пишите нам, пожалуйста, на адрес <%= mail_to "feedback@mmm-tasty.ru", nil, :encode => 'javascript' %>.
+		Если у Вас возникли какие-то вопросы или предложения, пишите нам, пожалуйста, на адрес <%= mail_to "feedback@#{current_service.domain}", nil, :encode => 'javascript' %>.
 	</p>
 </div>
 

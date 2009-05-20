@@ -15,9 +15,9 @@ class String
   end
 
   def truncate(length = 30, truncate_string = "...")
-    if self.blank? then return end
-    l = length - truncate_string.chars.length
-    self.chars.length > length ? self.chars[0...l] + truncate_string : self
+    return if self.blank?
+    l = length - truncate_string.mb_chars.length
+    self.mb_chars.length > length ? self.mb_chars[0...l] + truncate_string : self
   end
   
   # Prevents SQL breakage by replacing each single quote with two

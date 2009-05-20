@@ -125,7 +125,7 @@ class PublishController < ApplicationController
           @entry.make_voteable(true) if @entry.is_voteable?
         end
         if in_bookmarklet?
-          redirect_to bookmarklet_url(:host => "www.mmm-tasty.ru", :action => 'published')
+          redirect_to service_url(bookmarklet_path(:action => 'published'))
         else
           redirect_to url_for_entry(@entry)
         end
@@ -134,7 +134,7 @@ class PublishController < ApplicationController
         if params[:id]
           @entry = Entry.find_by_id_and_user_id(params[:id], current_user.id)
           if @entry.nil?
-            redirect_to publish_url(:id => nil)
+            redirect_to user_url(current_user, publish_url(:id => nil))
             return
           end
           # @ad = @entry.ad

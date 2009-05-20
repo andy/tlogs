@@ -13,7 +13,7 @@
 		</div>
 		<script type='text/javascript'>
 			// <![CDATA[
-				var so = new SWFObject("http://www.mmm-tasty.ru/swf/player.swf", "tasty_song_embed_<%= entry.id %>_obj", "290", "24", 7, "#FFFFFF");
+				var so = new SWFObject("<%= current_service.url %>/swf/player.swf", "tasty_song_embed_<%= entry.id %>_obj", "290", "24", 7, "#FFFFFF");
 				so.addParam('wmode', 'transparent');
 				so.addParam('menu', 'false');
 				so.addParam('FlashVars', "playerID=<%= audio_player_id %>&amp;soundFile=<%= entry.attachments[0].public_filename %>");

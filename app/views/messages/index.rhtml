@@ -7,5 +7,5 @@
 <%= paginate @messages %>
 
 <div class='return_from_permalink'>
-	<%= link_to "&#x2190; обратно в #{current_site.gender("его", "её")} тлог", url_for_tlog(current_site) %>
+	<%= link_to "&#x2190; обратно в #{current_site.gender("его", "её")} тлог", user_path(current_site) %>
 </div>

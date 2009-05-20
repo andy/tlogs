@@ -1,10 +1,6 @@
 class ApplicationController < ActionController::Base
   filter_parameter_logging :password
   
-  # rescue_from ActionController::RoutingError do |exception|
-  #   render :template => '400.html'
-  # end
-
   # before_filter :prelaunch_megasecrecy
 
   # меряем производительность только на реальном сайте
@@ -28,6 +24,8 @@ class ApplicationController < ActionController::Base
   
   include ExceptionNotifiable if RAILS_ENV == 'production'
   include ProductionImages if RAILS_ENV == 'development'
+  
+  helper :url, :white_list
 
   # MAIN FILTERS
   attr_accessor   :current_site
@@ -36,60 +34,39 @@ class ApplicationController < ActionController::Base
   attr_accessor   :current_user
   helper_method   :current_user
   
-  attr_accessor   :standalone
-  helper_method   :standalone
+  attr_accessor   :current_service
+  helper_method   :current_service
   
-  helper_method :is_admin?
+  helper_method   :is_admin?
 
+  before_filter :preload_current_service
   before_filter :preload_current_site # loads @current_site
   before_filter :preload_current_user # loads @current_user
   
   protected
+    def preload_current_service
+      @current_service = Tlogs::Domains::CONFIGURATION.options_for(request.host || 'localhost', request)
+    end
+  
     def preload_current_site
       @current_site = nil
-      @current_domain = nil
 
-      # can be nil if web site is accessed by ip address or there was no 'Host:' header in request
-      return true unless request.domain
-      domain = request.host
-
-      @current_domain = Tlogs::Domains::CONFIGURATION.options_for(request.domain)
-      
-      
-
-
-      # 1. если в домене mmm-tasty.ru ...
-      #    1.a   если адрес - www.mmm-tasty.ru / mmm-tasty.ru - выходим (true)
-      #    1.b   если адрес - <reserved>.mmm-tasty.ru - перекидываем на главную и выходим (false)
-      #    1.c   если адрес - www.<tlog>.mmm-tasty.ru - перекидываем на <tlog>.mmm-tasty.ru (false)
-      #    1.d   если адрес - <tlog>.mmm-tasty.ru - выставляем current_site и выходим (true)
-      #      d.1 перенаправляем на тлог, если у заданного тлога есть внешний домен
-      # 2. иначе
-      #    2.a   ищем пользователя по домену, выставляем current_site
-      #    2.b   возвращаем 404
-      
-      root = ::DOMAINS.find { |key| domain.ends_with?(key) }
-
-      # 1
-      if root && domain.ends_with?(root)
-        subdomains = domain.sub(".#{root}", '')
-
-        # 1.a
-        return true if subdomains == 'www' || subdomains == root
-        # 1.b
-        redirect_to("http://www.#{root}/") and return false if subdomains.count('.') == 0 && User::RESERVED.include?(subdomains)
-        # 1.c
-        redirect_to("http://#{subdomains.split('.').last}.#{root}") and return false if subdomains.count('.') == 1 && subdomains.split('.').first == 'www'
-        # 1.d
-        @current_site = User.find_by_url(subdomains, :include => [:tlog_settings, :avatar]) if subdomains.count('.') == 0
-        #   d.1
-        # NOTE: не будет работать, потому что ВСЕ запросы будут перенаправляться на домен, а нам этого не нужно
-        # redirect_to("http://#{@current_site.domain}/") if @current_site && !@current_site.domain.blank?          
-      else
-        @current_site = User.find_by_domain(domain)
-        @standalone = true if @current_site
+      url = nil
+      if request.host.ends_with?('mmm-tasty.ru')
+        url = request.subdomains.first
+        
+        # перенаправляем на сайт сервиса, если адрес запрещенный
+        redirect_to "#{request.protocol}www.mmm-tasty.ru#{request.port == 80 ? '' : ":#{request.port}"}" and return false if User::RESERVED.include?(url)
+      elsif request.host == 'localhost'
+        url = params[:current_site] if request.path.starts_with?('/users/')
+        
+        # перенаправляем на сайт сервиса, если адрес запрещенный
+        redirect_to "#{request.protocol}#{request.host_with_port}" and return false if User::RESERVED.include?(url)
       end
-
+      
+      
+      @current_site = User.find_by_url(url, :include => [:tlog_settings, :avatar])
+      
       true
     end
   
@@ -98,38 +75,36 @@ class ApplicationController < ActionController::Base
 
       # from session
       if session[:user_id]
-        @current_user = User.find_by_id(session[:user_id], :conditions => 'is_disabled = 0')
-
-        logger.info "user #{@current_user.url} from session (id = #{@current_user.id})" and return true if @current_user
+        @current_user = User.active.find_by_id(session[:user_id])
+        # logger.info "user #{@current_user.url} from session (id = #{@current_user.id})" and return true if @current_user
       end
 
       unless cookies['tsig'].blank?
         id, sig = cookies['tsig'].unpack('m').first.unpack('LZ*')
-        user = User.find_by_id(id, :conditions => 'is_disabled = 0')
+        user = User.active.find_by_id(id, :conditions => 'is_disabled = 0')
         if user && user.signature == sig
           session[:user_id] = user.id
-          logger.info "user #{user.url} from tsig (id = #{user.id})"
           @current_user = user
-          return true
+          # logger.info "user #{user.url} from tsig (id = #{user.id})"
         end
       end
 
       true
     end
     
-    # 
-    def prelaunch_megasecrecy
-      return true if cookies['megasecret'] == 'v3' || params[:controller] == 'tlog_feed'
-      
-      if request.post? && params[:megasecret] == 'lsd'
-        cookies['megasecret'] = { :value => 'v3', :expires => 1.year.from_now, :domain => request.domain }
-        redirect_to main_url(:host => "www.mmm-tasty.ru")
-        return false
-      end
-  
-      render :template => 'globals/prelaunch_megasecrecy', :layout => false
-      false
-    end
+    # # 
+    # def prelaunch_megasecrecy
+    #   return true if cookies['megasecret'] == 'v3' || params[:controller] == 'tlog_feed'
+    #   
+    #   if request.post? && params[:megasecret] == 'lsd'
+    #     cookies['megasecret'] = { :value => 'v3', :expires => 1.year.from_now, :domain => request.domain }
+    #     redirect_to main_url(:host => "www.mmm-tasty.ru")
+    #     return false
+    #   end
+    #   
+    #   render :template => 'globals/prelaunch_megasecrecy', :layout => false
+    #   false
+    # end
 
     # Является ли текущий пользователь владельцем сайта
     def is_owner?
@@ -142,7 +117,7 @@ class ApplicationController < ActionController::Base
     #  мог получить доступ к указанной странице
     def require_current_user
       if current_user && current_user.is_a?(User)        
-        redirect_to login_url(:host => "www.mmm-tasty.ru") and return false if current_user.is_disabled?
+        redirect_to service_path(login_path) and return false if current_user.is_disabled?
         return true
       end
       
@@ -151,7 +126,7 @@ class ApplicationController < ActionController::Base
         session[:redirect_to] = "#{request.protocol}#{request.host_with_port}#{request.request_uri}"
         logger.debug "saving back redirect to: #{session[:redirect_to]}"
       end
-      redirect_to login_url(:host => "www.mmm-tasty.ru")
+      redirect_to service_path(login_path)
       false
     end
     
@@ -173,16 +148,16 @@ class ApplicationController < ActionController::Base
     end
 
     def require_confirmed_current_user
-      redirect_to(:host => "www.mmm-tasty.ru", :controller => '/confirm', :action => :required) and return false if (is_owner? && !current_site.is_confirmed?) || (!current_site && current_user && !current_user.is_confirmed?)
+      redirect_to service_path(confirm_path(:action => :required)) and return false if (is_owner? && !current_site.is_confirmed?) || (!current_site && current_user && !current_user.is_confirmed?)
       
-      redirect_to login_url(:host => "www.mmm-tasty.ru") and return false if current_user && current_user.is_disabled?
+      redirect_to service_path(login_path) and return false if current_user && current_user.is_disabled?
       
       true    
     end
     
     def require_confirmed_current_site
       if !current_site.is_confirmed?          
-        render_tasty_404("Этот имя занято, но пользователь еще не подтвердил свою регистрацию.<br/>Загляните, пожалуйста, позже.<br/><br/><a href='http://www.mmm-tasty.ru/' rel='follow'>&#x2190; вернуться на главную</a>")
+        render_tasty_404("Этот имя занято, но пользователь еще не подтвердил свою регистрацию.<br/>Загляните, пожалуйста, позже.<br/><br/><a href='#{current_service.url}' rel='follow'>&#x2190; вернуться на главную</a>")
         return false
       end
       
@@ -205,27 +180,57 @@ class ApplicationController < ActionController::Base
       options[:status] ||= 404
       options[:text] = text
       render options
-    end
+    end    
+    
+    
+    #
+    # URL HELPERS
+    #    
+    def user_path(user, path = '/')
+      host = request.host.gsub(/^www\./, '') # rescue current_service.domain
 
-    def host_for_tlog(user=nil, options = {})
-      user ||= current_user
-      return user.domain if options[:use_domain] && user.is_a?(User) && !user.domain.blank?
-      url = user.url rescue user
-      
-      the_url = "#{url}.mmm-tasty.ru"
-      the_url += ":#{request.port}" unless request.port == 80
-      
-      the_url
+      # если адрес запрашиваемого сайта есть домен пользователя, тогда возвращаем относительный путь
+      if host == user.domain
+        path
+      else
+        user_url(user, path)
+      end    
     end
+    helper_method :user_path
 
-    def url_for_tlog(user=nil, options = {})
+    def user_url(user, path = '/')
+      (current_service.user_url(user.url) + path).gsub(/\/+$/, '')
+    end
+    helper_method :user_url
+
+    def service_path(path = '/')
+      service_url(path)
+    end
+    helper_method :service_path
+
+    def service_url(path = '/')
+      host = request.host.gsub(/^www\./, '') 
+      if current_service.domain == host
+        path
+      else
+        current_service.url + path
+      end
+    end
+    helper_method :service_url
+
+    def host_for_tlog(user, options = {})
+      user_url(user)
+    end
+    helper_method :host_for_tlog
+
+    def url_for_tlog(user, options = {})
       page = options.delete(:page) || 0
-      prefix = options.delete(:prefix) || nil
       fragment = options.delete(:fragment) || nil
       fragment = (page > 0 ? '#' : '/#') + fragment if fragment
-      "http://#{host_for_tlog(user, options)}#{prefix ? "/#{prefix}" : ''}#{page > 0 ? "/page/#{page}" : ''}#{fragment}"
+      "http://#{host_for_tlog(user, options)}#{page > 0 ? "/page/#{page}" : ''}#{fragment}"
     end
-    
+    helper_method :url_for_tlog
+
     def url_for_entry(entry, options = {})
       is_daylog = current_site.tlog_settings.is_daylog? if current_site
       is_daylog ||= options.delete(:is_daylog)
@@ -239,15 +244,14 @@ class ApplicationController < ActionController::Base
         options[:day] = date.mday
         fragment = options.delete(:fragment) || nil
         fragment = ((date == Date.today) ? '/#' : '#') + fragment if fragment 
-        (date == Date.today) ? "http://#{options[:host]}#{fragment}" : "#{day_url(options)}#{fragment}"
+        (date == Date.today) ? user_url(user, fragment) : user_url(day_path(options) + fragment)
       else 
-        options[:page] = entry.page_for(current_user)
         if entry.is_anonymous?
-          url_for_tlog(user, :prefix => 'anonymous')
+          user_url(user, anonymous_entries_path)
         elsif entry.is_private?
-          url_for_tlog(user, :prefix => 'private')
+          user_url(user, private_entries_path)
         else
-          url_for_tlog(user, options) 
+          user_url(user, page_path(:page => entry.page_for(current_user)))
         end
       end
     end

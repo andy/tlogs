@@ -176,7 +176,7 @@ class Settings::DefaultController < ApplicationController
         session[:user_id] = nil
         cookies['tsig'] = { :value => nil, :expires => Time.now, :domain => request.domain }
         reset_session
-        redirect_to main_url(:host => 'www.mmm-tasty.ru')
+        redirect_to service_url(main_path)
       else
         flash[:bad] = 'Нужно согласиться с удалением тлога'
       end

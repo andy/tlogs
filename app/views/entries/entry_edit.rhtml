@@ -5,7 +5,7 @@
 		<%= render(:partial => 'preview') unless @new_record %>
 	</div>
 
-	<form method='post' name='entry_edit_form' action='<%= publish_url(empty_bookmarklet_url_options(:action => @entry[:type].underscore.split(/_/)[0], :bm => in_bookmarklet? ? true : nil)) %>' id='entry_edit_form' enctype="multipart/form-data" class='post'>
+	<form method='post' name='entry_edit_form' action='<%= user_url(current_user, publish_path(empty_bookmarklet_url_options(:action => @entry[:type].underscore.split(/_/)[0], :bm => in_bookmarklet? ? true : nil))) %>' id='entry_edit_form' enctype="multipart/form-data" class='post'>
 		<%= hidden_field('entry', :id, :style => 'display: none') unless @new_record -%>
 		<%= hidden_field 'entry', :type, :style => 'display: none' %>
 		<%= render :file => 'entries/edit/' + entry.class.to_s.underscore, :locals => { :entry => @entry } %>
@@ -23,8 +23,6 @@
 						<% end %>
 					</div>
 			
-					<!-- ad_annotation_div removed at rev.211 -->
-			
 					<div id='entry_tags'>
 						<label for='entry_tag_list'>Теги: </label><br/>
 						<%= text_field 'entry', 'tag_list', { :id => 'entry_tag_list' } %>
@@ -41,7 +39,7 @@
 			<% if params[:back] && params[:back] == 'to_entry_page' %>
 				<%= link_to 'вернуться обратно', url_for_entry(@entry, :fragment => @entry.dom_id) %>
 			<% else %>
-				<%= link_to 'вернуться обратно', publish_url(bookmarklet_url_options) %>
+				<%= link_to 'вернуться обратно', user_url(current_user, publish_path(bookmarklet_url_options)) %>
 			<% end %>
 		</div>
 	</form>	

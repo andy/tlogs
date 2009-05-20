@@ -6,10 +6,10 @@ class SearchController < ApplicationController
 
   def index
     if current_site && params[:limit] == 'none'
-      redirect_to search_url(:host => "www.mmm-tasty.ru", :query => params[:query])
+      redirect_to service_url(search_path(:query => params[:query]))
       return
     elsif !current_site && params[:user_id]
-      redirect_to search_url(:host => host_for_tlog(User.find(params[:user_id])), :query => params[:query])
+      redirect_to user_url(User.find(params[:user_id]), search_path(:query => params[:query]))
       return
     end
 
