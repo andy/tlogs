@@ -5,6 +5,7 @@ class MessagesController < ApplicationController
 
   def index
     @messages = Message.find_for_user(:site => current_site, :user => current_user, :page => { :size => 10, :current => params[:page] })
+
     render :layout => 'tlog'
   end
   

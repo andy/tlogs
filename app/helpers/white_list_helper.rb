@@ -1,5 +1,4 @@
 module WhiteListHelper
-  VALID_FLASH_PARAMS = %w(movie allowfullscreen allowscriptaccess wmode flashvars)
 
   def simple_tasty_format(text)
     '<p>' + text.to_s.
@@ -49,6 +48,8 @@ module WhiteListHelper
   end
 
   def white_list_html(html, options = {})
+    valid_flash_params = %w(movie allowfullscreen allowscriptaccess wmode flashvars)
+    
     require 'hpricot'
 
     html.gsub!('&amp;', '&')
@@ -75,7 +76,7 @@ module WhiteListHelper
         # [andy] -> ссылка на пользователя
         gsub(/(\[([a-z0-9_-]{2,20})\])/) do
           user = User.find_by_url($2)
-          user ? "<a href='#{host_for_tlog(user.url)}' class='entry_tlog_link'>#{user.url}</a>" : $1
+          user ? "<a href='#{user_url(user)}' class='entry_tlog_link'>#{user.url}</a>" : $1
         end
         text.swap(new_text) unless new_text.blank?        
       end
@@ -95,7 +96,7 @@ module WhiteListHelper
       embed_params = {'allowfullscreen' => 'true', 'allowscriptaccess' => 'never'}
       # processing params
       (flash/"//param").each do |param|
-        if VALID_FLASH_PARAMS.include?(param.attributes['name'].downcase)
+        if valid_flash_params.include?(param.attributes['name'].downcase)
           embed_params[param.attributes['name'].downcase] = param.attributes['value']
         end
       end      

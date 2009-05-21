@@ -39,3 +39,24 @@ div#sidebar_about_content div#about_submenu span { font-size: 0.8em; }
 /* quotes fix */
 div.quote_entry span.quote_entry_body p { display: inline; }
 div.quote_entry span.quote_entry_source p { display: inline; font-style: italic; font-size: 90%; }
+
+/* new messages look */
+div.message_sender {
+	left: -240px;
+	padding-bottom:5px;
+	position:absolute;
+	width:200px;
+	text-align:right;
+}
+div.message_sender a {
+	font-size:0.75em;
+	background: #404040;
+	color:white!important;
+	width:auto!important;
+	margin:0 0 0 0;
+	padding:0 5px;
+	display:inline;
+	font-family:Georgia, Times New Roman, Courier New;
+	font-weight:bold;
+	font-style:italic;
+} 

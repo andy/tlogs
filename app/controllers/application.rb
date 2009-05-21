@@ -244,7 +244,7 @@ class ApplicationController < ActionController::Base
         options[:day] = date.mday
         fragment = options.delete(:fragment) || nil
         fragment = ((date == Date.today) ? '/#' : '#') + fragment if fragment 
-        (date == Date.today) ? user_url(user, fragment) : user_url(day_path(options) + fragment)
+        (date == Date.today) ? user_url(user, fragment) : user_url(user, day_path(options) + fragment)
       else 
         if entry.is_anonymous?
           user_url(user, anonymous_entries_path)

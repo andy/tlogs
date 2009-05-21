@@ -1,5 +1,6 @@
 <% @title = "все #{current_site.gender('его', 'её')} сообщения#{", страница #{params[:page].to_i}" if params[:page]}" %>
 <div id='tlog_messages'>
+  <h3><%= @title.split(',').first %></h3>
 	<%= render :partial => 'message', :collection => @messages %>
 </div>
 <div id='message_create'></div>

@@ -7,10 +7,19 @@ require File.join(File.dirname(__FILE__), 'boot')
 require File.join(File.dirname(__FILE__), '../lib/tlogs')
 
 Rails::Initializer.run do |config|
-  config.action_controller.session = { :session_key => Tlogs::SESSION_CONFIGURATION.key, :secret => Tlogs::SESSION_CONFIGURATION.secret }
+  config.action_controller.session = { :session_key => Tlogs::SESSION.key, :secret => Tlogs::SESSION.secret }
 
   config.action_mailer.delivery_method = :sendmail
   config.action_mailer.default_charset = "utf-8"
+  
+  config.load_paths += %W( 
+    #{RAILS_ROOT}/app/models/entries
+  )
+
+  config.to_prepare do 
+    Entry
+    User
+  end
   
   config.gem 'image_science', :version => '>= 1.1.3'
   config.gem 'will_paginate', :version => '>= 2.2.2'
