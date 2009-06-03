@@ -3,29 +3,10 @@ class ApplicationController < ActionController::Base
   
   # before_filter :prelaunch_megasecrecy
 
-  # меряем производительность только на реальном сайте
-  # if RAILS_ENV == 'production'
-  #   around_filter do |controller, action|
-  #     result = Benchmark.measure { action.call }
-  # 
-  #     Performance.transaction do
-  #       perf = Performance.find_or_initialize_by_controller_and_action_and_day(controller.controller_name, controller.action_name, Time.now.to_date)
-  #       perf.increment(:calls)
-  #       perf.realtime ||= 0.0
-  #       perf.realtime += result.real
-  #       perf.stime += result.stime
-  #       perf.utime += result.utime
-  #       perf.cstime += result.cstime
-  #       perf.cutime += result.cutime      
-  #       perf.save!
-  #     end
-  #   end
-  # end
-  
   include ExceptionNotifiable if RAILS_ENV == 'production'
   include ProductionImages if RAILS_ENV == 'development'
   
-  helper :white_list
+  helper :white_list, :url
 
   # MAIN FILTERS
   attr_accessor   :current_site
@@ -157,7 +138,7 @@ class ApplicationController < ActionController::Base
     
     def require_confirmed_current_site
       if !current_site.is_confirmed?          
-        render_tasty_404("Этот имя занято, но пользователь еще не подтвердил свою регистрацию.<br/>Загляните, пожалуйста, позже.<br/><br/><a href='#{current_service.url}' rel='follow'>&#x2190; вернуться на главную</a>")
+        render_tasty_404("Этот имя занято, но пользователь еще не подтвердил свою регистрацию.<br/>Загляните, пожалуйста, позже.<br/><br/><a href='#{service_url}' rel='follow'>&#x2190; вернуться на главную</a>")
         return false
       end
       
@@ -182,78 +163,5 @@ class ApplicationController < ActionController::Base
       render options
     end    
     
-    
-    #
-    # URL HELPERS
-    #    
-    def user_path(user, path = '/')
-      host = request.host.gsub(/^www\./, '') # rescue current_service.domain
-
-      # если адрес запрашиваемого сайта есть домен пользователя, тогда возвращаем относительный путь
-      if host == user.domain
-        path
-      else
-        user_url(user, path)
-      end    
-    end
-    helper_method :user_path
-
-    def user_url(user, path = '/')
-      (current_service.user_url(user.url) + path).gsub(/\/+$/, '')
-    end
-    helper_method :user_url
-
-    def service_path(path = '/')
-      service_url(path)
-    end
-    helper_method :service_path
-
-    def service_url(path = '/')
-      host = request.host.gsub(/^www\./, '') 
-      if current_service.domain == host
-        path
-      else
-        current_service.url + path
-      end
-    end
-    helper_method :service_url
-
-    def host_for_tlog(user, options = {})
-      user_url(user)
-    end
-    helper_method :host_for_tlog
-
-    def url_for_tlog(user, options = {})
-      page = options.delete(:page) || 0
-      fragment = options.delete(:fragment) || nil
-      fragment = (page > 0 ? '#' : '/#') + fragment if fragment
-      "http://#{host_for_tlog(user, options)}#{page > 0 ? "/page/#{page}" : ''}#{fragment}"
-    end
-    helper_method :url_for_tlog
-
-    def url_for_entry(entry, options = {})
-      is_daylog = current_site.tlog_settings.is_daylog? if current_site
-      is_daylog ||= options.delete(:is_daylog)
-      user = current_site ? current_site : entry.author
-
-      if is_daylog
-        date = entry.created_at.to_date
-        options[:host] = host_for_tlog(user, options)
-        options[:year] = date.year
-        options[:month] = date.month
-        options[:day] = date.mday
-        fragment = options.delete(:fragment) || nil
-        fragment = ((date == Date.today) ? '/#' : '#') + fragment if fragment 
-        (date == Date.today) ? user_url(user, fragment) : user_url(user, day_path(options) + (fragment || ''))
-      else 
-        if entry.is_anonymous?
-          user_url(user, anonymous_entries_path)
-        elsif entry.is_private?
-          user_url(user, private_entries_path)
-        else
-          user_url(user, page_path(:page => entry.page_for(current_user)))
-        end
-      end
-    end
-    helper_method :url_for_entry
+    include UrlHelper
 end

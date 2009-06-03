@@ -127,7 +127,7 @@ class PublishController < ApplicationController
         if in_bookmarklet?
           redirect_to service_url(bookmarklet_path(:action => 'published'))
         else
-          redirect_to url_for_entry(@entry)
+          redirect_to tlog_url_for_entry(@entry)
         end
         return
       else

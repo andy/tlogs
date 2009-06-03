@@ -15,7 +15,11 @@ module Tlogs
         domain = @domains.has_key?(name) ? name : @domains.first[0]
         options = @domains.has_key?(name) ? @domains[name] : @domains.first[1]
 
-        Tlogs::Domains::Options.new domain, options.merge(:protocol => request.protocol, :port => request.port)
+        Tlogs::Domains::Options.new domain, options.merge(:protocol => request.try(:protocol), :port => request.try(:port))
+      end
+      
+      def default
+        options_for(@domains.keys.first, nil)
       end
       
       def domains

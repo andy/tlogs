@@ -1,3 +1,8 @@
+<%-
+  @entry = @comment.entry
+  @entry_author = @entry.author
+  @is_anonymous = @entry.is_anonymous?
+-%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
     "http://www.w3.org/TR/xhtml1/DTD/xhtml-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
@@ -15,10 +20,12 @@
 			<% end %>
 		</p>
 		<p style="font-family:Trebuchet MS, Arial, sans serif; font-size:0.95em; width:600px; color:#404040;">
-			<% if @comment.entry.is_anonymous? %>
-				<%= link_to anonymous_url(:host => 'www.mmm-tasty.ru', :action => 'show', :id => @comment.entry_id) + "#comment#{@comment.id}", anonymous_url(:host => 'www.mmm-tasty.ru', :action => 'show', :id => @comment.entry_id) + "#comment#{@comment.id}" %>
+			<% if @is_anonymous %>
+			  <%- comment_link = "#{service_url(anonymous_path(:action => 'show', :id => @entry.id))}#comment#{@comment.id}" -%>
+				<%= link_to comment_link, comment_link %>
 			<% else %>
-				<%= link_to "#{url_for_tlog(User.find(@comment.entry.user_id))}#{entry_path(@comment.entry)}#comment#{@comment.id}", "#{url_for_tlog(User.find(@comment.entry.user_id))}#{entry_path(@comment.entry)}#comment#{@comment.id}" %>
+			  <%- comment_link = "#{user_url(@entry_author, entry_path(@entry))}#comment#{@comment.id}" -%>
+			  <%= link_to comment_link, comment_link %>
 			<% end %>
 		</p>
 		

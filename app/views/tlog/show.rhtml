@@ -49,7 +49,7 @@
 <% end %>
 
 <div class='return_from_permalink'>
-	<%= link_to "&#x2190; обратно в #{current_site.gender("его", "её")} тлог", url_for_entry(@entry), :class => 'f56' %>
+	<%= link_to "&#x2190; обратно в #{current_site.gender("его", "её")} тлог", tlog_url_for_entry(@entry), :class => 'f56' %>
 </div>
 
 <% content_for :sidebar do %>

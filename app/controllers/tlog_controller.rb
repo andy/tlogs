@@ -94,7 +94,7 @@ class TlogController < ApplicationController
     if relationship.new_record?
       new_friendship_status = Relationship::DEFAULT
       
-      Emailer.deliver_relationship(current_site, current_user)
+      # Emailer.deliver_relationship(current_site, current_user)
     else
       new_friendship_status = [Relationship::PUBLIC, Relationship::DEFAULT].include?(relationship.friendship_status) ? Relationship::GUESSED : Relationship::DEFAULT
     end
@@ -136,7 +136,7 @@ class TlogController < ApplicationController
   
   # удаляет запись из тлога
   def destroy
-    url = url_for_entry(@entry)
+    url = tlog_url_for_entry(@entry)
     @entry.destroy
     flash[:good] = 'Запись была удалена'
     redirect_to url

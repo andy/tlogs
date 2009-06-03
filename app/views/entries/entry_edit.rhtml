@@ -37,7 +37,7 @@
 		<div class='form_submit_return'>
 			или
 			<% if params[:back] && params[:back] == 'to_entry_page' %>
-				<%= link_to 'вернуться обратно', url_for_entry(@entry, :fragment => @entry.dom_id) %>
+				<%= link_to 'вернуться обратно', tlog_url_for_entry(@entry, :fragment => @entry.dom_id) %>
 			<% else %>
 				<%= link_to 'вернуться обратно', user_url(current_user, publish_path(bookmarklet_url_options)) %>
 			<% end %>

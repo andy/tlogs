@@ -1,0 +1,14 @@
+<div class='emailer'>
+  <strong class='emailer_header'>Заголовки:</strong>
+  <ul class='emailer_headers'>
+    <li>From: <%= @mail.from.join(', ') %></li>
+    <li>To: <%= @mail.to.join(', ') %></li>
+    <li>Subject: <%= @mail.subject %></li>
+  </ul>
+
+  <% if @mail.multipart? %>
+    <%= render :partial => 'part', :collection => @mail.parts %>
+  <% else %>
+    <%= render :partial => 'part', :locals => { :part => @mail } %>
+  <% end %>
+</div>

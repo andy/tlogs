@@ -64,6 +64,7 @@ ActionController::Routing::Routes.draw do |map|
     
     www.resources :feedbacks, :member => { :publish => :post, :discard => :post }
 
+    www.emailer 'emailer/:method_name/:action', :controller => 'emailer', :defaults => { :action => 'index' }
   end
 
   map.with_options :controller => 'tlog', :conditions => { :subdomain => /^(www|)$/, :domain => Regexp.new(Tlogs::Domains::CONFIGURATION.domains.join('|')) }, :path_prefix => 'users/:current_site', :name_prefix => 'current_site_', &tlog_settings

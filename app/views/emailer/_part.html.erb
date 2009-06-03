@@ -1,0 +1,13 @@
+<div class='emailer_part'>
+  <em>Content-type: <%= part.content_type %></em>
+
+  <% if part.content_type == 'text/plain' %>
+    <%= content_tag :pre, part.body %>
+  <% elsif part.content_type == 'text/html' %>
+    <div>
+      <%= content_tag :iframe, "", :src => service_url(emailer_path(:action => :part, :method_name => @method_name)), :width => '800', :height => '500' %>
+    </div>
+  <% else %>
+    <%= h part.body %>
+  <% end %>
+</div>
