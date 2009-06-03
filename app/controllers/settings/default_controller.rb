@@ -120,7 +120,7 @@ class Settings::DefaultController < ApplicationController
         
         TlogSettings.increment_counter(:css_revision, current_site.tlog_settings.id)
         flash[:good] = 'Настройки сохранены'
-        redirect_to settings_url(:action => :design)
+        redirect_to user_url(current_site, settings_path(:action => :design))
       end
     end
   end
@@ -155,7 +155,7 @@ class Settings::DefaultController < ApplicationController
           current_user.update_confirmation!(@user.email)
           EmailConfirmationMailer.deliver_confirm(current_user, @user.email)
           flash[:good] = "Отлично! Мы установили Вам новый емейл адрес, но прежде чем он заработает, Вам нужно будет его подтвердить. Поэтому загляните, пожалуйста, в почтовый ящик #{@user.email}, там должно быть письмо с кодом подтверждения"
-          redirect_to settings_url(:action => 'email')
+          redirect_to user_url(current_site, settings_path(:action => 'email'))
           return
         else
           flash[:bad] = "Ошибка! Не получилось сохранить настройки, потому что #{@user.errors.on :email}"

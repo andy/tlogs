@@ -29,7 +29,7 @@
 				
 				<% unless current_site.faves.size.zero? %>
 					<div id='about_submenu'>
-					  <%= link_to "избранное", faves_url %>
+					  <%= link_to "избранное", user_path(current_site, faves_path) %>
 					  <%= content_tag :span, current_site.faves.size.pluralize('штука', 'штуки', 'штук', true) %>
 					</div>
 				<% end %>
@@ -74,7 +74,7 @@
 			<% unless inline_tags %>
 				<%= link_to_remote('Теги', {
 						:update => 'sidebar_tag_cloud_content',
-						:url => tags_entries_url,
+						:url => user_url(current_site, tags_entries_path),
 						:before => 'blink("sidebar_tag_cloud_remote"); ga_page_view("/sidebar/tag_cloud")',
 						:success => 'new Effect.BlindDown("sidebar_tag_cloud_content", { duration: 0.3 }); $("sidebar_tag_cloud_remote").hide(); Element.addClassName("sidebar_tag_cloud_link", "highlight"); $("sidebar_tag_cloud_link").show();',
 						:complete => 'unblink("sidebar_tag_cloud_remote")',

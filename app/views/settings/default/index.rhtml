@@ -4,7 +4,7 @@
 	Какой тлог вы хотите?
 <% end %>
 
-<form method='post' action='<%= settings_url %>' class='small'>
+<form method='post' action='<%= user_url(current_site, settings_path) %>' class='small'>
 	<ul id='tlog_func'>
 		<li id='is_hidden'>
 			<label for='tlog_settings_is_daylog_false'>

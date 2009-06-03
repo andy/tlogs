@@ -47,6 +47,7 @@ class User < ActiveRecord::Base
                   :relationships,
                   :settings,
                   :tags,
+                  :confirmation,
                   :entries,
                   :permissions,
                   :calendar  

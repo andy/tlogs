@@ -1,5 +1,5 @@
 <form>
 	<%= hidden_field_tag 'relationship_id', @relationship.id %>
 	<%= text_field_tag 'title', @relationship.title, :maxlength => 64 %>
-	<%= submit_to_remote nil, 'схрнть', :url => settings_social_url(:action => :title_update) %>
+	<%= submit_to_remote nil, 'схрнть', :url => user_url(current_site, settings_social_path(:action => :title_update)) %>
 </form>

@@ -3,7 +3,7 @@
 	общие настройки пользователя
 <% end %>
 
-<form method='post' action='<%= settings_url(:action => 'user_common') %>' enctype='multipart/form-data' class='small'>
+<form method='post' action='<%= user_url(current_site, settings_path(:action => 'user_common')) %>' enctype='multipart/form-data' class='small'>
 	<table class='form'>
 		<tr>
 			<td class='label'><label for='settings_username'>Имя:</label></td>

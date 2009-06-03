@@ -14,7 +14,7 @@
 	оформление тлога
 <% end %>
 
-<form method='post' action='<%= settings_url(:action => 'design') %>' enctype="multipart/form-data" class='small'>
+<form method='post' action='<%= user_url(current_site, settings_path(:action => 'design')) %>' enctype="multipart/form-data" class='small'>
 	<h2>Фоновая картинка</h2>
 	<table class='form'>
 		<tr id='choise_1'>

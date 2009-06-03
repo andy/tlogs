@@ -4,9 +4,9 @@
 		<div>теги:</div>
 		<% entry.tags.each_with_index do |tag, index| %>
 			<span class='emd_tag' id='<%= "t#{tag.id}e#{entry.id}" %>'>
-				<%= link_to tag.name, tag_view_url(:tags => tag.name), :id => "t#{tag.id}e#{entry.id}_a" %>
+				<%= link_to tag.name, user_url(current_site, tag_view_path(:tags => tag.name)), :id => "t#{tag.id}e#{entry.id}_a" %>
 				<% if current_user && current_site && current_user.id == current_site.id %>
-					<%= link_to_remote image_tag('delete.gif', :alt => '-', :title => 'удалить этот тег из этой записи', :class => 'emd_delete_tag'), :url => entry_tag_url(entry, tag), :method => :delete %>
+					<%= link_to_remote image_tag('delete.gif', :alt => '-', :title => 'удалить этот тег из этой записи', :class => 'emd_delete_tag'), :url => user_url(current_site, entry_tag_path(entry, tag)), :method => :delete %>
 				<% end %>
 				<span id='<%= "t#{tag.id}e#{entry.id}_c" %>'><%= ',' if index < (entry.tags.size - 1) %></span>
 			</span>
@@ -22,7 +22,7 @@
 	<form method='post' class='emd_addtag'>
 		<div>
 			<input type='text' id='<%= entry.dom_id(:input) %>' name='tag_list' value='' class='emd_addtag_input' />
-			<%= submit_to_remote nil, '+', :url => entry_tags_url(entry), :method => :post %>
+			<%= submit_to_remote nil, '+', :url => user_url(current_site, entry_tags_path(entry)), :method => :post %>
 		</div>
 		<span class='emd_addtag_tip'>добавить теги, через запятую</span>
 	</form>

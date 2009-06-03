@@ -13,7 +13,7 @@ module SettingsHelper
 
     if block_given?
       content = capture(&block)
-      concat(content_tag(:li, link_to(name, url, link_options) + content_tag(:ul, content)), block.binding)
+      concat(content_tag(:li, link_to(name, url, link_options) + content_tag(:ul, content)))
     else
       content_tag :li, link_to(name, url, link_options)
     end
@@ -24,7 +24,7 @@ module SettingsHelper
   # sidebar_check_box(:hide_search)
   # sidebar_check_box(:hide_calendar)
   def sidebar_check_box(name, options = {})
-    options[:onclick] = "new Ajax.Request('/settings/sidebar/toggle_checkbox', { asynchronous: true, evalScripts: true, parameters: { name: '#{name}' } } ); return false;"
+    options[:onclick] = "new Ajax.Request('#{user_url(current_site, '/settings/sidebar/toggle_checkbox')}', { asynchronous: true, evalScripts: true, parameters: { name: '#{name}' } } ); return false;"
     check_box_tag "sidebar_#{name}", '1', !current_site.tlog_settings.send("sidebar_#{name}?"), options
   end
 end
