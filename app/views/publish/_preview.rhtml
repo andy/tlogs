@@ -6,7 +6,7 @@
 	<div id='preview_controls'>
 		<% unless @entry.new_record? %>
 			<div class='delete_post_button'>
-				<%= link_to image_tag('delete.gif', :alt => "удалить эту #{@entry.to_russian(:whom)}", :title => "удалить запись", :class => 'delete_post_img'), user_url(current_site, entry_path(@entry)), :confirm => "Вы действительно хотите удалить эту запись?", :method => :delete, :html => { :alt => 'удалить запись', :title => 'удалить запись' } %>
+				<%= link_to image_tag('delete.gif', :alt => "удалить запись", :title => "удалить запись", :class => 'delete_post_img'), user_url(current_site, entry_path(@entry)), :confirm => "Вы действительно хотите удалить эту запись?", :method => :delete, :alt => 'удалить запись', :title => 'удалить запись' %>
 			</div>
 		<% end %>
 
