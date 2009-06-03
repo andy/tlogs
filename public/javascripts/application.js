@@ -19,6 +19,14 @@ function unblink(element) {
   blinks = blinks.without(element.id);
 }
 
+/* google analytics page view tracking */
+function ga_page_view(path) {
+	if(ga_page_tracker) {
+		ga_page_tracker._trackPageview(path);
+	}
+	return true;
+}
+
 
 var _login_mode = "email";
 function login_openid_switcher ( value ) {
@@ -104,7 +112,7 @@ function sidebar_toggle(section) {
   var prefix = 'sidebar_' + section
   Effect.toggle(prefix + '_content', 'blind', { duration: 0.3 });
   Element.toggleClassName(prefix + '_link', 'highlight');
-  urchinTracker('/sidebar/' + section);
+  ga_page_view('/sidebar/' + section);
   return false;
 }
 

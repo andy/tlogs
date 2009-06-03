@@ -75,7 +75,7 @@
 				<%= link_to_remote('Теги', {
 						:update => 'sidebar_tag_cloud_content',
 						:url => tags_entries_url,
-						:before => 'blink("sidebar_tag_cloud_remote"); urchinTracker("/sidebar/tag_cloud")',
+						:before => 'blink("sidebar_tag_cloud_remote"); ga_page_view("/sidebar/tag_cloud")',
 						:success => 'new Effect.BlindDown("sidebar_tag_cloud_content", { duration: 0.3 }); $("sidebar_tag_cloud_remote").hide(); Element.addClassName("sidebar_tag_cloud_link", "highlight"); $("sidebar_tag_cloud_link").show();',
 						:complete => 'unblink("sidebar_tag_cloud_remote")',
 						:method => 'get'
