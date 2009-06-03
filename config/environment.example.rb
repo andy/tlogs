@@ -16,7 +16,8 @@ Rails::Initializer.run do |config|
     #{RAILS_ROOT}/app/models/entries
   )
 
-  config.to_prepare do 
+  config.to_prepare do
+    Comment
     Entry
     User
   end
