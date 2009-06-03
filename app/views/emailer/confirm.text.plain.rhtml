@@ -1,0 +1,8 @@
+Здравствуйте, <%= h @user.username  %>!
+
+  Для того чтобы подтвердить Ваш емейл адрес (<%= @email %>) на проекте Mmm...tasty,
+  необходимо пройти по этой ссылке:
+
+  <%= service_url(confirm_code_path(:code => @user.read_confirmation_code)) %>
+
+Спасибо!

@@ -52,8 +52,7 @@ class Emailer < ActionMailer::Base
   def lost_password(user)
     setup     :subj => 'ммм... напоминание пароля',
               :from => '"Mmm... password" <noreply@mmm-tasty.ru>',
-              :user => user,
-              :body => { :recover_link => service_url(recover_password_path(:user_id => user.id, :secret => user.recover_secret)) }
+              :user => user
   end
   
   private
