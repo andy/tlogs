@@ -20,4 +20,4 @@
 	</div>
 </li>
 
-<%= sortable_element(section.dom_id(:elements), :handle => 'ctulhu', :dropOnEmpty => true, :containment => [section.dom_id(:elements)], :url => user_url(current_site, settings_sidebar_url(:action => 'sort'))) %>
+<%= sortable_element(section.dom_id(:elements), :handle => 'ctulhu', :dropOnEmpty => true, :containment => [section.dom_id(:elements)], :url => user_url(current_site, settings_sidebar_path(:action => 'sort'))) %>

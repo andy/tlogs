@@ -27,7 +27,7 @@ class MainController < ApplicationController
       current_user.settings[:last_rating] = rating
       current_user.save
     end
-    redirect_to last_url(:kind => kind, :rating => rating)
+    redirect_to service_url(last_path(:kind => kind, :rating => rating))
   end
   
   def last
@@ -65,7 +65,7 @@ class MainController < ApplicationController
   end
   
   def last_personalized
-    redirect_to(last_url) and return unless current_user
+    redirect_to(service_url(last_path)) and return unless current_user
 
     # такая же штука определена в tlog_feed_controller.rb
     friend_ids = current_user.all_friend_r.map(&:user_id)

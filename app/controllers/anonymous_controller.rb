@@ -48,7 +48,7 @@ class AnonymousController < ApplicationController
     @comment.destroy if current_user && @comment.is_owner?(current_user)
     
     respond_to do |wants|
-      wants.html { flash[:good] = 'Комментарий был удален'; redirect_to anonymous_url(:action => 'show', :id => @comment.entry_id) }
+      wants.html { flash[:good] = 'Комментарий был удален'; redirect_to service_url(anonymous_path(:action => 'show', :id => @comment.entry_id)) }
       wants.js # comment_destroy.rjs
     end
   end  
@@ -102,7 +102,7 @@ class AnonymousController < ApplicationController
     end
 
     respond_to do |wants|
-      wants.html { redirect_to anonymous_url(:action => :show, :id => @entry.id); }
+      wants.html { redirect_to service_url(anonymous_path(:action => :show, :id => @entry.id)) }
       wants.js # create.rjs
     end
   end

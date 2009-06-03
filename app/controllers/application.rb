@@ -98,7 +98,7 @@ class ApplicationController < ActionController::Base
     #   
     #   if request.post? && params[:megasecret] == 'lsd'
     #     cookies['megasecret'] = { :value => 'v3', :expires => 1.year.from_now, :domain => request.domain }
-    #     redirect_to main_url(:host => "www.mmm-tasty.ru")
+    #     redirect_to service_url(main_path)
     #     return false
     #   end
     #   

@@ -12,7 +12,7 @@ class ConfirmController < ApplicationController
       EmailConfirmationMailer.deliver_confirm(current_user, current_user.email)
       flash[:good] = "Загляните, пожалуйста, в почтовый ящик #{current_user.email}, там должно быть письмо с кодом подтверждения"
     end
-    redirect_to confirm_url(:action => :required)
+    redirect_to service_url(confirm_path(:action => :required))
   end  
 
   # /confirm/code/13_4efeb9ce
@@ -39,18 +39,18 @@ class ConfirmController < ApplicationController
       if was_confirmed
         redirect_to :action => 'email'
       else
-        redirect_to settings_url(:host => host_for_tlog(current_user))
+        redirect_to user_url(current_user, settings_path)
       end
     else
       # перенаправляем пользователя в настройки его тлога
-      session[:redirect_to] = settings_url(:host => host_for_tlog(current_user)) unless was_confirmed
-      redirect_to login_url
+      session[:redirect_to] = user_url(current_user, settings_path) unless was_confirmed
+      redirect_to service_url(login_path)
     end
   end
   
   private
     def redirect_home_if_current_user_is_confirmed
-      redirect_to settings_url(:host => host_for_tlog(current_user)) and return false if current_user.is_confirmed?
+      redirect_to user_url(current_user, settings_path) and return false if current_user.is_confirmed?
       true
     end
 end

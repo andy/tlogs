@@ -15,7 +15,7 @@
 			<%# код из _relationship.rhtml, один в один %>
 			<%- relationship = current_user.relationship_with(current_site, true) -%>
 			<div id='sidebar_relationship'<%= ' class="subscribed"' if relationship.friendship_status >= Relationship::DEFAULT %>>
-				<%= link_to_remote relationship.say_it(current_site, current_user), :url => relationship_entries_url -%>
+				<%= link_to_remote relationship.say_it(current_site, current_user), :url => user_url(current_site, relationship_entries_path) -%>
 			</div>
 		<% end %>
 	</div>
@@ -44,11 +44,11 @@
 		<div class='sidebar_section_content' id='sidebar_personal_content' <%= " style='display: none'" unless personal_keep_open %>>
 		  <ul>
 		    <li>
-		      <%= link_to 'скрытые записи', private_entries_path, :class => ('highlight' if params[:action] == 'private') %>
+		      <%= link_to 'скрытые записи', user_url(current_site, private_entries_path), :class => ('highlight' if params[:action] == 'private') %>
 		      <%= content_tag :span, current_site.entries.private.count.pluralize('штука', 'штуки', 'штук', true) %>
 		    </li>
 		    <li>
-		      <%= link_to 'анонимки', anonymous_entries_path, :class => ('highlight' if params[:action] == 'anonymous') %>
+		      <%= link_to 'анонимки', user_url(current_site, anonymous_entries_path), :class => ('highlight' if params[:action] == 'anonymous') %>
 		      <%= content_tag :span, current_site.entries.anonymous.count.pluralize('штука', 'штуки', 'штук', true) %>
 		    </li>
 		  </ul>
@@ -61,7 +61,7 @@
 		<div class='sidebar_section' id='sidebar_search'>
 			<%= link_to_function 'Поиск', "sidebar_toggle('search')", :title => "в #{current_site.gender("его", "её")} тлоге", :class => "sidebar_toggle #{'highlight' if params[:query]}", :id => 'sidebar_search_link' %>		
 			<div class='sidebar_section_content' id='sidebar_search_content' <%= " style='display: none'" unless params[:query] %>>
-				<form method='get' action='<%= search_url %>'>
+				<form method='get' action='<%= user_url(current_site, search_path) %>'>
 					<%= text_field_tag 'query', params[:query], :autosave => "com.tlog.#{(current_site.domain || current_site.url).downcase.underscore}", :results => 10, :id => nil, :class => 'sidebar_search_input' %>
 				</form>
 			</div>

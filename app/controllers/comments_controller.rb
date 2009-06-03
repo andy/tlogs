@@ -71,13 +71,10 @@ class CommentsController < ApplicationController
         cookies['comment_identity'] = { :value => @comment.pack_for_cookie, :expires => 10.years.from_now, :domain => request.domain }
       end
       respond_to do |wants|
-        wants.html { redirect_to entry_url(@entry); }
+        wants.html { redirect_to user_url(@entry.author, entry_path(@entry)) }
         wants.js { render :update do |page|
           page.call :clear_all_errors
           page.call 'window.location.reload'
-
-          ## this does not work in safari:
-          # redirect_to entry_url(@entry)          
         end }
       end
     else
@@ -98,7 +95,7 @@ class CommentsController < ApplicationController
     end
 
     respond_to do |wants|
-      wants.html { flash[:good] = 'Комментарий был удален'; redirect_to entry_url(@entry) }
+      wants.html { flash[:good] = 'Комментарий был удален'; redirect_to user_url(@entry.author, entry_path(@entry)) }
       wants.js {
         render :update do |page|
           page.replace_html 'top_comment_number', @entry.comments.size - 1

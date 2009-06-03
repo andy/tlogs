@@ -6,7 +6,7 @@ class AccountController < ApplicationController
   helper :settings
 
   def index
-    redirect_to login_url
+    redirect_to service_path(login_path)
   end
 
   # авторизуем пользователя либо по openid, либо по паре имя/пароль
@@ -85,7 +85,7 @@ class AccountController < ApplicationController
         @user.password = params[:user][:password]
         if !@user.password.blank? && @user.save
           flash[:good] = 'Ваш пароль был успешно изменен'
-          redirect_to login_url(:noref => true)
+          redirect_to service_url(login_path(:noref => true))
         else
           @user.errors.add :password, 'Вы забыли заполнить пароль!' if @user.password.blank?
           flash[:bad] = 'Извините, но Ваш пароль не удовлетворяет требованиям безопасности. Попробуйте еще раз'
@@ -130,7 +130,7 @@ class AccountController < ApplicationController
         @user.save if @user.errors.empty?
         if @user.errors.empty?
           EmailConfirmationMailer.deliver_signup(@user)
-          login_user @user, :remember => @user.email, :redirect_to => confirm_url(:action => :required)
+          login_user @user, :remember => @user.email, :redirect_to => service_url(confirm_path(:action => :required))
         else
           flash[:bad] = 'При регистрации произошли какие-то ошибки'
         end
@@ -193,18 +193,18 @@ class AccountController < ApplicationController
       if oresponse.endpoint.claimed_id
         flash[:bad] = "Verification of #{oresponse.endpoint.claimed_id} failed."
       else
-        flash[:bad] = 'Verification failed.'
+        flash[:bad] = 'Не получилось подтвердить аккаунт' # 'Verification failed.'
       end
 
     when OpenID::Consumer::CANCEL
-      flash[:bad] = 'Verification cancelled.'
+      flash[:bad] = 'Подтверждение отменено' # 'Verification cancelled.'
 
     when OpenID::Consumer::SETUP_NEEDED
     else
-      flash[:bad] = 'Unknown response from OpenID server.'
+      flash[:bad] = 'Непонятный ответ от OpenID сервера' # 'Unknown response from OpenID server.'
     end
 
-    redirect_to login_url
+    redirect_to service_url(login_path)
   end
     
   private
@@ -214,7 +214,7 @@ class AccountController < ApplicationController
       rescue OpenID::OpenIDError => e
         # NOTE: flash[:bad] is treated as unsafe, so this is okay
         flash[:bad] = e.to_s
-        redirect_to signup_url
+        redirect_to service_url(signup_path)
         return
       end
       

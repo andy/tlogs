@@ -134,7 +134,7 @@ class PublishController < ApplicationController
         if params[:id]
           @entry = Entry.find_by_id_and_user_id(params[:id], current_user.id)
           if @entry.nil?
-            redirect_to user_url(current_user, publish_url(:id => nil))
+            redirect_to user_url(current_user, publish_path(:id => nil))
             return
           end
           # @ad = @entry.ad
