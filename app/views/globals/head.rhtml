@@ -20,7 +20,7 @@
 <meta name="generator" content="tlogs.ru" />
 
 <% if @title %>
-	<title><%= h(current_site ? h(current_site.url) : 'ммм... тейсти') + ' – ' + strip_tags(@title) %></title>
+	<title><%= [h(current_site ? h(current_site.url) : 'ммм... тейсти'), strip_tags(@title)].reject(&:blank?).join(' – ') %></title>
 <% end %>
 
 <%= yield :head %>

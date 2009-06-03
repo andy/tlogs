@@ -5,7 +5,6 @@
 
 	<%- google_ad_position = 1 + rand(3); prev_entry = nil -%>
 	<% @entries.each_with_index do |entry, index| %>
-		<%#= render 'globals/google_inline_text_ad' if index == google_ad_position %>
 		<%= render :file => 'entries/anonymous_entry_display', :locals => { :entry => entry, :show_datetime => !(prev_entry.created_at.same_day?(entry.created_at) rescue false) } %>
 		<%- prev_entry = entry -%>
 	<% end %>

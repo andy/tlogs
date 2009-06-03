@@ -3386,12 +3386,6 @@ span.month, span.year {
 	position:relative;
     
 } 
-#google_inline_text_ad {
-	padding:0 0 23px 42px;
-}
-#google_inline_link_ad {
-	padding:0 0 34px 42px;
-}
 #sidebar_calendar_content a, #sidebar_calendar_content span, #message_is_private_label {
 	background:#eee none repeat scroll 0%;
 	color:#404040;
