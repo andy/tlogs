@@ -64,7 +64,7 @@ class AccountController < ApplicationController
       user ||= User.find_by_url params[:url] unless params[:url].blank?
       if user
         if user.crypted_password
-          EmailConfirmationMailer.deliver_lost_password(user)
+          Emailer.deliver_lost_password(user)
           flash[:lost_user_id] = user.id
           redirect_to :action => 'lost_password_sent'
         else
@@ -129,7 +129,7 @@ class AccountController < ApplicationController
         @user.update_confirmation!(@user.email)
         @user.save if @user.errors.empty?
         if @user.errors.empty?
-          EmailConfirmationMailer.deliver_signup(@user)
+          Emailer.deliver_signup(@user)
           login_user @user, :remember => @user.email, :redirect_to => service_url(confirm_path(:action => :required))
         else
           flash[:bad] = 'При регистрации произошли какие-то ошибки'

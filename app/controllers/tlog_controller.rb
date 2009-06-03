@@ -94,7 +94,7 @@ class TlogController < ApplicationController
     if relationship.new_record?
       new_friendship_status = Relationship::DEFAULT
       
-      EmailConfirmationMailer.deliver_relationship(current_site, current_user)
+      Emailer.deliver_relationship(current_site, current_user)
     else
       new_friendship_status = [Relationship::PUBLIC, Relationship::DEFAULT].include?(relationship.friendship_status) ? Relationship::GUESSED : Relationship::DEFAULT
     end

@@ -1,4 +1,4 @@
-class EmailConfirmationMailer < ActionMailer::Base
+class Emailer < ActionMailer::Base
   helper :application, :comments
 
   def signup(user)
