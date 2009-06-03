@@ -2,12 +2,9 @@ class Emailer < ActionMailer::Base
   helper :application, :comments, :url
 
   def signup(user)
-    setup 
-
-    @subject    = 'ммм... регистрация'
-    @body       = {:user => user}
-    @recipients = user.email
-    @from       = '"Ммм... тейсти" <noreply@mmm-tasty.ru>'
+    setup     :subj => 'ммм... регистрация',
+              :from => '"Ммм... тейсти" <noreply@mmm-tasty.ru>',
+              :user => user
   end
 
   def confirm(user, email)
@@ -40,12 +37,10 @@ class Emailer < ActionMailer::Base
   
   # письмо для пользователей подписанных на комментарии
   def comment_to_subscriber(user, comment)
-    setup       
-
-    @subject    = "ммм... комментарий (#{comment.entry.excerpt})"
-    @body       = {:user => user, :comment => comment}
-    @recipients = user.email
-    @from       = '"Mmm... comments" <comments@mmm-tasty.ru>'
+    setup     :subj => "ммм... комментарий (#{comment.entry.excerpt})",
+              :from => '"Mmm... comments" <comments@mmm-tasty.ru>',
+              :user => user,
+              :body => { :comment => comment }
   end
 
   # письмо-напоминание о забытом пароле

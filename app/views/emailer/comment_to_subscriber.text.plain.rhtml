@@ -1,16 +1,23 @@
+<%-
+  @entry = @comment.entry
+  @entry_author = @entry.author
+  @is_anonymous = @entry.is_anonymous?
+-%>
 Здравствуйте, <%= h @user.username %>!
 
-Новый комментарий у записи:
- <%= h @comment.entry.excerpt %>
+Пользователь <%= @comment.user.username %> оставил Вам комментарий к записи "<%= h @entry.excerpt %>"
 
 Текст комментария:
- <%= h @comment.comment %>
+  <%= h @comment.comment %>
 
 Посмотреть на сайте:
-<%- if @comment.entry.is_anonymous? -%>
- <%= anonymous_url(:host => 'www.mmm-tasty.ru', :action => 'show', :id => @comment.entry_id) + "#comment#{@comment.id}" %>
+<%- if @is_anonymous -%>
+  <%= service_url(anonymous_path(:action => 'show', :id => @entry.id) + "#comment#{@comment.id}") %>
 <%- else -%>
- <%= "#{url_for_tlog(User.find(@comment.entry.user_id))}#{entry_path(@comment.entry)}#comment#{@comment.id}" %>
+  <%= "#{user_url(@entry_author, entry_path(@entry))}#comment#{@comment.id}" %>
 <%- end -%>
 
+Вы получили это письмо, потому что подписались на комментарии к этой записи.
+
+--
 С уважением, Ммм... тейсти.
