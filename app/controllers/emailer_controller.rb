@@ -30,7 +30,7 @@ class EmailerController < ApplicationController
       when 'lost_password'
         @mail = Emailer.create_lost_password(user)
       when 'message'
-        @mail = Emailer.create_message(user, user.messages.first)
+        @mail = Emailer.create_message(user, user.messages.last)
       when 'signup'
         @mail = Emailer.create_signup(user)
       end
