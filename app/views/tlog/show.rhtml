@@ -2,13 +2,13 @@
 <% content_for :head do %>
 	<!-- content_for :head -->
 	<% cache :content_for => :head, :date => Date.today do %>
-  	<%= auto_discovery_link_tag(:rss, tlog_feed_url(:action => :rss)) %>
-  	<%= auto_discovery_link_tag(:rss, tlog_feed_url(:action => :photos), { :title => 'только фоторафии' }) %>
+  	<%= auto_discovery_link_tag(:rss, user_url(current_site, tlog_feed_path(:action => :rss))) %>
+  	<%= auto_discovery_link_tag(:rss, user_url(current_site, tlog_feed_path(:action => :photos)), { :title => 'только фоторафии' }) %>
   	<% if @entry.next_id %>
-  		<link rel="next" title="Next" href="/entries/<%= @entry.next_id %>" />
+  		<link rel="next" title="Next" href="<%= user_url(current_site, entry_path(@entry.next_id)) %>" />
   	<% end %>
   	<% if @entry.prev_id %>
-  		<link rel="prev" title="Previous" href="/entries/<%= @entry.prev_id %>" />
+  		<link rel="prev" title="Previous" href="<%= user_url(current_site, entry_path(@entry.prev_id)) %>" />
   	<% end %>
   <% end %>
 	<!-- /content_for :head -->
@@ -31,8 +31,8 @@
 		<% if current_user && current_user.id != current_site.id %>
 			<div class='rel'>
 				<div class='subscribe_controls'>
-					<%= link_to_remote image_tag('letter.gif', :size => '17x15'), { :url => subscribe_entry_url(@entry) }, :id => 'subscribe_link', :style => "display: #{!@entry.subscriber_ids.include?(current_user.id) ? 'block' : 'none'}", :title => 'подписаться на новые комментарии' %>
-					<%= link_to_remote image_tag('unletter.gif', :size => '17x15'), { :url => unsubscribe_entry_url(@entry) }, :id => 'unsubscribe_link', :style => "display: #{@entry.subscriber_ids.include?(current_user.id) ? 'block' : 'none'}", :title => 'отписаться от комментариев' %>
+					<%= link_to_remote image_tag('letter.gif', :size => '17x15'), { :url => user_url(current_site, subscribe_entry_path(@entry)) }, :id => 'subscribe_link', :style => "display: #{!@entry.subscriber_ids.include?(current_user.id) ? 'block' : 'none'}", :title => 'подписаться на новые комментарии' %>
+					<%= link_to_remote image_tag('unletter.gif', :size => '17x15'), { :url => user_url(current_site, unsubscribe_entry_path(@entry)) }, :id => 'unsubscribe_link', :style => "display: #{@entry.subscriber_ids.include?(current_user.id) ? 'block' : 'none'}", :title => 'отписаться от комментариев' %>
 				</div>
 			</div>
 		<% end %>
