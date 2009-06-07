@@ -7,7 +7,6 @@ tlog_settings = lambda { |tlog|
   tlog.settings_social 'settings/social/:action', :controller => 'settings/social'
   tlog.settings_sidebar 'settings/sidebar/:action/:id', :controller => 'settings/sidebar'
   tlog.settings_mobile 'settings/mobile/:action/:id', :controller => 'settings/mobile'
-  tlog.settings_premium 'settings/premium/:action/:id', :controller => 'settings/premium'
   tlog.settings 'settings/:action', :controller => 'settings/default'
   tlog.connect 'search/:action', :controller => 'search'
   tlog.connect 'tag/*tags', :controller => 'tags', :action => 'view'

@@ -26,7 +26,7 @@
 	<% if current_user && current_user.is_confirmed? %>
 		<div id='feedback_create'<%= ' style="display: none"' if current_user.feedback %>>
 			<h2><span>Что тейсти для Вас?</span></h2>
-			<form method='post' action='<%= feedbacks_url %>'>
+			<form method='post' action='<%= service_url(feedbacks_path) %>'>
 				<%= text_area :feedback, :message, :rows => 4, :cols => 15 %>
 				<%= submit_to_remote nil, 'добавить', :url => feedbacks_url %>
 			</form>
