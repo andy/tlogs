@@ -51,17 +51,17 @@ class CommentsController < ApplicationController
 
       # отправляем комментарий владельцу записи
       if current_site.is_emailable? && current_site.email_comments? && (!current_user || current_site.id != current_user.id)
-        Emailer.deliver_comment(current_site, @comment)
+        Emailer.deliver_comment(current_service, current_site, @comment)
       end
       
       # отправляем комменатрий каждому пользователю
       users.each do |user|
-        Emailer.deliver_comment_reply(user, @comment) if user.is_emailable? && user.email_comments? && user.id != current_site.id
+        Emailer.deliver_comment_reply(current_service, user, @comment) if user.is_emailable? && user.email_comments? && user.id != current_site.id
       end
       
       # отправляем сообщение всем тем, кто наблюдает за этой записью, и кому мы еще ничего не отправляли
       (@entry.subscribers - users).each do |user|
-        Emailer.deliver_comment_to_subscriber(user, @comment) if user.is_emailable? && user.email_comments? && user.id != current_user.id
+        Emailer.deliver_comment_to_subscriber(current_service, user, @comment) if user.is_emailable? && user.email_comments? && user.id != current_user.id
       end
       
       # автоматически подписываем пользователя если на комментарии к этой записи если он еще не подписан
