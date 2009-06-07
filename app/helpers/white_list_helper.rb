@@ -24,7 +24,7 @@ module WhiteListHelper
   end
   
   def white_list_sidebar(text, options = {})
-    white_list_html_with_rescue(text)
+    white_list_html_with_rescue(text, :link_target => '_blank')
   end
   
   def white_list_comment(text)
@@ -56,6 +56,7 @@ module WhiteListHelper
     html.gsub!('amp;', '')
     
     flash_width = options[:flash_width] || 400
+    link_target = options[:link_target] || nil
     
     doc = Hpricot(simple_tasty_format(html), :fixup_tags => true)
 
@@ -118,6 +119,16 @@ module WhiteListHelper
     
     html = auto_link(doc.to_html.gsub(/<p>\s*?<\/p>/mi, ''))
   
+  
+    if link_target
+      doc = Hpricot(html)
+      (doc/"//a").each do |a|
+        a['target'] = link_target unless a.attributes['href'].blank?
+      end
+      
+      html = doc.to_html
+    end
+
     html    
   end
 
