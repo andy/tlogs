@@ -147,7 +147,7 @@ class TlogController < ApplicationController
       @entry = Entry.find_by_id_and_user_id params[:id], current_site.id
       if @entry.nil? || (@entry.is_anonymous? && !is_owner?)
         respond_to do |format|
-          format.html { render_tasty_404("Запрошенная Вами запись не найдена.<br/><br/><a href='#{user_url(current_site)}'>&#x2190; вернуться в #{current_site.gender("его", "её")} тлог</a>") }
+          format.html { render_tasty_404("Запрошенная вами запись не найдена.<br/><br/><a href='#{user_url(current_site)}'>&#x2190; вернуться в #{current_site.gender("его", "её")} тлог</a>") }
           format.js { render :text => "record with id #{params[:id].to_i} was not found in this tlog" }
         end
         return false

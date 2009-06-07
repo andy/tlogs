@@ -154,7 +154,7 @@ class Settings::DefaultController < ApplicationController
         if !@user.errors.on :email
           current_user.update_confirmation!(@user.email)
           Emailer.deliver_confirm(current_service, current_user, @user.email)
-          flash[:good] = "Отлично! Мы установили Вам новый емейл адрес, но прежде чем он заработает, Вам нужно будет его подтвердить. Поэтому загляните, пожалуйста, в почтовый ящик #{@user.email}, там должно быть письмо с кодом подтверждения"
+          flash[:good] = "Отлично! Мы установили ыам новый емейл адрес, но прежде чем он заработает, вам нужно будет его подтвердить. Поэтому загляните, пожалуйста, в почтовый ящик #{@user.email}, там должно быть письмо с кодом подтверждения"
           redirect_to user_url(current_site, settings_path(:action => 'email'))
           return
         else

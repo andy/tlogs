@@ -1,7 +1,7 @@
 <% @title = EntryRating::RATINGS[@filter.rating.to_sym][:header] %>
 <% content_for :head do %>
 	<!-- content_for :head -->
-	<%= auto_discovery_link_tag(:rss, main_feed_url(:action => :last, :rating => @filter.rating, :kind => @filter.kind)) %>
+	<%= auto_discovery_link_tag(:rss, service_url(main_feed_path(:action => :last, :rating => @filter.rating, :kind => @filter.kind))) %>
 	<!-- /content_for :head -->
 <% end %>
 
@@ -20,7 +20,6 @@
 	</p>
 <% else %>
 	<div class='onair'>
-		<%- google_ad_position = 1 + rand(3) %>
 		<% @entry_ratings.each_with_index do |entry_rating, index| %>
 			<%= render :file => 'entries/entry_display', :locals => { :entry => entry_rating.entry, :show_comments_bubble => true, :show_username => true } %>
 		<% end %>

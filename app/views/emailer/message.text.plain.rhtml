@@ -3,7 +3,7 @@
 -%>
 Здравствуйте, <%= h @user.username %>!
 
-Пользователь <%= h @sender.url %> оставил Вам<%= ' личное ' if @message.is_private? %> сообщение:
+Пользователь <%= h @sender.url %> оставил вам<%= ' личное ' if @message.is_private? %> сообщение:
   <%= h @message.body %>
 
 Посмотреть на сайте:

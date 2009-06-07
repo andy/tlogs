@@ -3,7 +3,6 @@
 <div class='onair'>
 	<%= paginate @entry_ids, :reverse => true if @page > 1 %>
 
-	<%- google_ad_position = 1 + rand(3); prev_entry = nil -%>
 	<% @entries.each_with_index do |entry, index| %>
 		<%= render :file => 'entries/anonymous_entry_display', :locals => { :entry => entry, :show_datetime => !(prev_entry.created_at.same_day?(entry.created_at) rescue false) } %>
 		<%- prev_entry = entry -%>
@@ -22,7 +21,7 @@
 	<% if current_user %>
 		<div class='section'>
 			<h2><span>Как написать анонимку?</span></h2>
-			<p>Для этого нужно нажать на зеленый плюсик в верхнем меню, и в скрытом разделе "дополнительно" выбрать "анонимка"... дальше все очевидно. Ну или нажать <%= link_to 'сюда', publish_url(:host => host_for_tlog(current_user), :action => :anonymous) %>.</p>
+			<p>Для этого нужно нажать на зеленый плюсик в верхнем меню, и в скрытом разделе "дополнительно" выбрать "анонимка"... дальше все очевидно. Ну или нажать <%= link_to 'сюда', user_url(current_user, publish_path(:action => :anonymous)) %>.</p>
 		</div>
 	<% end %>
 <% end %>

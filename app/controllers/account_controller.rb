@@ -71,7 +71,7 @@ class AccountController < ApplicationController
           flash[:bad] = 'У Вас не установлен пароль'
         end
       else
-        flash[:bad] = 'К сожалению мы не смогли найти указанного Вами пользователя'
+        flash[:bad] = 'К сожалению мы не смогли найти указанного вами пользователя'
       end
     else
       @email = current_user.email if current_user && current_user.email
