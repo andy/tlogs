@@ -32,7 +32,7 @@ class EmailerController < ApplicationController
       when 'message'
         @mail = Emailer.create_message(current_service, user, user.messages.last)
       when 'signup'
-        @mail = Emailer.create_signup(current_service, user)
+        @mail = Emailer.create_signup(current_service, User.unconfirmed.last)
       end
       
       true 

@@ -23,6 +23,9 @@ class Bookmarklet < ActiveRecord::Base
 
   ## plugins
   ## named_scopes
+  named_scope         :public, :conditions => 'is_public = 1'
+
+
   ## validations
   validates_presence_of           :user_id
 

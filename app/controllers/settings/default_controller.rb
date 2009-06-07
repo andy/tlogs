@@ -18,7 +18,7 @@ class Settings::DefaultController < ApplicationController
         flash[:good] = 'Настройки сохранены'
         redirect_to :action => 'index'
       else
-        flash[:bad] = 'Произошла какая-то ошибка и Ваши настройки не удалось сохранить'
+        flash[:bad] = 'Произошла какая-то ошибка и ваши настройки не удалось сохранить'
       end
     end
   end
@@ -142,7 +142,7 @@ class Settings::DefaultController < ApplicationController
         :tasty_newsletter => params[:tlog_settings][:tasty_newsletter]
       })
 
-      flash[:good] = 'Здорово! Мы успешно сохранили Ваши почтовые настройки'
+      flash[:good] = 'Здорово! Мы успешно сохранили ваши почтовые настройки'
 
       # меняем емейл адрес. для того чтобы случайно не проапдейтить пользователя, мы создаем копию и проверяем
       #  валидность емейла уже на ней

@@ -1,0 +1,36 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head></head>
+	<body style="padding:30px 20px 50px 30px; margin:0; background-color: #ffffff;">
+    <p style="font-family:Trebuchet MS, Arial, sans serif; font-size:0.95em; width:600px; color:#404040;">
+      <b>Здравствуйте!</b>
+    </p>
+
+		<p style="font-family:Trebuchet MS, Arial, sans serif; font-size:0.95em; width:600px; color:#404040;">
+      Для того чтобы завершить регистрацию, Вам необходимо подтвердить свой емейл-адрес, пройдя по этой ссылке:
+		</p>
+		
+		<p  style="font-style:italic; font-family:Trebuchet MS, Arial, sans serif; font-size:0.95em; width:600px; color:#404040;">
+		  <%- confirm_link = service_url(confirm_code_path(:code => @user.read_confirmation_code)) -%>
+      <%= link_to confirm_link, confirm_link %>
+		</p>
+		
+		<p style="font-family:Trebuchet MS, Arial, sans serif; font-size:0.95em; width:600px; color:#404040;">
+		  Ваши регистрационные данные:
+		  <ul>
+		    <li>Логин: <%= @user.url %></li>
+		    <li>Адрес вашего тлога: <%= user_url(@user) %></li>
+		  </ul>      
+		</p>
+		
+		<p  style="font-style:italic; font-family:Trebuchet MS, Arial, sans serif; font-size:0.95em; width:600px; color:#404040;">
+  	  В случае если Вы когда-нибудь забудете свой пароль, пройдите по этой ссылке: <br/>
+  	  <%= link_to service_url(lost_password_path), service_url(lost_password_path) %>
+		</p>
+		
+		<p style="font-family:Trebuchet MS, Arial, sans serif; font-size:0.95em; width:600px; color:#404040; text-align:right;">
+		  C уважением, <img src="<%= service_url %>/images/letter-logo.gif" width='101' height='27' style="position:relative; bottom:-18px;	margin-left:4px;" />
+		</p>
+	</body>
+</html>

@@ -34,7 +34,7 @@ class Emailer < ActionMailer::Base
 
   def comment_reply(current_service, user, comment)
     setup     current_service,
-                :subj => "ммм... ответ на Ваш комментарий (#{comment.entry.excerpt})",
+                :subj => "ммм... ответ на ваш комментарий (#{comment.entry.excerpt})",
                 :from => '"Mmm... comments" <comments@mmm-tasty.ru>',
                 :user => user,
                 :body => { :comment => comment }

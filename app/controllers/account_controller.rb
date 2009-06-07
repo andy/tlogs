@@ -46,9 +46,9 @@ class AccountController < ApplicationController
       if !@user.errors.on("url")
         @user.update_attribute(:url, @user.url)
         current_user.url = @user.url
-        flash[:good] = 'Прекрасно! Адрес Вашего тлога изменен'
+        flash[:good] = 'Прекрасно! Адрес вашего тлога изменен'
       else
-        flash[:bad] = 'Не удалось изменить адрес Вашего тлога'
+        flash[:bad] = 'Не удалось изменить адрес вашего тлога'
       end
     else
       @user = current_user
@@ -60,8 +60,8 @@ class AccountController < ApplicationController
   def lost_password
     if request.post?
       user   = nil
-      user   = User.find_by_email params[:email] unless params[:email].blank?
-      user ||= User.find_by_url params[:url] unless params[:url].blank?
+      user   = User.active.find_by_email params[:email] unless params[:email].blank?
+      user ||= User.active.find_by_url params[:url] unless params[:url].blank?
       if user
         if user.crypted_password
           Emailer.deliver_lost_password(current_service, user)
@@ -79,7 +79,7 @@ class AccountController < ApplicationController
   end
   
   def recover_password
-    @user = User.find(params[:user_id])
+    @user = User.active.find(params[:user_id])
     if @user && @user.recover_secret == params[:secret]
       if request.post?
         @user.password = params[:user][:password]
@@ -88,7 +88,7 @@ class AccountController < ApplicationController
           redirect_to service_url(login_path(:noref => true))
         else
           @user.errors.add :password, 'Вы забыли заполнить пароль!' if @user.password.blank?
-          flash[:bad] = 'Извините, но Ваш пароль не удовлетворяет требованиям безопасности. Попробуйте еще раз'
+          flash[:bad] = 'Извините, но ваш пароль не удовлетворяет требованиям безопасности. Попробуйте еще раз'
         end
       end
     else
@@ -99,7 +99,7 @@ class AccountController < ApplicationController
   # показывается когда мы действительно высылаем какой-то текст
   def lost_password_sent
     @user = nil
-    @user = User.find(flash[:lost_user_id]) if flash[:lost_user_id]
+    @user = User.active.find(flash[:lost_user_id]) if flash[:lost_user_id]
   end
   
   # выходим из системы
@@ -107,7 +107,7 @@ class AccountController < ApplicationController
     session[:user_id] = nil
     cookies['tsig'] = { :value => nil, :expires => Time.now, :domain => request.domain }
     reset_session
-    redirect_to service_path(main_path)
+    redirect_to service_url(main_path)
   end
 
   # регистрация, для новичков

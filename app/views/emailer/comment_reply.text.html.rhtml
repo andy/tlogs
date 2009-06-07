@@ -11,7 +11,7 @@
 	     
 	    <p style="font-family:Trebuchet MS, Arial, sans serif; font-size:0.95em; width:600px; color:#404040;"><b>Здравствуйте, <%= h @user.username %>!</b></p>
 		
-		<p style="font-family:Trebuchet MS, Arial, sans serif; font-size:0.95em; width:600px; color:#404040;">Пользователь <%= link_to_comment_author(@comment) %> ответил на Ваш комментарий к записи <i>"<%= h @comment.entry.excerpt %>":</i></p>
+		<p style="font-family:Trebuchet MS, Arial, sans serif; font-size:0.95em; width:600px; color:#404040;">Пользователь <%= link_to_comment_author(@comment) %> ответил на ваш комментарий к записи <i>"<%= h @comment.entry.excerpt %>":</i></p>
 		
 		<p  style="font-style:italic; font-family:Trebuchet MS, Arial, sans serif; font-size:0.95em; width:600px; color:#404040;"><b>Вам ответили:</b><br/>
 			<% if @comment.user_id == 0 %>

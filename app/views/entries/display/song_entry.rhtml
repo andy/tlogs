@@ -2,7 +2,7 @@
 	<% if embed %>
 		<object type="application/x-shockwave-flash" data="<%= image_path "/swf/player.swf" %>" id="audioplayer<%= entry.id %>" height="24" width="290">
 			<param name="movie" value="<%= image_path "/swf/player.swf" %>">
-			<param name="FlashVars" value="playerID=<%= audio_player_id %>&amp;soundFile=<%= url_for_tlog(entry.author) + entry.attachments[0].public_filename %>">
+			<param name="FlashVars" value="playerID=<%= audio_player_id %>&amp;soundFile=<%= user_url(entry.author) + entry.attachments[0].public_filename %>">
 			<param name="quality" value="high">
 			<param name="menu" value="false">
 			<param name="wmode" value="transparent">

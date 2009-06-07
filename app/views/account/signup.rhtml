@@ -6,7 +6,7 @@
 		<%= render :partial => 'login_and_signup_form', :locals => { :f => f } %>
 
 		<div class='form_string'>
-			<label for="user_url">имя Вашего будущего сайта <em>(всегда можно изменить)</em>:
+			<label for="user_url">имя вашего будущего сайта <em>(всегда можно изменить)</em>:
 				<%= f.text_field :url, :class => "at_input" %>
 				<div class="rel"><div class="at"><h1>.<%= current_service.domain %></h1></div></div>
 				<%= tasty_error_message_on('user', 'url') %>

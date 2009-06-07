@@ -62,7 +62,7 @@ class ApplicationController < ActionController::Base
 
       unless cookies['tsig'].blank?
         id, sig = cookies['tsig'].unpack('m').first.unpack('LZ*')
-        user = User.active.find_by_id(id, :conditions => 'is_disabled = 0')
+        user = User.active.find_by_id(id)
         if user && user.signature == sig
           session[:user_id] = user.id
           @current_user = user

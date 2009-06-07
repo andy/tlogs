@@ -26,7 +26,7 @@
     <h1>Упс! Такой страницы не существует</h1>
     <% if current_site %>
       <p>похоже что вы перешли по старой ссылке</p>
-      <p><%= link_to 'вернуться в тлог', url_for_tlog(current_site) %></p>
+      <p><%= link_to 'вернуться в тлог', user_url(current_site) %></p>
     <% else %>
       <p><%= link_to 'вернуться на главную', current_service.url %></p>
     <% end %>

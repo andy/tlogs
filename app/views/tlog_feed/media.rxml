@@ -7,7 +7,7 @@ xml.rss :version => '2.0', 'xmlns:media' => 'http://search.yahoo.com/mrss', 'xml
     xml.atom :link, :rel => 'previous', :href => url_for(:page => @page - 1, :only_path => false) if @page > 1
     @entries.each do |entry|      
       xml.item do        
-        xml.link url_for_tlog(entry.author) + entry_path(entry)
+        xml.link user_url(entry.author) + entry_path(entry)
         xml.title { xml.cdata!(strip_tags(white_list_entry(entry.excerpt.to_s))) }
         if !entry.attachments.empty?
           image = entry.attachments.first

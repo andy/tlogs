@@ -14,7 +14,7 @@
 		<form method='post' action='<%= user_url(current_site, messages_path) %>'>
 			<%= text_area :message, :body, :rows => 4, :cols => 15 %> <br/>
 			<%= check_box :message, :is_private, :class => 'checkbox' %><label for='message_is_private' id='message_is_private_label'>личное</label><br/>
-			<%= submit_to_remote nil, 'отправить', :url => messages_url, :html => { :class => 'button_send' } %>
+			<%= submit_to_remote nil, 'отправить', :url => user_url(current_site, messages_path), :html => { :class => 'button_send' } %>
 		</form>
 	</div>
 <% end %>

@@ -38,19 +38,19 @@ class TlogController < ApplicationController
         end
       end
     else
-      render_tasty_404("Этот имя занято, но пользователь еще не сделал ни одной записи.<br/>Загляните, пожалуйста, позже.<br/><br/><a href='#{current_serivce.url}'>&#x2190; вернуться на главную</a>")
+      render_tasty_404("Этот имя занято, но пользователь еще не сделал ни одной записи.<br/>Загляните, пожалуйста, позже.<br/><br/><a href='#{current_service.url}'>&#x2190; вернуться на главную</a>")
     end
   end
   
   def private
-    redirect_to '/' and return unless is_owner?
+    redirect_to user_url(current_site) and return unless is_owner?
     
     @title = 'ваши скрытые записи'
     @entries = current_site.entries.private.for_view.paginate :page => params[:page], :per_page => Entry::PAGE_SIZE
   end
   
   def anonymous
-    redirect_to '/' and return unless is_owner?
+    redirect_to user_url(current_site) and return unless is_owner?
     
     @title = 'ваши анонимки'
     @entries = current_site.entries.anonymous.for_view.paginate :page => params[:page], :per_page => Entry::PAGE_SIZE
@@ -88,7 +88,7 @@ class TlogController < ApplicationController
   end
 
   def relationship
-    redirect_to url_for_tlog(current_site) and return unless request.post?
+    redirect_to user_url(current_site) and return unless request.post?
 
     relationship = current_user.relationship_with(current_site, true)
     if relationship.new_record?
