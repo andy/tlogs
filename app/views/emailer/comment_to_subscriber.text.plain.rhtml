@@ -2,20 +2,18 @@
   @entry = @comment.entry
   @entry_author = @entry.author
   @is_anonymous = @entry.is_anonymous?
+  entry_link    = @is_anonymous ? "#{service_url(anonymous_path(:action => 'show', :id => @entry.id))}" : "#{user_url(@entry_author, entry_path(@entry))}"
+  comment_link  = entry_link + "#comment#{@comment.id}"
 -%>
 Здравствуйте, <%= h @user.username %>!
 
-Пользователь <%= @comment.user.username %> оставил Вам комментарий к записи "<%= h @entry.excerpt %>"
+Пользователь <%= @comment.user.username %> оставил вам комментарий к записи "<%= h @entry.excerpt %>"
 
 Текст комментария:
   <%= h @comment.comment %>
 
 Посмотреть на сайте:
-<%- if @is_anonymous -%>
-  <%= service_url(anonymous_path(:action => 'show', :id => @entry.id) + "#comment#{@comment.id}") %>
-<%- else -%>
-  <%= "#{user_url(@entry_author, entry_path(@entry))}#comment#{@comment.id}" %>
-<%- end -%>
+<%= comment_link %>
 
 Вы получили это письмо, потому что подписались на комментарии к этой записи.
 

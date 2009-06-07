@@ -2,6 +2,8 @@
   @entry = @comment.entry
   @entry_author = @entry.author
   @is_anonymous = @entry.is_anonymous?
+  entry_link    = @is_anonymous ? "#{service_url(anonymous_path(:action => 'show', :id => @entry.id))}" : "#{user_url(@entry_author, entry_path(@entry))}"
+  comment_link  = entry_link + "#comment#{@comment.id}"
 -%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
     "http://www.w3.org/TR/xhtml1/DTD/xhtml-strict.dtd">
@@ -13,7 +15,7 @@
     </p>
 		
 		<p style="font-family: Trebuchet MS, Arial, sans serif; font-size: 0.95em; width: 600px; color: #404040;">
-		  Пользователь <%= link_to_comment_author(@comment) %> оставил комментарий к записи <i>"<%= h @entry.excerpt %>":</i>
+		  Пользователь <%= link_to_comment_author(@comment) %> оставил комментарий к записи <i>"<%= link_to h(@entry.excerpt), entry_link %>":</i>
 		</p>
 		
 		<p style="font-style: italic; font-family: Trebuchet MS, Arial, sans serif; font-size: 0.95em; width: 600px; color: #404040;">
@@ -27,21 +29,15 @@
 		</p>
 
 		<p style="font-family: Trebuchet MS, Arial, sans serif; font-size:0.95em; width:600px; color:#404040;">
-			<% if @is_anonymous %>
-			  <%- comment_link = "#{service_url(anonymous_path(:action => 'show', :id => @entry.id))}##{@comment.id}" -%>
-			  <%= link_to comment_link, comment_link %>
-			<% else %>
-			  <%- comment_link = "#{user_url(@entry_author, entry_path(@entry))}#comment#{@comment.id}" -%>
-			  <%= link_to comment_link, comment_link %>
-			<% end %>
+		  <%= link_to comment_link, comment_link %>
 		</p>
 		
-		<p style="font-family:Trebuchet MS, Arial, sans serif; font-size:0.95em; width:600px; color:#404040;">
+		<p style="font-family:Trebuchet MS, Arial, sans serif; font-size:0.95em; width:600px; color:#808080;">
 			Вы получили это письмо, потому что подписались на комментарии к этой записи.
 		</p>
 		
 		<p style="font-family:Trebuchet MS, Arial, sans serif; font-size:0.95em; width:600px; color:#404040; text-align:right;">
-		  C уважением, <img src="<%= service_url %>/images/letter-logo.gif" width='101' height='27' style="position:relative; bottom:-18px;	margin-left:4px;" />
-		</p>		
+		  C уважением, <img src="<%= service_url %>/images/letter-logo.gif" width='101' height='27' style="position:relative; bottom:-6px;	margin-left:4px;" />
+		</p>
 	</body>
 </html>

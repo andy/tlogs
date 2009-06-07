@@ -181,7 +181,7 @@ class AccountController < ApplicationController
         @user = User.new :openid => openid, :url => session[:user_url], :email => nil, :password => nil
         @user.is_confirmed = true
         if @user.save
-          flash[:good] = 'Поздравляем, Вы успешно зарегистрировались!'
+          flash[:good] = 'Поздравляем, вы зарегистрировались!'
           login_user @user, :remember => openid
         else
           render :action => 'signup'
