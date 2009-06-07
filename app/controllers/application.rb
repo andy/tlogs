@@ -37,7 +37,7 @@ class ApplicationController < ActionController::Base
         url = request.subdomains.first
         
         # перенаправляем на сайт сервиса, если адрес запрещенный
-        redirect_to "#{request.protocol}www.mmm-tasty.ru#{request.port == 80 ? '' : ":#{request.port}"}" and return false if User::RESERVED.include?(url)
+        redirect_to "#{request.protocol}www.mmm-tasty.ru#{request.port == 80 ? '' : ":#{request.port}"}" and return false if User::RESERVED.include?(url) && url != 'www'
       elsif request.host == 'localhost'
         url = params[:current_site] if request.path.starts_with?('/users/')
         

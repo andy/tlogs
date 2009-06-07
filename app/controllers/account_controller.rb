@@ -229,7 +229,7 @@ class AccountController < ApplicationController
         # oid_req.add_extension_arg('sreg', 'optional', 'nickname,fullname,email,dob,gender')
       end
 
-      redirect_to oid_req.redirect_url trust_root, return_to, false
+      redirect_to oid_req.redirect_url(trust_root, return_to, false)
     end
 
     # Get the OpenID::Consumer object.
