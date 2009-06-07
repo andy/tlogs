@@ -11,6 +11,8 @@ tlog_settings = lambda { |tlog|
   tlog.connect 'search/:action', :controller => 'search'
   tlog.connect 'tag/*tags', :controller => 'tags', :action => 'view'
   tlog.connect 'tags/:action/:id', :controller => 'tags'
+  
+  tlog.resources :activities, :controller => 'acitvities'
 
   tlog.day ':year/:month/:day', :controller => 'tlog', :action => 'day', :requirements => { :year => /\d{4}/, :month => /\d{1,2}/, :day => /\d{1,2}/ }
 
@@ -22,7 +24,7 @@ tlog_settings = lambda { |tlog|
 
   tlog.resources :entries, :member => { :subscribe => :post, :unsubscribe => :post, :metadata => :get }, :collection => { :tags => :get, :relationship => :post } do |entry|
     entry.resources :comments, :new => { :preview => :post }
-    entry.resources :tags, :controller => 'entry_tags' #, :name_prefix => 'entry_'
+    entry.resources :tags, :controller => 'entry_tags'
   end
 
   tlog.resources :messages, :controller => 'messages'

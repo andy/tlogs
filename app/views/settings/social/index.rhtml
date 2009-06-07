@@ -21,7 +21,7 @@
 </p>
 
 <p class='settings_warning'>
-  Кстати, читать записи друзей можно <%= link_to 'прямо с сайта', main_url(:host => 'www.mmm-tasty.ru', :action => 'last_personalized') %>, либо через <%= link_to 'RSS', user_url(current_site, tlog_feed_protected_path(:key => current_user.last_personalized_key, :action => :last_personalized)), :title => 'подписаться через RSS', :class => 'rss' %>
+  Кстати, читать записи друзей можно <%= link_to 'прямо с сайта', service_url(main_path(:action => 'last_personalized')) %>, либо через <%= link_to 'RSS', user_url(current_site, tlog_feed_protected_path(:key => current_user.last_personalized_key, :action => :last_personalized)), :title => 'подписаться через RSS', :class => 'rss' %>
 </p>
 <table id='friends_table'>
 	<tr>
