@@ -26,7 +26,7 @@ class Attachment < ActiveRecord::Base
 
 
   ## plugins
-  has_attachment :storage => :file_system, :max_size => 7.megabytes, :resize_to => '800x4000>', :thumbnails => { :thumb => '200x1500>', :tlog => '420x4000>' }, :file_system_path => 'public/uc/att'
+  has_attachment :storage => :file_system, :max_size => 7.megabytes, :resize_to => '800x4000>', :thumbnails => { :thumb => '200x1500>', :tlog => '420x4000>' }, :file_system_path => 'public/assets/att'
   validates_as_attachment
 
 

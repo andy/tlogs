@@ -16,7 +16,7 @@
 class TlogBackground < ActiveRecord::Base
   belongs_to :tlog_design_settings
 
-  has_attachment :storage => :file_system, :max_size => 4.megabytes, :content_type => :image, :file_system_path => 'public/uc/backgrounds'
+  has_attachment :storage => :file_system, :max_size => 4.megabytes, :content_type => :image, :file_system_path => 'public/assets/backgrounds'
   validates_as_attachment
   
   validates_presence_of :tlog_design_settings_id

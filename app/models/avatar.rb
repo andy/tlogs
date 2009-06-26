@@ -20,7 +20,7 @@ class Avatar < ActiveRecord::Base
 
 
   ## plugins
-  has_attachment :storage => :file_system, :max_size => 4.megabytes, :content_type => :image, :resize_to => '64x64>', :file_system_path => 'public/uc/avt'
+  has_attachment :storage => :file_system, :max_size => 4.megabytes, :content_type => :image, :resize_to => '64x64>', :file_system_path => 'public/assets/avt'
   validates_as_attachment
 
 
