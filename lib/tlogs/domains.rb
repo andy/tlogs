@@ -11,10 +11,18 @@ module Tlogs
     
       def options_for(name, request)
         name = name.dup.gsub(/^www\./, '') if name.starts_with?('www.')
+        domain = nil
 
-        domain = @domains.has_key?(name) ? name : @domains.first[0]
-        options = @domains.has_key?(name) ? @domains[name] : @domains.first[1]
+        name.split('.').size.times do |length|
+          domain = name.split('.', length).last          
+          break if @domains.has_key?(domain)
+          
+          domain = nil
+        end
 
+        domain = @domains.keys.first if domain.nil?
+
+        options = @domains[domain]
         Tlogs::Domains::Options.new domain, options.merge(:protocol => request.try(:protocol), :port => request.try(:port))
       end
       
