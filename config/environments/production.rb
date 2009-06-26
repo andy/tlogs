@@ -19,6 +19,7 @@ config.cache_store = :mem_cache_store, '127.0.0.1:11211', { :namespace => 'p' }
 
 # Enable serving of images, stylesheets, and javascripts from an asset server
 # config.action_controller.asset_host                  = Proc.new { |source, request| "http://assets#{source.hash % 4}.#{request.current_service.host}" }
+config.action_controller.asset_host                 = "http://assets%d.mmm-tasty.ru"
 
 # Disable delivery errors, bad email addresses will be ignored
 # config.action_mailer.raise_delivery_errors = false

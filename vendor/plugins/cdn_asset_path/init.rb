@@ -1,0 +1,1 @@
+require File.join(File.dirname(__FILE__), 'cdn_asset_path.rb')
