@@ -31,7 +31,7 @@ module UrlHelper
   end
 
   def user_url(user, path = '/')
-    (get_current_service.user_url(user.url) + path).gsub(/\/+$/, '')
+    (get_current_service.user_url(user.url) + (path || '/')).gsub(/\/+$/, '')
   end
 
   def service_path(path = '/')
