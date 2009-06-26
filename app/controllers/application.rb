@@ -6,7 +6,7 @@ class ApplicationController < ActionController::Base
   include ExceptionNotifiable if RAILS_ENV == 'production'
   include ProductionImages if RAILS_ENV == 'development'
   
-  helper :white_list, :url
+  helper :white_list, :url, :asset_gluer
 
   # MAIN FILTERS
   attr_accessor   :current_site

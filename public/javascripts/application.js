@@ -182,7 +182,7 @@ function fixPNG(element) {
 			if (/\.png(\?[0-9]+)?$/.test(element.src))
 			{
 				src = element.src;
-				element.src = asset_host + "/images/blank.gif";
+				element.src = "http://www.mmm-tasty.ru/images/blank.gif";
 			}
 		}
 		else

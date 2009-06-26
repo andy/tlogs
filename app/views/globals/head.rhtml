@@ -2,19 +2,17 @@
 
 <meta name="robots" content="index,follow" />
 
-<%= stylesheet_link_tag 'global' %>
-<%= stylesheet_link_tag 'global-andy' %>
-<!--[if IE]> <%= stylesheet_link_tag 'ie_only.css' %> <![endif]-->
-<%= stylesheet_link_tag 'tlog' if current_site %>
+<%= glued_stylesheet_link_tag 'application' %>
+<!--[if IE]> <%= glued_stylesheet_link_tag 'application', 'ie' %> <![endif]-->
+<%= glued_stylesheet_link_tag 'tlog' if current_site %>
 
 <script type='text/javascript'>
   var current_user = <%= current_user ? current_user.id : 0 %>;
-  var asset_host = '<%= ActionController::Base.asset_host.call(nil, request) %>';
 </script>
 
-<%= javascript_include_tag 'prototype', 'effects', 'dragdrop', 'application', 'audio-player', 'swfobject', 'FancyZoom', 'FancyZoomHTML', :cache => true %>
+<%= glued_javascript_include_tag 'application' %>
 
-<link rel="shortcut icon" href="<%= image_path '/favicon.ico' %>" />
+<link rel="shortcut icon" href='/favicon.ico' />
 <meta name="MSSmartTagsPreventParsing" content="true" />
 <meta http-equiv="imagetoolbar" content="no" />
 <meta name="generator" content="tlogs.ru" />

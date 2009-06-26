@@ -1,0 +1,12 @@
+# Не забывайте не писать .js в конце имен файлов и перезагружать сервер
+
+---
+# Main
+application:
+- prototype
+- effects
+- dragdrop
+- audio-player
+- swfobject
+- fancyzoom
+- fancyzoomhtml

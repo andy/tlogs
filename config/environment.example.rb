@@ -14,6 +14,7 @@ Rails::Initializer.run do |config|
   
   config.load_paths += %W( 
     #{RAILS_ROOT}/app/models/entries
+    #{RAILS_ROOT}/lib/asset_gluer
   )
 
   config.to_prepare do
