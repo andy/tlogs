@@ -10,11 +10,11 @@ module Convoray
           last_person_to_talk = match[1] 
           persons.push(last_person_to_talk) unless persons.include?(last_person_to_talk)
           text = match[2] || ''
-          new_text << "<div class='person_#{persons.index(last_person_to_talk)+1}'><span>#{h last_person_to_talk}:</span> #{h text}</div>"
+          new_text << "<div class='person_#{persons.index(last_person_to_talk)+1}'><span>#{ERB::Util.html_escape last_person_to_talk}:</span> #{ERB::Util.html_escape text}</div>"
         elsif last_person_to_talk
-          new_text << "<div class='person_#{persons.index(last_person_to_talk)+1}'> #{h line.strip}</div>"
+          new_text << "<div class='person_#{persons.index(last_person_to_talk)+1}'> #{ERB::Util.html_escape line.strip}</div>"
         else
-          new_text << h(line.strip)
+          new_text << ERB::Util.html_escape(line.strip)
         end
       end
     end.join("\n")
