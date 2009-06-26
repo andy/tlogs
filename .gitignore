@@ -17,3 +17,5 @@ log/
 public/javascripts/all.js
 public/stylesheets/cache-tmp
 public/javascripts/cache-tmp
+public/stylesheets/cache
+public/javascripts/cache

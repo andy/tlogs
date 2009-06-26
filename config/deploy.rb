@@ -28,7 +28,7 @@ role :app, "mmm-tasty.ru", :primary => true
 # =============================================================================
 # OPTIONAL VARIABLES
 # =============================================================================
-set :deploy_to, '/home/tasty/mmm-tasty-git' # defaults to "/u/apps/#{application}"
+set :deploy_to, '/home/tasty/tlogs-git' # defaults to "/u/apps/#{application}"
 set :user, 'tasty'            # defaults to the currently logged in user
 
 # =============================================================================
