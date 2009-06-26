@@ -2,14 +2,13 @@
 
 <meta name="robots" content="index,follow" />
 
-<%= glued_stylesheet_link_tag 'application' %>
-<!--[if IE]> <%= glued_stylesheet_link_tag 'application', 'ie' %> <![endif]-->
-<%= glued_stylesheet_link_tag 'tlog' if current_site %>
-
 <script type='text/javascript'>
   var current_user = <%= current_user ? current_user.id : 0 %>;
 </script>
 
+<%= glued_stylesheet_link_tag 'application' %>
+<!--[if IE]> <%= glued_stylesheet_link_tag 'application', 'ie' %> <![endif]-->
+<%= glued_stylesheet_link_tag 'tlog' if current_site %>
 <%= glued_javascript_include_tag 'application' %>
 
 <link rel="shortcut icon" href='/favicon.ico' />
