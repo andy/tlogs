@@ -7,7 +7,7 @@
     thumb = image.thumbnails.select { |i| i.thumbnail == 'tlog' }.first
   %>
   <% if thumb %>
-    <%= link_to image_tag(thumb.public_filename, { :title => '', :alt => 'изображение' }.merge(entry.geometry(:image => thumb))), image.public_filename, :rel => 'follow', :class => 'zoom' %>
+    <%= link_to image_tag(thumb.public_filename, { :title => '', :alt => 'изображение' }.merge(entry.geometry(:image => thumb))), image_path(image.public_filename), :rel => 'follow', :class => 'zoom' %>
   <% else %>
     <%= image_tag image.public_filename, { :title => '', :alt => 'изображение' }.merge(entry.geometry) %>
 	<% end %>
