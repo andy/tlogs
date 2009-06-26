@@ -1,6 +1,7 @@
 .DS_Store
 .svn
 public/uc
+public/assets
 tmp
 db/openid-store
 db/*sqlite3
