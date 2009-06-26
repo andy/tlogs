@@ -103,7 +103,7 @@ namespace :deploy do
 
     desc "Create glued styles in temp directory"
     task :glue_temp do
-      run "cd #{deploy_to} && RAILS_ENV=#{stage} rake assets:glue"
+      run "cd #{deploy_to} && RAILS_ENV=production rake assets:glue"
     end
 
     desc "Deploy glued styles"
