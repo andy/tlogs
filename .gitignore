@@ -15,3 +15,5 @@ config/tlogs/domains.yml
 script/sync
 log/
 public/javascripts/all.js
+public/stylesheets/cache-tmp
+public/javascripts/cache-tmp

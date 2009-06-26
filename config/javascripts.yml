@@ -3,10 +3,16 @@
 ---
 # Main
 application:
-- prototype
-- effects
-- dragdrop
-- audio-player
-- swfobject
-- fancyzoom
-- fancyzoomhtml
+- prototype.min
+- effects.min
+- dragdrop.min
+- audio-player.min
+- swfobject.min
+- fancyzoom.min
+- fancyzoomhtml.min
+- fixpng
+- error-messages-on
+- openid
+- google-analytics
+- blink
+- application

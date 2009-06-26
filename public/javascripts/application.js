@@ -1,101 +1,6 @@
 // Place your application-specific JavaScript functions and classes here
 // This file is automatically included by javascript_include_tag :defaults
 
-var blinks = $A();
-function blink(element) {
-  var element = $(element);
-
-  blinks.push(element.id);
-  blinker(element);
-}
-
-function blinker(element) {
-  Effect.toggle(element, 'appear', { duration: 0.3, from: 1.0, to: 0.2, afterFinish: function() { if(blinks.include(element.id)) blinker(element); } });
-}
-
-function unblink(element) {
-  var element = $(element);
-
-  blinks = blinks.without(element.id);
-}
-
-/* google analytics page view tracking */
-function ga_page_view(path) {
-	if(ga_page_tracker) {
-		ga_page_tracker._trackPageview(path);
-	}
-	return true;
-}
-
-
-var _login_mode = "email";
-function login_openid_switcher ( value ) {
-  if ( value.match ( /^(http|https)/ ) ) {
-      if (_login_mode != "openid") {
-  			$('user_password').disabled = true;
-  			if ( $('user_password_label') ) {
-  			  new Effect.Fade ( 'user_password_label', { duration: 0.5, from: 1.0, to: 0.2 } );
-  			}
-  			error_message_on('user_password', 'пароль не нужен, поскольку используется OpenID авторизация', true);
-        _login_mode = "openid";
-      }
-  } else if (_login_mode != "email") {
-    $('user_password').disabled = false;
-    if ( $('user_password_label') ) {
-		  new Effect.Appear ( 'user_password_label', { duration: 0.5 } );
-		}
-		clear_error_message_on('user_password');
-    _login_mode = "email";
-  }
-}
-
-var _errors_on = new Array;
-
-/* Выставляем ошибку на элементе ... */
-function error_message_on ( element, message, is_tip ) {
-  var element = $(element);
-  if ( !element )
-    return;
-
-  var element_error = $(element.id + '_error');
-  var had_error = _errors_on.indexOf ( element.id ) != -1;
-
-  if ( !element_error )
-    return;
-
-  if ( !had_error )
-    _errors_on.push ( element.id );
-
-  add_me = is_tip ? 'not_really_big_error' : 'error'
-  remove_me = is_tip ? 'error' : 'not_really_big_error'
-  element_error.removeClassName(remove_me);
-  element_error.addClassName(add_me);
-  
-  is_tip ? element.removeClassName('input_error') : element.addClassName('input_error');
-  is_tip ? element.addClassName('input_succeed') : element.removeClassName('input_succeed');
-
-  Element.update ( element_error.id + '_content', message);
-  Element.show ( element_error );
-}
-
-/* Удаляем ошибку с элемента */
-function clear_error_message_on ( element ) {
-  var element = $(element);
-  var element_error = $(element.id + '_error');
-
-  element.removeClassName('input_error');
-  element.removeClassName('input_succeed');
-  Element.update ( element_error.id + '_content', '');
-  Element.hide ( element_error );
-  _errors_on = _errors_on.without ( element.id );
-}
-
-/* Удаляем все ошибки */
-function clear_all_errors ( ) {
-  _errors_on.each ( function ( element ) { clear_error_message_on ( element ); } );
-}
-
-
 function remote_request_started(button_element, text) {
   var button_element = $(button_element);
   button_element.value = text;
@@ -171,33 +76,6 @@ Event.observe(window, 'load', function( ) {
     enable_services_for_current_user();
 });
 
-// fixPNG(); http://www.tigir.com/js/fixpng.js (author Tigirlas Igor)
-function fixPNG(element) {
-	if (/MSIE (5\.5|6).+Win/.test(navigator.userAgent))
-	{
-		var src;
-		
-		if (element.tagName=='IMG')
-		{
-			if (/\.png(\?[0-9]+)?$/.test(element.src))
-			{
-				src = element.src;
-				element.src = "http://www.mmm-tasty.ru/images/blank.gif";
-			}
-		}
-		else
-		{
-			src = element.currentStyle.backgroundImage.match(/url\("(.+\.png(\?[0-9]+)?)"\)/i)
-			if (src)
-			{
-				src = src[1];
-				element.runtimeStyle.backgroundImage="none";
-			}
-		}
-		
-		if (src) element.runtimeStyle.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" + src + "',sizingMethod='scale')";
-	}
-}
 
 var reply_to_comments = new Array;
 var reply_to_string = null;

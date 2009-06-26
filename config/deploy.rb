@@ -76,7 +76,9 @@ namespace :deploy do
   namespace :web do
     desc "Restart webserver"
     task :restart do
+      assets.glue_temp
       run "cd #{deploy_to} && thin -C config/thin.yml restart"
+      assets.deploy
     end
     
     desc "Stop webserver"
@@ -86,63 +88,29 @@ namespace :deploy do
     
     desc "Start webserver"
     task :start do
+      assets.glue_temp
       run "cd #{deploy_to} && thin -C config/thin.yml start"
+      assets.deploy
+    end
+  end
+  
+  namespace :assets do
+    desc "Create glued styles"
+    task :glue, :roles => :rails do
+      assets.glue_temp
+      assets.deploy
+    end
+
+    desc "Create glued styles in temp directory"
+    task :glue_temp, :roles => :rails do
+      run "cd #{deploy_to} && RAILS_ENV=#{stage} rake assets:glue"
+    end
+
+    desc "Deploy glued styles"
+    task :deploy, :roles => :rails do
+      run "cd #{deploy_to} && rm -f public/stylesheets/cache/*.css public/javascripts/cache/*.js"
+      run "cp #{deploy_to}/public/stylesheets/cache-tmp/* #{deploy_to}/public/stylesheets/cache/"
+      run "cp #{deploy_to}/public/javascripts/cache-tmp/* #{deploy_to}/public/javascripts/cache/"
     end
   end  
 end
-
-
-# Tasks may take advantage of several different helper methods to interact
-# with the remote server(s). These are:
-#
-# * run(command, options={}, &block): execute the given command on all servers
-#   associated with the current task, in parallel. The block, if given, should
-#   accept three parameters: the communication channel, a symbol identifying the
-#   type of stream (:err or :out), and the data. The block is invoked for all
-#   output from the command, allowing you to inspect output and act
-#   accordingly.
-# * sudo(command, options={}, &block): same as run, but it executes the command
-#   via sudo.
-# * delete(path, options={}): deletes the given file or directory from all
-#   associated servers. If :recursive => true is given in the options, the
-#   delete uses "rm -rf" instead of "rm -f".
-# * put(buffer, path, options={}): creates or overwrites a file at "path" on
-#   all associated servers, populating it with the contents of "buffer". You
-#   can specify :mode as an integer value, which will be used to set the mode
-#   on the file.
-# * render(template, options={}) or render(options={}): renders the given
-#   template and returns a string. Alternatively, if the :template key is given,
-#   it will be treated as the contents of the template to render. Any other keys
-#   are treated as local variables, which are made available to the (ERb)
-#   template.
-
-# desc "Demonstrates the various helper methods available to recipes."
-# task :helper_demo do
-#   # "setup" is a standard task which sets up the directory structure on the
-#   # remote servers. It is a good idea to run the "setup" task at least once
-#   # at the beginning of your app's lifetime (it is non-destructive).
-#   setup
-# 
-#   buffer = render("maintenance.rhtml", :deadline => ENV['UNTIL'])
-#   put buffer, "#{shared_path}/system/maintenance.html", :mode => 0644
-#   sudo "killall -USR1 dispatch.fcgi"
-#   run "#{release_path}/script/spin"
-#   delete "#{shared_path}/system/maintenance.html"
-# end
-
-# You can use "transaction" to indicate that if any of the tasks within it fail,
-# all should be rolled back (for each task that specifies an on_rollback
-# handler).
-
-# desc "A task demonstrating the use of transactions."
-# task :long_deploy do
-#   transaction do
-#     update_code
-#     disable_web
-#     symlink
-#     migrate
-#   end
-# 
-#   restart
-#   enable_web
-# end

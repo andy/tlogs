@@ -1,7 +1,7 @@
 module AssetGluer
   def self.assets_host(file_name)
-    pattern = ActionController::Base.asset_host rescue "http://assets%d.lookatme.ru"
-    pattern  % (file_name.to_s.hash % 4)
+    pattern = ActionController::Base.asset_host rescue "http://assets%d.mmm-tasty.ru"
+    pattern % (file_name.to_s.hash % 4)
   end
 
   # Публичная папка проекта
