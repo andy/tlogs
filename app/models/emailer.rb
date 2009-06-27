@@ -1,5 +1,5 @@
 class Emailer < ActionMailer::Base
-  helper :application, :comments, :url
+  helper :application, :comments, :url, :white_list
 
   def signup(current_service, user)
     setup     current_service,
