@@ -77,19 +77,19 @@ namespace :deploy do
     desc "Restart webserver"
     task :restart do
       assets.glue_temp
-      run "cd #{deploy_to} && thin -C config/thin.yml restart"
+      run "cd #{deploy_to} && touch tmp/restart.txt"
       assets.deploy
     end
     
     desc "Stop webserver"
     task :stop do
-      run "cd #{deploy_to} && thin -C config/thin.yml stop"
+      run "cd #{deploy_to} && touch public/maintenance.html"
     end
     
     desc "Start webserver"
     task :start do
       assets.glue_temp
-      run "cd #{deploy_to} && thin -C config/thin.yml start"
+      run "cd #{deploy_to} && rm -f public/maintenance.html"
       assets.deploy
     end
   end
