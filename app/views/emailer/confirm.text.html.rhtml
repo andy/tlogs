@@ -3,15 +3,15 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 	<head></head>
 	<body style="padding:30px 20px 50px 30px; margin:0; background-color: #ffffff;">
-    <p style="font-family:Trebuchet MS, Arial, sans serif; font-size:0.95em; width:600px; color:#404040;">
+    <p style="font-family:Trebuchet MS, Arial, sans serif; font-size:0.95em; width:600px; color:#404040; padding-bottom: 2em;">
       <b>Здравствуйте, <%= h @user.username %>!</b>
     </p>
 		
-		<p style="font-family:Trebuchet MS, Arial, sans serif; font-size:0.95em; width:600px; color:#404040;">
+		<p style="font-family:Trebuchet MS, Arial, sans serif; font-size:0.95em; width:600px; color:#404040; padding-bottom: 1em;">
 		  Для того чтобы подтвердить ваш емейл адрес (<i><%= @email %></i>) на проекте <%= link_to 'Mmm...tasty', service_url %>, необходимо пройти по этой ссылке:
 		</p>
 		
-		<p style="font-family:Trebuchet MS, Arial, sans serif; font-size:0.95em; width:600px; color:#404040;">
+		<p style="font-family:Trebuchet MS, Arial, sans serif; font-size:0.95em; width:600px; color:#404040; padding-bottom: 2em;">
 		  <%- code_link = service_url(confirm_code_path(:code => @user.read_confirmation_code)) -%>
 	    <%= link_to code_link, code_link %>
 		</p>

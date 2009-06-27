@@ -3,24 +3,24 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
   <head></head>
 	<body style="padding:30px 20px 50px 30px; margin:0; background-color: #ffffff;">
-    <p style="font-family:Trebuchet MS, Arial, sans serif; font-size:0.95em; width:600px; color:#404040;">
+    <p style="font-family:Trebuchet MS, Arial, sans serif; font-size:0.95em; width:600px; color:#404040; padding-bottom: 2em;">
       <b>Здравствуйте!</b>
     </p>
 
-		<p style="font-family:Trebuchet MS, Arial, sans serif; font-size:0.95em; width:600px; color:#404040;">
+		<p style="font-family:Trebuchet MS, Arial, sans serif; font-size:0.95em; width:600px; color:#404040; padding-bottom: 1em;">
       Вы успешно зарегистрировались на сайте <%= link_to 'Mmm...tasty', service_url %>!
 		</p>
 
-		<p style="font-family:Trebuchet MS, Arial, sans serif; font-size:0.95em; width:600px; color:#404040;">
+		<p style="font-family:Trebuchet MS, Arial, sans serif; font-size:0.95em; width:600px; color:#404040; padding-bottom: 1em;">
       Завершите регистрацию пройдя по этой ссылке:
 		</p>
 		
-		<p  style="font-style:italic; font-family:Trebuchet MS, Arial, sans serif; font-size:1.25em; width:600px; color:#404040;">
+		<p style="font-style:italic; font-family:Trebuchet MS, Arial, sans serif; font-size:1.25em; width:600px; color:#404040; padding-bottom: 1em;">
 		  <%- confirm_link = service_url(confirm_code_path(:code => @user.read_confirmation_code)) -%>
       <%= link_to confirm_link, confirm_link %>
 		</p>
 		
-		<p style="font-family:Trebuchet MS, Arial, sans serif; font-size:0.95em; width:600px; color:#808080;">
+		<p style="font-family:Trebuchet MS, Arial, sans serif; font-size:0.95em; width:600px; color:#808080; padding-bottom: 1em;">
 		  Дополнительно, ваши регистрационные данные:
 		  <ul style="font-family:Trebuchet MS, Arial, sans serif; font-size:0.95em; width:600px; color:#808080;">
 		    <li>Логин: <b><%= @user.url %></b></li>
@@ -28,7 +28,7 @@
 		  </ul>      
 		</p>
 		
-		<p  style="font-style:italic; font-family:Trebuchet MS, Arial, sans serif; font-size:0.95em; width:600px; color:#808080;">
+		<p  style="font-style:italic; font-family:Trebuchet MS, Arial, sans serif; font-size:0.95em; width:600px; color:#808080; padding-bottom: 2em;">
   	  В случае если вы когда-нибудь забудете свой пароль, пройдите по этой ссылке: <br/>
   	  <%= link_to service_url(lost_password_path), service_url(lost_password_path) %>
 		</p>

@@ -10,15 +10,15 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 	<head></head>
 	<body style="padding: 30px 20px 50px 30px; margin: 0; background-color: #ffffff;">
-    <p style="font-family: Trebuchet MS, Arial, sans serif; font-size:0.95em; width:600px; color:#404040;">
+    <p style="font-family: Trebuchet MS, Arial, sans serif; font-size:0.95em; width:600px; color:#404040; padding-bottom: 2em;">
       <b>Здравствуйте, <%= h @user.username %>!</b>
     </p>
 		
-		<p style="font-family: Trebuchet MS, Arial, sans serif; font-size: 0.95em; width: 600px; color: #404040;">
+		<p style="font-family: Trebuchet MS, Arial, sans serif; font-size: 0.95em; width: 600px; color: #404040; padding-bottom: 1em;">
 		  Пользователь <%= link_to_comment_author(@comment) %> оставил комментарий к записи <i>"<%= link_to h(@entry.excerpt), entry_link %>":</i>
 		</p>
 		
-		<p style="font-style: italic; font-family: Trebuchet MS, Arial, sans serif; font-size: 0.95em; width: 600px; color: #404040;">
+		<p style="font-style: italic; font-family: Trebuchet MS, Arial, sans serif; font-size: 0.95em; width: 600px; color: #404040; padding-bottom: 1em;">
 		  <b>Его комментарий:</b>
 		  <br/>
 			<% if @comment.user_id == 0 %>
@@ -28,11 +28,11 @@
 			<% end %>
 		</p>
 
-		<p style="font-family: Trebuchet MS, Arial, sans serif; font-size:0.95em; width:600px; color:#404040;">
+		<p style="font-family: Trebuchet MS, Arial, sans serif; font-size:0.95em; width:600px; color:#404040; padding-bottom: 2em;">
 		  <%= link_to comment_link, comment_link %>
 		</p>
 		
-		<p style="font-family:Trebuchet MS, Arial, sans serif; font-size:0.95em; width:600px; color:#808080;">
+		<p style="font-family:Trebuchet MS, Arial, sans serif; font-size:0.95em; width:600px; color:#808080; padding-bottom: 2em;">
 			Вы получили это письмо, потому что подписались на комментарии к этой записи.
 		</p>
 		

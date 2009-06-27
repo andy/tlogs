@@ -1,4 +1,4 @@
-
+<% @title = @entry.excerpt || @entry.to_russian %>
 <div class='onair'>
 	<%= render :file => 'entries/anonymous_entry_display', :locals => { :entry => @entry, :show_datetime => true } %>
 	<a name="comments"></a>
