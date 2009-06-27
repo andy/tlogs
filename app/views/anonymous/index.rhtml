@@ -1,8 +1,9 @@
-<% @title = 'прямой эфир как он есть' %>
+<% @title = 'анонимки' %>
 
 <div class='onair'>
 	<%= paginate @entry_ids, :reverse => true if @page > 1 %>
 
+  <% prev_entry = nil %>
 	<% @entries.each_with_index do |entry, index| %>
 		<%= render :file => 'entries/anonymous_entry_display', :locals => { :entry => entry, :show_datetime => !(prev_entry.created_at.same_day?(entry.created_at) rescue false) } %>
 		<%- prev_entry = entry -%>
