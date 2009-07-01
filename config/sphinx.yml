@@ -1,6 +1,8 @@
 
 development:
   html_strip: true
+  morphology: stem_enru
 
 production:
   html_strip: true
+  morphology: stem_enru

@@ -75,6 +75,7 @@ class Entry < ActiveRecord::Base
 	define_index do
 	  indexes :data_part_1
 	  indexes :data_part_2
+    indexes tags.name, :as => :tag
 
 	  has :type
 	  has :user_id
