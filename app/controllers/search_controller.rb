@@ -13,8 +13,15 @@ class SearchController < ApplicationController
       return
     end
 
-    options = { :page => params[:page], :per_page => Entry::PAGE_SIZE, :with => {} }
-    with = {}
+    options = {
+        :page => params[:page],
+        :per_page => Entry::PAGE_SIZE,
+        :with => {},
+        :include => :author,
+        :field_weights => { :tags => 20, :data_part_1 => 10, :data_part_2 => 5 },
+        :order => :created_at,
+        :sort_mode => :desc
+      }
 
     if current_site
       options[:with][:user_id] = current_site.id
