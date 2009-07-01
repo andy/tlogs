@@ -3,9 +3,9 @@
   @entry_author = @entry.author
   @is_anonymous = @entry.is_anonymous?
 -%>
-Здравствуйте, <%= h @entry_author.username %>!
+Здравствуйте, <%= h @user.username %>!
 
-Пользователь <%= @comment.user.username %> оставил вам комментарий к записи "<%= h @entry.excerpt %>"
+Пользователь <%= @comment.user.url %> оставил вам комментарий к записи "<%= h @entry.excerpt %>"
 
 Текст комментария:
   <%= h @comment.comment %>

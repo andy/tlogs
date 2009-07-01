@@ -5,7 +5,7 @@
 -%>
 Здравствуйте, <%= h @user.username %>!
 
-Пользователь <%= h @comment.user.username %> ответил на ваш комментарий к записи "<%= h @comment.entry.excerpt %>"
+Пользователь <%= h @comment.user.url %> ответил на ваш комментарий к записи "<%= h @comment.entry.excerpt %>"
 
 Вам ответили:
   <%= h @comment.comment %>
