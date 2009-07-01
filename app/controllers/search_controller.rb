@@ -13,30 +13,19 @@ class SearchController < ApplicationController
       return
     end
 
-    @page = params[:page].to_i rescue 1
-    @page = 1 if @page <= 0
+    options = { :page => params[:page], :per_page => Entry::PAGE_SIZE, :with => {} }
+    with = {}
 
-    # gone too far
-    if @page <= 67
-      options = {}
-      if current_site
-        options[:filter] = [['user_id', [current_site.id]]]
-        if !current_user || current_user.id != current_site.id
-          options[:filter] += [['is_private', 0]]
-        end
-      else
-        options[:filter] = [['is_private', 0]]
+    if current_site
+      options[:with][:user_id] = current_site.id
+      if !current_user || current_user.id != current_site.id
+        options[:with][:is_private] = 0
       end
-      options[:sort_mode] = [:attr_desc, 'created_at']
-      options[:page] = @page if @page > 1
-      options[:limit] = Entry::PAGE_SIZE
-      options[:index] = 'entries,delta'
-
-      @entries = Entry.find_with_sphinx(params[:query], :sphinx => options)
     else
-      @page = 0
-      @entries = []
+      options[:with][:is_private] = 0
     end
+
+    @entries = Entry.search params[:query], options
     
     # результаты отображаются внутри тлога если поиск выполнялся по индивидуальному тлогу
     render :layout => current_site ? 'tlog' : 'main'

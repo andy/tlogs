@@ -11,7 +11,7 @@ module ProductionImages
           path_info = "/#{$2}"
         end
         req_path = Mongrel::HttpRequest.unescape(path_info)
-        if req_path.index("/uc/") 
+        if req_path.index("/uc/") || req_path.index("/assets/")
           if !File.exists?(@path + req_path)
             FileUtils.mkdir_p(File.dirname(@path + req_path))
             `curl 'http://assets0.mmm-tasty.ru#{req_path}' -o '#{@path + req_path}' &`

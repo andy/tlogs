@@ -89,6 +89,7 @@ class Entry < ActiveRecord::Base
 	  where 'is_disabled = 0'
 	  
 	  set_property :delta => :datetime, :threshold => 10.minutes
+	  set_property :group_concat_max_len => 8192
   end
 
 
