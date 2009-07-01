@@ -79,8 +79,8 @@ class Entry < ActiveRecord::Base
 	  has :type
 	  has :user_id
 	  has :is_private
-	  has :comments_count
 	  has :created_at
+	  has :updated_at
 	  has tags(:id), :as => :tag_ids
 	  
 	  group_by "user_id"
@@ -88,7 +88,7 @@ class Entry < ActiveRecord::Base
 	  
 	  where 'is_disabled = 0'
 	  
-	  set_property :delta => true
+	  set_property :delta => :datetime, :threshold => 10.minutes
   end
 
 
