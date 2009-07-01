@@ -70,9 +70,27 @@ class Entry < ActiveRecord::Base
     #  если меняются штуки отличные от комментариев
     entry.author.update_attributes(:entries_updated_at => Time.now) unless (entry.changes.keys - ['comments_count', 'updated_at']).blank?
   end
-  
-	
-	acts_as_sphinx
+
+  # thinking sphinx
+	define_index do
+	  indexes :data_part_1
+	  indexes :data_part_2
+
+	  has :type
+	  has :user_id
+	  has :is_private
+	  has :comments_count
+	  has :created_at
+	  has tags(:id), :as => :tag_ids
+	  
+	  group_by "user_id"
+	  group_by "is_private"
+	  
+	  where 'is_disabled = 0'
+	  
+	  set_property :delta => true
+  end
+
 	acts_as_taggable
 	
 	attr_accessible :data_part_1, :data_part_2, :data_part_3

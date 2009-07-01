@@ -5,6 +5,8 @@ public/assets
 tmp
 db/openid-store
 db/*sqlite3
+db/sphinx
+config/*.sphinx.conf
 config/environment.rb
 config/sphinx.conf
 config/mail_fetcher.yml

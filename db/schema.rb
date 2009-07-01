@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090513143946) do
+ActiveRecord::Schema.define(:version => 20090701165611) do
 
   create_table "attachments", :force => true do |t|
     t.integer "entry_id",     :default => 0,  :null => false
@@ -114,8 +114,10 @@ ActiveRecord::Schema.define(:version => 20090513143946) do
     t.text     "cached_tag_list"
     t.boolean  "is_mainpageable",  :default => true,  :null => false
     t.boolean  "comments_enabled", :default => false, :null => false
+    t.boolean  "delta",            :default => true,  :null => false
   end
 
+  add_index "entries", ["delta"], :name => "index_entries_on_delta"
   add_index "entries", ["id", "user_id", "is_private"], :name => "tmpindex2"
   add_index "entries", ["is_disabled"], :name => "index_entries_on_is_disabled"
   add_index "entries", ["is_mainpageable", "created_at", "type"], :name => "index_entries_on_is_mainpageable_and_created_at_and_type"
