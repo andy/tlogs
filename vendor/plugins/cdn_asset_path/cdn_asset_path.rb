@@ -28,4 +28,4 @@ module ActionView::Helpers::AssetTagHelper
         nil
       end
     end
-end
+end if RAILS_ENV == 'production'
