@@ -6,6 +6,7 @@ class PublishController < ApplicationController
   
   def preview
     render :nothing => true and return unless request.post?
+
     if params[:entry][:id]
       @entry = Entry.find_by_id_and_user_id(params[:entry][:id], current_user.id)
       @entry.has_attachment = !@entry.attachments.empty?

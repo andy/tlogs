@@ -11,6 +11,8 @@ class MessagesController < ApplicationController
   
   # POST messages_url
   def create
+    render :nothing => true and return unless request.post?
+    
     @message            = Message.new params[:message]
     @message.sender     = current_user
     @message.user       = current_site
@@ -20,6 +22,8 @@ class MessagesController < ApplicationController
   
   # DELETE message_url(@message)
   def destroy
+    render :nothing => true and return unless (request.post? || request.delete?)
+    
     @message = Message.find(params[:id])
     @message.destroy if @message.is_owner?(current_user)
   end

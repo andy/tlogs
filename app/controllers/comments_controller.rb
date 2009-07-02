@@ -30,6 +30,8 @@ class CommentsController < ApplicationController
   #  3- зарегистрированные (индивидуальные ограничения)
   # у каждого из них имеются свои ограничения
   def create
+    render :nothing => true and return unless request.post?
+    
     user = current_user if current_user
     @comment = Comment.new(params[:comment])
     @comment.user = user
@@ -88,6 +90,8 @@ class CommentsController < ApplicationController
   end
   
   def destroy
+    render :nothing => true and return unless (request.post? || request.delete?)
+
     # пока что мы позволяем удалять комменатрии только зарегистрированным пользователям
     if current_user
       @comment = Comment.find_by_id_and_entry_id(params[:id], @entry.id)
