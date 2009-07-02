@@ -24,13 +24,13 @@ config.action_controller.asset_host                 = "http://assets%d.mmm-tasty
 
 # Disable delivery errors, bad email addresses will be ignored
 # config.action_mailer.raise_delivery_errors = false
-config.action_mailer.delivery_method = :smtp
-config.action_mailer.smtp_settings = {
-  :tls => true,
-  :address => "smtp.gmail.com",
-  :port => "587",
-  :domain => "mmm-tasty.ru",
-  :authentication => :plain,
-  :user_name => "noreply@mmm-tasty.ru",
-  :password => "keepquiet"
-}
+# config.action_mailer.delivery_method = :smtp
+# config.action_mailer.smtp_settings = {
+#   :tls => true,
+#   :address => "smtp.gmail.com",
+#   :port => "587",
+#   :domain => "mmm-tasty.ru",
+#   :authentication => :plain,
+#   :user_name => "noreply@mmm-tasty.ru",
+#   :password => "keepquiet"
+# }
