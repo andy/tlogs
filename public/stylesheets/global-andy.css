@@ -60,3 +60,11 @@ div.message_sender a {
 	font-weight:bold;
 	font-style:italic;
 } 
+
+/* news message notify */
+.main_page .top_menu li a sup {
+  color: rgb(255, 4, 18);
+  font-style: italic;
+  font-size: 10px;
+  padding-left: 3px;
+}

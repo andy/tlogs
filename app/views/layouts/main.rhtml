@@ -26,8 +26,12 @@
 		
 		<div class='top_menu'>
 			<ul>
+			  <%-
+			    news = User.find_by_url 'news'
+			    news_count = news.new_entries_count_for(current_user)
+			  -%>
 				<%= menu_item 'Что это?', :about %>
-				<%= menu_item 'Новости', :news %>
+				<%= menu_item "Новости#{"<sup>+#{news_count}</sup>" unless news_count.zero?}", :news %>
 				<%= menu_item 'Люди', :new_users, %w(main/users main/new_users) %>
 				<%= menu_item 'Лучшее', :last %>
 				<%= menu_item 'Анонимки', :anonymous, %w(anonymous/*) %>
@@ -73,5 +77,9 @@
 	<%= render :file => 'globals/foot' %>
 
 	<%= render :file => 'globals/top_nav' %>
+	
+	<% if RAILS_ENV == 'production' %>
+	  <script type="text/javascript" language="JavaScript" src="http://reformal.ru/tab.js?title=mmm+tasty&domain=tlogs&color=FFA000&align=left&charset=utf-8&ltitle=&lfont=&lsize=&waction=0&regime=0"></script>
+	<% end %>
 </body>
 </html>

@@ -22,6 +22,15 @@ class User
     (user && self.id == user.id) ? self.entries_count : self.public_entries_count
   end
   
+  def new_entries_count_for(user = nil)
+    if user
+      relationship = user.relationship_with(self)
+      relationship.nil? ? 0 : self.entries_count_for(user) - relationship.last_viewed_entries_count
+    else
+      0
+    end
+  end
+  
   # количество публичных записей (т.е. видимых всем)
   def public_entries_count
     self.entries_count - self.private_entries_count
