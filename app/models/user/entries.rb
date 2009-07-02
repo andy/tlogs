@@ -25,7 +25,7 @@ class User
   def new_entries_count_for(user = nil)
     if user
       relationship = user.relationship_with(self)
-      relationship.nil? ? 0 : self.entries_count_for(user) - relationship.last_viewed_entries_count
+      !!relationship ? self.entries_count_for(user) - relationship.last_viewed_entries_count : 0
     else
       0
     end
