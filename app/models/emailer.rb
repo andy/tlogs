@@ -4,14 +4,14 @@ class Emailer < ActionMailer::Base
   def signup(current_service, user)
     setup     current_service,
                 :subj => 'ммм... регистрация',
-                :from => '"Ммм... тейсти" <noreply@mmm-tasty.ru>',
+                :from => '"Ммм... тейсти" <noreply+signup@mmm-tasty.ru>',
                 :user => user
   end
 
   def confirm(current_service, user, email)
     setup     current_service,
                 :subj => 'ммм... подтверждение емейл адреса',
-                :from => '"Mmm... noreply" <noreply@mmm-tasty.ru>',
+                :from => '"Mmm... noreply" <noreply+signup@mmm-tasty.ru>',
                 :email => email,
                 :body => { :user => user, :email => email }
   end
@@ -19,7 +19,7 @@ class Emailer < ActionMailer::Base
   def message(current_service, user, message)
     setup     current_service,
                 :subj => 'ммм.... новое личное сообщение',
-                :from => '"Mmm... message" <messages@mmm-tasty.ru>',
+                :from => '"Mmm... message" <noreply+messages@mmm-tasty.ru>',
                 :user => user,
                 :body => { :message => message }
   end
@@ -27,7 +27,7 @@ class Emailer < ActionMailer::Base
   def comment(current_service, user, comment)
     setup     current_service,
                 :subj => "ммм... комментарий (#{comment.entry.excerpt})",
-                :from => '"Mmm... comments" <comments@mmm-tasty.ru>',
+                :from => '"Mmm... comments" <noreply+comments@mmm-tasty.ru>',
                 :user => user,
                 :body => { :comment => comment }
   end  
@@ -35,7 +35,7 @@ class Emailer < ActionMailer::Base
   def comment_reply(current_service, user, comment)
     setup     current_service,
                 :subj => "ммм... ответ на ваш комментарий (#{comment.entry.excerpt})",
-                :from => '"Mmm... comments" <comments@mmm-tasty.ru>',
+                :from => '"Mmm... comments" <noreply+comments@mmm-tasty.ru>',
                 :user => user,
                 :body => { :comment => comment }
   end  
@@ -44,7 +44,7 @@ class Emailer < ActionMailer::Base
   def comment_to_subscriber(current_service, user, comment)
     setup     current_service,
                 :subj => "ммм... комментарий (#{comment.entry.excerpt})",
-                :from => '"Mmm... comments" <comments@mmm-tasty.ru>',
+                :from => '"Mmm... comments" <noreply+comments@mmm-tasty.ru>',
                 :user => user,
                 :body => { :comment => comment }
   end
@@ -53,7 +53,7 @@ class Emailer < ActionMailer::Base
   def lost_password(current_service, user)
     setup     current_service,
                 :subj => 'ммм... напоминание пароля',
-                :from => '"Mmm... password" <noreply@mmm-tasty.ru>',
+                :from => '"Mmm... password" <noreply+signup@mmm-tasty.ru>',
                 :user => user
   end
   
