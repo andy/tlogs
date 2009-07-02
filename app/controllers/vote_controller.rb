@@ -15,6 +15,7 @@ class VoteController < ApplicationController
     def require_voteable_entry_id
       @entry = Entry.find(params[:entry_id]) rescue nil
       render(:text => 'sorry, entry not found') and return false unless @entry
+      render(:text => 'sorry, post requests only') and return false unless request.post?
       render(:text => 'sorry, entry is not voteable') and return false unless @entry.is_voteable?
       render(:text => 'sorry, you cant vote for this entry') and return false unless current_user.can_vote?(@entry)
       true

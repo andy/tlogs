@@ -12,6 +12,8 @@ class FavesController < ApplicationController
   
   # попадаем сюда через global/fave
   def create
+    render :nothing => true and return unless request.post?
+
     entry = Entry.find params[:id]
     render :text => 'entry not found' and return unless entry
 

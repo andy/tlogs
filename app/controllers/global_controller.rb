@@ -2,16 +2,16 @@ class GlobalController < ApplicationController
   before_filter :require_current_user, :only => [:relationship, :relationship_destroy, :relationship_toggle, :pref_friends]
 
   def entry_metadata
+    render :nothing => true and return unless request.post?
+
     @entry = Entry.find(params[:entry_id])
     render :text => 'oops' and return if !@entry || (@entry.is_private? && current_user && @entry.user_id != current_user.id)
     render :partial => 'tlog/metadata', :locals => { :entry => @entry }
   end
 
-  def test
-    render :template => 'globals/empty', :layout => 'main'
-  end
-
   def relationship
+    render :nothing => true and return unless request.post?
+
     @user = User.find(params[:user_id])
     @relationship = current_user.relationship_with(@user, true)
     render :layout => false
