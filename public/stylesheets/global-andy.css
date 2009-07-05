@@ -68,3 +68,14 @@ div.message_sender a {
   font-size: 10px;
   padding-left: 3px;
 }
+
+/* textarearesizer */
+div.grippie {
+	background:#EEEEEE url(grippie.png) no-repeat scroll center 2px;
+	border-color:#DDDDDD;
+	border-style:solid;
+	border-width:0pt 1px 1px;
+	cursor:s-resize;
+	height:9px;
+	overflow:hidden;
+}

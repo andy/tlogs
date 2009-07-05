@@ -111,79 +111,6 @@ function do_not_reply_to_comment(id) {
   _update_comment_textarea();
 }
 
-/* safari label fix */
-// if (navigator.userAgent.indexOf('Safari') != -1) {
-//   Event.observe(window, 'load', function() {
-//     var lock = false;
-//     var elements = document.getElementsByTagName('label');
-//     $A(elements).each( function(element) {
-//       Event.observe(element, 'click', function() {
-//        var input = (this.htmlFor ? $(this.htmlFor) : this.getElementsByTagName('input')[0]);
-//        if (input && !lock) {
-//          input.focus();
-//          lock = true;
-//          if(input.click) input.click();
-//          lock = false;
-//        }
-//       }); });
-//   } );
-// }
-
-
-/* http://lojjic.net/script-library/TextAreaResizer.js */
-/*
-**  TextAreaResizer script by Jason Johnston (jj@lojjic.net)
-**  Created August 2003.  Use freely, but give me credit.
-**
-**  This script adds a handle below textareas that the user
-**  can drag with the mouse to resize the textarea.
-*/
-
-function TextAreaResizer(elt) {
-	this.element = elt;
-	this.create();
-}
-TextAreaResizer.prototype = {
-	create : function() {
-		var elt = this.element;
-		var thisRef = this;
-		
-		var h = this.handle = document.createElement("div");
-		h.className = "textarea-resizer";
-		h.title = "Drag to resize text box";
-		h.addEventListener("mousedown", function(evt){thisRef.dragStart(evt);}, false);
-		elt.parentNode.insertBefore(h, elt.nextSibling);
-	},
-	
-	dragStart : function(evt) {
-		var thisRef = this;
-		this.dragStartY = evt.clientY;
-		this.dragStartH = parseFloat(document.defaultView.getComputedStyle(this.element, null).getPropertyValue("height"));
-		document.addEventListener("mousemove", this.dragMoveHdlr=function(evt){thisRef.dragMove(evt);}, false);
-		document.addEventListener("mouseup", this.dragStopHdlr=function(evt){thisRef.dragStop(evt);}, false);
-	},
-	
-	dragMove : function(evt) {
-		this.element.style.height = this.dragStartH + evt.clientY - this.dragStartY + "px";
-	},
-	
-	dragStop : function(evt) {
-		document.removeEventListener("mousemove", this.dragMoveHdlr, false);
-		document.removeEventListener("mouseup", this.dragStopHdlr, false);
-	},
-	
-	destroy : function() {
-		var elt = this.element;
-		elt.parentNode.removeChild(this.handle);
-		elt.style.height = "";
-	}
-};
-
-Event.observe(window, 'load', function() {
-  $$('.resizeable').each(function(element) { new TextAreaResizer(element); });
-});
-// TextAreaResizer.scriptSheetSelector = "textarea";
-
 /* ie hover fix */
 function makeHover(classList) {
   classList.each(function(item) {
@@ -201,25 +128,4 @@ if(/MSIE/.test(navigator.userAgent) && !window.opera) {
     var classes = new Array('post_body');
     makeHover(classes);
   });
-}
-
-/* hide all flash object on page */
-function toggle_flash(visibility) {
-  var embeds = document.getElementsByTagName('embed');
-  for(i = 0; i < embeds.length; i++) {
-    embeds[i].style.visibility = visibility;
-  }
-
-  var objects = document.getElementsByTagName('object');
-  for(i = 0; i < objects.length; i++) {
-    objects[i].style.visibility = visibility;
-  }
-}
-
-function hide_flash() {
-  toggle_flash('hidden');
-}
-
-function show_flash() {
-  toggle_flash('visible')
 }

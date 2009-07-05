@@ -14,7 +14,7 @@
 		<input type='hidden' name='reply_to' id='comment_reply_to' value='' />
 			<div id='post_comment_form_greeting'>Что скажете, <%= link_to_tlog(current_user) %>?</div>
 			<label for='comment_comment' class='comment_comment'>
-				<%= f.text_area :comment, :class => 'comment_body resizeable' %>
+				<%= f.text_area :comment, :class => 'comment_body resizable' %>
 				<%= tasty_error_message_on 'comment', 'comment' %>
 			</label>
 			<div id='allowed_html_tags'>разрешенные теги: b i big small a img</div>

@@ -108,7 +108,7 @@ module WhiteListHelper
       end      
       src ||= embed_params["movie"]
 
-      text = "<object width='#{width}' height='#{height}'>#{embed_params.map{|name, value| "<param name='#{name}' value='#{value}'></param>"}.join}<embed src='#{src}' type='application/x-shockwave-flash' #{embed_params.except('movie').map{|name, value| "#{name}='#{value}'"}.join(" ")} width='#{width}' height='#{height}'></embed></object>"
+      text = "<object width='#{width}' height='#{height}'>#{embed_params.map{|name, value| "<param name='#{name}' value='#{value}' />"}.join}<embed src='#{src}' type='application/x-shockwave-flash' #{embed_params.except('movie').map{|name, value| "#{name}='#{value}'"}.join(" ")} width='#{width}' height='#{height}' /></object>"
 
       if flash.css_path.include?(" p ") || flash.css_path.include?("p:")
         flash.swap(text)

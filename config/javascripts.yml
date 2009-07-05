@@ -6,11 +6,20 @@ application:
 - prototype.min
 - effects.min
 - dragdrop.min
+- jquery-1.3.2.min
+# jquery setup & plugins
+- jquery.noconflict
+- jquery.hotkeys
+- jquery.autoresize.min
+# plugin usage
+- hotkeys
+- autoresize
 - audio-player.min
 - swfobject.min
 - fancyzoom.min
 - fancyzoomhtml.min
 - fixpng
+- toggle-flash
 - error-messages-on
 - openid
 - google-analytics

@@ -20,7 +20,7 @@
 				<div id='post_comment_form_greeting'>Что скажете, <%= link_to_tlog(current_user) %>?</div>
 			<% end %>
 			<label for='comment_comment' class='comment_comment'>
-				<%= f.text_area :comment, :class => 'comment_body resizeable' %>
+				<%= f.text_area :comment, :class => 'comment_body resizable' %>
 				<%= tasty_error_message_on 'comment', 'comment' %>
 			</label>
 			<% if current_user %>

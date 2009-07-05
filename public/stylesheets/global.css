@@ -3282,27 +3282,28 @@ div.service_date * {
 
 
 /*end*/
-.textarea-resizer {
-	background:#777;
-	height:5px;
-	width:421px;
-	cursor:NS-resize;
-	top:-2px;;
-	position:relative;;
+/*.textarea-resizer {
+  background:#777;
+  height:5px;
+  width:421px;
+  cursor:NS-resize;
+  top:-2px;;
+  position:relative;;
 }
 body.bg_main .textarea-resizer {
-	background:#bcb893;
-	position:relative;
-	top:-15px;
-	width:510px;
-	padding:0;
-	margin:0;
+  background:#bcb893;
+  position:relative;
+  top:-15px;
+  width:510px;
+  padding:0;
+  margin:0;
 }
 .layout_2 .textarea-resizer {
-	width:290px;
-	padding:0;
-	margin:0;
+  width:290px;
+  padding:0;
+  margin:0;
 }
+*/
 #entry_visibility_div {
 	margin:35px 0 20px 0;
 } 
@@ -3313,11 +3314,6 @@ body.bg_main .textarea-resizer {
 div.search {
 	padding:10px 0 0 0;
 
-}
-.sidebar_calendar {
-	
-}
-.calendar a {
 }
 .strong {
 	font-weight:bold;
@@ -3337,9 +3333,6 @@ div.sidebar_others a, div.sidebar_calendar a,  div.sidebar_calendar span{
 	padding:1px 3px;
 }
 
-.sidebar_about {
-
-}
 span.month, span.year {
 	font-weight:bold;
 	font-size:0.88em;

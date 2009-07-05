@@ -160,7 +160,7 @@
 	<%= link_to_function 'Добавьте ваш собственный CSS-код', 'Effect.toggle("design_css", "blind", { duration: 0.3 });', :class => 'design_css_toggle' %>
 	<div id='design_css'<%= " style='display: none'" if @design.user_css.blank? %>>
 		<div>
-			<%= text_area :design, :user_css, :rows => nil, :cols => nil, :class => 'resizeable' %>
+			<%= text_area :design, :user_css, :rows => nil, :cols => nil, :class => 'resizable' %>
 			<%= tasty_error_message_on 'design', 'user_css' %>
 		</div>
 	</div>
