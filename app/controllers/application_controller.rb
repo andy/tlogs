@@ -46,7 +46,7 @@ class ApplicationController < ActionController::Base
       end
       
       
-      @current_site = User.find_by_url(url, :include => [:tlog_settings, :avatar])
+      @current_site = User.find_by_url(url, :include => [:tlog_settings, :avatar]) unless url.blank?
       
       true
     end
@@ -55,37 +55,20 @@ class ApplicationController < ActionController::Base
       return true if @current_user
 
       # from session
-      if session[:user_id]
-        @current_user = User.active.find_by_id(session[:user_id])
-        # logger.info "user #{@current_user.url} from session (id = #{@current_user.id})" and return true if @current_user
-      end
+      @current_user = User.active.find_by_id(session[:u]) if session[:u]
 
-      unless cookies['tsig'].blank?
-        id, sig = cookies['tsig'].unpack('m').first.unpack('LZ*')
+      unless cookies[:t].blank?
+        id, sig = cookies[:t].unpack('m').first.unpack('LZ*')
         user = User.active.find_by_id(id)
         if user && user.signature == sig
-          session[:user_id] = user.id
+          session[:u] = user.id
           @current_user = user
-          # logger.info "user #{user.url} from tsig (id = #{user.id})"
         end
       end
 
       true
     end
     
-    # # 
-    # def prelaunch_megasecrecy
-    #   return true if cookies['megasecret'] == 'v3' || params[:controller] == 'tlog_feed'
-    #   
-    #   if request.post? && params[:megasecret] == 'lsd'
-    #     cookies['megasecret'] = { :value => 'v3', :expires => 1.year.from_now, :domain => request.domain }
-    #     redirect_to service_url(main_path)
-    #     return false
-    #   end
-    #   
-    #   render :template => 'globals/prelaunch_megasecrecy', :layout => false
-    #   false
-    # end
 
     # Является ли текущий пользователь владельцем сайта
     def is_owner?
@@ -104,8 +87,7 @@ class ApplicationController < ActionController::Base
       
       flash[:notice] = 'Вам необходимо зайти чтобы выполнить запрос'
       if request.get?
-        session[:redirect_to] = "#{request.protocol}#{request.host_with_port}#{request.request_uri}"
-        logger.debug "saving back redirect to: #{session[:redirect_to]}"
+        session[:r] = "#{request.protocol}#{request.host_with_port}#{request.request_uri}"
       end
       redirect_to service_path(login_path)
       false

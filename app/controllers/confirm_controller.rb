@@ -31,7 +31,11 @@ class ConfirmController < ApplicationController
     user.clear_confirmation
     if user.save
       # выставляем новую авторизационную куку, но только если он не по openid авторизуется
-      cookies['login_field_value'] = { :value => user.email, :expires => 10.years.from_now, :domain => request.domain } unless user.is_openid?
+      cookies[:l] = {
+          :value => user.email,
+          :expires => 1.years.from_now,
+          :domain => request.domain
+        } unless user.is_openid?
     end
     flash[:good] = "Вы успешно подтвердили свой емейл, #{user.username}!"
     
@@ -43,7 +47,7 @@ class ConfirmController < ApplicationController
       end
     else
       # перенаправляем пользователя в настройки его тлога
-      session[:redirect_to] = user_url(current_user, settings_path) unless was_confirmed
+      session[:r] = user_url(current_user, settings_path) unless was_confirmed
       redirect_to service_url(login_path)
     end
   end

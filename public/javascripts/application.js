@@ -17,7 +17,7 @@ function sidebar_toggle(section) {
   var prefix = 'sidebar_' + section
   Effect.toggle(prefix + '_content', 'blind', { duration: 0.3 });
   Element.toggleClassName(prefix + '_link', 'highlight');
-  ga_page_view('/sidebar/' + section);
+  ga_event("Sidebar", section);
   return false;
 }
 

@@ -1,2 +1,1 @@
-CGI::Session.expire_after 3.months
-ActionController::CgiRequest::DEFAULT_SESSION_OPTIONS.update(:session_domain => '.mmm-tasty.ru')
+CGI::Session.expire_after 1.month

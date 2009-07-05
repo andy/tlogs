@@ -3,6 +3,7 @@
 ---
 # Main
 application:
+# core libraries
 - prototype.min
 - effects.min
 - dragdrop.min
@@ -11,11 +12,15 @@ application:
 - jquery.noconflict
 - jquery.hotkeys
 - jquery.autoresize.min
-# plugin usage
+# flash: swfobject & swfupload
+- swfobject.min
+- swfupload.min
+- swfupload.cookies.min
+- swfupload.speed.min
+# application code
 - hotkeys
 - autoresize
 - audio-player.min
-- swfobject.min
 - fancyzoom.min
 - fancyzoomhtml.min
 - fixpng

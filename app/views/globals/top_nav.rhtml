@@ -6,15 +6,15 @@
   		<div class='iePNG pref_png'>
 			<table id='pref_table'>
 				<tr>
-					<td id='pref_home'><%= link_to image_tag("live.gif", :class => 'home', :size => '17x14'), service_url(main_path(:action => :live)), :title => 'В прямой эфир', :onclick => 'ga_page_view("/top_nav/live")' %></td>
+					<td id='pref_home'><%= link_to image_tag("live.gif", :class => 'home', :size => '17x14'), service_url(main_path(:action => :live)), :title => 'В прямой эфир', :onclick => 'ga_event("Userbar", "Live")' %></td>
 					<td id='pref_fav'>
-						<%= link_to_function (image_tag('heart_sel.gif', :class => 'heart', :size => '9x8', :id => 'pref_fav_local_heart_sel') + image_tag('heart.gif', :class => 'heart', :size => '9x8', :id => 'pref_fav_local_heart', :style => 'display: none')), 'new Effect.toggle("pref_friends_rel", "appear", { duration: 0.3 }); ga_page_view("/top_nav/heart"); $("pref_fav_local_heart", "pref_fav_local_heart_sel").invoke("toggle"); return false;', :id => 'pref_fav_local', :style => 'display: none' %>
-						<%= link_to_remote image_tag("heart.gif", :class => 'heart', :size => '9x8'), { :url => global_url(:action => 'pref_friends'), :success => '$("pref_fav_remote", "pref_fav_local").invoke("toggle");', :after => 'ga_page_view("/top_nav/heart"); return false;'}, :id => 'pref_fav_remote' %>
+						<%= link_to_function (image_tag('heart_sel.gif', :class => 'heart', :size => '9x8', :id => 'pref_fav_local_heart_sel') + image_tag('heart.gif', :class => 'heart', :size => '9x8', :id => 'pref_fav_local_heart', :style => 'display: none')), 'new Effect.toggle("pref_friends_rel", "appear", { duration: 0.3 }); ga_event("Userbar", "Heart", "Inline"); $("pref_fav_local_heart", "pref_fav_local_heart_sel").invoke("toggle"); return false;', :id => 'pref_fav_local', :style => 'display: none' %>
+						<%= link_to_remote image_tag("heart.gif", :class => 'heart', :size => '9x8'), { :url => global_url(:action => 'pref_friends'), :success => '$("pref_fav_remote", "pref_fav_local").invoke("toggle");', :after => 'ga_event("Userbar", "Heart", "Ajax"); return false;'}, :id => 'pref_fav_remote' %>
 					</td>
-					<td id='pref_add'><%= link_to image_tag("add_post.png", :size => '22x23', :class => 'img_new_post'), user_url(current_user, publish_path), :title => 'Сделать новую запись', :onclick => 'ga_page_view("/top_nav/publish");' %></td>
-					<td id='pref_user'><%= link_to_tlog(current_user, { :to => :domain }, :class => 'username', :onclick => 'ga_page_view("/top_nav/tlog");') %></td>
-					<td id='pref_pref'><%= link_to image_tag("pref.gif", :size => '19x19', :class => 'prefer', :title => 'Настройки'), user_url(current_user, settings_path), :title => 'Настройки', :onclick => 'ga_page_view("/top_nav/settings");' %></td>
-					<td id='pref_exit'><%= link_to image_tag("exit.gif", :size => '23x23', :class => 'exit', :title => 'Выход'), service_url(logout_path), :title => 'Выйти', :confirm => 'Вы действительно хотите выйти?', :onclick => 'ga_page_view("/top_nav/logout");' %></td>
+					<td id='pref_add'><%= link_to image_tag("add_post.png", :size => '22x23', :class => 'img_new_post'), user_url(current_user, publish_path), :title => 'Сделать новую запись', :onclick => 'ga_event("Userbar", "Publish");' %></td>
+					<td id='pref_user'><%= link_to_tlog(current_user, :class => 'username', :onclick => 'ga_event("Userbar", "Home");') %></td>
+					<td id='pref_pref'><%= link_to image_tag("pref.gif", :size => '19x19', :class => 'prefer', :title => 'Настройки'), user_url(current_user, settings_path), :title => 'Настройки', :onclick => 'ga_event("Userbar", "Settings");' %></td>
+					<td id='pref_exit'><%= link_to image_tag("exit.gif", :size => '23x23', :class => 'exit', :title => 'Выход'), service_url(logout_path), :title => 'Выйти', :confirm => 'Вы действительно хотите выйти?', :onclick => 'ga_event("Userbar", "Logout");' %></td>
 				</tr>
 			</table>
   		</div>
@@ -22,10 +22,10 @@
 		<div class='unregistered iePNG pref_png'>
 			<table id='pref_table'>
 				<tr>
-					<td id='pref_home'><%= link_to image_tag("home.gif", :size => '17x14', :class => 'home'), service_url(main_path), :title => 'На главную тейсти', :onclick => 'ga_page_view("/top_nav/main");' %></td>
+					<td id='pref_home'><%= link_to image_tag("home.gif", :size => '17x14', :class => 'home'), service_url(main_path), :title => 'На главную тейсти', :onclick => 'ga_event("Userbar", "Main");' %></td>
 					<td id='pref_unreg_text'>Вы вне системы,&nbsp;</td>
-					<td id='pref_login'><%= link_to "войти", service_url(login_path(:ref => (current_site.domain if current_site))), :onclick => 'ga_page_view("/top_nav/login");' %></td>
-					<td id='pref_signup'><%= link_to 'зарегистрироваться', service_url(signup_path), :onclick => 'ga_page_view("/top_nav/signup");' %></td>
+					<td id='pref_login'><%= link_to "войти", service_url(login_path(:ref => (current_site.domain if current_site))), :onclick => 'ga_event("Userbar", "Login");' %></td>
+					<td id='pref_signup'><%= link_to 'зарегистрироваться', service_url(signup_path), :onclick => 'ga_event("Userbar", "Signup");' %></td>
 				</tr>
 			</table>
 		</div>

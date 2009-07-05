@@ -24,14 +24,17 @@ class AccountController < ApplicationController
           login_with_openid @user.openid
       # иначе, даже если это openid пользователь - авторизуем по емейлу
       else
-        cookies['tsig'] = { :value => [@user.id, @user.signature].pack('LZ*').to_a.pack('m').chop, :expires => 10.years.from_now, :domain => request.domain }
+        cookies[:t] = {
+            :value => [@user.id, @user.signature].pack('LZ*').to_a.pack('m').chop,
+            :expires => 1.year.from_now,
+            :domain => request.domain
+          }
         login_user @user, :remember => @user.email
       end
     else
-      @user = User.new :email => cookies['login_field_value']
+      @user = User.new :email => cookies[:l]
       if !params[:noref] && request.get? && request.env['HTTP_REFERER']
-        session[:redirect_to] = request.env['HTTP_REFERER']
-        logger.debug "redirect to #{session[:redirect_to]}"
+        session[:r] = request.env['HTTP_REFERER']
       end
     end
   end
@@ -104,8 +107,7 @@ class AccountController < ApplicationController
   
   # выходим из системы
   def logout
-    session[:user_id] = nil
-    cookies['tsig'] = { :value => nil, :expires => Time.now, :domain => request.domain }
+    cookies.delete :t, :domain => request.domain
     reset_session
     redirect_to service_url(main_path)
   end
@@ -160,7 +162,7 @@ class AccountController < ApplicationController
   end
   
   def openid_verify
-    return_to = account_url(:only_path => false, :action => 'openid_verify')
+    return_to = service_url(account_path(:only_path => false, :action => 'openid_verify'))
     parameters = params.reject{|k,v| request.path_parameters[k] }
     oresponse = openid_consumer.complete parameters, return_to
 
@@ -244,14 +246,19 @@ class AccountController < ApplicationController
     end
     
     def login_user(user, options = {})
-      cookies['login_field_value'] = { :value => options[:remember], :expires => 10.years.from_now, :domain => request.domain } if options[:remember]
-      # удаляем comment_identity - кука, которая хранит данные об анонимных комментариях пользователя (имя/урл)
-      cookies['comment_identity']  = { :value => '', :domain => request.domain }
-      session[:user_id] = user.id
+      cookies[:l] = {
+          :value => options[:remember],
+          :expires => 1.year.from_now,
+          :domain => request.domain
+        } if options[:remember]
+
+      session[:u] = user.id
+
+      # result redirect
       redirect = options[:redirect_to]
-      if session[:redirect_to]
-        redirect ||= session[:redirect_to]
-        session[:redirect_to] = nil
+      if session[:r]
+        redirect ||= session[:r]
+        session[:r] = nil
       end
       redirect_to redirect || user_url(user)
     end

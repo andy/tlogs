@@ -166,16 +166,17 @@ class Settings::DefaultController < ApplicationController
   
   # Удаление тлога
   def destroy
-    @user = User.find(current_user.id)
+    @user = User.active.find(current_user.id)
 
     if request.post?
       if params[:agree] == '1'
         @user.disable!
 
         # выходим с сайта
-        session[:user_id] = nil
-        cookies['tsig'] = { :value => nil, :expires => Time.now, :domain => request.domain }
+        cookies.delete :t, :domain => request.domain
+        cookies.delete :l, :domain => request.domain
         reset_session
+
         redirect_to service_url(main_path)
       else
         flash[:bad] = 'Нужно согласиться с удалением тлога'

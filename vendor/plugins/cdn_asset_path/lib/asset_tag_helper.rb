@@ -1,13 +1,3 @@
-if defined?(Mongrel)
-  class Mongrel::DirHandler
-    ASSET_REGEXP = /^\/[0-9]{10}\/(.*)$/
-    alias_method :can_serve_without_rewrite, :can_serve
-    def can_serve(path_info)
-      can_serve_without_rewrite(path_info[ASSET_REGEXP, 1] || path_info)
-    end
-  end
-end
-
 module ActionView::Helpers::AssetTagHelper
   def asset_file_path
     File.join(ASSETS_DIR, public_path[/^\/[0-9]{10}\/(.*)$/, 1] || public_path)
@@ -28,4 +18,4 @@ module ActionView::Helpers::AssetTagHelper
         nil
       end
     end
-end if RAILS_ENV == 'production'
+end

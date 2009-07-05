@@ -1,6 +1,5 @@
 class TlogFeedController < ApplicationController
   layout nil
-  session :off
   before_filter :require_current_site
   caches_action :rss, :photos, :last_personalized, :cache_path => Proc.new { |c| c.url_for(:expiring => (Time.now.to_i / 15.minutes).to_i, :page => c.params[:page]) }
 

@@ -22,3 +22,6 @@ config.cache_store = :mem_cache_store, '127.0.0.1:11211', { :namespace => 'd' }
 
 # Don't care if the mailer can't send
 config.action_mailer.raise_delivery_errors = false
+
+config.middleware.use 'Rack::Bug'
+config.middleware.use 'Rack::AssetProxy', :asset_path => /^\/(assets|uc)\//, :asset_uri => 'http://assets0.mmm-tasty.ru'
