@@ -9,7 +9,7 @@
 		</div>
 		<div class="post_comment_controls">
 			<% if comment.is_owner?(current_user, @entry) %>
-				<%= link_to_remote image_tag('delete.gif', :alt => "удалить этот комментарий", :title => "удалить этот комментарий", :class => 'comment_delete'), :url => @entry.is_anonymous? ? "http://www.mmm-tasty.ru/main/anonymous/comment_destroy/#{comment.id}" : entry_comment_path(@entry, comment), :method => :delete, :confirm => "Вы действительно хотите удалить этот комментарий?", :alt => 'удалить комментарий', :title => 'удалить комментарий' %>
+				<%= link_to_remote image_tag('delete.gif', :alt => "удалить этот комментарий", :title => "удалить этот комментарий", :class => 'comment_delete'), :url => @entry.is_anonymous? ? service_url("/main/anonymous/comment_destroy/#{comment.id}") : user_url(@entry.author, entry_comment_path(@entry, comment)), :method => :delete, :confirm => "Вы действительно хотите удалить этот комментарий?", :alt => 'удалить комментарий', :title => 'удалить комментарий' %>
 			<% else %>
 				<%= image_tag('blank.gif', :size => '12x13') %>
 			<% end %>
