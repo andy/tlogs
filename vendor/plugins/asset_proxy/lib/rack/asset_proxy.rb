@@ -24,7 +24,7 @@ module Rack
           FileUtils.mkdir_p(::File.dirname(local)) unless ::File.exist?(::File.dirname(local))
           ::File.open(local, 'w') { |file| file.write res.body } unless ::File.exist?(local)
         else
-          RAILS_DEFAULT_LOGGER.debug "AssetProxy: error fetching #{uri.to_s}: #{res.code} (#{res.content_type})"
+          logger.debug "AssetProxy: error fetching #{uri.to_s}: #{res.code} (#{res.content_type})"
         end
 
         [res.code, { 'Content-type' => res.content_type }, res.body]

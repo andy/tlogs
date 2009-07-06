@@ -27,7 +27,7 @@ class AccountController < ApplicationController
         cookies[:t] = {
             :value => [@user.id, @user.signature].pack('LZ*').to_a.pack('m').chop,
             :expires => 1.year.from_now,
-            :domain => request.domain
+            :domain => current_service.cookie_domain
           }
         login_user @user, :remember => @user.email
       end
@@ -107,7 +107,7 @@ class AccountController < ApplicationController
   
   # выходим из системы
   def logout
-    cookies.delete :t, :domain => request.domain
+    cookies.delete :t, :domain => current_service.cookie_domain
     reset_session
     redirect_to service_url(main_path)
   end
@@ -248,8 +248,7 @@ class AccountController < ApplicationController
     def login_user(user, options = {})
       cookies[:l] = {
           :value => options[:remember],
-          :expires => 1.year.from_now,
-          :domain => request.domain
+          :expires => 1.year.from_now
         } if options[:remember]
 
       session[:u] = user.id

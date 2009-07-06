@@ -5,7 +5,7 @@ module Tlogs
     include Singleton
     
     DEFAULT_SESSION_OPTIONS = {
-      'key' => 'session',
+      'key' => 's',
       'secret' => '4f9e6ec68c82631a58f9857faf1ee8527e5513c251a3abe062443d947c5730ce0c3ac0ee20a67a4c854e6bae7672805f628100fa2e81eb43079156e2a20eda6f'
     }
     

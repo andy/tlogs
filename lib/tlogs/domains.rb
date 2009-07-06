@@ -75,6 +75,10 @@ module Tlogs
         end
       end
       
+      # Домен для добавления глобальной куки
+      def cookie_domain
+        is_inline? ? @domain : ('.' + @domain)
+      end      
     end
   end
 end

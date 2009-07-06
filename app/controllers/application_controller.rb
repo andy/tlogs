@@ -21,10 +21,20 @@ class ApplicationController < ActionController::Base
   helper_method   :is_admin?
 
   before_filter :preload_current_service
+  before_filter :remove_old_cookies
   before_filter :preload_current_site # loads @current_site
   before_filter :preload_current_user # loads @current_user
   
   protected
+    def remove_old_cookies
+      cookies.delete :tsig
+      cookies.delete :tsig, :domain => current_service.cookie_domain
+      cookies.delete :login_field_value
+      cookies.delete :login_field_value, :domain => current_service.cookie_domain
+      cookies.delete :tlogs
+      cookies.delete :tlogs, :domain => current_service.cookie_domain
+    end
+  
     def preload_current_service
       @current_service = Tlogs::Domains::CONFIGURATION.options_for(request.host || 'localhost', request)
     end
