@@ -17,11 +17,7 @@
 			<div class='post_comment_author'><%= link_to_comment_author(@comment, current_site && @comment.user_id == current_site.id) %></div>
 			<div class='post_comment_time'>предпросмотр</div>
 			<div class='post_comment_text<%= ' author_reply' if @comment.user_id == current_site.id %>'>
-				<% if @comment.user_id == 0 %>
-					<%= @comment.fetch_cached_or_run_block { |text| white_list_anonymous_comment text } %>
-				<% else %>
-					<%= @comment.fetch_cached_or_run_block { |text| white_list_comment text } %>
-				<% end %>
+				<%= @comment.fetch_cached_or_run_block { |text| white_list_comment text } %>
 			</div>
 		</div>
 	</div>

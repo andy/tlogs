@@ -62,7 +62,7 @@ class AnonymousController < ApplicationController
     render(:text => 'oops, entry deleted') and return if @entry.is_disabled?
     render(:text => 'comments disabled for this entry, sorry') and return unless @entry.comments_enabled?
     render(:text => 'sorry, anonymous users are not allowed to comment') and return unless current_user
-    render(:text => 'sorry, you need to confirm your email address first') and return  unless current_user.is_confirmed?
+    render(:text => 'sorry, you need to confirm your email address first') and return unless current_user.is_confirmed?
 
     user = current_user if current_user
     @comment = Comment.new(params[:comment])

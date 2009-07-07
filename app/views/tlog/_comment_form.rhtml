@@ -1,10 +1,11 @@
 <% if !current_user %>
-	<div id='anonymous_comments_disabled'>
-		Комментарии могут оставлять только зарегистрированные пользователи. <%= link_to 'Зарегистрируйтесь', service_url(signup_path)  %>, либо <%= link_to 'войдите в свой аккаунт', service_url(login_path) %> чтобы оставить комментарий.
+	<div class='comments_not_available'>
+		<p>Комментарии могут оставлять только зарегистрированные пользователи.</p>
+		<p><%= link_to 'Зарегистрируйтесь', service_url(signup_path) %> или <%= link_to 'войдите', service_url(login_path) %>.</p>
 	</div>
 <% elsif !current_user.is_confirmed? %>
-	<div id='anonymous_comments_disabled'>
-		Для того чтобы оставить комменатрий, вам осталось лишь подтвердить свой емейл адрес, <%= h current_user.url %>!
+	<div class='comments_not_available'>
+		<p>Для того чтобы оставить комменатрий, вам осталось лишь подтвердить свой емейл адрес, <%= h current_user.url %>!</p>
 	</div>
 <% else %>
 	<div id='comment_preview'></div>

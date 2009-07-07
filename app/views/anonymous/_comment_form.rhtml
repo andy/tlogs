@@ -1,13 +1,18 @@
 <% if !current_user %>
-	<div id='anonymous_comments_disabled'>
-		Комментарии могут оставлять только зарегистрированные пользователи. <%= link_to 'Зарегистрируйтесь', service_url(signup_path)  %>, либо <%= link_to 'войдите в свой аккаунт', service_url(login_path) %> чтобы оставить комментарий.
+	<div class='comments_not_available'>
+		<p>Комментарии могут оставлять только зарегистрированные пользователи.</p>
+		<p><%= link_to 'Зарегистрируйтесь', service_url(signup_path) %> или <%= link_to 'войдите', service_url(login_path) %>.</p>
 	</div>
+<% elsif !current_user.is_confirmed? %>
+	<div class='comments_not_available'>
+		<p>Для того чтобы оставить комменатрий, вам осталось лишь подтвердить свой емейл адрес, <%= h current_user.url %>!</p>
+	</div>  
 <% else %>
 <div id='comment_preview'></div>
 
 <div class='post_comment_form' id='post_comment_form'>
 	<% remote_form_for :comment,
-			:url => anonymous_path(:action => :comment, :id => @entry.id),
+			:url => service_url(anonymous_path(:action => :comment, :id => @entry.id)),
 			:before => "$('#{@entry.dom_id(:ajax_spinner)}').show(); remote_request_started('comment_submit_button', 'Отправляем ...');",
 			:complete => "$('#{@entry.dom_id(:ajax_spinner)}').hide(); remote_request_finished('comment_submit_button', 'Отправить комментарий');",
 			:html => { :class => 'small', :id => @entry.dom_id(:form) } do |f| %>
@@ -18,7 +23,7 @@
 				<%= tasty_error_message_on 'comment', 'comment' %>
 			</label>
 			<div id='allowed_html_tags'>разрешенные теги: b i big small a img</div>
-			<%= submit_to_remote "button", "Предпросмотр", :url => anonymous_path(:action => :preview, :id => @entry.id), :before => "$('#{@entry.dom_id(:ajax_spinner)}').show(); remote_request_started('generate_preview', 'Подготавливаем ...');", :complete => "$('#{@entry.dom_id(:ajax_spinner)}').hide(); remote_request_finished('generate_preview', 'Предпросмотр');", :html => { :id => 'generate_preview', :class => 'button' } %>&nbsp;
+			<%= submit_to_remote "button", "Предпросмотр", :url => service_url(anonymous_path(:action => :preview, :id => @entry.id)), :before => "$('#{@entry.dom_id(:ajax_spinner)}').show(); remote_request_started('generate_preview', 'Подготавливаем ...');", :complete => "$('#{@entry.dom_id(:ajax_spinner)}').hide(); remote_request_finished('generate_preview', 'Предпросмотр');", :html => { :id => 'generate_preview', :class => 'button' } %>&nbsp;
 		<%= submit_tag 'Отправить комментарий', :id => 'comment_submit_button', :class => 'comment_send' %>
 		<%= image_tag 'ajax-small-loader.gif', :size => '15x15', :style => 'display: none;', :id => @entry.dom_id(:ajax_spinner) %>
 	<% end %>

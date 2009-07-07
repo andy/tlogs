@@ -2,10 +2,11 @@
   @entry = @comment.entry
   @entry_author = @entry.author
   @is_anonymous = @entry.is_anonymous?
+  @is_anonymous_author = @entry.user_id == @comment.user_id && @is_anonymous
 -%>
 Здравствуйте, <%= h @user.username %>!
 
-Пользователь <%= h @comment.user.url %> ответил на ваш комментарий к записи "<%= h @comment.entry.excerpt %>"
+<%= @is_anonymous_author ? "Аноним" : "Пользователь #{@comment.user.url}" %> ответил на ваш комментарий к <%= @is_anonymous ? 'анонимке' : 'записи' %> "<%= h @comment.entry.excerpt %>"
 
 Вам ответили:
   <%= h @comment.comment %>

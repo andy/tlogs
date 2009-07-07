@@ -1,9 +1,14 @@
+<%
+  anonymous_entry = @entry.is_anonymous?
+  is_author = comment.user_id == @entry.user_id
+  is_anonymous_author = anonymous_entry && is_author
+%>
 <a name="comment<%= comment.id %>"></a>
 <%= "<a name='new'></a>" if @last_comment_viewed == (@comments || @entry.comments).index(comment) %>
-<div class="post_comment <%= 'post_comment_new' if @last_comment_viewed <= (@comments || @entry.comments).index(comment) %>" id="<%= dom_id(comment) %>">				
+<div class="post_comment<%= ' post_comment_new' if @last_comment_viewed <= (@comments || @entry.comments).index(comment) %><%= ' post_comment_by_anonymous' if is_anonymous_author %>" id="<%= dom_id(comment) %>">				
 	<div class='rel'>
-		<div class='post_comment_avatar'>
-			<% if !comment.user.nil? && comment.user.avatar %>
+		<div class='post_comment_avatar<%= ' post_comment_avatar_anonymous' if is_anonymous_author %>'>
+			<% if !is_anonymous_author && !comment.user.nil? && comment.user.avatar %>
 				<%= link_to avatar_image_tag(comment.user), user_url(comment.user) %>
 			<% end %>
 		</div>
@@ -14,23 +19,19 @@
 				<%= image_tag('blank.gif', :size => '12x13') %>
 			<% end %>
 			<% if current_user && !comment.user.nil? && current_user.id != comment.user.id %>
-				<%= link_to_function image_tag('arrow_i.gif', :class => 'img_reply'), "reply_to_comment(#{comment.id});", :id => "reply_to_comment_#{comment.id}", :title => "Ответить на #{comment.user.gender('его', 'её')} комментарий" %>
-				<%= link_to_function image_tag('arrow_g.gif', :class => 'img_reply img_reply_active'), "do_not_reply_to_comment(#{comment.id});", :style => 'display: none;', :id => "replying_to_comment_#{comment.id}", :title => "Не отвечать на #{comment.user.gender('его', 'её')} комментарий" %>
+				<%= link_to_function image_tag('arrow_i.gif', :class => 'img_reply'), "reply_to_comment(#{comment.id});", :id => "reply_to_comment_#{comment.id}", :title => "Ответить на #{is_anonymous_author ? "этот" : comment.user.gender('его', 'её')} комментарий" %>
+				<%= link_to_function image_tag('arrow_g.gif', :class => 'img_reply img_reply_active'), "do_not_reply_to_comment(#{comment.id});", :style => 'display: none;', :id => "replying_to_comment_#{comment.id}", :title => "Не отвечать на #{is_anonymous_author ? "этот" : comment.user.gender('его', 'её')} комментарий" %>
 			<% end %>
 		</div>
 	</div>
 	<div class='comment_text'>
 		<!-- keep this for js reply_to code -->
-			<div style='display: none;' id='comment_author_<%= comment.id %>'><%= h(comment.user.url) %></div>
+			<div style='display: none;' id='comment_author_<%= comment.id %>'><%= is_anonymous_author ? 'аноним' : h(comment.user.url) %></div>
 		<!-- /keep -->
-		<div class='post_comment_author'><%= link_to_comment_author(comment, current_site && comment.user_id == current_site.id) %></div>
+		<div class='post_comment_author'><%= is_anonymous_author ? 'аноним' : link_to_comment_author(comment, current_site && comment.user_id == current_site.id) %></div>
 		<div class='post_comment_time' title='<%= comment.created_at.to_timestamp_s %>'><%= comment.created_at.distance_between_in_words(Time.now, ' назад') %></div>
 		<div class='post_comment_text'>
-			<% if comment.user_id == 0 %>
-				<%= comment.fetch_cached_or_run_block { |text| white_list_anonymous_comment text } %>
-			<% else %>
-				<%= comment.fetch_cached_or_run_block { |text| white_list_comment text } %>
-			<% end %>
+			<%= comment.fetch_cached_or_run_block { |text| white_list_comment text } %>
 		</div>
 	</div>
 </div>

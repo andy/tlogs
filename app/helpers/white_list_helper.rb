@@ -31,10 +31,6 @@ module WhiteListHelper
     white_list_html_with_rescue(text, :flash_width => 290)
   end
   
-  def white_list_anonymous_comment(text)
-    white_list_html_with_rescue(text, :flash_width => 290)
-  end
-
   def white_list_html_with_rescue(html, options = {})
     begin
       white_list_html(html, options)
