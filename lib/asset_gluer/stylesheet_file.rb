@@ -22,13 +22,25 @@ module AssetGluer
     # его обычным образом
     def import_line(line)
       return line unless line =~ /@import/
+      
+      RAILS_DEFAULT_LOGGER.debug "processing import: #{line}"
       css = line[/@import \(?"([^\)]+)"\)?;/, 1]
+      
+      RAILS_DEFAULT_LOGGER.debug "found css: #{css}"
       if css =~ /http:\/\/assets?\./
         path = URI.parse(css).path.gsub(/^(\/\d+)\//, '/')
       else
         path = css
       end
-      AssetGluer::StylesheetFile.new(expand_relative_path(css)).process
+      
+      RAILS_DEFAULT_LOGGER.debug "css path: #{path}"
+
+
+      result = AssetGluer::StylesheetFile.new(expand_relative_path(css)).process
+      
+      RAILS_DEFAULT_LOGGER.debug "result: #{result}"
+      
+      result
     end
 
     # преобразовать путь до картинки в относительный относительно AssetGluer.asset_dir

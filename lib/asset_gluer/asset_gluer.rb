@@ -51,10 +51,10 @@ class File
   end
 end
 
-class String
-  alias_method :starts_with?, :start_with?
-  def starts_with?(prefix)
-    prefix = prefix.to_s
-    self[0, prefix.length] == prefix
-  end  
-end
+# class String
+#   alias_method :starts_with?, :start_with?
+#   def starts_with?(prefix)
+#     prefix = prefix.to_s
+#     self[0, prefix.length] == prefix
+#   end  
+# end

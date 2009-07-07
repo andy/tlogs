@@ -15,7 +15,7 @@ div#y-panel_h.hd { font-size: 12px; background-color: #3c3c3c; background-image:
 
 
 /* settings/social */
-a.rss { padding-right: 18px; background:url(../images/feed-icon-14x14.png) no-repeat scroll 100% 50%; }
+a.rss { padding-right: 18px; background:url('../images/feed-icon-14x14.png') no-repeat scroll 100% 50%; }
 
 /* comments formatting */
 div.comment_text p { margin-bottom: 1em; }
@@ -67,15 +67,4 @@ div.message_sender a {
   font-style: italic;
   font-size: 10px;
   padding-left: 3px;
-}
-
-/* textarearesizer */
-div.grippie {
-	background:#EEEEEE url(grippie.png) no-repeat scroll center 2px;
-	border-color:#DDDDDD;
-	border-style:solid;
-	border-width:0pt 1px 1px;
-	cursor:s-resize;
-	height:9px;
-	overflow:hidden;
 }
