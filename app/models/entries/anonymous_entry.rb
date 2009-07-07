@@ -24,6 +24,8 @@
 #   data_part_1 - текст
 #   data_part_2 - заголовок
 class AnonymousEntry < Entry
+  ANONYMOUS_COMMENTS_DEPLOY_TIME = Time.parse("Tue Jul 07 10:30:00 +0400 2009")
+  
   validates_presence_of :data_part_1, :on => :save
   validates_length_of :data_part_1, :within => 1..ENTRY_MAX_LENGTH, :on => :save, :too_long => 'это поле слишком длинное'
   validates_length_of :data_part_2, :within => 0..ENTRY_MAX_LENGTH, :on => :save, :if => Proc.new { |e| !e.data_part_2.blank? }, :too_long => 'это поле слишком длинное'
