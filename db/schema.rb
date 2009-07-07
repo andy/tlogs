@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090701165611) do
+ActiveRecord::Schema.define(:version => 20090707171555) do
 
   create_table "attachments", :force => true do |t|
     t.integer "entry_id",     :default => 0,  :null => false
@@ -68,7 +68,9 @@ ActiveRecord::Schema.define(:version => 20090701165611) do
   create_table "comments", :force => true do |t|
     t.integer  "entry_id",                   :default => 0,     :null => false
     t.text     "comment"
-    t.integer  "user_id",                                       :null => false
+    t.integer  "user_id",                    :default => 0
+    t.string   "ext_username"
+    t.string   "ext_url"
     t.boolean  "is_disabled",                :default => false, :null => false
     t.datetime "created_at",                                    :null => false
     t.datetime "updated_at"
@@ -76,9 +78,7 @@ ActiveRecord::Schema.define(:version => 20090701165611) do
     t.string   "remote_ip",    :limit => 17
   end
 
-  add_index "comments", ["created_at"], :name => "index_comments_on_created_at"
-  add_index "comments", ["entry_id"], :name => "index_comments_on_entry_id"
-  add_index "comments", ["user_id"], :name => "index_comments_on_user_id"
+  add_index "comments", ["entry_id", "user_id"], :name => "index_comments_on_entry_id_and_user_id"
 
   create_table "delayed_jobs", :force => true do |t|
     t.integer  "priority",   :default => 0
@@ -114,14 +114,13 @@ ActiveRecord::Schema.define(:version => 20090701165611) do
     t.text     "cached_tag_list"
     t.boolean  "is_mainpageable",  :default => true,  :null => false
     t.boolean  "comments_enabled", :default => false, :null => false
-    t.boolean  "delta",            :default => true,  :null => false
   end
 
-  add_index "entries", ["delta"], :name => "index_entries_on_delta"
   add_index "entries", ["id", "user_id", "is_private"], :name => "tmpindex2"
   add_index "entries", ["is_disabled"], :name => "index_entries_on_is_disabled"
   add_index "entries", ["is_mainpageable", "created_at", "type"], :name => "index_entries_on_is_mainpageable_and_created_at_and_type"
   add_index "entries", ["is_mainpageable", "is_private", "id"], :name => "index_entries_on_is_mainpageable_and_is_private_and_id"
+  add_index "entries", ["type"], :name => "index_entries_on_type"
   add_index "entries", ["user_id", "created_at", "type"], :name => "index_entries_on_user_id_and_created_at_and_type"
   add_index "entries", ["user_id", "is_private", "created_at"], :name => "index_entries_on_user_id_and_is_private_and_created_at"
   add_index "entries", ["user_id", "is_private", "id"], :name => "tmpindex"

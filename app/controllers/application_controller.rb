@@ -27,12 +27,35 @@ class ApplicationController < ActionController::Base
   
   protected
     def remove_old_cookies
-      cookies.delete :tsig
-      cookies.delete :tsig, :domain => current_service.cookie_domain
-      cookies.delete :login_field_value
-      cookies.delete :login_field_value, :domain => current_service.cookie_domain
-      cookies.delete :tlogs
-      cookies.delete :tlogs, :domain => current_service.cookie_domain
+      if cookies[:tsig]
+        cookies.delete :tsig
+        cookies.delete :tsig, :domain => current_service.cookie_domain
+      end
+      
+      if cookies[:login_field_value]
+        cookies.delete :login_field_value
+        cookies.delete :login_field_value, :domain => current_service.cookie_domain
+      end
+      
+      if cookies[:tlogs]
+        cookies.delete :tlogs
+        cookies.delete :tlogs, :domain => current_service.cookie_domain
+      end
+      
+      if cookies['tlogs-100']
+        cookies.delete 'tlogs-100'
+        cookies.delete 'tlogs-100', :domain => current_service.cookie_domain
+      end
+      
+      if cookies['tlogs-112']
+        cookies.delete 'tlogs-112'
+        cookies.delete 'tlogs-112', :domain => current_service.cookie_domain
+      end
+      
+      if cookies['session']
+        cookies.delete :session
+        cookies.delete :session, :domain => current_service.cookie_domain
+      end
     end
   
     def preload_current_service
