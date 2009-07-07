@@ -81,6 +81,6 @@ END
   end
   
   def paginate(pageable, options = {})
-    render :file => 'globals/pagination', :locals => options.merge(:pageable => pageable)
+    render :partial => 'globals/pagination', :locals => options.merge(:pageable => pageable)
   end  
 end

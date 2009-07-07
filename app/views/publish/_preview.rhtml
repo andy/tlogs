@@ -1,7 +1,7 @@
 <!-- publish _preview -->
 <div id='post_preview'>
 	<h2 class='preview'>Предварительный просмотр</h2>
-	<%= render :file => 'entries/entry_display', :locals => { :entry => @entry, :show_comments => false, :show_datetime => false } -%>
+	<%= render :partial => 'entries/entry_display', :locals => { :entry => @entry, :show_comments => false, :show_datetime => false } -%>
 
 	<div id='preview_controls'>
 		<% unless @entry.new_record? %>

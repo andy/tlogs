@@ -3,7 +3,7 @@
 <!-- layout tlog_rounded_new -->
 <html>
 <head>
-	<%= render :file => 'globals/head' %>
+	<%= render :partial => 'globals/head' %>
 	<% cache "#{current_site.url}/tlog/style/#{current_site.tlog_settings.css_revision}", :expires_in => 1.day do %>
   	<%= render :partial => 'tlog/style' %>
 	<% end if current_site.tlog_settings %>
@@ -45,8 +45,8 @@
 				</div>
 			</div>
 		</div>
-		<%= render :file => 'globals/foot' %>
+		<%= render :partial => 'globals/foot' %>
 	</div>	
-	<%= render :file => 'globals/top_nav' %>
+	<%= render :partial => 'globals/top_nav' %>
 </body>
 </html>

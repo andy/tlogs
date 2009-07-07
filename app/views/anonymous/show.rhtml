@@ -1,6 +1,6 @@
 <% @title = @entry.excerpt || @entry.to_russian %>
 <div class='onair'>
-	<%= render :file => 'entries/anonymous_entry_display', :locals => { :entry => @entry, :show_datetime => true } %>
+	<%= render :partial => 'entries/anonymous_entry_display', :locals => { :entry => @entry, :show_datetime => true } %>
 	<a name="comments"></a>
 
 	<% if @entry.comments_enabled? || @entry.comments.size > 0 %>

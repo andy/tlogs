@@ -21,7 +21,7 @@
 <% else %>
 	<div class='onair'>
 		<% @entry_ratings.each_with_index do |entry_rating, index| %>
-			<%= render :file => 'entries/entry_display', :locals => { :entry => entry_rating.entry, :show_comments_bubble => true, :show_username => true } %>
+			<%= render :partial => 'entries/entry_display', :locals => { :entry => entry_rating.entry, :show_comments_bubble => true, :show_username => true } %>
 		<% end %>
 
 		<%= paginate @entry_ratings, :reverse => true, :url_options => { :kind => @filter.kind, :rating => @filter.rating } %>	

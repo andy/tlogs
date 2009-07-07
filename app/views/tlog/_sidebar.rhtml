@@ -82,7 +82,7 @@
 					}, :id => 'sidebar_tag_cloud_remote', :class => 'sidebar_toggle') %>
 			<% end %>
 			<div class='sidebar_section_content' id='sidebar_tag_cloud_content'<%= ' style="display: none"' unless inline_tags %>>
-				<%= render('tlog/_tags', { :highlight_tags => inline_tags }) if inline_tags %>
+				<%= render(:partial => 'tlog/tags', :locals => { :highlight_tags => inline_tags }) if inline_tags %>
 			</div>
 		</div>
 	<% end %>
@@ -91,7 +91,7 @@
 		<div class='sidebar_section' id='sidebar_calendar'>
 			<%= link_to_function 'Календарь', "sidebar_toggle('calendar')" , :class => "sidebar_toggle #{'highlight' if params[:action] == 'day'}", :id => 'sidebar_calendar_link' %>
 			<div class='sidebar_section_content' id='sidebar_calendar_content' <%= "style='display: none'" unless params[:action] == 'day' %>>
-				<%= render :file => 'globals/calendar', :locals => { :calendar => current_site.calendar(@time), :time => (@time || Time.now) } %>
+				<%= render :partial => 'globals/calendar', :locals => { :calendar => current_site.calendar(@time), :time => (@time || Time.now) } %>
 			</div>
 		</div>
 	<% end %>
@@ -123,7 +123,7 @@
 			<%= link_to_function h(section.name), "sidebar_toggle('section_#{section.id}')", :class => "sidebar_toggle #{'highlight' if section.is_open?}", :id => section.dom_id(nil, :link) %>
 			<div class='sidebar_section_content' id='<%= section.dom_id(nil, :content) %>' <%= ' style="display: none"' unless section.is_open? %>>
 				<% section.elements.each do |element| %>				
-					<p><%= render :file => element.template_path, :locals => { :element => element } %></p>
+					<p><%= render :partial => element.template_path, :locals => { :element => element } %></p>
 				<% end %>
 			</div>
 		</div>

@@ -3,7 +3,7 @@
 <!-- layout settings -->
 <html>
 <head>
-	<%= render :file => 'globals/head' %>
+	<%= render :partial => 'globals/head' %>
 </head>
 <body class='yui-skin-sam'>
 	<div class='settings'>
@@ -13,7 +13,7 @@
 			<div class='sidebar_holder'>
 				<div class='rel'>
 					<div class='sidebar_settings'>
-						<%= render :file => 'settings/_menu' %>
+						<%= render :partial => 'settings/menu' %>
 					</div>
 				</div>
 			</div>
@@ -27,9 +27,9 @@
 		</div>
 		<div class="rounded_bottom iePNG">&nbsp;</div>
 	</div>
-	<%= render :file => 'globals/foot' %>
+	<%= render :partial => 'globals/foot' %>
 	</div>
-	<%= render :file => 'globals/top_nav' %>
+	<%= render :partial => 'globals/top_nav' %>
 	<%= yield :body %>
 </body>
 </html>

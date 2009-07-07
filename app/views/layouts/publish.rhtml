@@ -3,7 +3,7 @@
 <!-- layout publish -->
 <html>
 <head>
-	<%= render :file => 'globals/head' %>
+	<%= render :partial => 'globals/head' %>
 </head>
 <body class="bg_main body_layout_2">
 	<div id="wrapper">
@@ -15,8 +15,8 @@
 		</div>
 	</div>
 	<% unless in_bookmarklet? %>
-		<%= render :file => 'globals/foot' %>
-		<%= render :file => 'globals/top_nav' %>
+		<%= render :partial => 'globals/foot' %>
+		<%= render :partial => 'globals/top_nav' %>
 	<% end %>
 </body>
 </html>
