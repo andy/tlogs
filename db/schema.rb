@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090707171555) do
+ActiveRecord::Schema.define(:version => 20090708024036) do
 
   create_table "attachments", :force => true do |t|
     t.integer "entry_id",     :default => 0,  :null => false
@@ -210,20 +210,6 @@ ActiveRecord::Schema.define(:version => 20090707171555) do
 
   add_index "mobile_settings", ["keyword"], :name => "index_mobile_settings_on_keyword", :unique => true
   add_index "mobile_settings", ["user_id"], :name => "index_mobile_settings_on_user_id", :unique => true
-
-  create_table "performances", :force => true do |t|
-    t.string  "controller",                  :null => false
-    t.string  "action",                      :null => false
-    t.integer "calls",      :default => 0,   :null => false
-    t.float   "realtime"
-    t.date    "day",                         :null => false
-    t.float   "stime",      :default => 0.0, :null => false
-    t.float   "utime",      :default => 0.0, :null => false
-    t.float   "cstime",     :default => 0.0, :null => false
-    t.float   "cutime",     :default => 0.0, :null => false
-  end
-
-  add_index "performances", ["controller", "action", "day"], :name => "index_performances_on_controller_and_action_and_day", :unique => true
 
   create_table "relationships", :force => true do |t|
     t.integer  "user_id",                                  :default => 0, :null => false
