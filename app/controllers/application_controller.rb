@@ -114,7 +114,7 @@ class ApplicationController < ActionController::Base
     #  мог получить доступ к указанной странице
     def require_current_user
       if current_user && current_user.is_a?(User)        
-        redirect_to service_path(login_path) and return false if current_user.is_disabled?
+        redirect_to service_url(login_path) and return false if current_user.is_disabled?
         return true
       end
       
@@ -122,7 +122,7 @@ class ApplicationController < ActionController::Base
       if request.get?
         session[:r] = "#{request.protocol}#{request.host_with_port}#{request.request_uri}"
       end
-      redirect_to service_path(login_path)
+      redirect_to service_url(login_path)
       false
     end
     
@@ -144,9 +144,9 @@ class ApplicationController < ActionController::Base
     end
 
     def require_confirmed_current_user
-      redirect_to service_path(confirm_path(:action => :required)) and return false if (is_owner? && !current_site.is_confirmed?) || (!current_site && current_user && !current_user.is_confirmed?)
+      redirect_to service_url(confirm_path(:action => :required)) and return false if (is_owner? && !current_site.is_confirmed?) || (!current_site && current_user && !current_user.is_confirmed?)
       
-      redirect_to service_path(login_path) and return false if current_user && current_user.is_disabled?
+      redirect_to service_url(login_path) and return false if current_user && current_user.is_disabled?
       
       true    
     end

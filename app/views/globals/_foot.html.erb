@@ -3,9 +3,9 @@
 	<% if current_site %>
 		<%= link_to_tlog(current_site) %> (<%= link_to 'rss', user_path(current_site, tlog_feed_path(:action => 'rss')) %>) @
 	<% end %>
-	<%= link_to current_service.domain, current_service.url %>,
-	<%= link_to 'о проекте', service_path(main_path(:action => 'about')) %>
-	<%= link_to 'новости', service_path(main_path(:action => 'news')) %>
+	<%= link_to current_service.domain, service_url %>,
+	<%= link_to 'о проекте', service_url(main_path(:action => 'about')) %>
+	<%= link_to 'новости', service_url(main_path(:action => 'news')) %>
   <br/>
 
 	<%= mail_to "feedback@#{current_service.domain}", nil, :encode => 'javascript' %>
