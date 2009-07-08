@@ -62,7 +62,8 @@ namespace :deploy do
   namespace :git do
     desc "Update sources from git"
     task :pull do
-      run "cd #{deploy_to} && git pull"
+      run "cd #{deploy_to} && git checkout db/schema.rb"
+      run "cd #{deploy_to} && git pull origin master"
     end
   end
   
