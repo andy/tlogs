@@ -4,6 +4,13 @@
 
 <script type='text/javascript'>
   var current_user = <%= current_user ? current_user.id : 0 %>;
+  <% if current_user %>
+  var _user = <%= {
+        :id   => current_user.id,
+        :url  => current_user.url,
+        :sid  => cookies[ActionController::Base.session_options[:key]]
+      }.to_json %>;
+  <% end %>
 </script>
 
 <%= glued_stylesheet_link_tag 'application' %>

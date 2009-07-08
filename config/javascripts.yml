@@ -15,10 +15,11 @@ application:
 # flash: swfobject & swfupload
 - swfobject.min
 - swfupload.min
-- swfupload.cookies.min
+# - swfupload.cookies.min
 - swfupload.speed.min
 # application code
 - hotkeys
+- uploader
 - autoresize
 - audio-player.min
 - fancyzoom.min

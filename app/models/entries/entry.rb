@@ -118,9 +118,7 @@ class Entry < ActiveRecord::Base
     #  критерий мы испльзуем поле last_viewed_at для того чтобы определить входила ли запись в число новых 
     Relationship.update_all "last_viewed_entries_count = last_viewed_entries_count - 1", "user_id = #{entry.user_id} AND last_viewed_entries_count > 0 AND last_viewed_at > '#{entry.created_at.to_s(:db)}'" unless entry.is_private?
 
-    # обновляем таймстамп который используется для инвалидации кеша тлоговых страниц, но только в том случае
-    #  если меняются штуки отличные от комментариев
-    entry.author.update_attributes(:entries_updated_at => Time.now) unless (entry.changes.keys - ['comments_count', 'updated_at']).blank?
+    entry.author.update_attributes(:entries_updated_at => Time.now)
   end
 
   after_create do |entry|
