@@ -1,1 +1,0 @@
-CGI::Session.expire_after 1.month
