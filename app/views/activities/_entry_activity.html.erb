@@ -1,0 +1,9 @@
+<%
+  entry = Entry.find(entry_activity.id, :include => :author)
+  author = entry.author
+%>
+<%= link_to_tlog(author) %> добавил <%= entry.to_russian(:whom) %>
+
+<%= render :partial => 'entries/entry_display', :locals => { :entry => entry, :show_comments_bubble => true, :show_username => true, :show_tags => false } %>
+
+<%#= link_to h(entry.excerpt), user_url(author, entry_path(entry)) %>

@@ -11,5 +11,5 @@
 # активность которая понравилась
 # 
 class Activity < ActiveRecord::Base
-  
+  set_inheritance_column 'ignore'
 end

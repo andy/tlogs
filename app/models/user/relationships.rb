@@ -5,6 +5,7 @@ class User
 
   ## associations
   has_many :relationships, :dependent => :destroy
+
     
   # лишь хорошие друзья
   {

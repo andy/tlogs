@@ -1,0 +1,10 @@
+<%
+  comment = Comment.find(comment_subscription_activity.id, :include => [:user, :entry])
+  user = comment.user
+  entry = comment.entry
+%>
+<%= link_to_tlog user %> оставил комментарий к <%= entry.to_russian(:whom) %> записи "<%= link_to h(entry.excerpt), user_url(entry.author, entry_path(entry)) %>" в тлоге <%= link_to_tlog entry.author %>:
+
+<p><small>
+  <%= white_list_comment comment.comment %>
+</small></p>

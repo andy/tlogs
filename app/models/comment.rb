@@ -57,7 +57,7 @@ class Comment < ActiveRecord::Base
   ## public methods
 
   #
-  # <%= comment.store_preprocessed_comment { |text| white_list_comment text }
+  # <%= comment.fetch_cached_or_run_block { |text| white_list_comment text }
   def fetch_cached_or_run_block(&block)
     return self.comment_html unless self.comment_html.blank?
     self.comment_html = block.call self.comment

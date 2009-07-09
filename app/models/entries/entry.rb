@@ -87,10 +87,9 @@ class Entry < ActiveRecord::Base
 	  group_by "user_id"
 	  group_by "is_private"
 	  
-	  where 'is_disabled = 0'
-	  
+	  where 'entries.is_disabled = 0 AND entries.id < 1000'
+
 	  set_property :delta => :datetime, :threshold => 10.minutes
-	  set_property :group_concat_max_len => 8192
   end
 
 
