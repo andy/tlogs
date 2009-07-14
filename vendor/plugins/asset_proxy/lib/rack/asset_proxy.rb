@@ -11,8 +11,6 @@ module Rack
     
     def call(env)
       if env['PATH_INFO'].match(@asset_path)
-        logger = RAILS_DEFAULT_LOGGER
-
         uri = URI.parse(@asset_url + env['PATH_INFO'])
         
         logger.debug "AssetProxy: fetching #{uri.to_s}"
