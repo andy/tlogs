@@ -1,10 +1,7 @@
 class ApplicationController < ActionController::Base
   filter_parameter_logging :password
   
-  # before_filter :prelaunch_megasecrecy
-
   include ExceptionNotifiable if RAILS_ENV == 'production'
-  include ProductionImages if RAILS_ENV == 'development'
   
   helper :white_list, :url, :asset_gluer
 
