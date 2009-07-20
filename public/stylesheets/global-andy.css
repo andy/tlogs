@@ -68,3 +68,12 @@ div.message_sender a {
   font-size: 10px;
   padding-left: 3px;
 }
+
+/* disabled buttons */
+input.disabled, input.disabled:active {
+	color: #ccc!important;
+	border: 3px double #ccc!important;
+	border-top-color: #ddd!important;
+	border-left-color: #ddd!important;
+	cursor: default;
+}

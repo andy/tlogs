@@ -11,7 +11,7 @@ var Uploader = {
   progress_elm: null,
   
   init: function() {
-    jQuery("#submit_button").click(function() {
+    jQuery('#submit_button').click(function() {
       if(Uploader.enabled) {
         Uploader.upload();
         return false;
@@ -25,8 +25,9 @@ var Uploader = {
     this.enabled = true;
 
     // disable preview
-    jQuery("#generate_preview").attr("disabled", "disabled");
-    
+    Button.disable('#generate_preview')
+
+    // swf upload options
     this.swfu_options = {
   		upload_url: jQuery("#entry_edit_form").attr("action"),
   		flash_url: '/swf/swfupload.swf',
@@ -65,15 +66,18 @@ var Uploader = {
     this.progress_elm = this.swfu_elm.next();
   },
   
-  upload: function() {
-    if(jQuery("#entry_id").val() != undefined)
+  update_params: function() {
+    if(jQuery('#entry_id').val() != undefined)
       this.swfu.addPostParam("entry[id]", jQuery("#entry_id").val());
     this.swfu.addPostParam("entry[type]", jQuery("#entry_type").val());
     this.swfu.addPostParam("entry[data_part_3]", jQuery("#entry_data_part_3").val());
     this.swfu.addPostParam("entry[visibility]", jQuery("#entry_visibility").val());
     this.swfu.addPostParam("entry[tag_list]", jQuery("#entry_tag_list").val());
-    this.swfu.addPostParam("s", _user.sid)
-    
+    this.swfu.addPostParam("s", _user.sid)  
+  },
+  
+  upload: function() {
+    this.update_params();
     this.swfu.startUpload();      
   },
   
@@ -84,7 +88,7 @@ var Uploader = {
     this.swfu = null;
     
     // enable preview
-    jQuery("#generate_preview").removeAttr("disabled");      
+    Button.enable('#generate_preview');      
   },
   
   // The fileQueued event is fired for each file that is queued after the File Selection Dialog window is closed.

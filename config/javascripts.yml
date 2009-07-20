@@ -20,6 +20,7 @@ application:
 # application code
 - hotkeys
 - uploader
+- button
 - autoresize
 - audio-player.min
 - fancyzoom.min

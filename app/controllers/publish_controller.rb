@@ -74,22 +74,29 @@ class PublishController < ApplicationController
       klass = type.constantize
       @new_record = true
       @attachment = nil
-      # @ad = nil
       
       if !current_user.can_create?(klass) && !params[:id]
         @entry = klass.new
         render :action => 'limit_exceeded'
         return
       end
+      
+      # запрашивается уже существующая запись
+      if params[:id]
+        @entry = Entry.find_by_id_and_user_id(params[:id], current_user.id)
+        @entry = nil if @entry && @entry.class.to_s != type
+
+        if @entry.nil?
+          redirect_to user_url(current_user, publish_path(:id => nil))
+          return
+        end
+        
+        # set this virtual attribute
+        @entry.has_attachment = !@entry.attachments.empty?
+      end
+      
 
       if request.post?
-        # редактирование уже существующей записи
-        if params[:id]
-          @entry = Entry.find_by_id_and_user_id(params[:id], current_user.id)
-          @entry.has_attachment = !@entry.attachments.empty? if @entry
-          @entry = nil if @entry && @entry.class.to_s != type
-        end
-
         if @entry.nil?
           @entry = klass.new
           @entry.has_attachment = params[:attachment] && !params[:attachment][:uploaded_data].blank?
@@ -99,21 +106,21 @@ class PublishController < ApplicationController
         end
         
         @new_record = @entry.new_record?
+        # TODO: update only with data_part_[1..3] 
         @entry.attributes = params[:entry]
         if @entry.visibility != 'voteable' || @new_record
           @entry.visibility = params[:entry][:visibility] || current_user.tlog_settings.default_visibility
         end unless @entry.is_anonymous?
+        
+        # inherit commenting options
         @entry.comments_enabled = current_user.tlog_settings.comments_enabled?
-        # unless @entry.ad
-        #   # добавляем только в том случае, если у записи еще нет рекламного блока
-        #   @entry.ad = SocialAd.new :user => current_user, :annotation => params[:ad][:annotation] if @entry.visibility == 'voteable' && params[:ad][:annotation]
-        # end
-        # @entry.is_voteable = params[:entry][:is_voteable] if @entry.new_record? && !current_user.is_limited?
+        
+        # set tag lists
         @entry.tag_list = params[:entry][:tag_list]
+
         Entry.transaction do
           @new_record = @entry.new_record?
           @entry.save!
-          # @entry.ad.save! if @entry.ad && @entry.ad.new_record?
         
           if @entry.can_have_attachments? && @entry.has_attachment && @new_record
             @attachment = Attachment.new params[:attachment]
@@ -132,14 +139,6 @@ class PublishController < ApplicationController
         end
         return
       else
-        if params[:id]
-          @entry = Entry.find_by_id_and_user_id(params[:id], current_user.id)
-          if @entry.nil?
-            redirect_to user_url(current_user, publish_path(:id => nil))
-            return
-          end
-          # @ad = @entry.ad
-        end
         @entry ||= in_bookmarklet? ? klass.new_from_bm(params[:bm]) : klass.new
         @new_record = @entry.new_record?
         if in_bookmarklet?
@@ -153,11 +152,8 @@ class PublishController < ApplicationController
         @attachment = Attachment.new
       end
 
-      # @ad = @entry.ad || SocialAd.new(:annotation => params[:ad] ? params[:ad][:annotation] : nil)
       render :action => 'edit'
     rescue ActiveRecord::RecordInvalid => e
-      # @ad = @entry.ad
-      # @ad.valid? unless @ad.nil? # force error checking
       @attachment.valid? unless @attachment.nil? # force error checking
       render :action => 'edit'
     end
