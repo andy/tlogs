@@ -1,4 +1,5 @@
-#!/usr/bin/env ruby
+#!/usr/bin/env rackup -p3000
+
 require "config/environment"
 
 use Rails::Rack::LogTailer
