@@ -2222,12 +2222,14 @@ a {
 	margin-top:-15px;
 	margin-bottom:10px;
 }
- #link_comment_enable,  #link_comment_disable {
- 	margin:15px 0;
- }
-.choise_control a,  #link_comment_enable a,  #link_comment_disable a {
+#link_comment_enable,  #link_comment_disable {
+	margin:15px 0;
+}
+.choise_control span,  #link_comment_enable a,  #link_comment_disable a {
  	text-decoration:none;
  	font-size:0.75em;
+	cursor:hand;
+	cursor:pointer;
 	border-bottom:1px dotted orange;
 }
 .entry_paginate_next {

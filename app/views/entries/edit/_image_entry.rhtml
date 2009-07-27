@@ -9,7 +9,7 @@
 		<%= text_field 'entry', 'data_part_1' %>
 		<%= tasty_error_message_on 'entry', 'data_part_1' %>
 		<div class='choise_control'>
-		  <span class='toggler' toggles='.upload_method' id='use_file'>Картинка есть у Вас на диске?</span>
+		  <span class='toggler orange' toggles='.upload_method' id='use_file'>Картинка есть у Вас на диске?</span>
 		</div>
 	</div>
 
@@ -18,8 +18,7 @@
 		<%= file_field 'attachment', :uploaded_data %>
 		<%= tasty_error_message_on 'attachment', 'uploaded_data' %>
 		<div class='choise_control'>
-		  <span class='toggler' toggles='.upload_method' id='use_link'>Использовать ссылку</span>
-			<%#= link_to_function "", "$('choise_2', 'choise_1').invoke('toggle'); $('generate_preview').enable();" %>
+		  <span class='toggler orange' toggles='.upload_method' id='use_link'>Использовать ссылку</span>
 		</div>
 	</div>
 	<% if !display_link %>

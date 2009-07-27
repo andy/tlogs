@@ -45,7 +45,7 @@ var Uploader = {
   		button_placeholder_id: 'attachment_uploaded_data',
   		button_text: "Choose File ...",
   		button_image_url: "/images/0.gif",
-  		button_width: 400,
+  		button_width: 500,
   		button_height: 30,
   		button_action: SWFUpload.BUTTON_ACTION.SELECT_FILES,
   		button_cursor: SWFUpload.CURSOR.HAND,
