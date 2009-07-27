@@ -2567,13 +2567,13 @@ text-decoration:none;
 
 #pref_friends {
 	background:url(/images/bg_friends.png) no-repeat bottom left;
-	left:42px;
+	left:42px!important;
 	list-style-image:none;
 	list-style-position:outside;
 	list-style-type:none;
 	margin-bottom:15px;
 	padding:7px 0pt 29px;
-	position:absolute;
+	position:absolute!important;
 	text-align:left;
 	top:-17px;
 	width:220px;
