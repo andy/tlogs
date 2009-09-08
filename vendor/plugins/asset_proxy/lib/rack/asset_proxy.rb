@@ -10,6 +10,8 @@ module Rack
     end
     
     def call(env)
+      logger = RAILS_DEFAULT_LOGGER
+
       if env['PATH_INFO'].match(@asset_path)
         uri = URI.parse(@asset_url + env['PATH_INFO'])
         

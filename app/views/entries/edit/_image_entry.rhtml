@@ -15,9 +15,10 @@
 
 	<div class='upload_method'<%= ' style="display: none"' if display_link %>>
 		<label for='attachment_uploaded_data'>Файл с картинкой <em>(не более 4-х мегабайт)</em>:</label><br/>
+		<div class='attachment_file_info'><i>Выберите файл ...</i></div>
 		<%= file_field 'attachment', :uploaded_data %>
 		<%= tasty_error_message_on 'attachment', 'uploaded_data' %>
-		<div class='choise_control'>
+		<div class='choise_control_lite'>
 		  <span class='toggler orange' toggles='.upload_method' id='use_link'>Использовать ссылку</span>
 		</div>
 	</div>

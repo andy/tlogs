@@ -2218,19 +2218,26 @@ a {
 :-moz-any-link:focus {
   outline: none;
 }
-.choise_control{
+.choise_control {
 	margin-top:-15px;
 	margin-bottom:10px;
 }
 #link_comment_enable,  #link_comment_disable {
 	margin:15px 0;
 }
-.choise_control span,  #link_comment_enable a,  #link_comment_disable a {
+.choise_control span, .choise_control_lite span, #link_comment_enable a,  #link_comment_disable a {
  	text-decoration:none;
  	font-size:0.75em;
 	cursor:hand;
 	cursor:pointer;
 	border-bottom:1px dotted orange;
+}
+.attachment_file_info {
+	float: right;
+	height: 35px;
+	line-height: 35px;
+	vertical-align: baseline;
+	width: 360px;
 }
 .entry_paginate_next {
 	position:relative;

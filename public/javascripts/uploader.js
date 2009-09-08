@@ -43,10 +43,10 @@ var Uploader = {
       debug: true,
 
   		button_placeholder_id: 'attachment_uploaded_data',
-  		button_text: "Choose File ...",
-  		button_image_url: "/images/0.gif",
-  		button_width: 500,
-  		button_height: 30,
+  		button_text: "",
+  		button_image_url: "/images/upload.png",
+  		button_width: 125,
+  		button_height: 35,
   		button_action: SWFUpload.BUTTON_ACTION.SELECT_FILES,
   		button_cursor: SWFUpload.CURSOR.HAND,
     	button_window_mode: SWFUpload.WINDOW_MODE.TRANSPARENT,
@@ -93,6 +93,7 @@ var Uploader = {
   
   // The fileQueued event is fired for each file that is queued after the File Selection Dialog window is closed.
   fileQueued: function(file) {
+		jQuery('.attachment_file_info').text(file.name);
   },
   
   // uploadStart is called immediately before the file is uploaded. This event provides an opportunity to perform any last minute validation, add post params or do any other work before the file is uploaded.
