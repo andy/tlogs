@@ -84,3 +84,16 @@ input.disabled, input.disabled:active {
 	width: 500px;
 	margin-bottom: 20px;
 }
+
+.limit_exceeded {
+/*	text-align: center;*/
+	width: 60%;
+	margin: 40px auto;
+}
+.limit_exceeded h2 {
+	font-size: 120%;
+	margin-bottom: 1em;
+}
+.limit_exceeded p {
+	margin-bottom: 1em;
+}

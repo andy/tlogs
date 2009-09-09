@@ -75,11 +75,11 @@ class PublishController < ApplicationController
       @new_record = true
       @attachment = nil
       
-      if !current_user.can_create?(klass) && !params[:id]
+      # if !current_user.can_create?(klass) && !params[:id]
         @entry = klass.new
         render :action => 'limit_exceeded'
         return
-      end
+      # end
       
       # запрашивается уже существующая запись
       if params[:id]
