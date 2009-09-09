@@ -73,6 +73,7 @@ var Uploader = {
     this.swfu.addPostParam("entry[data_part_3]", jQuery("#entry_data_part_3").val());
     this.swfu.addPostParam("entry[visibility]", jQuery("#entry_visibility").val());
     this.swfu.addPostParam("entry[tag_list]", jQuery("#entry_tag_list").val());
+		this.swfu.addPostParam("fl", "1");
     this.swfu.addPostParam("s", _user.sid)  
   },
   
@@ -137,7 +138,7 @@ var Uploader = {
   // 
   // Stopping, Cancelling or returning 'false' from uploadStart will cause uploadError to fire. Upload error will not fire for files that are cancelled but still waiting in the queue.    
   uploadError: function(file, code, message) {
-    console.log('upload error ' + code + ': ' + message);
+    // console.log('upload error ' + code + ': ' + message);
   },
 
 
@@ -149,14 +150,15 @@ var Uploader = {
   // 
   // At this point the upload is not yet complete. Another upload cannot be started from uploadSuccess.    
   uploadSuccess: function(file, data, response) {
-    console.log('upload success: ' + data);
-    console.log('response: ' + response);
+    // console.log('upload success: ' + data);
+		window.location.href = data;
+    // console.log('response: ' + response);
   },
   
   // uploadComplete is always fired at the end of an upload cycle (after uploadError or uploadSuccess). At this point the upload is complete and another upload can be started.
   // 
   // If you want the next upload to start automatically this is a good place to call this.uploadStart(). Use caution when calling uploadStart inside the uploadComplete event if you also have code that cancels all the uploads in a queue.    
   uploadComplete: function(file) {
-    console.log('upload compelted');
+    // console.log('upload compelted');
   }
 };

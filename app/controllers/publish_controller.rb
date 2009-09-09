@@ -134,6 +134,8 @@ class PublishController < ApplicationController
         end
         if in_bookmarklet?
           redirect_to service_url(bookmarklet_path(:action => 'published'))
+        elsif in_flash?
+          render :text => tlog_url_for_entry(@entry)
         else
           redirect_to tlog_url_for_entry(@entry)
         end
@@ -170,4 +172,8 @@ class PublishController < ApplicationController
       !!params[:bm]
     end
     helper_method :in_bookmarklet?
+    
+    def in_flash?
+      !!params[:fl]
+    end
 end
