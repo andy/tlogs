@@ -82,7 +82,9 @@ module UrlHelper
       elsif entry.is_private?
         user_url(user, private_entries_path)
       else
-        user_url(user, page_path(:page => entry.page_for(get_current_user)))
+        l = user_url(user, page_path(:page => entry.page_for(get_current_user)))
+        # strip ugly /page/0 link
+        l.gsub(/\/page\/0$/, '')
       end
     end
   end
