@@ -77,3 +77,10 @@ input.disabled, input.disabled:active {
 	border-left-color: #ddd!important;
 	cursor: default;
 }
+
+.anon_warning {
+	color: #E69B96;
+	font-size: 11px;
+	width: 500px;
+	margin-bottom: 20px;
+}
