@@ -35,6 +35,8 @@ var Uploader = {
       file_upload_limit: 1,
       file_queue_limit: 1,
   		file_size_limit: "4 MB",
+  		
+  		requeue_on_error: true,
 
   		file_post_name: 'attachment[uploaded_data]',
   		file_types : "*.jpg;*.gif;*.png;*.bmp",
@@ -150,15 +152,15 @@ var Uploader = {
   // 
   // At this point the upload is not yet complete. Another upload cannot be started from uploadSuccess.    
   uploadSuccess: function(file, data, response) {
-    // console.log('upload success: ' + data);
-		window.location.href = data;
-    // console.log('response: ' + response);
+		window.location = data;
   },
   
   // uploadComplete is always fired at the end of an upload cycle (after uploadError or uploadSuccess). At this point the upload is complete and another upload can be started.
   // 
   // If you want the next upload to start automatically this is a good place to call this.uploadStart(). Use caution when calling uploadStart inside the uploadComplete event if you also have code that cancels all the uploads in a queue.    
   uploadComplete: function(file) {
-    // console.log('upload compelted');
+    this.progress_elm.children().eq(0).css({ 'width': '100%' });
+
+    return true;
   }
 };
