@@ -7,7 +7,7 @@ class BookmarkletController < ApplicationController
     options = %w(url title c tags vis autosave).inject({}) { |opts, k| opts.update("bm[#{k}]" => params[k] ? params[k].strip : nil) }
     options.merge!({ :host => host_for_tlog(current_user) })
     options.merge!({ :action => params[:type] }) if params[:type]
-    redirect_to user_url(current_site, publish_path(options))
+    redirect_to user_url(current_user, publish_path(options))
   end
 
   def published
