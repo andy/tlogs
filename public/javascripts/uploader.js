@@ -40,7 +40,7 @@ var Uploader = {
   		file_types : "*.jpg;*.gif;*.png;*.bmp",
       file_types_description: "Image Files",
       
-      debug: true,
+      debug: false,
 
   		button_placeholder_id: 'attachment_uploaded_data',
   		button_text: "",
