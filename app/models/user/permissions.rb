@@ -22,12 +22,40 @@ class User
     self.is_confirmed? && !self.email.blank? && !self.is_disabled?
   end
 
+  # возвращает причину по которой нельзя создавать запись (Reason), либо nil если запись можно создавать
   def can_create?(klass)
-    return true if self.is_premium?
-    if klass.to_s == 'SongEntry'
-      return false if klass.count(:conditions => "user_id = #{self.id} AND created_at > CURDATE()") > 0 # не более одной в день
-    end
-    true
+    reason = nil
+
+    case klass.to_s
+      when 'SongEntry'
+        # не более одной в день
+        if klass.count(:conditions => "user_id = #{self.id} AND created_at > CURDATE()") > 0
+          reason = Reason.new "К сожалению, музыку можно заливать лишь раз в день."
+          reason.expires_at = Time.now.tomorrow.midnight
+        end
+
+      when 'AnonymousEntry'
+        # анонимки можно создавать только раз в неделю
+        entry = klass.for_user(self).last
+        if entry
+          if entry.is_disabled?
+            if entry.created_at > 1.month.ago
+              reason = Reason.new "Ваша последняя анонимка была удалена меньше месяца назад."
+              reason.expires_at = entry.created_at + 1.month
+            end
+          elsif entry.created_at > 1.week.ago
+            reason = Reason.new "Анонимки можно писать не чаще раза в неделю."
+            reason.expires_at = entry.created_at + 1.week
+          end
+        # и только спустя месяц после регистрации
+        elsif self.created_at > 1.month.ago
+          reason = Reason.new "Анонимки можно писать только спустя месяц после регистрации."
+          reason.expires_at = self.created_at + 1.month
+        end
+          
+    end unless self.is_premium?
+    
+    reason
   end
   
   # может ли вообще голосовать за эту запись?
