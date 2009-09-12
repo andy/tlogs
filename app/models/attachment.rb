@@ -42,8 +42,14 @@ class Attachment < ActiveRecord::Base
       # находим соответсвующий обработчик для закаченного файла
       require 'mime/types'
 
-      type = MIME::Types.type_for(att.full_filename)[0].media_type.capitalize + 'Attachment'
-      att[:type] = type if %w( AudioAttachment ImageAttachment ).include?(type)
+      mime_type = MIME::Types.type_for(att.full_filename).first
+
+      # set the content-type based on what mime says
+      att.content_type = mime_type.content_type
+
+      # set the klass type from mime
+      klass_type = mime_type.media_type.capitalize + 'Attachment'
+      att[:type] = klass_type if %w( AudioAttachment ImageAttachment ).include?(klass_type)
     rescue
     end
   end

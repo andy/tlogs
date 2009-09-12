@@ -115,15 +115,21 @@ class ImageEntry < Entry
   private
     def get_metadata_for_linked_image(link)
       Rails.cache.fetch("remote_image_#{Digest::SHA1.hexdigest(link)}", :expires_in => 15.minutes) do
-        image_attributes = { }
-        Tempfile.open("remote_image", File.join(RAILS_ROOT, 'tmp')) do |tempfile|
-          tempfile.write Net::HTTP.get(URI.parse(link))
-          image_attributes = ImageScience.with_image(tempfile.path) { |image| { :width => image.width, :height => image.height } }
-        end
-        image_attributes
+        # image_attributes = { }
+        
+        image = Net::HTTP.get(URI.parse(link))
+        image_size = ImageSize.new(image)
+        
+        { :width => image_size.get_width, :height => image_size.get_height }
+        
+        # Tempfile.open("remote_image", File.join(RAILS_ROOT, 'tmp')) do |tempfile|
+        #   tempfile.write Net::HTTP.get(URI.parse(link))
+        #   image_attributes = ImageScience.with_image(tempfile.path) { |image| { :width => image.width, :height => image.height } }
+        # end
+        # image_attributes
       end || { }
-    rescue
-      logger.debug "could not get image metadata for this url: #{link}"
+    rescue Exception => ex
+      logger.debug "could not get image metadata for this url: #{link}, #{ex}"
       { }
     end
 end
