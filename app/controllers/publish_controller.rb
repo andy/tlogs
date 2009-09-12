@@ -124,7 +124,7 @@ class PublishController < ApplicationController
           @entry.save!
         
           if @entry.can_have_attachments? && @entry.has_attachment && @new_record
-            @attachment = Attachment.new params[:attachment]
+            @attachment = @entry.attachment_class.new params[:attachment]
             logger.info "adding attachment to entry id = #{@entry.id}"
             @attachment.entry = @entry
             @attachment.user = current_user

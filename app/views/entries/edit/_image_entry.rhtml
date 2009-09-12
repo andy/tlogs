@@ -15,7 +15,7 @@
 
 	<div class='upload_method'<%= ' style="display: none"' if display_link %>>
 		<label for='attachment_uploaded_data'>Файл с картинкой <em>(не более 4-х мегабайт)</em>:</label><br/>
-		<div class='attachment_file_info'><i>Выберите файл ...</i></div>
+    <!-- <div class='attachment_file_info'><i>Выберите файл ...</i></div> -->
 		<%= file_field 'attachment', :uploaded_data %>
 		<%= tasty_error_message_on 'attachment', 'uploaded_data' %>
 		<div class='choise_control_lite'>
@@ -24,7 +24,7 @@
 	</div>
 	<% if !display_link %>
 	<script type='text/javascript'>
-		Event.observe ( window, 'load', function(event) { $("generate_preview").disabled = true; } );
+		Event.observe ( window, 'load', function(event) { Button.disable('#generate_preview'); } );
 	</script>
 	<% end %>
 <% end %>
@@ -51,9 +51,11 @@
 <script type='text/javascript'>
 jQuery(document).ready(function($) {
   $('.toggler').click(function() { $($(this).attr('toggles')).toggle(); });
+  $('#use_file').click(function() { Button.disable('#generate_preview'); });  
+  $('#use_link').click(function() { Button.enable('#generate_preview'); });
   
-  Uploader.init();
-  $('#use_file').click(function() { Uploader.enable(); });  
-  $('#use_link').click(function() { Uploader.disable(); });
+  // Uploader.init();
+  // $('#use_file').click(function() { Uploader.enable(); });  
+  // $('#use_link').click(function() { Uploader.disable(); });
 });
 </script>

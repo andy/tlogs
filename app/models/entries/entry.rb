@@ -145,6 +145,8 @@ class Entry < ActiveRecord::Base
     false
   end
   
+  def attachment_class; Attachment; end
+  
   # Анонимная запись или нет?
   def is_anonymous?
     self[:type] == 'AnonymousEntry'

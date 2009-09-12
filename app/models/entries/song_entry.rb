@@ -28,6 +28,7 @@ class SongEntry < Entry
 
   def entry_russian_dict; { :who => 'песня', :whom => 'песню' } end
   def can_have_attachments?; true; end
+  def attachment_class; AudioAttachment; end
   
   def excerpt
     self.data_part_2.to_s.truncate(150).to_s

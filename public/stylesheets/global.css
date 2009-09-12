@@ -1224,11 +1224,11 @@ form.post input, form.post textarea {
 /*	font-family:Trebuchet MS, Arial, Helvetica, sans-serif; */
 }
 
-input#attachment_uploaded_data {
-	font-size:100%;
-	width:600px;
+/*input#attachment_uploaded_data {
+  font-size:100%;
+  width:600px;
 }
-
+*/
 form.post textarea {
 	font-size:100%;
 }
@@ -1527,7 +1527,13 @@ div#entry_helper {
 }
 
 #attachment_uploaded_data {
-	width:400px!important;
+	width:500px!important;
+	font-size: 100%;
+	height: 26px;
+	margin-top: 2px;
+	margin-bottom: 0px;
+	vertical-align: center;
+	padding: 2px 4px;
 }
 
 div#entry_helper ul {

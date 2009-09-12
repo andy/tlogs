@@ -34,6 +34,7 @@ class ImageEntry < Entry
 
   def entry_russian_dict; { :who => 'картинка', :whom => 'картинку' } end
   def can_have_attachments?; true end
+  def attachment_class; ImageAttachment; end
 
   before_validation :make_a_link_from_data_part_1_if_present
   def excerpt

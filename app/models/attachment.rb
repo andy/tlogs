@@ -71,6 +71,7 @@ class Attachment < ActiveRecord::Base
 end
 
 class AudioAttachment < Attachment
+  
   # достает ArtWork картинку которая утсанавливается в iTunes
   def artwork
     Mp3Info.open(self.full_filename) do |mp3|
@@ -91,4 +92,11 @@ class AudioAttachment < Attachment
 end
 
 class ImageAttachment < Attachment
+  has_attachment :storage => :file_system, :max_size => 7.megabytes, :resize_to => '800x4000>', :thumbnails => { :thumb => '200x1500>', :tlog => '420x4000>' }, :file_system_path => 'public/assets/att', :content_type => :image
+
+  # validate do |attachment|
+  #   errors.add_to_base("файл должен быть изображением в формате jpg, png, gif или bpm.") and return false unless attachment.image?
+  #   
+  #   true
+  # end
 end
