@@ -87,7 +87,7 @@ class Entry < ActiveRecord::Base
 	  group_by "user_id"
 	  group_by "is_private"
 	  
-    # where 'entries.is_disabled = 0 AND entries.id < 1000'
+    where 'entries.is_disabled = 0'
 
 	  set_property :delta => :datetime, :threshold => 10.minutes
   end
