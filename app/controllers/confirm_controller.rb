@@ -47,7 +47,7 @@ class ConfirmController < ApplicationController
       end
     else
       # перенаправляем пользователя в настройки его тлога
-      session[:r] = user_url(current_user, settings_path) unless was_confirmed
+      session[:r] = user_url(current_user, settings_path) if !was_confirmed && current_user
       redirect_to service_url(login_path)
     end
   end
