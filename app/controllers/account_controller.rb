@@ -114,33 +114,33 @@ class AccountController < ApplicationController
 
   # регистрация, для новичков
   def signup
-    if request.post?
-      email_or_openid = params[:user][:email]
-      if email_or_openid.is_openid?
-        # запоминаем сайт который он выбрал и подтверждаем openid
-        session[:user_url] = params[:user][:url]
-        login_with_openid email_or_openid
-      else
-        @user = User.new :email => email_or_openid, :password => params[:user][:password], :url => params[:user][:url], :openid => nil
-        
-        # проверяем на левые емейл адреса
-        @user.errors.add(:email, 'извините, но выбранный вами почтовый сервис находится в черном списке') if @user.email.any? && Disposable::is_disposable_email?(@user.email) 
-
-        @user.settings = {}
-        @user.is_confirmed = false
-        @user.update_confirmation!(@user.email)
-        @user.save if @user.errors.empty?
-        if @user.errors.empty?
-          Emailer.deliver_signup(current_service, @user)
-          login_user @user, :remember => @user.email, :redirect_to => service_url(confirm_path(:action => :required))
-        else
-          flash[:bad] = 'При регистрации произошли какие-то ошибки'
-        end
-      end
-    else
-      @user = User.new
-      @user.email = params[:openid] if params[:openid]
-    end
+    # if request.post?
+    #   email_or_openid = params[:user][:email]
+    #   if email_or_openid.is_openid?
+    #     # запоминаем сайт который он выбрал и подтверждаем openid
+    #     session[:user_url] = params[:user][:url]
+    #     login_with_openid email_or_openid
+    #   else
+    #     @user = User.new :email => email_or_openid, :password => params[:user][:password], :url => params[:user][:url], :openid => nil
+    #     
+    #     # проверяем на левые емейл адреса
+    #     @user.errors.add(:email, 'извините, но выбранный вами почтовый сервис находится в черном списке') if @user.email.any? && Disposable::is_disposable_email?(@user.email) 
+    # 
+    #     @user.settings = {}
+    #     @user.is_confirmed = false
+    #     @user.update_confirmation!(@user.email)
+    #     @user.save if @user.errors.empty?
+    #     if @user.errors.empty?
+    #       Emailer.deliver_signup(current_service, @user)
+    #       login_user @user, :remember => @user.email, :redirect_to => service_url(confirm_path(:action => :required))
+    #     else
+    #       flash[:bad] = 'При регистрации произошли какие-то ошибки'
+    #     end
+    #   end
+    # else
+    #   @user = User.new
+    #   @user.email = params[:openid] if params[:openid]
+    # end
   end  
   
   # возвращает статус для имени пользователя

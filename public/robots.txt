@@ -8,3 +8,4 @@ Disallow: /publish/
 Disallow: /settings/
 # nothing interesting here:
 Disallow: /vote/
+Disallow: /main/random
