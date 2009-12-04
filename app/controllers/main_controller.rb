@@ -104,27 +104,29 @@ class MainController < ApplicationController
   
   def random
     # ищем публичную запись которую можно еще на главной показать
-    entry = nil
-    if params[:entry_id]
-      entry = Entry.find_by_id params[:entry_id]
-      redirect_to(service_url(main_path)) and return if entry.nil?
-    end
-      
-    max_id = Entry.maximum(:id)
-    unless entry
-      10.times do
-        entry_id = Entry.find_by_sql("SELECT id FROM entries WHERE id >= #{rand(max_id)} AND is_private = 0 LIMIT 1").first[:id]
-        entry = Entry.find entry_id if entry_id
-        break if entry
-      end
-    end
-    if entry
-      @time = entry.created_at
-      @user = entry.author
-      @entries = @user.recent_entries(:page => 1, :time => @time).to_a      
-      @calendar = @user.calendar(@time)
-      
-      @others = User.find_by_sql("SELECT u.id, u.url, e.id AS day_first_entry_id, count(*) AS day_entries_count FROM users AS u LEFT JOIN entries AS e ON u.id = e.user_id WHERE e.created_at > '#{@time.midnight.to_s(:db)}' AND e.created_at < '#{@time.tomorrow.midnight.to_s(:db)}' AND u.is_confirmed = 1 AND u.entries_count > 1 GROUP BY e.user_id")
-    end
+    # entry = nil
+    # if params[:entry_id]
+    #   entry = Entry.find_by_id params[:entry_id]
+    #   redirect_to(service_url(main_path)) and return if entry.nil?
+    # end
+    #   
+    # max_id = Entry.maximum(:id)
+    # unless entry
+    #   10.times do
+    #     entry_id = Entry.find_by_sql("SELECT id FROM entries WHERE id >= #{rand(max_id)} AND is_private = 0 LIMIT 1").first[:id]
+    #     entry = Entry.find entry_id if entry_id
+    #     break if entry
+    #   end
+    # end
+    # if entry
+    #   @time = entry.created_at
+    #   @user = entry.author
+    #   @entries = @user.recent_entries(:page => 1, :time => @time).to_a      
+    #   @calendar = @user.calendar(@time)
+    #   
+    #   @others = User.find_by_sql("SELECT u.id, u.url, e.id AS day_first_entry_id, count(*) AS day_entries_count FROM users AS u LEFT JOIN entries AS e ON u.id = e.user_id WHERE e.created_at > '#{@time.midnight.to_s(:db)}' AND e.created_at < '#{@time.tomorrow.midnight.to_s(:db)}' AND u.is_confirmed = 1 AND u.entries_count > 1 GROUP BY e.user_id")
+    # end
+    
+    redirect_to service_url(main_path)
   end
 end
