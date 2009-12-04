@@ -54,6 +54,7 @@ class User
     rescue ActiveRecord::StatementInvalid
       # ignore duplicate key errors
       # Mysql::Error: Duplicate entry '11848-11133' for key 2: INSERT INTO `relationships` (`friendship_status`, `title`, `last_viewed_entries_count`, `comment_count`, `reader_id`, `last_viewed_at`, `last_comment_at`, `user_id`, `last_read_at`, `position`, `votes_value`, `read_count`) VALUES(0, NULL, 0, 0, 11133, NULL, NULL, 11848, '2009-12-04 18:57:19', 781, 0, 1)
+      return
     end
 
     relationship
