@@ -21,7 +21,7 @@ class FavesController < ApplicationController
     if fave.new_record? && !entry.is_private? && entry.user_id != current_user.id
       fave.entry_type = entry[:type]
       fave.entry_user_id = entry.user_id
-      fave.save
+      fave.save rescue nil
     end
     
     render :update do |page|

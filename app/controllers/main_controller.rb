@@ -104,7 +104,12 @@ class MainController < ApplicationController
   
   def random
     # ищем публичную запись которую можно еще на главной показать
-    entry = Entry.find(params[:entry_id]) if params[:entry_id]
+    entry = nil
+    if params[:entry_id]
+      entry = Entry.find_by_id params[:entry_id]
+      redirect_to root_path and return if entry.nil?
+    end
+      
     max_id = Entry.maximum(:id)
     unless entry
       10.times do

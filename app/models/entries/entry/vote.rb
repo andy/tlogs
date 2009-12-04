@@ -4,21 +4,26 @@ class Entry
     return unless user.can_vote?(self)
     
     # находим существующую запись
-    EntryRating.transaction do
-      entry_rating = EntryRating.find_by_entry_id(self.id) or return
+    begin
+      EntryRating.transaction do
+        entry_rating = EntryRating.find_by_entry_id(self.id) or return
     
-      # голос пользователя: нам его нужно либо создать, либо использвовать уже имющийся
-      user_vote = EntryVote.find_or_initialize_by_entry_id_and_user_id(self.id, user.id)
-      # новая запись или пользователь поменял свое мнение?
-      if user_vote.new_record? || (rating * user.vote_power) != user_vote.value
-        # вычитаем старое значение если пользователь поменял свое мнение
-        entry_rating.value -= user_vote.value unless user_vote.new_record? 
-        user_vote.value = rating * user.vote_power
-        entry_rating.value += user_vote.value
+        # голос пользователя: нам его нужно либо создать, либо использвовать уже имющийся
+        user_vote = EntryVote.find_or_initialize_by_entry_id_and_user_id(self.id, user.id)
+        # новая запись или пользователь поменял свое мнение?
+        if user_vote.new_record? || (rating * user.vote_power) != user_vote.value
+          # вычитаем старое значение если пользователь поменял свое мнение
+          entry_rating.value -= user_vote.value unless user_vote.new_record? 
+          user_vote.value = rating * user.vote_power
+          entry_rating.value += user_vote.value
 
-        # сохраняем новое в базу
-        user_vote.save && entry_rating.save
+          # сохраняем новое в базу
+          user_vote.save && entry_rating.save
+        end
       end
+    rescue ActiveRecord::StatementInvalid
+      # ignore, raised on duplicate keys:
+      # ActiveRecord::StatementInvalid (Mysql::Error: Duplicate entry '547460-13108' for key 2: INSERT INTO `entry_votes` (`entry_id`, `value`, `user_id`) VALUES(547460, -1, 13108))
     end
   end
   
