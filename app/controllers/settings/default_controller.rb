@@ -121,7 +121,7 @@ class Settings::DefaultController < ApplicationController
             # обновляем адрес..
             @design.update_attributes!({ :background_url => @tlog_background.public_filename })
           else
-            flash[:bad] = 'К сожалению не получилось изменить фоновую картинку — проверьте что файл, который вы заливаете, имеет расширение .jpg или .png'
+            flash[:bad] = 'К сожалению не получилось изменить фоновую картинку — проверьте что файл, который вы заливаете, имеет расширение .jpg, .png или .gif (а если картинка в каком-то из этих форматов, то скорее всего она просто очень большая)'
             return
           end
         end
