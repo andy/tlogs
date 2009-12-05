@@ -1,7 +1,7 @@
 <%
   anonymous_entry = @entry.is_anonymous?
   is_author = @comment.user_id == @entry.user_id
-  is_anonymous_author = AnonymousEntry::ANONYMOUS_COMMENTS_DEPLOY_TIME < comment.created_at && anonymous_entry && is_author
+  is_anonymous_author = (@comment.created_at.nil? || AnonymousEntry::ANONYMOUS_COMMENTS_DEPLOY_TIME < @comment.created_at) && anonymous_entry && is_author
 %>
 
 <div id='post_comment_preview'>

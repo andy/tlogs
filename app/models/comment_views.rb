@@ -22,7 +22,12 @@ class CommentViews < ActiveRecord::Base
       last_comment_viewed = cv.last_comment_viewed
       if cv.last_comment_viewed != entry.comments.size
         cv.last_comment_viewed = entry.comments.size
-        cv.save
+        begin
+          cv.save
+        rescue ActiveRecord::StatementInvalid
+          # ignore dup key error
+          # Mysql::Error: Duplicate entry '548679-18691' for key 2: INSERT INTO `comment_views` (`entry_id`, `last_comment_viewed`, `user_id`) VALUES(548679, 2, 18691)
+        end
       end
       last_comment_viewed
     else
