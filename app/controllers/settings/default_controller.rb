@@ -108,17 +108,24 @@ class Settings::DefaultController < ApplicationController
         @design.update_attributes!(params[:design])
         @design.user = current_site
 
+        TlogSettings.increment_counter(:css_revision, current_site.tlog_settings.id)
+
         if params[:attachment] && !params[:attachment][:uploaded_data].blank?
           @tlog_background = TlogBackground.new params[:attachment]
           @design.tlog_background.destroy if @design.tlog_background
           @tlog_background.tlog_design_settings = @design
-          @tlog_background.save!
           
-          # обновляем адрес..
-          @design.update_attributes!({ :background_url => @tlog_background.public_filename })
+          if @tlog_background.valid?
+            @tlog_background.save!
+          
+            # обновляем адрес..
+            @design.update_attributes!({ :background_url => @tlog_background.public_filename })
+          else
+            flash[:bad] = 'К сожалению не получилось изменить фоновую картинку — проверьте что файл, который вы заливаете, имеет расширение .jpg или .png'
+            return
+          end
         end
         
-        TlogSettings.increment_counter(:css_revision, current_site.tlog_settings.id)
         flash[:good] = 'Настройки сохранены'
         redirect_to user_url(current_site, settings_path(:action => :design))
       end
