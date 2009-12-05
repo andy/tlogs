@@ -15,6 +15,9 @@ class Entry
   end
   
   def visibility=(kind)
+    kind ||= 'private'
+    kind = 'private' unless VISIBILITY.keys.map(&:to_s).include?(kind)
+
     options = VISIBILITY[kind.to_sym][:options]
 
     # если is_voteable стоит в true - ничего нельзя имзенить...
