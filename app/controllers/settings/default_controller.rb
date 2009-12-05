@@ -29,13 +29,6 @@ class Settings::DefaultController < ApplicationController
     @tlog_settings = current_user.tlog_settings
 
     if request.post?
-      if params[:avatar] && !params[:avatar][:uploaded_data].blank?
-        @avatar = Avatar.new params[:avatar]
-        @avatar.user = current_user
-        current_user.avatar.destroy if current_user.avatar
-        @avatar.save!
-      end
-      
       # достаем настройки. здесь это будут username и gender
       @user.gender = %w(m f).include?(params[:user][:gender]) ? params[:user][:gender] : 'm'
       @user.username = params[:user][:username]
@@ -45,6 +38,18 @@ class Settings::DefaultController < ApplicationController
       @tlog_settings.title = params[:tlog_settings][:title]
       @tlog_settings.save
 
+      if params[:avatar] && !params[:avatar][:uploaded_data].blank?
+        @avatar = Avatar.new params[:avatar]
+        @avatar.user = current_user
+        current_user.avatar.destroy if current_user.avatar
+        if @avatar.valid?
+          @avatar.save!
+        else
+          flash[:bad] = 'Не удалось изменить ваш портрет — убедитесь что картинка, которую вы загружаете, имеет расширение .jpg, .png или .gif (если расширение правильное, то скорее всего картинка слишком большая — уменьшите ее и попробуйте снова)'
+          render
+        end
+      end
+      
       if @user.errors.empty? && @tlog_settings.errors.empty?
         flash[:good] = 'Великолепно! Ваши настройки сохранены'
         expire_fragment(:controller => '/tlog', :action => 'index', :content_for => 'layout')
