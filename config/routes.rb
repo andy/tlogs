@@ -56,7 +56,6 @@ ActionController::Routing::Routes.draw do |map|
     www.account 'account/:action', :controller => 'account'
     www.confirm 'confirm/:action', :controller => 'confirm'
     www.confirm_code 'confirm/code/:code', :controller => 'confirm', :action => 'code'
-    www.admin 'admin/:action', :controller => 'admin'
     www.search 'search/:action/:id', :controller => 'search'
     www.tag_view 'tag/*tags', :controller => 'tags', :action => 'view'
     www.tags 'tags/:action/:id', :controller => 'tags'
