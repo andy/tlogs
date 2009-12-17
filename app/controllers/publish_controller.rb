@@ -49,8 +49,10 @@ class PublishController < ApplicationController
   end
   
   def song
-    render :action => 'limit_song' and return
-
+    # @new_record = true
+    # @entry = SongEntry.new
+    # render :action => 'limit_song' and return
+    # 
     process_entry_request 'SongEntry'
   end
   
