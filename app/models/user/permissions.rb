@@ -29,10 +29,12 @@ class User
     case klass.to_s
       when 'SongEntry'
         # не более одной в день
-        if klass.count(:conditions => "user_id = #{self.id} AND created_at > CURDATE()") > 0
-          reason = Reason.new "К сожалению, музыку можно заливать лишь раз в день."
-          reason.expires_at = Time.now.tomorrow.midnight
-        end
+        # if klass.count(:conditions => "user_id = #{self.id} AND created_at > CURDATE()") > 0
+        #   reason = Reason.new "К сожалению, музыку можно заливать лишь раз в день."
+        #   reason.expires_at = Time.now.tomorrow.midnight
+        # end
+        
+        reason = Reason.new "К сожалению, вы временно отключили возможность заливать музыку. Как временное решение, пользуйтесь сервисами, на которые можно залить треки, а потом вставляйте проигрыватель в тейсти."
 
       when 'AnonymousEntry'
         # анонимки можно создавать только раз в неделю
