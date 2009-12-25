@@ -1,6 +1,6 @@
 <!-- template: globals/head -->
 
-<meta name="robots" content="index,follow" />
+<meta name="robots" content="index,follow">
 
 <script type='text/javascript'>
   var current_user = <%= current_user ? current_user.id : 0 %>;
@@ -18,10 +18,10 @@
 <%= glued_stylesheet_link_tag 'tlog' if current_site %>
 <%= glued_javascript_include_tag 'application' %>
 
-<link rel="shortcut icon" href='/favicon.ico' />
-<meta name="MSSmartTagsPreventParsing" content="true" />
-<meta http-equiv="imagetoolbar" content="no" />
-<meta name="generator" content="tlogs.ru" />
+<link rel="shortcut icon" href='/favicon.ico'>
+<meta name="MSSmartTagsPreventParsing" content="true">
+<meta http-equiv="imagetoolbar" content="no">
+<meta name="generator" content="tlogs.ru">
 
 <% if @title %>
 	<title><%= [h(current_site ? h(current_site.url) : 'ммм... тейсти'), strip_tags(@title)].reject(&:blank?).join(' – ') %></title>

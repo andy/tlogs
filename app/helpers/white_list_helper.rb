@@ -98,13 +98,14 @@ module WhiteListHelper
 
       # processing params
       (flash/"//param").each do |param|
-        if valid_flash_params.include?(param.attributes['name'].downcase)
-          embed_params[param.attributes['name'].downcase] = param.attributes['value']
+        if valid_flash_params.include?(param.attributes['name'].downcase.to_s)
+          embed_params[param.attributes['name'].downcase.to_s] = param.attributes['value']
         end
       end      
-      src ||= embed_params["movie"]
+      src = embed_params["movie"] if src.blank?
+      embed_params['movie'] = src if !src.blank? && embed_params['movie'].blank?
 
-      text = "<object width='#{width}' height='#{height}'>#{embed_params.map{|name, value| "<param name='#{name}' value='#{value}' />"}.join}<embed src='#{src}' type='application/x-shockwave-flash' #{embed_params.except('movie').map{|name, value| "#{name}='#{value}'"}.join(" ")} width='#{width}' height='#{height}' /></object>"
+      text = "<object width='#{width}' height='#{height}'>#{embed_params.map{|name, value| "<param name='#{name}' value='#{value}' >"}.join}<embed src='#{src}' type='application/x-shockwave-flash' #{embed_params.except('movie').map{|name, value| "#{name}='#{value}'"}.join(" ")} width='#{width}' height='#{height}'></object>"
 
       if flash.css_path.include?(" p ") || flash.css_path.include?("p:")
         flash.swap(text)
