@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090708024036) do
+ActiveRecord::Schema.define(:version => 20100108184006) do
 
   create_table "attachments", :force => true do |t|
     t.integer "entry_id",     :default => 0,  :null => false
@@ -68,9 +68,7 @@ ActiveRecord::Schema.define(:version => 20090708024036) do
   create_table "comments", :force => true do |t|
     t.integer  "entry_id",                   :default => 0,     :null => false
     t.text     "comment"
-    t.integer  "user_id",                    :default => 0
-    t.string   "ext_username"
-    t.string   "ext_url"
+    t.integer  "user_id",                                       :null => false
     t.boolean  "is_disabled",                :default => false, :null => false
     t.datetime "created_at",                                    :null => false
     t.datetime "updated_at"
@@ -78,7 +76,9 @@ ActiveRecord::Schema.define(:version => 20090708024036) do
     t.string   "remote_ip",    :limit => 17
   end
 
-  add_index "comments", ["entry_id", "user_id"], :name => "index_comments_on_entry_id_and_user_id"
+  add_index "comments", ["created_at"], :name => "index_comments_on_created_at"
+  add_index "comments", ["entry_id"], :name => "index_comments_on_entry_id"
+  add_index "comments", ["user_id"], :name => "index_comments_on_user_id"
 
   create_table "delayed_jobs", :force => true do |t|
     t.integer  "priority",   :default => 0
@@ -99,31 +99,30 @@ ActiveRecord::Schema.define(:version => 20090708024036) do
   add_index "delayed_jobs", ["run_at"], :name => "index_delayed_jobs_on_run_at"
 
   create_table "entries", :force => true do |t|
-    t.integer  "user_id",          :default => 0,     :null => false
+    t.integer  "user_id",                       :default => 0,           :null => false
     t.text     "data_part_1"
     t.text     "data_part_2"
     t.text     "data_part_3"
-    t.string   "type",             :default => "",    :null => false
-    t.boolean  "is_disabled",      :default => false, :null => false
-    t.datetime "created_at",                          :null => false
+    t.string   "type",             :limit => 0, :default => "TextEntry", :null => false
+    t.boolean  "is_disabled",                   :default => false,       :null => false
+    t.datetime "created_at",                                             :null => false
     t.text     "metadata"
-    t.integer  "comments_count",   :default => 0,     :null => false
+    t.integer  "comments_count",                :default => 0,           :null => false
     t.datetime "updated_at"
-    t.boolean  "is_voteable",      :default => false
-    t.boolean  "is_private",       :default => false, :null => false
+    t.boolean  "is_voteable",                   :default => false
+    t.boolean  "is_private",                    :default => false,       :null => false
     t.text     "cached_tag_list"
-    t.boolean  "is_mainpageable",  :default => true,  :null => false
-    t.boolean  "comments_enabled", :default => false, :null => false
+    t.boolean  "is_mainpageable",               :default => true,        :null => false
+    t.boolean  "comments_enabled",              :default => false,       :null => false
   end
 
-  add_index "entries", ["id", "user_id", "is_private"], :name => "tmpindex2"
+  add_index "entries", ["created_at"], :name => "index_entries_on_created_at"
   add_index "entries", ["is_disabled"], :name => "index_entries_on_is_disabled"
-  add_index "entries", ["is_mainpageable", "created_at", "type"], :name => "index_entries_on_is_mainpageable_and_created_at_and_type"
-  add_index "entries", ["is_mainpageable", "is_private", "id"], :name => "index_entries_on_is_mainpageable_and_is_private_and_id"
+  add_index "entries", ["is_mainpageable"], :name => "index_entries_on_is_mainpageable"
+  add_index "entries", ["is_private"], :name => "index_entries_on_is_private"
+  add_index "entries", ["is_voteable"], :name => "index_entries_on_is_voteable"
   add_index "entries", ["type"], :name => "index_entries_on_type"
-  add_index "entries", ["user_id", "created_at", "type"], :name => "index_entries_on_user_id_and_created_at_and_type"
-  add_index "entries", ["user_id", "is_private", "created_at"], :name => "index_entries_on_user_id_and_is_private_and_created_at"
-  add_index "entries", ["user_id", "is_private", "id"], :name => "tmpindex"
+  add_index "entries", ["user_id"], :name => "index_entries_on_user_id"
 
   create_table "entry_ratings", :force => true do |t|
     t.integer  "entry_id",                 :default => 0,  :null => false
@@ -142,6 +141,7 @@ ActiveRecord::Schema.define(:version => 20090708024036) do
   end
 
   add_index "entry_subscribers", ["entry_id", "user_id"], :name => "index_entry_subscribers_on_entry_id_and_user_id", :unique => true
+  add_index "entry_subscribers", ["user_id", "entry_id"], :name => "index_entry_subscribers_on_user_id_and_entry_id"
 
   create_table "entry_votes", :force => true do |t|
     t.integer "entry_id", :default => 0, :null => false
@@ -159,6 +159,7 @@ ActiveRecord::Schema.define(:version => 20090708024036) do
     t.datetime "created_at"
   end
 
+  add_index "faves", ["entry_id"], :name => "index_faves_on_entry_id"
   add_index "faves", ["user_id", "entry_id"], :name => "index_faves_on_user_id_and_entry_id", :unique => true
   add_index "faves", ["user_id", "entry_type"], :name => "index_faves_on_user_id_and_entry_type"
   add_index "faves", ["user_id", "entry_user_id"], :name => "index_faves_on_user_id_and_entry_user_id"
@@ -248,6 +249,8 @@ ActiveRecord::Schema.define(:version => 20090708024036) do
     t.integer "position"
   end
 
+  add_index "sidebar_elements", ["sidebar_section_id"], :name => "index_sidebar_elements_on_sidebar_section_id"
+
   create_table "sidebar_sections", :force => true do |t|
     t.integer "user_id",                     :null => false
     t.string  "name",                        :null => false
@@ -291,6 +294,8 @@ ActiveRecord::Schema.define(:version => 20090708024036) do
     t.string "name", :default => "", :null => false
   end
 
+  add_index "tags", ["name"], :name => "index_tags_on_name"
+
   create_table "tlog_backgrounds", :force => true do |t|
     t.integer "tlog_design_settings_id"
     t.string  "content_type"
@@ -303,6 +308,7 @@ ActiveRecord::Schema.define(:version => 20090708024036) do
     t.integer "db_file_id"
   end
 
+  add_index "tlog_backgrounds", ["parent_id"], :name => "index_tlog_backgrounds_on_parent_id"
   add_index "tlog_backgrounds", ["tlog_design_settings_id"], :name => "index_tlog_backgrounds_on_tlog_design_settings_id"
 
   create_table "tlog_design_settings", :force => true do |t|
@@ -382,6 +388,9 @@ ActiveRecord::Schema.define(:version => 20090708024036) do
 
   add_index "users", ["domain"], :name => "index_users_on_domain"
   add_index "users", ["email"], :name => "index_users_on_email"
+  add_index "users", ["entries_count"], :name => "index_users_on_entries_count"
+  add_index "users", ["is_confirmed", "entries_count"], :name => "index_users_on_is_confirmed_and_entries_count"
+  add_index "users", ["is_confirmed"], :name => "index_users_on_is_confirmed"
   add_index "users", ["openid"], :name => "index_users_on_openid"
   add_index "users", ["url"], :name => "index_users_on_url"
 
