@@ -89,7 +89,7 @@ class Entry < ActiveRecord::Base
 	  
     where 'entries.is_disabled = 0'
 
-	  set_property :delta => :datetime, :threshold => 10.minutes
+	  set_property :delta => :datetime, :threshold => 1.hour
   end
 
 
