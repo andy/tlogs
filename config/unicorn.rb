@@ -9,7 +9,9 @@ rails_env = ENV['RAILS_ENV'] || 'production'
 
 rails_root = Dir.pwd
 
-worker_processes (rails_env == 'production' ? 4 : 2)
+wpc = rails_env == 'production' ? 4 : 2
+
+worker_processes wpc
 
 listen File.join(rails_root, 'tmp/sockets/unicorn.sock'), :backlog => 32
 
