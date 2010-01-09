@@ -4,10 +4,10 @@
 	<% cache "#{current_site.url}/show:#{@entry.id}/date:#{Date.today.to_s(:db)}/head", :expires_in => 1.day do %>
   	<%= auto_discovery_link_tag(:rss, user_url(current_site, tlog_feed_path(:action => :rss))) %>
   	<%= auto_discovery_link_tag(:rss, user_url(current_site, tlog_feed_path(:action => :photos)), { :title => 'только фоторафии' }) %>
-  	<% if @entry.next_id %>
+  	<% if false && @entry.next_id %>
   		<link rel="next" title="Next" href="<%= user_url(current_site, entry_path(@entry.next_id)) %>" />
   	<% end %>
-  	<% if @entry.prev_id %>
+  	<% if false && @entry.prev_id %>
   		<link rel="prev" title="Previous" href="<%= user_url(current_site, entry_path(@entry.prev_id)) %>" />
   	<% end %>
   <% end %>
