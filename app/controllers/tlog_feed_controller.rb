@@ -9,8 +9,9 @@ class TlogFeedController < ApplicationController
   end
   
   def photos
-    @page = (params[:page] || 1).to_i
-    @entries = Entry.find :all, :conditions => "entries.user_id = #{current_site.id} AND entries.is_private = 0 AND entries.type = 'ImageEntry'", :page => { :current => @page, :size => 30, :count => ((@page * 30) + 1) }, :order => 'entries.id DESC', :include => [:author, :attachments]
+    # @page = (params[:page] || 1).to_i
+    @entries = current_site.recent_entries(:type => 'ImageEntry').to_a
+    # Entry.find :all, :conditions => "entries.user_id = #{current_site.id} AND entries.is_private = 0 AND entries.type = 'ImageEntry'", :page => { :current => @page, :size => 30, :count => ((@page * 30) + 1) }, :order => 'entries.id DESC', :include => [:author, :attachments]
     response.headers['Content-Type'] = 'application/rss+xml'
     render :action => 'media'
   end

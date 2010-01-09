@@ -60,7 +60,7 @@ class MainController < ApplicationController
     # высчитываем общее число записей и запоминаем в кеше
     total = Rails.cache.fetch("entry_ratings_count_#{kind}_#{rating}", :expires_in => 1.minute) { EntryRating.count :conditions => sql_conditions }
 
-    @entry_ratings = EntryRating.find :all, :page => { :current => params[:page].to_i.reverse_page(total.to_pages), :size => 15, :count => total }, :include => { :entry => [ :attachments, :author, :rating ] }, :order => 'entry_ratings.id DESC', :conditions => sql_conditions
+    @entry_ratings = EntryRating.find :all, :page => { :current => params[:page].to_i.reverse_page(total.to_pages), :size => Entry::PAGE_SIZE, :count => total }, :include => { :entry => [ :attachments, :author, :rating ] }, :order => 'entry_ratings.id DESC', :conditions => sql_conditions
   end
   
   def live
@@ -72,8 +72,14 @@ class MainController < ApplicationController
     @page = params[:page].to_i.reverse_page(total.to_pages)
 
     # grab id-s only, this is an mysql optimization
-    @entry_ids = Entry.find :all, :select => 'entries.id', :conditions => sql_conditions, :page => { :current => @page, :size => Entry::PAGE_SIZE, :count => total }, :order => 'entries.id DESC'
-    @entries = Entry.find_all_by_id @entry_ids.map(&:id), :include => [:author, :rating, :attachments], :order => 'entries.id DESC'
+    @entries = WillPaginate::Collection.create(@page, Entry::PAGE_SIZE, total) do |pager|
+      entry_ids = Entry.find(:all, :select => 'entries.id', :conditions => sql_conditions, :order => 'entries.id DESC', :limit => pager.per_page, :offset => pager.offset).map(&:id)
+      result = Entry.find_all_by_id(entry_ids, :include => [:author, :rating, :attachments]).sort_by { |entry| entry_ids.index(entry.id) }
+      
+      pager.replace(result.to_a)
+      
+      pager.total_entries = Entry.count(:conditions => sql_conditions) unless pager.total_entries
+    end
   end
   
   def last_personalized

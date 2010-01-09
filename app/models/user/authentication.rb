@@ -12,7 +12,6 @@ class User
   ## named_scopes
   ## validations
 	validates_presence_of       :url,
-	                            :on => :save,
 	                            :message => "это обязательное поле"
 
 	validates_uniqueness_of     :url,
@@ -35,6 +34,7 @@ class User
 	validates_uniqueness_of     :email,
 	                            :if => Proc.new { |u| !u.email.blank? },
 	                            :message => 'пользователь с таким емейлом уже зарегистрирован',
+	                            :on => :create,
 	                            :case_sensitive => false
 
   validates_format_of         :email,

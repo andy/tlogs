@@ -25,6 +25,10 @@ class Entry < ActiveRecord::Base
 	PAGE_SIZE = 15
 
   ## included modules & attr_*
+  
+  # virtual attribute used in user/entries.rb for caching
+  attr_accessor :last_comment_viewed
+
 	attr_accessible :data_part_1
 	attr_accessible :data_part_2
 	attr_accessible :data_part_3
