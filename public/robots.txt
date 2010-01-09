@@ -1,12 +1,13 @@
 # See http://www.robotstxt.org/wc/norobots.html for documentation on how to use the robots.txt file
 
 User-agent: *
+Disallow: /
 # duplicate content
-Disallow: /faves/
+#Disallow: /faves/
 # only for logged-in users
-Disallow: /publish/
-Disallow: /settings/
+#Disallow: /publish/
+#Disallow: /settings/
 # nothing interesting here:
-Disallow: /vote/
-Disallow: /main/random
-Disallow: /global/fave
+#Disallow: /vote/
+#Disallow: /main/random
+#Disallow: /global/fave
