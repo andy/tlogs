@@ -78,7 +78,8 @@ namespace :deploy do
     desc "Restart webserver"
     task :restart do
       assets.glue_temp
-      run "cd #{deploy_to} && touch tmp/restart.txt"
+      # run "cd #{deploy_to} && touch tmp/restart.txt"
+      run "cd #{deploy_to} && kill -USR2 `cat tmp/pids/unicorn.pid`"
       assets.deploy
     end
     
