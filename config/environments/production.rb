@@ -1,4 +1,5 @@
 # Settings specified here will take precedence over those in config/environment.rb
+# config.threadsafe!
 
 # The production environment is meant for finished, "live" apps.
 # Code is not reloaded between requests
@@ -17,7 +18,7 @@ config.log_level = :warn
 
 
 # Caching, woohoo!
-config.cache_store = :mem_cache_store, '127.0.0.1:11211', { :namespace => 'p' }
+config.cache_store = :mem_cache_store, '127.0.0.1:11211', { :namespace => 'p', :no_reply => true, :timeout => nil, :autofix_keys => true }
 
 # Enable serving of images, stylesheets, and javascripts from an asset server
 # config.action_controller.asset_host                  = Proc.new { |source, request| "http://assets#{source.hash % 4}.#{request.current_service.host}" }
