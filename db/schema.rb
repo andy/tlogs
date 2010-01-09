@@ -118,18 +118,23 @@ ActiveRecord::Schema.define(:version => 20100108184006) do
 
   add_index "entries", ["created_at"], :name => "index_entries_on_created_at"
   add_index "entries", ["is_disabled"], :name => "index_entries_on_is_disabled"
+  add_index "entries", ["is_mainpageable", "created_at", "type"], :name => "index_entries_on_is_mainpageable_and_created_at_and_type"
   add_index "entries", ["is_mainpageable"], :name => "index_entries_on_is_mainpageable"
   add_index "entries", ["is_private"], :name => "index_entries_on_is_private"
   add_index "entries", ["is_voteable"], :name => "index_entries_on_is_voteable"
+  add_index "entries", ["type", "is_disabled"], :name => "index_entries_on_type_and_is_disabled"
   add_index "entries", ["type"], :name => "index_entries_on_type"
+  add_index "entries", ["updated_at"], :name => "index_entries_on_updated_at"
+  add_index "entries", ["user_id", "is_private", "created_at"], :name => "index_entries_on_uid_pvt_cat"
+  add_index "entries", ["user_id", "is_private", "id"], :name => "index_entries_on_user_id_and_is_private_and_id"
   add_index "entries", ["user_id"], :name => "index_entries_on_user_id"
 
   create_table "entry_ratings", :force => true do |t|
-    t.integer  "entry_id",                 :default => 0,  :null => false
-    t.string   "entry_type", :limit => 20, :default => "", :null => false
-    t.datetime "created_at",                               :null => false
-    t.integer  "user_id",                  :default => 0,  :null => false
-    t.integer  "value",                    :default => 0,  :null => false
+    t.integer  "entry_id",                :default => 0,           :null => false
+    t.string   "entry_type", :limit => 0, :default => "TextEntry", :null => false
+    t.datetime "created_at",                                       :null => false
+    t.integer  "user_id",                 :default => 0,           :null => false
+    t.integer  "value",                   :default => 0,           :null => false
   end
 
   add_index "entry_ratings", ["entry_id"], :name => "index_entry_ratings_on_entry_id", :unique => true
@@ -152,10 +157,10 @@ ActiveRecord::Schema.define(:version => 20100108184006) do
   add_index "entry_votes", ["entry_id", "user_id"], :name => "index_entry_votes_on_entry_id_and_user_id", :unique => true
 
   create_table "faves", :force => true do |t|
-    t.integer  "user_id",                     :null => false
-    t.integer  "entry_id",                    :null => false
-    t.string   "entry_type",    :limit => 64, :null => false
-    t.integer  "entry_user_id",               :null => false
+    t.integer  "user_id",                                             :null => false
+    t.integer  "entry_id",                                            :null => false
+    t.string   "entry_type",    :limit => 0, :default => "TextEntry", :null => false
+    t.integer  "entry_user_id",                                       :null => false
     t.datetime "created_at"
   end
 
@@ -232,15 +237,6 @@ ActiveRecord::Schema.define(:version => 20100108184006) do
   add_index "relationships", ["reader_id", "votes_value"], :name => "index_relationships_on_reader_id_and_votes_value"
   add_index "relationships", ["user_id", "reader_id", "position"], :name => "index_relationships_on_user_id_and_reader_id_and_position"
   add_index "relationships", ["user_id", "reader_id"], :name => "index_relationships_on_user_id_and_reader_id", :unique => true
-
-  create_table "sessions", :force => true do |t|
-    t.string   "session_id"
-    t.text     "data"
-    t.datetime "updated_at"
-  end
-
-  add_index "sessions", ["session_id"], :name => "index_sessions_on_session_id"
-  add_index "sessions", ["updated_at"], :name => "index_sessions_on_updated_at"
 
   create_table "sidebar_elements", :force => true do |t|
     t.integer "sidebar_section_id",               :null => false

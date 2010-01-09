@@ -46,8 +46,6 @@ module WhiteListHelper
   def white_list_html(html, options = {})
     valid_flash_params = %w(movie allowfullscreen allowscriptaccess wmode flashvars)
     
-    require 'hpricot'
-
     html.gsub!('&amp;', '&')
     html.gsub!('amp;', '')
     
