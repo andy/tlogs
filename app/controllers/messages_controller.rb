@@ -17,7 +17,7 @@ class MessagesController < ApplicationController
     @message.sender     = current_user
     @message.user       = current_site
     @message.save
-    Emailer.deliver_message(current_service, current_site, @message) if @message.valid? && @message.sender_id != current_site.id && current_site.is_emailable? && current_site.tlog_settings.email_messages?
+    Emailer.send_later(:deliver_message, current_service, current_site, @message) if @message.valid? && @message.sender_id != current_site.id && current_site.is_emailable? && current_site.tlog_settings.email_messages?
   end
   
   # DELETE message_url(@message)

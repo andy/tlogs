@@ -84,17 +84,17 @@ class AnonymousController < ApplicationController
 
       # отправляем комментарий владельцу записи
       if @entry.author.is_emailable? && @entry.author.email_comments? && (!current_user || @entry.user_id != current_user.id)
-        Emailer.deliver_comment(current_service, @entry.author, @comment)
+        Emailer.send_later(:deliver_comment, current_service, @entry.author, @comment)
       end
       
       # отправляем комменатрий каждому пользователю
       users.each do |user|
-        Emailer.deliver_comment_reply(current_service, user, @comment) if user.is_emailable? && user.email_comments? && user.id != @entry.author.id
+        Emailer.send_later(:deliver_comment_reply, current_service, user, @comment) if user.is_emailable? && user.email_comments? && user.id != @entry.author.id
       end
       
       # отправляем сообщение всем тем, кто наблюдает за этой записью, и кому мы еще ничего не отправляли
       (@entry.subscribers - users).each do |user|
-        Emailer.deliver_comment_to_subscriber(current_service, user, @comment) if user.is_emailable? && user.email_comments? && user.id != current_user.id
+        Emailer.send_later(:deliver_comment_to_subscriber, current_service, user, @comment) if user.is_emailable? && user.email_comments? && user.id != current_user.id
       end
       
       # автоматически подписываем пользователя если на комментарии к этой записи если он еще не подписан

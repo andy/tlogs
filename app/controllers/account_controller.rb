@@ -67,7 +67,7 @@ class AccountController < ApplicationController
       user ||= User.active.find_by_url params[:url] unless params[:url].blank?
       if user
         if user.crypted_password
-          Emailer.deliver_lost_password(current_service, user)
+          Emailer.send_later(:deliver_lost_password, current_service, user)
           flash[:lost_user_id] = user.id
           redirect_to :action => 'lost_password_sent'
         else
