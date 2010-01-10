@@ -4,11 +4,17 @@ class TlogFeedController < ApplicationController
   caches_action :rss, :photos, :last_personalized, :cache_path => Proc.new { |c| c.url_for(:expiring => (Time.now.to_i / 15.minutes).to_i, :page => c.params[:page]) }
 
   def rss
+    # disable rss temporary
+    render(:text => 'internal error', :status => 500) and return
+
     @entries = current_site.recent_entries.to_a
     response.headers['Content-Type'] = 'application/rss+xml'
   end
   
   def photos
+    # disable rss temporary
+    render(:text => 'internal error', :status => 500) and return
+
     @page = (params[:page] || 1).to_i
     @entries = current_site.recent_entries(:type => 'ImageEntry')
     # Entry.find :all, :conditions => "entries.user_id = #{current_site.id} AND entries.is_private = 0 AND entries.type = 'ImageEntry'", :page => { :current => @page, :size => 30, :count => ((@page * 30) + 1) }, :order => 'entries.id DESC', :include => [:author, :attachments]
