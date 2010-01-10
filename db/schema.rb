@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100108184006) do
+ActiveRecord::Schema.define(:version => 20100110094904) do
 
   create_table "attachments", :force => true do |t|
     t.integer "entry_id",     :default => 0,  :null => false
@@ -90,6 +90,7 @@ ActiveRecord::Schema.define(:version => 20100108184006) do
     t.string   "locked_by"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.datetime "failed_at"
   end
 
   add_index "delayed_jobs", ["attempts"], :name => "index_delayed_jobs_on_attempts"
@@ -118,15 +119,11 @@ ActiveRecord::Schema.define(:version => 20100108184006) do
 
   add_index "entries", ["created_at"], :name => "index_entries_on_created_at"
   add_index "entries", ["is_disabled"], :name => "index_entries_on_is_disabled"
-  add_index "entries", ["is_mainpageable", "created_at", "type"], :name => "index_entries_on_is_mainpageable_and_created_at_and_type"
   add_index "entries", ["is_mainpageable"], :name => "index_entries_on_is_mainpageable"
   add_index "entries", ["is_private"], :name => "index_entries_on_is_private"
   add_index "entries", ["is_voteable"], :name => "index_entries_on_is_voteable"
-  add_index "entries", ["type", "is_disabled"], :name => "index_entries_on_type_and_is_disabled"
   add_index "entries", ["type"], :name => "index_entries_on_type"
-  add_index "entries", ["updated_at"], :name => "index_entries_on_updated_at"
   add_index "entries", ["user_id", "is_private", "created_at"], :name => "index_entries_on_uid_pvt_cat"
-  add_index "entries", ["user_id", "is_private", "id"], :name => "index_entries_on_user_id_and_is_private_and_id"
   add_index "entries", ["user_id"], :name => "index_entries_on_user_id"
 
   create_table "entry_ratings", :force => true do |t|
@@ -237,6 +234,15 @@ ActiveRecord::Schema.define(:version => 20100108184006) do
   add_index "relationships", ["reader_id", "votes_value"], :name => "index_relationships_on_reader_id_and_votes_value"
   add_index "relationships", ["user_id", "reader_id", "position"], :name => "index_relationships_on_user_id_and_reader_id_and_position"
   add_index "relationships", ["user_id", "reader_id"], :name => "index_relationships_on_user_id_and_reader_id", :unique => true
+
+  create_table "sessions", :force => true do |t|
+    t.string   "session_id"
+    t.text     "data"
+    t.datetime "updated_at"
+  end
+
+  add_index "sessions", ["session_id"], :name => "index_sessions_on_session_id"
+  add_index "sessions", ["updated_at"], :name => "index_sessions_on_updated_at"
 
   create_table "sidebar_elements", :force => true do |t|
     t.integer "sidebar_section_id",               :null => false
