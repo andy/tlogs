@@ -138,6 +138,24 @@ class TlogController < ApplicationController
     render :action => 'day'
   end
   
+  def next_day
+    @time ||= [params[:year], params[:month], params[:day]].join('-').to_date.to_time
+    @entries = current_site.recent_entries(:time => @time)
+
+  	d = @entries.first.next(:include_private => is_owner?).created_at rescue nil
+
+    redirect_to d ? user_url(current_site, day_path(:year => d.year, :month => d.month, :day => d.mday)) : user_url(current_site)
+  end
+  
+  def prev_day
+    @time ||= [params[:year], params[:month], params[:day]].join('-').to_date.to_time
+    @entries = current_site.recent_entries(:time => @time)
+
+  	d = @entries.last.prev(:include_private => is_owner?).created_at rescue nil
+
+    redirect_to d ? user_url(current_site, day_path(:year => d.year, :month => d.month, :day => d.mday)) : user_url(current_site)
+  end
+  
   # удаляет запись из тлога
   def destroy
     url = tlog_url_for_entry(@entry)

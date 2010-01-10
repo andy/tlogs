@@ -16,6 +16,9 @@ tlog_settings = lambda { |tlog|
 
   tlog.day ':year/:month/:day', :controller => 'tlog', :action => 'day', :requirements => { :year => /\d{4}/, :month => /\d{1,2}/, :day => /\d{1,2}/ }
 
+  tlog.next_day ':year/:month/:day/next', :controller => 'tlog', :action => 'next_day', :requirements => { :year => /\d{4}/, :month => /\d{1,2}/, :day => /\d{1,2}/ }
+  tlog.prev_day ':year/:month/:day/prev', :controller => 'tlog', :action => 'prev_day', :requirements => { :year => /\d{4}/, :month => /\d{1,2}/, :day => /\d{1,2}/ }
+
   tlog.tlog_feed 'feed/:action.xml', :controller => 'tlog_feed'
   tlog.tlog_feed_protected 'feed/:key/:action.xml', :controller => 'tlog_feed'
 
