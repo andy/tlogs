@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100110094904) do
+ActiveRecord::Schema.define(:version => 20100110135648) do
 
   create_table "attachments", :force => true do |t|
     t.integer "entry_id",     :default => 0,  :null => false
@@ -119,6 +119,7 @@ ActiveRecord::Schema.define(:version => 20100110094904) do
 
   add_index "entries", ["created_at"], :name => "index_entries_on_created_at"
   add_index "entries", ["is_disabled"], :name => "index_entries_on_is_disabled"
+  add_index "entries", ["is_mainpageable", "id"], :name => "index_entries_on_is_mainpageable_and_id"
   add_index "entries", ["is_mainpageable"], :name => "index_entries_on_is_mainpageable"
   add_index "entries", ["is_private"], :name => "index_entries_on_is_private"
   add_index "entries", ["is_voteable"], :name => "index_entries_on_is_voteable"
@@ -127,14 +128,21 @@ ActiveRecord::Schema.define(:version => 20100110094904) do
   add_index "entries", ["user_id"], :name => "index_entries_on_user_id"
 
   create_table "entry_ratings", :force => true do |t|
-    t.integer  "entry_id",                :default => 0,           :null => false
-    t.string   "entry_type", :limit => 0, :default => "TextEntry", :null => false
-    t.datetime "created_at",                                       :null => false
-    t.integer  "user_id",                 :default => 0,           :null => false
-    t.integer  "value",                   :default => 0,           :null => false
+    t.integer  "entry_id",                   :default => 0,           :null => false
+    t.string   "entry_type",    :limit => 0, :default => "TextEntry", :null => false
+    t.datetime "created_at",                                          :null => false
+    t.integer  "user_id",                    :default => 0,           :null => false
+    t.integer  "value",                      :default => 0,           :null => false
+    t.boolean  "is_great",                   :default => false,       :null => false
+    t.boolean  "is_good",                    :default => false,       :null => false
+    t.boolean  "is_everything",              :default => false,       :null => false
   end
 
   add_index "entry_ratings", ["entry_id"], :name => "index_entry_ratings_on_entry_id", :unique => true
+  add_index "entry_ratings", ["entry_type"], :name => "index_entry_ratings_on_entry_type"
+  add_index "entry_ratings", ["is_everything"], :name => "index_entry_ratings_on_is_everything"
+  add_index "entry_ratings", ["is_good"], :name => "index_entry_ratings_on_is_good"
+  add_index "entry_ratings", ["is_great"], :name => "index_entry_ratings_on_is_great"
   add_index "entry_ratings", ["value", "entry_type"], :name => "index_entry_ratings_on_value_and_entry_type"
 
   create_table "entry_subscribers", :id => false, :force => true do |t|
