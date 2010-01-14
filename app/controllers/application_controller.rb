@@ -140,6 +140,17 @@ class ApplicationController < ActionController::Base
       return false
     end
 
+    def is_moderator?
+      current_user && current_user.is_moderator?
+    end
+    
+    def require_admin
+      return true if require_current_user && current_user.is_moderator?
+      
+      render :text => 'pemission denied', :status => 403
+      return false
+    end
+
     def require_confirmed_current_user
       redirect_to service_url(confirm_path(:action => :required)) and return false if (is_owner? && !current_site.is_confirmed?) || (!current_site && current_user && !current_user.is_confirmed?)
       

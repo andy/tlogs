@@ -1,5 +1,5 @@
 class AnonymousController < ApplicationController
-  before_filter :require_admin, :only => [:toggle]
+  before_filter :require_moderator, :only => [:toggle]
 
   layout 'main'
   helper :main, :comments
