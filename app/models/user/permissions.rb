@@ -15,6 +15,7 @@ class User
   # moderators (admins + astramak)
   def is_moderator?
     is_admin? && [9471].include?(self.id)
+  end
   
   # пользователь выключен, анонимен, либо имеет неподтвержденный емейл адрес
   def is_limited?
