@@ -16,6 +16,7 @@ class ApplicationController < ActionController::Base
   helper_method   :current_service
   
   helper_method   :is_admin?
+  helper_method   :is_moderator?
 
   before_filter :preload_current_service
   before_filter :remove_old_cookies
