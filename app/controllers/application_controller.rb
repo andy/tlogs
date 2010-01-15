@@ -145,7 +145,7 @@ class ApplicationController < ActionController::Base
       current_user && current_user.is_moderator?
     end
     
-    def require_admin
+    def require_moderator
       return true if require_current_user && current_user.is_moderator?
       
       render :text => 'pemission denied', :status => 403
