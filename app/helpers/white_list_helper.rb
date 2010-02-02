@@ -55,7 +55,7 @@ module WhiteListHelper
     doc = Hpricot(simple_tasty_format(html), :fixup_tags => true)
 
     # Делаем сканирование элементов
-    allowed_tags = %w(a b i br img p strong em ul ol li h1 h2 h3 h4 h5 h6 div object param)
+    allowed_tags = %w(a b i s br img p strong em ul ol li h1 h2 h3 h4 h5 h6 div object param)
     allowed_attributes = %w(class id href alt src width height title border tag name value)
     
     doc = Hpricot(sanitize(doc.to_html, :tags => allowed_tags, :attributes => allowed_attributes), :fixup_tags => true)
