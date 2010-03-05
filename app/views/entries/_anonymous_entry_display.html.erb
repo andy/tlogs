@@ -20,7 +20,6 @@
 	<%- else -%>
 		<div class='service_link'><a href="<%= service_url("/main/anonymous/show/#{entry.id}") %>" title='постоянная ссылка только на эту запись'>link</a></div>
 	<%- end -%>
-	<br/><br/>
   <% content_tag :div, :class => 'service_link anonymous_entry_delete_link', :id => dom_id(entry, :toggle) do %>
     <%= link_to_remote entry.is_disabled? ? 'undel' : 'del', { :url => service_url("/main/anonymous/toggle/#{entry.id}") }, { :id => dom_id(entry, :toggle_link) } %>
   <% end if is_moderator? %>
