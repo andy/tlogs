@@ -5,7 +5,7 @@ class MainFeedController < ApplicationController
 
   def last
     # disable rss temporary
-    render(:text => 'internal error', :status => 500) and return
+    # render(:text => 'internal error', :status => 500) and return
     
     ### такая же штука определена в main_controller.rb
 
@@ -29,7 +29,7 @@ class MainFeedController < ApplicationController
   
   def live
     # disable rss temporary
-    render(:text => 'internal error', :status => 500) and return
+    # render(:text => 'internal error', :status => 500) and return
 
     @entries = Entry.find :all, :conditions => 'entries.is_private = 0 AND entries.is_mainpageable = 1', :order => 'entries.id DESC', :include => [:author, :attachments], :limit => 15
     response.headers['Content-Type'] = 'application/rss+xml'
@@ -39,7 +39,7 @@ class MainFeedController < ApplicationController
   
   def photos
     # disable rss temporary
-    render(:text => 'internal error', :status => 500) and return
+    # render(:text => 'internal error', :status => 500) and return
 
     @page = (params[:page] || 1).to_i
     @entries = Entry.find :all, :conditions => "entries.is_private = 0 AND entries.is_mainpageable = 1 AND entries.type = 'ImageEntry'", :page => { :current => @page, :size => 50, :count => ((@page + 1) * 50) }, :order => 'entries.id DESC', :include => [:author, :attachments]

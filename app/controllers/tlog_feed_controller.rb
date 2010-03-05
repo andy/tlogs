@@ -5,7 +5,7 @@ class TlogFeedController < ApplicationController
 
   def rss
     # disable rss temporary
-    render(:text => 'internal error', :status => 500) and return
+    # render(:text => 'internal error', :status => 500) and return
 
     @entries = current_site.recent_entries.to_a
     response.headers['Content-Type'] = 'application/rss+xml'
@@ -13,7 +13,7 @@ class TlogFeedController < ApplicationController
   
   def photos
     # disable rss temporary
-    render(:text => 'internal error', :status => 500) and return
+    # render(:text => 'internal error', :status => 500) and return
 
     @page = (params[:page] || 1).to_i
     @entries = current_site.recent_entries(:type => 'ImageEntry')
