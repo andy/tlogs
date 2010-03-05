@@ -4,7 +4,47 @@
 		<form method='get' action='<%= service_url(search_path) %>'>
 			<%= text_field_tag 'query', params[:query], :type => :search, :autosave => "com.tlogs", :results => 10 %>
 		</form>
-	</div>	
+	</div>
+	
+	<%
+	
+	  books = [
+	    {
+	      :title      => 'Заводной апельсин',
+	      :authors    => 'Энтони Берджесс',
+	      :cover      => 'bookmate/tasty-clockwork-orange.jpg',
+	      :url        => 'http://www.bookmate.ru/books/YUIMgodd'
+	    },
+	    { 
+	      :title      => 'Милые кости',
+	      :authors    => 'Сиболд Элис',
+	      :cover      => 'bookmate/tasty-milie-kosti.jpg',
+	      :url        => 'http://www.bookmate.ru/books/BNOw47ik'
+	    },
+	    {
+	      :title      => 'Торговец пушками',
+	      :authors    => 'Хью Лори',
+	      :cover      => 'bookmate/tasty-torgovets-pushkami.jpg',
+	      :url        => 'http://www.bookmate.ru/books/ZIzS8dks'
+	    }
+	  ]
+	%>
+	
+	<div class='sidebar_books'>
+  	<h2><span>
+  	  <a href="http://www.bookmate.ru" title="Читать книги онлайн">Читать книги онлайн</a>
+  	</span> <%= image_tag 'bookmate/tasty-bookmate.gif' %></h2>
+
+    <span>Что читают тейстяне? Давайте составим список книг, которые вы хотели бы чтобы <i>каждый</i> прочитал.</span>
+    <br><br>
+    <% books.each do |book| %>
+      <div class='sidebar_book'>
+        <%= link_to image_tag(book[:cover], :alt => [book[:title], book[:authors]].join(', ')), book[:url], :title => [book[:title], book[:authors], 'читать онлайн'].join(', ') %>
+        <h3><%= link_to book[:title], book[:url] %></h3>
+        <h4><%= link_to book[:authors], book[:url] %></h4>          
+      </div>    
+    <% end %>
+	</div>
 <% end %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
    "http://www.w3.org/TR/html4/strict.dtd">

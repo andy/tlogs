@@ -97,3 +97,31 @@ input.disabled, input.disabled:active {
 .limit_exceeded p {
 	margin-bottom: 1em;
 }
+
+
+/* bookmate verstka */
+.sidebar_books h2 a { color: white; text-decoration: none; }
+.sidebar_books h2 img { vertical-align: middle;}
+.sidebar_books span { background-color: white; }
+.sidebar_books .sidebar_book {
+	margin-bottom: 25px;
+}
+.sidebar_books .sidebar_book img {
+	-webkit-box-shadow: 3px 3px 15px rgba(0,0,0,0.3);
+	-moz-box-shadow: 3px 3px 15px rgba(0,0,0,0.3);
+	-o-box-shadow: 3px 3px 15px rgba(0,0,0,0.3);	
+	box-shadow: 3px 3px 15px rgba(0,0,0,0.3);
+	margin-bottom: 5px;
+	width: 100px;
+}
+.sidebar_books .sidebar_book h3 a, .sidebar_books .sidebar_book h4 a {
+	background-color: white;
+}
+.sidebar_books .sidebar_book h4, .sidebar_books .sidebar_book h3 {
+	margin: 0 !important;
+	padding: 0 !important;
+}
+.sidebar_books .sidebar_book h4 {
+	font-weight: normal;
+	font-size: 11px;
+}
