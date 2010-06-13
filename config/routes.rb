@@ -64,6 +64,8 @@ ActionController::Routing::Routes.draw do |map|
     www.tags 'tags/:action/:id', :controller => 'tags'
 
     map.bookmarklet 'bookmarklet/:action', :controller => 'bookmarklet'
+
+    www.love 'all_we_need_is_love/:action', :controller => 'love'
     
     www.resources :feedbacks, :member => { :publish => :post, :discard => :post }
 

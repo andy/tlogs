@@ -57,6 +57,15 @@ class Emailer < ActionMailer::Base
                 :user => user
   end
   
+  # письмо любовь от пользователя
+  def love(current_service, transaction)
+    setup     current_service,
+                :subj => 'ммм... пожертвование',
+                :from => '"Mmm... love" <noreply+love@mmm-tasty.ru>',
+                :email => 'feedback@mmm-tasty.ru',
+                :body => { :transaction => transaction, :user => transaction.user }
+  end
+  
   private
     def setup(current_service, options = {})
       # message specific things

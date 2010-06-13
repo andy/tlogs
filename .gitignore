@@ -15,6 +15,7 @@ config/database.yml
 config/thin.yml
 config/tlogs/session.yml
 config/tlogs/domains.yml
+config/robox.yml
 script/sync
 log/
 public/javascripts/all.js

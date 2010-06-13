@@ -40,6 +40,7 @@ class User < ActiveRecord::Base
   has_one       :feedback, :dependent => :destroy
   has_many      :messages, :dependent => :destroy
   has_many      :faves, :dependent => :destroy
+  has_many      :transactions
 
 
   ## plugins

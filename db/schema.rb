@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100110135648) do
+ActiveRecord::Schema.define(:version => 20100613183059) do
 
   create_table "attachments", :force => true do |t|
     t.integer "entry_id",     :default => 0,  :null => false
@@ -142,6 +142,7 @@ ActiveRecord::Schema.define(:version => 20100110135648) do
   add_index "entry_ratings", ["entry_type"], :name => "index_entry_ratings_on_entry_type"
   add_index "entry_ratings", ["is_everything"], :name => "index_entry_ratings_on_is_everything"
   add_index "entry_ratings", ["is_good"], :name => "index_entry_ratings_on_is_good"
+  add_index "entry_ratings", ["is_great", "entry_type"], :name => "index_entry_ratings_on_is_great_and_entry_type"
   add_index "entry_ratings", ["is_great"], :name => "index_entry_ratings_on_is_great"
   add_index "entry_ratings", ["value", "entry_type"], :name => "index_entry_ratings_on_value_and_entry_type"
 
@@ -369,6 +370,14 @@ ActiveRecord::Schema.define(:version => 20100110135648) do
   end
 
   add_index "tlog_settings", ["user_id"], :name => "index_tlog_settings_on_user_id"
+
+  create_table "transactions", :force => true do |t|
+    t.integer  "user_id",                           :null => false
+    t.integer  "amount",                            :null => false
+    t.string   "state",      :default => "pending", :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "users", :force => true do |t|
     t.string   "email"

@@ -125,3 +125,8 @@ input.disabled, input.disabled:active {
 	font-weight: normal;
 	font-size: 11px;
 }
+
+/* donations */
+form.donation label { font-size: 11px; }
+form.donation input.submit_donation { margin-top: 20px; margin-left: 380px; }
+.donation_thanks { margin-left: 120px; margin-top: 50px; margin-bottom: 50px; }
