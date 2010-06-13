@@ -101,7 +101,7 @@ class Entry < ActiveRecord::Base
   named_scope :anonymous, :conditions => { :type => 'AnonymousEntry' }
   named_scope :for_view, :include => [:author, :attachments, :rating], :order => 'entries.id DESC'
   named_scope :private, :conditions => 'entries.is_private = 1 AND entries.type != "AnonymousEntry"'
-  named_scope :for_user, lambda { |user| { :conditions => "user_id = #{user.id}" } }
+  named_scope :for_user, lambda { |u| { :conditions => "user_id = #{u.id}" } }
 
   ## validations
 	validates_presence_of :author
