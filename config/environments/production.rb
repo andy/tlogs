@@ -14,7 +14,7 @@ config.action_controller.perform_caching             = true
 config.action_view.cache_template_loading            = true
 
 # Logging
-config.log_level = :info
+config.log_level = :warn
 
 
 # Caching, woohoo!
