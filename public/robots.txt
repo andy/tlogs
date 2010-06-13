@@ -11,3 +11,4 @@ Disallow: /settings/
 Disallow: /vote/
 Disallow: /main/random
 Disallow: /global/fave
+# Disallow: /entries
