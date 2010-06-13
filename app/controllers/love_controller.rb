@@ -35,7 +35,7 @@ class LoveController < ApplicationController
     if @transaction.state == 'pending'
       @transaction.update_attributes :state => 'success'
 
-      Emailer.deliver_love(current_service, transaction)
+      Emailer.deliver_love(current_service, @transaction)
     end
 
     render :text => "OK#{@transaction.id}"
