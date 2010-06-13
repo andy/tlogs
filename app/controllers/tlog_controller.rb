@@ -109,10 +109,17 @@ class TlogController < ApplicationController
   def subscribe
     render :nothing => true and return unless request.post?
 
-    @entry.subscribers << current_user if current_user
-    render :update do |page|
-      page.toggle('subscribe_link', 'unsubscribe_link')
+    begin
+      @entry.subscribers << current_user if current_user
+
+      render :update do |page|
+        page.toggle('subscribe_link', 'unsubscribe_link')
+      end
+    rescue ActiveRecord::StatementInvalid
+      # ignore ... and just render nothing (this happens when user clicks too fast before getting previous update)
+      render :nothing => true
     end
+
   end
   
   def unsubscribe
