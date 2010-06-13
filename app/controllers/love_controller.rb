@@ -32,9 +32,11 @@ class LoveController < ApplicationController
   end
   
   def result
-    @transaction.update_attributes :state => 'success'
+    if @transaction.state == 'pending'
+      @transaction.update_attributes :state => 'success'
 
-    Emailer.deliver_love(current_service, transaction)
+      Emailer.deliver_love(current_service, transaction)
+    end
 
     render :text => "OK#{@transaction.id}"
   end
@@ -59,11 +61,11 @@ class LoveController < ApplicationController
     def validate_robox_posting
       return false unless request.post?
    
-      secret = @robox_settings[(params[:action] == 'result') ? :secret_two : :secret_one]
-      return false if params[:SignatureValue] != Digest::MD5.hexdigest("#{params[:OutSum]}:#{params[:InvId]}:#{secret}")
+      key = (params[:action] == 'result') ? :secret_two : :secret_one
+      secret = @robox_settings[key]
+
+      return false if params[:SignatureValue] != Digest::MD5.hexdigest("#{params[:OutSum]}:#{params[:InvId]}:#{secret}").upcase
       
-      @transaction = Transaction.find params[:InvId]
-      
-      true
+      @transaction = Transaction.find(params[:InvId])
     end
 end
