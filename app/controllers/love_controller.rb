@@ -1,6 +1,6 @@
 class LoveController < ApplicationController
-  before_filter :require_current_user
-  before_filter :require_confirmed_current_user
+  before_filter :require_current_user, :except => [:result]
+  before_filter :require_confirmed_current_user, :except => [:result]
 
   before_filter :preload_robox_settings
   
