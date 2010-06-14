@@ -29,7 +29,7 @@ if show_datetime -%>
 <div class="post_body <%= "post_#{entry.class.to_s.underscore}" %><%= " post_is_private" if entry.is_private? %><%= " post_#{index}" if index >= 0 %>" id="<%= dom_id(entry) %>">
 	<% if show_tags -%>
 		<div class='entry_metadata_holder display_block enable_for_owner_<%= entry.user_id %>'>
-			<%= link_to_remote('+', { :update => "emd_#{entry.id}", :url => user_url(current_site, metadata_entry_path(entry)), :method => :get, :success => "$('#{dom_id(entry)}').addClassName('post_metadata_open'); hide_flash(); new Effect.Appear('emd_#{entry.id}', { duration: 0.3 }); $('emdl_#{entry.id}').hide(); $('emdl_#{entry.id}_closer').show().innerHTML='&ndash;';" }, :id => "emdl_#{entry.id}", :class => 'entry_metadata_link', :title => 'информация о записи') unless embed_tags %>
+			<%= link_to_remote('+', { :update => "emd_#{entry.id}", :url => user_url(current_site, metadata_entry_path(entry)).downcase, :method => :get, :success => "$('#{dom_id(entry)}').addClassName('post_metadata_open'); hide_flash(); new Effect.Appear('emd_#{entry.id}', { duration: 0.3 }); $('emdl_#{entry.id}').hide(); $('emdl_#{entry.id}_closer').show().innerHTML='&ndash;';" }, :id => "emdl_#{entry.id}", :class => 'entry_metadata_link', :title => 'информация о записи') unless embed_tags %>
 			<%= link_to_function '+', "if($('emd_#{entry.id}').visible()) { new Effect.Fade('emd_#{entry.id}', {duration: 0.1, afterFinish: function() { $('#{dom_id(entry)}').removeClassName('post_metadata_open'); show_flash(); } }); this.innerHTML='+'; } else { $('#{dom_id(entry)}').addClassName('post_metadata_open'); hide_flash(); new Effect.Appear('emd_#{entry.id}', { duration: 0.3 }); this.innerHTML='&ndash;'}", :id => "emdl_#{entry.id}_closer", :style => embed_tags ? nil : 'display: none', :class => 'entry_metadata_link', :title => 'закрыть окошко с информацией' %>
 			<div class='rel'>
 				<div class='entry_metadata' id='emd_<%= entry.id %>' style="display: none">
@@ -70,7 +70,7 @@ if show_datetime -%>
 		<% end %>
 		<div class='service_edit enable_for_owner_<%= entry.user_id %>' style='display: none;'><%= link_to "edit", user_url(entry.author, publish_path(:action => entry.class.to_s.underscore.split('_').first, :id => entry, :back => 'to_entry_page')), :rel => 'nofollow', :title => 'редактировать эту запись' %></div>
 		<% if params[:controller] == 'faves' && current_user && current_site.id == current_user.id %>
-			<div class='service_edit'><%= link_to_remote image_tag('delete.gif'), { :url => user_url(current_site, fave_path(entry.id)), :method => :delete }, :id => entry.dom_id(:defave), :title => 'удалить из избранного' %></div>
+			<div class='service_edit'><%= link_to_remote image_tag('delete.gif'), { :url => user_url(current_site, fave_path(entry.id)).downcase, :method => :delete }, :id => entry.dom_id(:defave), :title => 'удалить из избранного' %></div>
 		<% elsif params[:controller] != 'faves' %>
 			<div class='service_edit enable_for_current_user disable_for_owner_<%= entry.user_id %>' style='display: none'><%= link_to_remote 'fave!', { :url => global_fave_url(:id => entry.id) }, :id => entry.dom_id(:fave), :title => 'добавить в избранное' %></div>
 		<% end %>
