@@ -25,7 +25,7 @@ if show_datetime -%>
 		</div>
 	</div>
 <% end -%>
-<a name='<%= entry.dom_id %>'></a>
+<a name='<%= dom_id(entry) %>'></a>
 <div class="post_body <%= "post_#{entry.class.to_s.underscore}" %><%= " post_is_private" if entry.is_private? %><%= " post_#{index}" if index >= 0 %>" id="<%= dom_id(entry) %>">
 	<% if show_tags -%>
 		<div class='entry_metadata_holder display_block enable_for_owner_<%= entry.user_id %>'>
