@@ -12,7 +12,7 @@
 
 	<div class='post_comment_form' id='post_comment_form'<%= ' style="display: none;"' if !current_user %>>
 		<% remote_form_for :comment,
-				:url => user_url(@entry.author, entry_comments_path(@entry)),
+				:url => user_url(@entry.author, entry_comments_path(@entry)).downcase,
 				:before => "$('#{@entry.dom_id(:ajax_spinner)}').show(); remote_request_started('comment_submit_button', 'Отправляем ...');",
 				:complete => "$('#{@entry.dom_id(:ajax_spinner)}').hide(); remote_request_finished('comment_submit_button', 'Отправить комментарий');",
 				:html => { :class => 'small', :id => @entry.dom_id(:form) } do |f| %>
@@ -29,7 +29,7 @@
 			<% else %>
 				<div id='allowed_html_tags'>html запрещен, зато ссылки автоматически выделяются</div>
 			<% end %>
-			<%= submit_to_remote "button", "Предпросмотр", :url => user_url(@entry.author, preview_new_entry_comment_path(@entry)), :before => "$('#{@entry.dom_id(:ajax_spinner)}').show(); remote_request_started('generate_preview', 'Подготавливаем ...');", :complete => "$('#{@entry.dom_id(:ajax_spinner)}').hide(); remote_request_finished('generate_preview', 'Предпросмотр');", :html => { :id => 'generate_preview', :class => 'button' } %>&nbsp;
+			<%= submit_to_remote "button", "Предпросмотр", :url => user_url(@entry.author, preview_new_entry_comment_path(@entry)).downcase, :before => "$('#{@entry.dom_id(:ajax_spinner)}').show(); remote_request_started('generate_preview', 'Подготавливаем ...');", :complete => "$('#{@entry.dom_id(:ajax_spinner)}').hide(); remote_request_finished('generate_preview', 'Предпросмотр');", :html => { :id => 'generate_preview', :class => 'button' } %>&nbsp;
 			<%= submit_tag 'Отправить комментарий', :id => 'comment_submit_button', :class => 'comment_send' %>
 			<%= image_tag 'ajax-small-loader.gif', :size => '15x15', :style => 'display: none;', :id => @entry.dom_id(:ajax_spinner) %>
 		<% end %>
