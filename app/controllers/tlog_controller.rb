@@ -91,7 +91,7 @@ class TlogController < ApplicationController
     redirect_to user_url(current_site) and return unless request.post?
 
     relationship = current_user.relationship_with(current_site, true)
-    if relationship.new_record?
+    if relationship && relationship.new_record?
       new_friendship_status = Relationship::DEFAULT
       
       # Emailer.deliver_relationship(current_site, current_user)

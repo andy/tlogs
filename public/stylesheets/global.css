@@ -1968,6 +1968,7 @@ body.main_page {
 }
 .post_image_entry img {
 	text-align:center;
+	max-width:420px;
 }
 .main_rounded_holder {
 	z-index:510;
@@ -3090,6 +3091,7 @@ img.heart {
 }
 .message_created_at {
 	font-size:70%;
+	white-space:nowrap!important;
 }
 #post_comment_preview h2 span {
 	padding:0 4px;
