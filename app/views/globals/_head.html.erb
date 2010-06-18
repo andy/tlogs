@@ -11,6 +11,8 @@
         :sid  => cookies[ActionController::Base.session_options[:key]]
       }.to_json %>;
   <% end %>
+  
+  window._token = "<%= form_authenticity_token %>";
 </script>
 
 <%= glued_stylesheet_link_tag 'application' %>

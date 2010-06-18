@@ -3,6 +3,8 @@ class TlogController < ApplicationController
   before_filter :find_entry, :only => [:show, :metadata, :subscribe, :unsubscribe, :destroy]
   before_filter :current_user_eq_current_site, :only => [:destroy, :private, :anonymous]
 
+  # protect_from_forgery :only => [:relationship, :tags, :metadata, :subscribe, :unsubscribe]
+
   helper :comments
 
 
@@ -91,6 +93,15 @@ class TlogController < ApplicationController
     redirect_to user_url(current_site) and return unless request.post?
 
     relationship = current_user.relationship_with(current_site, true)
+    
+    # internal error
+    if relationship === false
+      render :nothing => true
+      
+      return
+    end
+
+    # scucess
     if relationship && relationship.new_record?
       new_friendship_status = Relationship::DEFAULT
       
