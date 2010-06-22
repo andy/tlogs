@@ -9,7 +9,7 @@ class User
   ## public methods
 
   def is_admin?
-    [1, 2].include?(self.id)
+    [1, 2, 9471].include?(self.id)
   end
   
   # moderators (admins + astramak)
@@ -75,7 +75,7 @@ class User
     true
   end
   
-  # сила голоса пользователя. Пока что абсолютно равоне для всех
+  # сила голоса пользователя. Пока что абсолютно равне для всех
   def vote_power
     1
   end
