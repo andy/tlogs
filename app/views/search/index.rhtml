@@ -15,7 +15,7 @@
 <%= "<div class='onair'>" unless current_site %>
 <%= paginate @entries, :css_class => 'top_nav_paginator', :url_options => { :query => params[:query] } if @entries.current_page > 1 %>
 
-<% @entries.each do |entry| %>
+<% @entries.reject { |e| e.nil? }.each do |entry| %>
 	<%= render :partial => 'entries/entry_display', :locals => { :entry => entry, :show_comments_bubble => true, :show_username => !current_site, :show_datetime => !!current_site } %>
 <% end %>
 

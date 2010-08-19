@@ -33,7 +33,7 @@ class SearchController < ApplicationController
     end
 
     @entries = Entry.search params[:query], options
-    
+
     # результаты отображаются внутри тлога если поиск выполнялся по индивидуальному тлогу
     render :layout => current_site ? 'tlog' : 'main'
   end
