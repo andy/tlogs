@@ -9,7 +9,7 @@ class User
   ## public methods
 
   def is_admin?
-    [1, 2, 9471].include?(self.id)
+    [1, 2].include?(self.id)
   end
   
   # moderators (admins + astramak)

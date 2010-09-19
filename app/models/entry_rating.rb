@@ -13,7 +13,6 @@ class EntryRating < ActiveRecord::Base
   belongs_to :entry
   
   RATINGS = {
- :bestofthebest => { :select => 'Лучшее лучшего (+15 и круче)', :header => 'Да, это то, о чем мы мечтали', :filter => 'entry_ratings.is_great = 1', :order => 1 },
     :great => { :select => 'Великолепное (+5 и круче)', :header => 'Самое прекрасное!!!@#$%!', :filter => 'entry_ratings.is_great = 1', :order => 1 },
     :good => { :select => 'Интересное (+2 и выше)', :header => 'Интересное на тейсти', :filter => 'entry_ratings.is_good = 1', :order => 2 },
     :everything => { :select => 'Всё подряд (-5 и больше)', :header => 'Всё подряд на тейсти', :filter => 'entry_ratings.is_everything = 1', :order => 3 }
@@ -28,7 +27,6 @@ class EntryRating < ActiveRecord::Base
   
   protected
     def update_filter_value
-      self.is_bestofthebest       = self.value >= 15
       self.is_great       = self.value >= 5
       self.is_good        = self.value >= 2
       self.is_everything  = self.value >= -5
