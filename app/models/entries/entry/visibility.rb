@@ -26,7 +26,7 @@ class Entry
       # 0 - is_voteable, выставляется только если пользователю разрешено это делать и только на новую запись
       self.is_voteable = true if options[0] && self.new_record?
       # is_mainpageable сбрасывается, если у пользователя отсутствует этот флаг
-      self.is_mainpageable = false unless self.author.is_mainpageable?
+      self.is_mainpageable = false if self.author && !self.author.is_mainpageable?
     end
   end
 end
