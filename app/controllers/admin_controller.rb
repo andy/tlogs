@@ -7,9 +7,7 @@ class AdminController < ApplicationController
   def disable
     current_site.disable!
 
-    render :update do |page|
-      page.call 'window.location.reload'
-    end
+    render :update { |page| page.call 'window.location.reload' }
   end
   
   # remove all entries from mainpage, alter user
