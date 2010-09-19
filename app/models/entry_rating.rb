@@ -27,7 +27,7 @@ class EntryRating < ActiveRecord::Base
   
   protected
     def update_filter_value
-      if self.is_mainpageable?
+      if self.entry.is_mainpageable?
         self.is_great       = self.value >= 15
         self.is_good        = self.value >= 5
         self.is_everything  = self.value >= -5
