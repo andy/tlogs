@@ -21,7 +21,14 @@ class AdminController < ApplicationController
     # block all old entries from mainpage
     current_site.entries.each do |entry|
       if entry.is_mainpageable?
+        # remove from mainpage
         entry.is_mainpageable = false
+
+        # also, remove from all lists
+        entry.is_great = false
+        entry.is_good = false
+        entry.is_everything = false
+
         entry.save
       end
     end
