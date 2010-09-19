@@ -135,7 +135,7 @@
     <%= link_to_function 'Админка', "sidebar_toggle('admin')", :class => 'sidebar_toggle', :id => 'sidebar_admin_link' %>
     <div class='sidebar_section_content' id='sidebar_admin_content' style='display: none'>
       <p>
-        <%= content_tag :span, current_site.id, :title => "#{current_site.created_at.to_s(:db)}, #{current_site.created_at.distance_between_in_words(Time.now, ' назад')}" %><br />
+        <%= content_tag :span, "id #{current_site.id}", :title => "#{current_site.created_at.to_s(:db)}, #{current_site.created_at.distance_between_in_words(Time.now, ' назад')}" %><br />
         <%= h current_site.email %><br />
         vid <%= EntryVote.sum(:value, :conditions => "user_id = #{current_site.id}") %><br />
     

@@ -5,7 +5,7 @@ class AdminController < ApplicationController
 
 
   def disable
-    # current_site.disable!
+    current_site.disable!
 
     render :update do |page|
       page.call 'window.location.reload'
@@ -39,8 +39,5 @@ class AdminController < ApplicationController
     render :update do |page|
       page.toggle('sidebar_admin_demainpage', 'sidebar_admin_enablemainpage')
     end
-  end
-  
-  protected
-    def
+  end  
 end
