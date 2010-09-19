@@ -27,8 +27,8 @@ class EntryRating < ActiveRecord::Base
   
   protected
     def update_filter_value
-      self.is_great       = self.value >= 5
-      self.is_good        = self.value >= 2
+      self.is_great       = self.value >= 15
+      self.is_good        = self.value >= 5
       self.is_everything  = self.value >= -5
     end
 end
