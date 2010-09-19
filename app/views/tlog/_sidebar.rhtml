@@ -130,6 +130,41 @@
 	<% end %>
 <% end %>
 
+<% if current_user && current_user.is_admin? %>
+  <div class='sidebar_section'>
+    <%= link_to_function 'Админка', "sidebar_toggle('admin')", :class => 'sidebar_toggle', :id => 'sidebar_admin_link' %>
+    <div class='sidebar_section_content' id='sidebar_admin_content' style='display: none'>
+      <p>
+        <%= content_tag :span, current_site.id, :title => "#{current_site.created_at.to_s(:db)}, #{current_site.created_at.distance_between_in_words(Time.now, ' назад')}" %><br />
+        <%= h current_site.email %><br />
+        vid <%= EntryVote.sum(:value, :conditions => "user_id = #{current_site.id}") %><br />
+    
+        <%= link_to_remote 'Скрыть с главной', {
+                          :url => user_url(current_site, admin_path(:action => 'demainpage')),
+                          :before => 'blink("sidebar_admin_demainpage")',
+                          :complete => 'unblink("sidebar_admin_demainpage")',
+                          :confirm => 'Действительно скрыть?'
+                        }, :style => (current_site.is_mainpageable? ? nil : 'display: none'), :id => 'sidebar_admin_demainpage' %>
+
+        <%= link_to_remote 'Показывать на главной', {
+                          :url => user_url(current_site, admin_path(:action => 'enablemainpage')),
+                          :before => 'blink("sidebar_admin_enablemainpage")',
+                          :complete => 'unblink("sidebar_admin_enablemainpage")'
+                        }, :style => (current_site.is_mainpageable? ? 'display: none' : nil), :id => 'sidebar_admin_enablemainpage' %>
+        
+        <br/>
+
+        <%= link_to_remote 'Удалить', {
+                          :url => user_url(current_site, admin_path(:action => 'disable')),
+                          :before => 'blink("sidebar_admin_remove_tlog")',
+                          :complete => 'unblink("sidebar_admin_remove_tlog")',
+                          :confirm => 'Действительно удалить?'
+                        }, :id => 'sidebar_admin_remove_tlog' %><br />
+      </p>
+    </div>
+  </div>
+<% end %>
+
 <div class='sidebar_section' id='sidebar_hide_holder'>
 	<%= link_to_function '&#x2190; спрятать', 'new Effect.Move("tlog_sidebar", { x: -216, duration: 0.3, afterFinish: function() { $("show_sidebar").show(); $("tlog_sidebar_content").hide(); new Effect.Move("show_sidebar", { x: 25, duration: 0.2 }) } });', :id => 'sidebar_hide' %>
 </div>

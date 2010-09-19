@@ -73,6 +73,7 @@ class User < ActiveRecord::Base
   ## callbacks
   after_destroy { |user| user.disconnect! }
   after_create do |user|
+    user.is_mainpageable = true
     user.tlog_settings = TlogSettings.create :user => user
     user.tlog_design_settings = TlogDesignSettings.create :user => user
     # добавляем новости автоматически
@@ -100,6 +101,7 @@ class User < ActiveRecord::Base
 
     # выставляем флаг заблокированности
     self.is_disabled = true
+    self.is_mainpageable = false
     self.save
     
     # отключаем пользователя от друзей

@@ -13,8 +13,8 @@ class EntryRating < ActiveRecord::Base
   belongs_to :entry
   
   RATINGS = {
-    :great => { :select => 'Великолепное (+5 и круче)', :header => 'Самое прекрасное!!!@#$%!', :filter => 'entry_ratings.is_great = 1', :order => 1 },
-    :good => { :select => 'Интересное (+2 и выше)', :header => 'Интересное на тейсти', :filter => 'entry_ratings.is_good = 1', :order => 2 },
+    :great => { :select => 'Великолепное (+15 и круче)', :header => 'Самое прекрасное!!!@#$%!', :filter => 'entry_ratings.is_great = 1', :order => 1 },
+    :good => { :select => 'Интересное (+5 и выше)', :header => 'Интересное на тейсти', :filter => 'entry_ratings.is_good = 1', :order => 2 },
     :everything => { :select => 'Всё подряд (-5 и больше)', :header => 'Всё подряд на тейсти', :filter => 'entry_ratings.is_everything = 1', :order => 3 }
   }
   RATINGS_FOR_SELECT = RATINGS.sort_by { |obj| obj[1][:order] }.map { |k,v| [v[:select], k.to_s] }
