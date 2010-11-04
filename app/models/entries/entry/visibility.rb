@@ -11,7 +11,7 @@ class Entry
   
   # Виртуальный атрибут visibility позволяет нам заботиться о всех составляющих видимости записи практически через одну функцию
   def visibility
-    VISIBILITY.find { |v| v[1][:options] == [self.is_voteable?, self.is_mainpageable?, self.is_private?] }[0].to_s
+    VISIBILITY.find { |v| v[1][:options] == [self.is_voteable?, self.is_mainpageable?, self.is_private?] }[0].to_s rescue :public
   end
   
   def visibility=(kind)
