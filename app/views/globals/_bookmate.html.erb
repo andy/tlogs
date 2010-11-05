@@ -48,19 +48,22 @@
   #     :title      => 'Заводной апельсин',
   #     :authors    => 'Энтони Берджесс',
   #     :cover      => 'bookmate/tasty-clockwork-orange.jpg',
-  #     :url        => 'http://www.bookmate.ru/books/YUIMgodd'
+  #     :url        => 'http://www.bookmate.ru/books/YUIMgodd',
+  #     :uuid       => 'eKjfvJRE'
   #   },
   #   { 
   #     :title      => 'Милые кости',
   #     :authors    => 'Сиболд Элис',
   #     :cover      => 'bookmate/tasty-milie-kosti.jpg',
-  #     :url        => 'http://www.bookmate.ru/books/BNOw47ik'
+  #     :url        => 'http://www.bookmate.ru/books/BNOw47ik',
+  #     :uuid       => 'jVJqeXrf'
   #   },
   #   {
   #     :title      => 'Торговец пушками',
   #     :authors    => 'Хью Лори',
   #     :cover      => 'bookmate/tasty-torgovets-pushkami.jpg',
-  #     :url        => 'http://www.bookmate.ru/books/ZIzS8dks'
+  #     :url        => 'http://www.bookmate.ru/books/ZIzS8dks',
+  #     :uuid       => 'ERkcvVKV'
   #   }
   # ]
   
@@ -76,7 +79,11 @@
   <br><br>
   <% books.each do |book| %>
     <div class='sidebar_book'>
-      <%= link_to image_tag(URI.parse('http://www.bookmate.ru').merge(book['cover']).to_s, :alt => [book['title'], book['authors']].join(', ')), book['url'], :title => [book['title'], book['authors'], 'читать онлайн'].join(', ') %>
+      <% if book['uuid'] %>
+        <%= link_to image_tag(URI.parse('http://www.bookmate.ru').merge(book['cover']).to_s, :alt => [book['title'], book['authors']].join(', ')), "http://www.bookmate.ru/r#d=#{book['uuid']}", :title => [book['title'], book['authors'], 'читать онлайн'].join(', '), :rel => 'bookmate' %>
+      <% else %>
+        <%= link_to image_tag(URI.parse('http://www.bookmate.ru').merge(book['cover']).to_s, :alt => [book['title'], book['authors']].join(', ')), book['url'], :title => [book['title'], book['authors'], 'читать онлайн'].join(', ') %>
+      <% end %>
       <h3><%= link_to book['title'], book['url'] %></h3>
       <h4><%= link_to book['authors'], book['url'] %></h4>          
     </div>    
