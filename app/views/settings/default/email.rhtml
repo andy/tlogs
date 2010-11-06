@@ -24,6 +24,13 @@
 			</td>
 		</tr>
 		<tr>
+			<td class='label'><label for='user_email'>Пароль</label></td>
+			<td class='input'>
+				<%= password_field_tag 'user[password]', '' %>
+				<%= tasty_error_message_on :user, :password %>
+			</td>
+		</tr>
+		<tr>
 			<td class='label'></td>
 			<td class='input'>
 				<%= check_box :user, :email_comments, :class => 'checkbox' %>

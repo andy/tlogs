@@ -122,6 +122,10 @@ class User
     self.class.encrypt(password, salt)
   end
   
+  def valid_password?(password)
+    self.encrypt(password) == self.crypted_password
+  end
+  
 
   ## private methods  	
 

@@ -159,19 +159,32 @@ class Settings::DefaultController < ApplicationController
       # меняем емейл адрес. для того чтобы случайно не проапдейтить пользователя, мы создаем копию и проверяем
       #  валидность емейла уже на ней
       new_email = params[:user][:email] ? params[:user][:email].strip : ''
+      password  = params[:user][:password] ? params[:user][:password] : ''
+
       if !new_email.blank? && current_user.email != new_email
-        @user.email = new_email
-        @user.is_confirmed = false
-        @user.valid?
-        if !@user.errors.on :email
-          current_user.update_confirmation!(@user.email)
-          Emailer.deliver_confirm(current_service, current_user, @user.email)
-          flash[:good] = "Отлично! Мы установили Вам новый емейл адрес, но прежде чем он заработает, вам нужно будет его подтвердить. Поэтому загляните, пожалуйста, в почтовый ящик #{@user.email}, там должно быть письмо с кодом подтверждения"
-          redirect_to user_url(current_site, settings_path(:action => 'email'))
-          return
+        if @user.valid_password?(password)          
+          if User.find_by_email(new_email)
+            flash[:bad] = 'К сожалению, пользователь с таким емейлом уже существует'
+            @user.errors.add(:email, 'к сожалению, этот емейл занят')
+          else
+            # CHANGE TO NEW EMAIL
+            @user.email = new_email
+            @user.is_confirmed = false
+            @user.valid?
+            if !@user.errors.on :email
+              current_user.update_confirmation!(@user.email)
+              Emailer.deliver_confirm(current_service, current_user, @user.email)
+              flash[:good] = "Отлично! Мы установили Вам новый емейл адрес, но прежде чем он заработает, вам нужно будет его подтвердить. Поэтому загляните, пожалуйста, в почтовый ящик #{@user.email}, там должно быть письмо с кодом подтверждения"
+              redirect_to user_url(current_site, settings_path(:action => 'email'))
+              return
+            else
+              flash[:bad] = "Ошибка! Не получилось сохранить настройки, потому что #{@user.errors.on :email}"
+            end
+          end
         else
-          flash[:bad] = "Ошибка! Не получилось сохранить настройки, потому что #{@user.errors.on :email}"
-        end
+          @user.errors.add(:password, 'указан неправильный пароль')
+          flash[:bad] = 'Вы ввели неправильный пароль'
+        end          
       end
     end
   end
