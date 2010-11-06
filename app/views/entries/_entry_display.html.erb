@@ -56,7 +56,7 @@ if show_datetime -%>
 		<%- end -%>
 	<%- end -%>
 	<% unless params[:controller] == 'publish' || !entry.id %>
-		<% if entry.is_voteable? %>
+		<% if entry.is_voteable? && entry.rating %>
 			<div class='rel'>
 				<div class='service_rating service_rating_owner_<%= entry.user_id %>' id='service_rating_for_entry_<%= entry.id %>'>
 					<%= render :partial => 'entries/rating', :locals => { :entry => entry } %>
