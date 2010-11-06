@@ -66,6 +66,13 @@ class Emailer < ActionMailer::Base
                 :body => { :transaction => transaction, :user => transaction.user }
   end
   
+  def destroy(current_service, user)
+    setup     current_service,
+                :subj => "ммм... удаление тлога #{user.url}",
+                :from => '"Mmm... destroy" <noreply+destroy@mmm-tasty.ru>',
+                :user => user
+  end
+  
   private
     def setup(current_service, options = {})
       # message specific things

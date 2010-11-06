@@ -1,0 +1,27 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+	<head></head>
+	<body style="padding:30px 20px 50px 30px; margin:0; background-color: #ffffff;">     
+    <p style="font-family:Trebuchet MS, Arial, sans serif; font-size:0.95em; width:600px; color:#404040; padding-bottom: 2em;">
+      <b>Здравствуйте, <%= h @user.username %>!</b>
+    </p>
+		
+		<p style="font-family:Trebuchet MS, Arial, sans serif; font-size:0.95em; width:600px; color:#404040; padding-bottom: 1em;">
+		  Похоже, что Вы решили удалить свой тлог. Если это действительно так и Вы были инициатром этой процедуры, пройдите, пожалуйста, по следующей ссылке, чтобы подтвердить свое намерение:
+		</p>
+		
+		<p style="font-family:Trebuchet MS, Arial, sans serif; font-size:0.95em; width:600px; color:#404040; padding-bottom: 2em;">
+		  <%- link = user_url(@user, settings_path(:action => 'destroy_confirm', :code => @user.destroy_code)) -%>
+		  <%= link_to link, link %>
+		</p>
+		
+		<p style="font-family:Trebuchet MS, Arial, sans serif; font-size:0.8em; width:600px; color:#C58080; padding-bottom: 1em;">
+		  Если же инициатором процедуры удаления были не Вы, то срочно сообщите нам на адрес <a href='mailto:feedback@mmm-tasty.ru'>feedback@mmm-tasty.ru</a>, чтобы мы скорее выявили злоумышленника.
+		</p>
+		
+		<p style="font-family:Trebuchet MS, Arial, sans serif; font-size:0.95em; width:600px; color:#404040; text-align:right;">
+		  C уважением, <img src="<%= service_url %>/images/letter-logo.gif" width='101' height='27' style="position:relative; bottom:-6px; margin-left:4px;" />
+		</p>
+	</body>
+</html>

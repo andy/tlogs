@@ -182,17 +182,33 @@ class Settings::DefaultController < ApplicationController
 
     if request.post?
       if params[:agree] == '1'
-        @user.disable!
+        Emailer.deliver_destroy(current_service, @user)
 
-        # выходим с сайта
-        cookies.delete :t, :domain => request.domain
-        cookies.delete :l, :domain => request.domain
-        reset_session
-
-        redirect_to service_url(main_path)
+        flash[:good] = 'Вам на почту было отправлено сообщение с кодом для удаления тлога'
       else
         flash[:bad] = 'Нужно согласиться с удалением тлога'
       end
+    end
+  end
+  
+  def destroy_confirm
+    @user = User.active.find(current_user.id)
+    @code = params[:code]
+    
+    if @code != current_user.destroy_code
+      flash[:bad] = 'Неверный авторизационный код, тлог не может быть удален'
+
+      redirect_to user_url(current_user, settings_path(:action => 'destroy'))
+    elsif request.post?
+      flash[:good] = 'Тлог был успешно удален'
+      # @user.disable!
+      # 
+      # # выходим с сайта
+      # cookies.delete :t, :domain => request.domain
+      # cookies.delete :l, :domain => request.domain
+      # reset_session
+      # 
+      # redirect_to service_url(main_path)      
     end
   end
 end

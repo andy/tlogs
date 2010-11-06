@@ -132,6 +132,10 @@ class User < ActiveRecord::Base
     # удаляем все подписки
     self.connection.delete("DELETE FROM entry_subscribers WHERE user_id = #{self.id}")
   end
+  
+  def destroy_code
+    Digest::SHA1.hexdigest("#{self.email}--#{self.url}--#{self.entries_updated_at}")
+  end
 
   
   ## private methods  
