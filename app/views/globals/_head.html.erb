@@ -7,12 +7,19 @@
   <% if current_user %>
   var _user = <%= {
         :id   => current_user.id,
-        :url  => current_user.url,
-        :sid  => cookies[ActionController::Base.session_options[:key]]
+        :url  => current_user.url
+        # :sid  => cookies[ActionController::Base.session_options[:key]]
       }.to_json %>;
   <% end %>
   
+  /* validations */
   window._token = "<%= form_authenticity_token %>";
+
+  /* asynchronous google analytics */
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-1562460-1']);
+  _gaq.push(['_setDomainName', '.mmm-tasty.ru']);
+  _gaq.push(['_trackPageview']);
 </script>
 
 <%= glued_stylesheet_link_tag 'application' %>
@@ -25,6 +32,7 @@
 <meta http-equiv="imagetoolbar" content="no">
 <meta name="generator" content="tlogs.ru">
 
+<!-- bookmate code -->
 <script type='text/javascript' src='http://www.bookmate.ru/inline.js' charset='utf-8'></script>
 
 <% if @title %>

@@ -1,5 +1,7 @@
 class PublishController < ApplicationController
   before_filter :require_current_user, :current_user_eq_current_site, :filter_entry
+  
+  protect_from_forgery :except => [:index]
 
   def index
   end
