@@ -23,6 +23,8 @@ class User
     has_many "#{name.to_s.singularize}_r".to_sym, :class_name => 'Relationship', :finder_sql => "SELECT r.* FROM relationships AS r WHERE r.reader_id = \#{id} #{param_filter}"        
     # e.g. listed_me_as_public_friend (which means - get me my readers that have me listed as public friend)
     has_many "listed_me_as_#{name.to_s.singularize}".to_sym, :class_name => 'User', :finder_sql => "SELECT #{USER_AND_RELATIONSHIP_COLUMNS} FROM relationships AS r LEFT JOIN users AS u ON u.id = r.reader_id WHERE r.user_id = \#{id} #{param_filter} #{param_order}"
+    # same as previous, but only return ids
+    has_many "listed_me_as_#{name.to_s.singularize}_light".to_sym, :class_name => 'User', :finder_sql => "SELECT u.id FROM relationships AS r LEFT JOIN users AS u ON u.id = r.reader_id WHERE r.user_id = \#{id} #{param_filter} #{param_order}"
     # same as previous, but only a relationship model which is much lighter as it fetches only from relationships table and does not include User
     has_many "listed_me_as_#{name.to_s.singularize}_r".to_sym, :class_name => 'Relationship', :finder_sql => "SELECT r.* FROM relationships AS r WHERE r.user_id = \#{id} #{param_filter}"
   end

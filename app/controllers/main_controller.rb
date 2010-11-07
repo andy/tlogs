@@ -63,6 +63,8 @@ class MainController < ApplicationController
     total = Rails.cache.fetch("entry_ratings_count_#{kind}_#{rating}", :expires_in => 1.minute) { EntryRating.count :conditions => sql_conditions }
 
     @entry_ratings = EntryRating.find :all, :page => { :current => params[:page].to_i.reverse_page(total.to_pages), :size => Entry::PAGE_SIZE, :count => total }, :include => { :entry => [ :attachments, :author, :rating ] }, :order => 'entry_ratings.id DESC', :conditions => sql_conditions
+    
+    @comment_views = User::entries_with_views_for(@entry_ratings.map(&:entry_id), current_user)
   end
   
   def live
@@ -82,18 +84,25 @@ class MainController < ApplicationController
       
       pager.total_entries = Entry.count(:conditions => sql_conditions) unless pager.total_entries
     end
+    
+    @comment_views = User::entries_with_views_for(@entries.map(&:id), current_user)
   end
   
-  # def live_demo
-  #   # entries by freshness:
-  #   #   from subscriptions   -> watcher
-  #   #   from my neighbors    -> watcher
-  #   #   where i had comments -> watcher
-  #   friend_ids = current_user.all_friend_r.map(&:user_id)
-  # 
-  #   @entry_ids = Entry.find :all, :select => 'entries.id', :conditions => "entries.user_id IN (#{friend_ids.join(',')}) AND entries.is_private = 0", :order => 'entries.id DESC', :page => { :current => @page, :size => 15, :count => ((@page * 15) + 1) }    
-  #   @entries = Entry.find_all_by_id @entry_ids.map(&:id), :include => [:rating, :attachments, :author]
-  # end
+  def redis
+    @page = params[:page].to_i
+    @page = 1 if @page <= 0
+
+    @entries = WillPaginate::Collection.create(@page, Entry::PAGE_SIZE, current_user.entries_queue_length) do |pager|
+      entry_ids = current_user.entries_queue(pager.offset, pager.per_page)
+      result = Entry.find_all_by_id(entry_ids, :include => [:author, :rating, :attachments]).sort_by { |entry| entry_ids.index(entry.id) }
+      
+      pager.replace(result.to_a)
+      
+      pager.total_entries = $redis.zcount unless pager.total_entries
+    end
+    
+    @comment_views = User::entries_with_views_for(@entries.map(&:id), current_user)
+  end
   
   def last_personalized
     redirect_to(service_url(last_path)) and return unless current_user
@@ -147,6 +156,7 @@ class MainController < ApplicationController
       @time = entry.created_at
       @user = entry.author
       @entries = @user.recent_entries(:page => 1, :time => @time).to_a      
+      @comment_views = User::entries_with_views_for(@entries.map(&:id), current_user)
       @calendar = @user.calendar(@time)
       
       @others = User.find_by_sql("SELECT u.id, u.url, e.id AS day_first_entry_id, count(*) AS day_entries_count FROM users AS u LEFT JOIN entries AS e ON u.id = e.user_id WHERE e.created_at > '#{@time.midnight.to_s(:db)}' AND e.created_at < '#{@time.tomorrow.midnight.to_s(:db)}' AND u.is_confirmed = 1 AND u.entries_count > 1 GROUP BY e.user_id")

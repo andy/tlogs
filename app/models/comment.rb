@@ -46,10 +46,14 @@ class Comment < ActiveRecord::Base
     # обновляем счетчик просмотренных комментариев но только для тех, кто уже видел комментарий который сейчас был удален
     comment.connection.update("UPDATE comment_views SET last_comment_viewed = last_comment_viewed - 1 WHERE entry_id = #{comment.entry.id} AND last_comment_viewed > #{comment.entry.comments.size - 1}")
     comment.entry.update_attribute(:updated_at, Time.now)
+    
+    comment.entry.try_watchers_update
   end
   
   after_create do |comment|
     comment.entry.update_attribute(:updated_at, Time.now)
+    
+    comment.entry.try_watchers_update
   end
 
 

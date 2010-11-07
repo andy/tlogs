@@ -51,7 +51,8 @@ class User < ActiveRecord::Base
                   :confirmation,
                   :entries,
                   :permissions,
-                  :calendar  
+                  :calendar,
+                  :entries_queue
   
 
 
