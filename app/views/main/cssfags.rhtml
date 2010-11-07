@@ -1,0 +1,26 @@
+<% @title = 'css updates' %>
+<% @sidebar_left_short = true %>
+<% content_for :head do %>
+  <script type='text/javascript' src='/javascripts/highlight.pack.js' charset='utf-8'></script>
+  <link href="/stylesheets/highlight-default.css" media="screen" rel="stylesheet" type="text/css" />
+  <script type="text/javascript">
+    hljs.initHighlightingOnLoad();
+  </script>
+<% end %>
+<div class='onair'>
+	<%= paginate @designs, :css_class => 'top_nav_paginator' %>	
+
+  <% @designs.each do |design| %>
+    <div class='cssdesign'>
+      <h3><%= h(design.user.url) %>, обновлен <%= distance_of_time_in_words_to_now(design.updated_at) %> назад</h3>
+      
+      <div class='csscontent'>
+        <pre><code class='css'>
+          <%= h(design.user_css) %>
+        </code></pre>
+      </div>
+    </div>
+  <% end %>
+
+	<%= paginate @designs %>	
+</div>

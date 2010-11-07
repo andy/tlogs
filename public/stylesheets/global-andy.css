@@ -130,3 +130,9 @@ input.disabled, input.disabled:active {
 form.donation label { font-size: 11px; }
 form.donation input.submit_donation { margin-top: 20px; margin-left: 380px; }
 .donation_thanks { margin-left: 120px; margin-top: 50px; margin-bottom: 50px; }
+
+/* whatever */
+.cssdesign { margin: 5px 10px; }
+.cssdesign h3 { font-size: 13px; }
+.cssdesign .csscontent pre { font-size: 10px; overflow: hidden; white-space: pre-wrap;}
+/*.cssdesign .csscontent*/

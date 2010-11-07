@@ -135,7 +135,8 @@ class ApplicationController < ActionController::Base
     end
     
     def require_admin
-      return true if require_current_user && current_user.is_admin?
+      return false unless require_current_user
+      return true if current_user.is_admin?
       
       render :text => 'pemission denied', :status => 403
       return false

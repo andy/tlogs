@@ -3,7 +3,6 @@ class AdminController < ApplicationController
   
   before_filter :require_admin
 
-
   def disable
     current_site.disable!
 

@@ -1,5 +1,7 @@
 class MainController < ApplicationController
   skip_before_filter :require_confirmation_on_current_user
+  
+  before_filter :require_admin, :only => [:cssfags]
 
   def index
   end
@@ -116,6 +118,12 @@ class MainController < ApplicationController
     @users = User.paginate(:page => params[:page], :per_page => 6, :include => [:avatar, :tlog_settings], :order => 'users.id DESC', :conditions => 'users.is_confirmed = 1 AND users.entries_count > 0')
     @title = 'все пользователи тейсти'
     render :action => 'users'
+  end
+  
+  def cssfags
+    @page = params[:page].to_i rescue '0'
+
+    @designs = TlogDesignSettings.paginate(:page => params[:page], :per_page => 10, :include => [:user], :order => 'updated_at DESC')
   end
   
   def random
