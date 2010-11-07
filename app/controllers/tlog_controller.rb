@@ -143,7 +143,13 @@ class TlogController < ApplicationController
   end
 
   def day
-    @time ||= [params[:year], params[:month], params[:day]].join('-').to_date.to_time
+    begin
+      @time ||= [params[:year], params[:month], params[:day]].join('-').to_date.to_time
+    rescue
+      # in case to_date returns an error (invalid date exception), get user back to main page
+      redirect_to user_url(current_site) and return
+    end
+
     @title = current_site.tlog_settings.title
     
     # если пользователь предпочел скрыть прошлое, делаем вид что такой страницы не существует
@@ -157,7 +163,11 @@ class TlogController < ApplicationController
   end
   
   def next_day
-    @time ||= [params[:year], params[:month], params[:day]].join('-').to_date.to_time
+    begin
+      @time ||= [params[:year], params[:month], params[:day]].join('-').to_date.to_time
+    rescue
+      redirect_to user_url(current_site) and return
+    end
     @entries = current_site.recent_entries(:time => @time)
 
   	d = @entries.first.next(:include_private => is_owner?).created_at rescue nil
@@ -166,7 +176,11 @@ class TlogController < ApplicationController
   end
   
   def prev_day
-    @time ||= [params[:year], params[:month], params[:day]].join('-').to_date.to_time
+    begin
+      @time ||= [params[:year], params[:month], params[:day]].join('-').to_date.to_time
+    rescue
+      redirect_to user_url(current_site) and return
+    end
     @entries = current_site.recent_entries(:time => @time)
 
   	d = @entries.last.prev(:include_private => is_owner?).created_at rescue nil
