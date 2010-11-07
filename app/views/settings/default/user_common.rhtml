@@ -4,6 +4,8 @@
 <% end %>
 
 <form method='post' action='<%= user_url(current_site, settings_path(:action => 'user_common')) %>' enctype='multipart/form-data' class='small'>
+  <%= tag :input, :type => 'hidden', :name => 'authenticity_token', :value => form_authenticity_token %>
+  
 	<table class='form'>
 		<tr>
 			<td class='label'><label for='settings_username'>Имя:</label></td>

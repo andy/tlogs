@@ -1,5 +1,7 @@
 class VoteController < ApplicationController
   before_filter :require_current_user, :require_voteable_entry_id
+  
+  protect_from_forgery
 
   def up; vote(1) end
   def down; vote(-1) end

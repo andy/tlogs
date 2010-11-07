@@ -5,6 +5,8 @@
 <% end %>
 
 <form method='post' action='<%= user_url(current_site, settings_path) %>' class='small'>
+  <%= tag :input, :type => 'hidden', :name => 'authenticity_token', :value => form_authenticity_token %>
+  
 	<ul id='tlog_func'>
 		<li id='is_hidden'>
 			<label for='tlog_settings_is_daylog_false'>

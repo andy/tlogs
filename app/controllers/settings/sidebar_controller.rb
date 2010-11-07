@@ -7,6 +7,8 @@ class Settings::SidebarController < ApplicationController
   before_filter :require_section, :only => [:section_toggle_is_open, :section_destroy, :section_update, :element]
   before_filter :require_element, :only => [:element_delete, :element_update]
 
+  protect_from_forgery
+
   helper :settings
   layout "settings"
   

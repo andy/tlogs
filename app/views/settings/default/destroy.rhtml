@@ -12,6 +12,8 @@
     <input type='checkbox' name='agree' value='1' />
     <span>Я согласен – удалите мой тлог.</span>
   </label>
+
+  <%= tag :input, :type => 'hidden', :name => 'authenticity_token', :value => form_authenticity_token %>
   
   <div class='submit_button'>
     <input type='submit' value='Удалить тлог' class='button dangerous' />

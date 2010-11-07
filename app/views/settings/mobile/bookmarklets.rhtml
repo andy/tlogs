@@ -19,6 +19,7 @@
 <h2><%= @bookmarklet.new_record? ? 'Создать свою закладку' : h("Редактируем закладку '#{@bookmarklet.name}'") %></h2>
 
 <form method='post' action='<%= request.request_uri %>' class='small'>
+  <%= tag :input, :type => 'hidden', :name => 'authenticity_token', :value => form_authenticity_token %>
 	<table class='form'>
 		<tr>
 			<td class='label'>
