@@ -16,7 +16,7 @@
 		<p class='brief'>
 			<%= h @user.url %> в тейсти уже примерно
 			<span class='strong'><%= @user.created_at.distance_between_in_words(Time.now) %></span>
-			и за все это вермя успел<%= @user.gender('', 'а') %> написать
+			и за все это время успел<%= @user.gender('', 'а') %> написать
 			<span class='strong'><%= @user.entries_count_for(current_user) %></span>
 			<%= @user.entries_count_for(current_user).pluralize("запись", "записи", "записей", false) %>
 		</p>
