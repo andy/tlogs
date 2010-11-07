@@ -9,7 +9,7 @@ rails_env = ENV['RAILS_ENV'] || 'production'
 
 rails_root = Dir.pwd
 
-wpc = rails_env == 'production' ? 8 : 2
+wpc = rails_env == 'production' ? 20 : 2
 
 worker_processes wpc
 
