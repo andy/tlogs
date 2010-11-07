@@ -3,6 +3,8 @@ class AccountController < ApplicationController
   before_filter :redirect_home_if_current_user, :only => [:index, :login, :signup, :openid_verify]
   before_filter :require_confirmed_current_user, :except => [:logout]
 
+  protect_from_forgery :only => [:login, :rename, :lost_password, :recover_password, :signup, :update_url_status]
+
   helper :settings
 
   def index
@@ -114,7 +116,7 @@ class AccountController < ApplicationController
 
   # регистрация, для новичков
   def signup
-    if [6,0].include?(Date.today.wday) && [0, 1, 2, 3, 4, 22, 23, 24].include?(Time.now.hour)
+    if !Rails.env.production? || ([6,0].include?(Date.today.wday) && [0, 1, 2, 3, 4, 22, 23, 24].include?(Time.now.hour))
       if request.post?
         email_or_openid = params[:user][:email]
         if email_or_openid.is_openid?
