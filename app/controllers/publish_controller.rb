@@ -163,6 +163,9 @@ class PublishController < ApplicationController
     rescue ActiveRecord::RecordInvalid => e
       @attachment.valid? unless @attachment.nil? # force error checking
       render :action => 'edit'
+    rescue
+      @attachment.valid? unless @attachment.nil?
+      render :action => 'edit'
     end
 
     # проверяем что entry.type имеет допустимое значение
