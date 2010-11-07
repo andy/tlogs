@@ -82,6 +82,16 @@ class MainController < ApplicationController
     end
   end
   
+  # def live_demo
+  #   # entries by freshness:
+  #   #   from friends
+  #   #   with my comments
+  #   friend_ids = current_user.all_friend_r.map(&:user_id)
+  # 
+  #   @entry_ids = Entry.find :all, :select => 'entries.id', :conditions => "entries.user_id IN (#{friend_ids.join(',')}) AND entries.is_private = 0", :order => 'entries.id DESC', :page => { :current => @page, :size => 15, :count => ((@page * 15) + 1) }    
+  #   @entries = Entry.find_all_by_id @entry_ids.map(&:id), :include => [:rating, :attachments, :author]
+  # end
+  
   def last_personalized
     redirect_to(service_url(last_path)) and return unless current_user
 

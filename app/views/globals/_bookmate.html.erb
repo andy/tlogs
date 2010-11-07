@@ -12,7 +12,12 @@
       http = Net::HTTP.new('www.bookmate.ru', '80')
       # http.open_timeout = 2
       http.read_timeout = 10
-      res = http.request(req)
+      res = nil
+      begin
+        res = http.request(req)
+      rescue
+        # ignore any exceptions
+      end
   
       case res
       when Net::HTTPSuccess
