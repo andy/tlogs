@@ -1,6 +1,9 @@
 class Entry
   after_create :try_watchers_update
 
+  def self.enqueue_key
+    "e:q"
+  end
 
   def watcher_ids
     [
@@ -14,6 +17,7 @@ class Entry
       self.author.listed_me_as_all_friend_light_ids,
       
       # tier3 - neighbors
+      # how to ?
     ].flatten.compact.uniq
   end
   
@@ -27,14 +31,14 @@ class Entry
 
   # enqueue update rather than performing it instantly
   def enqueue_watchers_update
-    $redis.zadd("e:q", self.updated_at.to_i, self.id)
+    $redis.zadd(Entry::enqueue_key, self.updated_at.to_i, self.id)
   end
 
   def try_watchers_update
     if self.watchable?
       # method 1
       self.update_watchers
-      # method 2 - disabled
+      # OR method 2 - disabled
       # self.enqueue_watchers_update
     end
   end

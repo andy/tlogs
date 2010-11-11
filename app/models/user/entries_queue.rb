@@ -8,7 +8,7 @@ class User
   end
   
   def entries_queue(offset = 0, limit = 42)
-    $redis.zrevrange(self.entries_queue_key, offset, offset + limit).map(&:to_i)
+    $redis.zrange(self.entries_queue_key, offset, offset + limit - 1).map(&:to_i)
   end
   
   def entries_queue_length
