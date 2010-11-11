@@ -216,14 +216,14 @@ class Settings::DefaultController < ApplicationController
       redirect_to user_url(current_user, settings_path(:action => 'destroy'))
     elsif request.post?
       flash[:good] = 'Тлог был успешно удален'
-      # @user.disable!
-      # 
-      # # выходим с сайта
-      # cookies.delete :t, :domain => request.domain
-      # cookies.delete :l, :domain => request.domain
-      # reset_session
-      # 
-      # redirect_to service_url(main_path)      
+      @user.disable!
+      
+      # выходим с сайта
+      cookies.delete :t, :domain => request.domain
+      cookies.delete :l, :domain => request.domain
+      reset_session
+      
+      redirect_to service_url(main_path)      
     end
   end
 end
