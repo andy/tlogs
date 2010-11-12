@@ -1,6 +1,6 @@
 # Be sure to restart your web server when you modify this file.
 
-RAILS_GEM_VERSION = '2.3.5' unless defined? RAILS_GEM_VERSION
+RAILS_GEM_VERSION = '2.3.8' unless defined? RAILS_GEM_VERSION
 
 # Bootstrap the Rails environment, frameworks, and default configuration
 require File.join(File.dirname(__FILE__), 'boot')
@@ -14,7 +14,6 @@ Rails::Initializer.run do |config|
   
   config.load_paths += %W( 
     #{RAILS_ROOT}/app/models/entries
-    #{RAILS_ROOT}/app/models/activities
     #{RAILS_ROOT}/lib/asset_gluer
   )
 
@@ -31,6 +30,15 @@ Rails::Initializer.run do |config|
   config.gem 'memcache-client', :lib => 'memcache'
   config.gem 'hpricot'
   config.gem 'russian'
-  
+  config.gem 'redis', :version => '>= 2.0.0'
+
+  config.gem 'thinking-sphinx',
+    :lib => 'thinking_sphinx'
+
+  config.gem 'ts-datetime-delta',
+    :lib     => 'thinking_sphinx/deltas/datetime_delta',
+    :version => '>= 1.0.0',
+    :source  => 'http://gemcutter.org'
+
   config.gem 'mysql'
 end
