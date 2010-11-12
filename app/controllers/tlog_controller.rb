@@ -191,8 +191,13 @@ class TlogController < ApplicationController
   # удаляет запись из тлога
   def destroy
     url = tlog_url_for_entry(@entry)
-    @entry.destroy
-    flash[:good] = 'Запись была удалена'
+    if @entry.is_anonymous?
+      flash[:bad] = 'Извините, к сожалению, анонимки нельзя удалять'
+    else
+      @entry.destroy
+      flash[:good] = 'Запись была удалена'
+    end
+
     redirect_to url
   end  
   
