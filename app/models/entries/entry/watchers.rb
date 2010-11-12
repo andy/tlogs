@@ -25,7 +25,7 @@ class Entry
   def update_watchers
     # enqueue for all watchers ...
     $redis.multi do
-      self.watcher_ids.each { |user_id| $redis.zadd User::entries_queue_key(user_id), self.updated_at.to_i, self.id }
+      self.watcher_ids.each { |user_id| $redis.zadd(User::entries_queue_key(user_id), self.updated_at.to_i, self.id) }
     end    
   end
 
