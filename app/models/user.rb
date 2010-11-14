@@ -103,11 +103,8 @@ class User < ActiveRecord::Base
     # выставляем флаг заблокированности
     self.is_disabled = true
     self.is_mainpageable = false
-    self.save
-    
-    # отключаем пользователя от друзей
-    self.disconnect!
-  
+    self.save    
+
     # на данный моммент не удаляем, а скрываем все записи из прямого эфира
     self.entries.each do |entry|
       # публичные записи прячем
@@ -119,7 +116,10 @@ class User < ActiveRecord::Base
       # а анонимки - удаляем
       entry.destroy if entry.is_anonymous?
     end
-    
+
+    # отключаем пользователя от друзей
+    self.disconnect!
+      
     # удаляем личную переписку, избранное и feedback, если был
     self.messages.map(&:destroy)
     self.faves.map(&:destroy)
