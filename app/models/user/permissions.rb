@@ -43,8 +43,8 @@ class User
 
       when 'AnonymousEntry'
         # анонимки можно создавать только раз в неделю
-        logger.debug "self = #{self.inspect}"
-        logger.debug "klass = #{klass.inspect}"
+        # logger.debug "self = #{self.inspect}"
+        # logger.debug "klass = #{klass.inspect}"
 
         entry = Entry.anonymous.for_user(self).last
         if entry
