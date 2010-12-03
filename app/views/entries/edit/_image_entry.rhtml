@@ -24,7 +24,7 @@
 	</div>
 	<% if !display_link %>
 	<script type='text/javascript'>
-		Event.observe ( window, 'load', function(event) { Button.disable('#generate_preview'); } );
+		document.observe ( 'dom:loaded', function(event) { Button.disable('#generate_preview'); } );
 	</script>
 	<% end %>
 <% end %>

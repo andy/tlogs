@@ -15,6 +15,8 @@ class AnonymousController < ApplicationController
     
     @entry_ids = Entry.find :all, :select => 'entries.id', :conditions => sql_conditions, :page => { :current => @page, :size => Entry::PAGE_SIZE, :count => total }, :order => 'entries.id DESC'
     @entries = Entry.find_all_by_id @entry_ids.map(&:id), :order => 'entries.id DESC'
+    
+    @comment_views = User::entries_with_views_for(@entries.map(&:id), current_user)
   end
   
   def toggle

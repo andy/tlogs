@@ -136,3 +136,7 @@ form.donation input.submit_donation { margin-top: 20px; margin-left: 380px; }
 .cssdesign h3 { font-size: 13px; }
 .cssdesign .csscontent pre { font-size: 10px; overflow: hidden; white-space: pre-wrap;}
 /*.cssdesign .csscontent*/
+
+/* tags cloud on entry edit */
+.entry_tags_listing { font-size: 11px; }
+.entry_tags_listing a { padding: 0 2px; }

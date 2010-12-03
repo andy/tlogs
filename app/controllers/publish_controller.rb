@@ -114,7 +114,7 @@ class PublishController < ApplicationController
         
         @new_record = @entry.new_record?
         # TODO: update only with data_part_[1..3] 
-        @entry.attributes = params[:entry]
+        @entry.attributes = params[:entry].slice(:data_part_1, :data_part_2, :data_part_3)
         if @entry.visibility != 'voteable' || @new_record
           @entry.visibility = params[:entry][:visibility] || current_user.tlog_settings.default_visibility
         end unless @entry.is_anonymous?
@@ -163,9 +163,11 @@ class PublishController < ApplicationController
 
       render :action => 'edit'
     rescue ActiveRecord::RecordInvalid => e
+      logger.debug "entry is not valid for some reason"
       @attachment.valid? unless @attachment.nil? # force error checking
       render :action => 'edit'
     rescue
+      logger.debug "entry is not valid for some reason"
       @attachment.valid? unless @attachment.nil?
       render :action => 'edit'
     end

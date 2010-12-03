@@ -39,7 +39,8 @@ class Entry < ActiveRecord::Base
 	                            :vote,          # методы для голосования
 	                            :navigation,    # next / prev, методы для навигации
 	                            :kinds,         # типы записей
-	                            :visibility     # видимость записей, .visibility
+	                            :visibility,    # видимость записей, .visibility
+	                            :watchers       # наблюдатели для очереди
 
 
   ## associations
