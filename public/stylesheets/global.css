@@ -492,13 +492,13 @@ div.left {
 div.convo {
 	
 }
-.person_1, .person_2  {
+.person_1, .person_2, .person_3, .person_4, .person_5, .person_6, .person_7, .person_8, .person_9, .person_10  {
 	padding:8px 15px;
 	color:#404040;
 	font-size:0.85em;
 	
 }
-.person_1 span, .person_2 span {
+.person_1 span, .person_2 span, .person_3 span, .person_4 span, .person_5 span, .person_6 span, .person_7 span, .person_8 span, .person_9 span, .person_10 span {
 	font-weight:bold;
 	letter-spacing:2px;
 	font-size:0.8em;
