@@ -4,6 +4,12 @@
 	<% @entries.each do |entry| %>
 		<%= render :partial => 'entries/entry_display', :locals => { :entry => entry, :show_comments_bubble => true } %>
 	<% end %>
+	
+	<script type='text/javascript'>
+  // <[!CDATA[
+  	<%= "var comments_views_update = #{@comment_views.to_json(:only => [:id, :comments_count], :methods => [:last_comment_viewed])}" if @comment_views %>
+  //	]]>
+  </script>
 </div>
 
 <% content_for :sidebar_left do %>

@@ -26,4 +26,10 @@
 
 		<%= paginate @entry_ratings, :reverse => true, :url_options => { :kind => @filter.kind, :rating => @filter.rating } %>	
 	</div>
+	
+	<script type='text/javascript'>
+  // <[!CDATA[
+  	<%= "var comments_views_update = #{@comment_views.to_json(:only => [:id, :comments_count], :methods => [:last_comment_viewed])}" if @comment_views %>
+  //	]]>
+  </script>
 <% end %>

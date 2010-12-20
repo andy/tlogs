@@ -11,4 +11,4 @@
 	</label>
 </div>
 <%= observe_field 'user_email', :frequency => 0.25, :function => 'login_openid_switcher(value);' %>
-<%= javascript_tag 'Event.observe(window, "load", function(event) { login_openid_switcher($F("user_email")); }, false);' %>
+<%= javascript_tag 'document.observe("dom:loaded", function(event) { login_openid_switcher($F("user_email")); }, false);' %>

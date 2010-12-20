@@ -84,7 +84,23 @@ class User
       pager.total_entries = Entry.count(find_options) unless pager.total_entries
     end
   end
-  
+
+  def self.entries_with_views_for(entry_ids, user = nil, options = {})
+    result = Entry.find_all_by_id(entry_ids, :select => 'entries.id, entries.comments_count').sort_by { |entry| entry_ids.index(entry.id) }
+    
+    if user
+      # update virtual attribute
+      views = CommentViews.find(:all, :conditions => ['user_id = ? AND entry_id IN (?)', user.id, result.map(&:id)])
+    
+      views.each do |view|
+        result.find { |entry| entry.id == view.entry_id }.last_comment_viewed = view.last_comment_viewed
+      end
+      # result.each { |entry| entry.last_comment_viewed = views.find { |view| view.entry_id == entry.id }.last_comment_viewed }
+    end
+
+    result
+  end
+
   # ID последних записей ПЛЮС количество комментариев с количеством просмотров для пользователя user
   def recent_entries_with_views_for(user=nil, options = {})
     entry_ids = recent_entries(options.merge(:only_ids => true))

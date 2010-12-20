@@ -12,6 +12,12 @@
 	<%= paginate @entry_ids, :reverse => true %>
 </div>
 
+<script type='text/javascript'>
+// <[!CDATA[
+	<%= "var comments_views_update = #{@comment_views.to_json(:only => [:id, :comments_count], :methods => [:last_comment_viewed])}" if @comment_views %>
+//	]]>
+</script>
+
 <% content_for :sidebar_left do %>
 	<div class='section'>
 		<h2><span>Что это такое?</span></h2>

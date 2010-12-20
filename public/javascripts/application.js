@@ -69,7 +69,7 @@ function enable_services_for_current_user( ) {
 
 }
 
-Event.observe(window, 'load', function( ) { 
+document.observe('dom:loaded', function( ) { 
   run_comments_views_update();
   run_entry_ratings_update();
   if(current_user)
@@ -124,7 +124,7 @@ function makeHover(classList) {
 }
 
 if(/MSIE/.test(navigator.userAgent) && !window.opera) {
-  Event.observe(window, 'load', function() {
+  document.observe('dom:loaded', function() {
     var classes = new Array('post_body');
     makeHover(classes);
   });
