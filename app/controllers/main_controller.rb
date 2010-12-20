@@ -121,7 +121,7 @@ class MainController < ApplicationController
   end
   
   def users
-    @users = User.popular(6).shuffle
+    @users = User.popular(20).shuffle
     @title = 'пользователи в абсолютно случайной последовательности'
   end
   
