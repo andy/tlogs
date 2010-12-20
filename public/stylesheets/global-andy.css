@@ -140,3 +140,6 @@ form.donation input.submit_donation { margin-top: 20px; margin-left: 380px; }
 /* tags cloud on entry edit */
 .entry_tags_listing { font-size: 11px; }
 .entry_tags_listing a { padding: 0 2px; }
+
+/* twitter icon */
+#footer a img.f_twitter { vertical-align: bottom; }
