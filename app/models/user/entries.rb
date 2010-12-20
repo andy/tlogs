@@ -10,8 +10,10 @@ class User
   ## callbacks
   ## class methods
   def self.popular(limit = 6)
-    user_ids = Rails.cache.fetch('Users.popular', :expires_in => 1.day) { User.find_by_sql("SELECT user_id AS id,count(*) AS c FROM relationships WHERE friendship_status > 0 GROUP BY user_id ORDER BY c DESC LIMIT 100") }
-    User.find_all_by_id(user_ids.map(&:id).shuffle[0...limit], :include => [:avatar, :tlog_settings])
+    # user_ids = Rails.cache.fetch('Users.popular', :expires_in => 1.day) { User.find_by_sql("SELECT user_id AS id,count(*) AS c FROM relationships WHERE friendship_status > 0 GROUP BY user_id ORDER BY c DESC LIMIT 100") }
+    # User.find_all_by_id(user_ids.map(&:id).shuffle[0...limit], :include => [:avatar, :tlog_settings])
+
+		[]
   end
 
 
