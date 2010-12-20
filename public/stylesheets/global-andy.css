@@ -143,3 +143,5 @@ form.donation input.submit_donation { margin-top: 20px; margin-left: 380px; }
 
 /* twitter icon */
 #footer a img.f_twitter { vertical-align: bottom; }
+#footer a img.f_facebook { vertical-align: bottom; }
+#footer a img.f_vkontakte { vertical-align: bottom; }
