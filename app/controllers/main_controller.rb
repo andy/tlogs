@@ -73,7 +73,9 @@ class MainController < ApplicationController
     # кешируем общее число записей, потому что иначе :page обертка будет вызывать счетчик на каждый показ
     total = Rails.cache.fetch('entry_count_public', :expires_in => 1.minute) { Entry.count :conditions => sql_conditions, :joins => 'USE INDEX (index_entries_on_is_mainpageable)' }
 
-    @page = params[:page].to_i.reverse_page(total.to_pages)
+    @page = params[:page].to_i rescue total.to_pages  ##.reverse_page(total.to_pages)
+    @page = 1 if @page.zero?
+  #  @page = total.to_pages if @page == ''
 
     # grab id-s only, this is an mysql optimization
     @entries = WillPaginate::Collection.create(@page, Entry::PAGE_SIZE, total) do |pager|
@@ -86,6 +88,7 @@ class MainController < ApplicationController
     end
     
     @comment_views = User::entries_with_views_for(@entries.map(&:id), current_user)
+    @embed_views = true
   end
   
   def redis

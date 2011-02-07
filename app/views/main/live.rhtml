@@ -4,19 +4,29 @@
   <%#= auto_discovery_link_tag(:rss, service_url(main_feed_path(:action => :photos)), { :title => 'только фоторафии' }) %>
 <% end %>
 <div class='onair'>
-	<%= paginate @entries, :reverse => true, :css_class => 'top_nav_paginator' if @page > 1 %>
+	<%= paginate @entries, :reverse => false, :css_class => 'top_nav_paginator' if @page > 1 %>
 
 	<% @entries.each do |entry| %>
-		<%= render :partial => 'entries/entry_display', :locals => { :entry => entry, :show_comments_bubble => true, :show_username => true, :show_tags => false } %>
+		<%= render :partial => 'entries/entry_display', :locals => { :entry => entry, :show_comments_bubble => true, :show_username => true, :show_tags => false, :comment_views => @comment_views } %>
 	<% end %>
 
-	<%= paginate @entries, :reverse => true %>	
+	<%= paginate @entries, :reverse => false %>	
 </div>
 
 <script type='text/javascript'>
 // <[!CDATA[
-	<%= "var comments_views_update = #{@comment_views.to_json(:only => [:id, :comments_count], :methods => [:last_comment_viewed])}" if @comment_views %>
+	<%= "var comments_views_update = #{@comment_views.to_json(:only => [:id, :comments_count], :methods => [:last_comment_viewed])};" if @comment_views %>
 //	]]>
+  jQuery('.onair').infinitescroll({
+    navSelector: '.entry_pagination',
+    nextSelector: 'div.entry_pagination a.entry_paginate_prev',
+    itemSelector: 'div.post_body',
+    debug: true,
+    loadingImg: 'http://assets0.mmm-tasty.ru/images/blank.gif',
+    loadingText: '<em>Загружаем ...</em>',
+    donetext: '<em>На этом все, спасибо.</em>'    
+  });
+
 </script>
 
 <% if current_user

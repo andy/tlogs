@@ -12,6 +12,7 @@ application:
 - jquery.noconflict
 - jquery.hotkeys
 - jquery.autoresize.min
+- jquery.infinitescroll.min
 # flash: swfobject & swfupload
 - swfobject.min
 - swfupload.min

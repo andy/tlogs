@@ -3,5 +3,5 @@ module CommentsHelper
     html_options = {}
     html_options[:class] = 'highlight' if highlight
     link_to_tlog(comment.user, {}, html_options )
-  end
+  end  
 end
