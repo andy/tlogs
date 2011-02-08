@@ -131,8 +131,5 @@ if(/MSIE/.test(navigator.userAgent) && !window.opera) {
 }
 
 jQuery(document).ready(function() {
-	jQuery('a.fancybox').fancybox({
-		centerOnScroll: true,
-		hideOnContentClick: true
-	});
+	jQuery('a.fancybox').each( function(obj) { jQuery(obj).fancybox({ centerOnScroll: true, hideOnContentClick: true }); } );
 });
