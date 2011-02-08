@@ -13,6 +13,7 @@ application:
 - jquery.hotkeys
 - jquery.autoresize.min
 - jquery.infinitescroll.min
+- jquery.fancybox-1.3.4.pack
 # flash: swfobject & swfupload
 - swfobject.min
 - swfupload.min
@@ -24,8 +25,8 @@ application:
 - button
 - autoresize
 - audio-player.min
-- fancyzoom.min
-- fancyzoomhtml.min
+# - fancyzoom.min
+# - fancyzoomhtml.min
 - fixpng
 - toggle-flash
 - error-messages-on

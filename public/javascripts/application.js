@@ -129,3 +129,10 @@ if(/MSIE/.test(navigator.userAgent) && !window.opera) {
     makeHover(classes);
   });
 }
+
+jQuery(document).ready(function() {
+	jQuery('a.fancybox').fancybox({
+		centerOnScroll: true,
+		hideOnContentClick: true
+	});
+});
