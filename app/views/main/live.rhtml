@@ -48,7 +48,8 @@
 		<h2><span>Немного навигации</span></h2>
 		<div class='vertical_nav'>
 			<%= link_to 'общий прямой эфир', { :action => :live, :page => nil }, :class => (params[:action] == 'live') ? 'highlight' : nil %><br/>
-			<%= link_to('персональная лента', { :action => :last_personalized, :page => nil }, :class => (params[:action] == 'last_personalized') ? 'highlight' : nil) %>
+			<strike>персональная лента</strike> <%= link_to 'моё', :action => :my %>
+			<%#= link_to('персональная лента', { :action => :my, :page => nil }, :class => (params[:action] == 'last_personalized') ? 'highlight' : nil) %>
 		</div>
 	</div>
 	<% end
