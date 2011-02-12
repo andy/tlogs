@@ -23,7 +23,7 @@ module MainHelper
 
     if v
       if (v.last_comment_viewed && v.last_comment_viewed > 0 && v.last_comment_viewed != v.comments_count)
-        txt = "#{v.last_comment_viewed}+(#{v.comments_count - v.last_comment_viewed})"
+        txt = "#{v.last_comment_viewed}+#{v.comments_count - v.last_comment_viewed}"
       elsif (current_user && !v.last_comment_viewed && v.comments_count > 0)
         txt = "+#{v.comments_count}"
       else
