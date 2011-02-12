@@ -6,7 +6,7 @@ class User
   end
   
   def self.neighborhood_queue_key(user_id)
-    "n:#{user_id.to_i / 500}"
+    "n:#{user_id.to_i / 5000}"
   end
   
   def self.queue_key(user_id)
@@ -44,5 +44,14 @@ class User
     self.update_entries_queue
 
     $redis.zcard(self.queue_key)
+  end
+  
+  # personal queue
+  def my_entries_queue(offset = 0, limit = 42)
+    $redis.zrevrange(self.personal_queue_key, offset, offset + limit - 1).map(&:to_i)
+  end
+  
+  def my_entries_queue_length
+    $redis.zcard(self.personal_queue_key)
   end
 end

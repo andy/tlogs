@@ -102,9 +102,9 @@ class MainController < ApplicationController
     @page = params[:page].to_i
     @page = 1 if @page <= 0
 
-    @entries = WillPaginate::Collection.create(@page, Entry::PAGE_SIZE, current_user.entries_queue_length) do |pager|
+    @entries = WillPaginate::Collection.create(@page, Entry::PAGE_SIZE, current_user.my_entries_queue_length) do |pager|
       Rails.logger.debug "Offset #{pager.offset}, per page #{pager.per_page}"
-      entry_ids = current_user.entries_queue(pager.offset, pager.per_page)
+      entry_ids = current_user.my_entries_queue(pager.offset, pager.per_page)
       result = Entry.find_all_by_id(entry_ids, :include => [:author, :rating, :attachments]).sort_by { |entry| entry_ids.index(entry.id) }
       
       pager.replace(result.to_a)
