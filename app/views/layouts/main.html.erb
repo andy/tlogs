@@ -32,11 +32,12 @@
 			    news = User.find_by_url 'news'
 			    news_count = news.new_entries_count_for(current_user)
 			  -%>
-				<%= menu_item 'Что это?', :about %>
+				<%= menu_item 'О проекте', :about, %w(main/about main/users main/new_users) %>
 				<%= menu_item "Новости#{"<sup>+#{news_count}</sup>" unless news_count.zero?}", :news %>
-				<%= menu_item 'Люди', :new_users, %w(main/users main/new_users) %>
+				<%#= menu_item 'Люди', :new_users, %w(main/users main/new_users) %>
 				<%= menu_item 'Лучшее', :last %>
 				<%= menu_item 'Анонимки', :anonymous, %w(anonymous/*) %>
+				<%= menu_item "Моё<sup>new</sup>", :my if current_user && current_user.id == 1 %>
 				<%= menu_item 'Прямой эфир', :live, %w(main/live main/last_personalized) %>
 				<%= menu_item 'День из жизни', :random %>
 			</ul>

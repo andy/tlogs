@@ -2252,10 +2252,10 @@ a {
 }
 #users_nav {
 	padding:0;
-	margin:0 0 0 20px;
+	margin:0 0 20px;
 	list-style:none;
 }
-#users_nav a.selected {
+#users_nav a.highlight {
 	background:#67FD2D none repeat scroll 0% !important;
 	color:#404040;
 	margin:0pt;

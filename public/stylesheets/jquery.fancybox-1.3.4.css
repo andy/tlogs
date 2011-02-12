@@ -137,7 +137,7 @@
 	width: 35%;
 	cursor: pointer;
 	outline: none;
-	background: transparent url('blank.gif');
+	background: transparent url('http://assets2.mmm-tasty.ru/images/blank.gif');
 	z-index: 1102;
 	display: none;
 }

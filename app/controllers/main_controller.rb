@@ -91,7 +91,7 @@ class MainController < ApplicationController
     @embed_views = true
   end
   
-  def redis
+  def my
     @page = params[:page].to_i
     @page = 1 if @page <= 0
 
@@ -106,6 +106,7 @@ class MainController < ApplicationController
     end
     
     @comment_views = User::entries_with_views_for(@entries.map(&:id), current_user)
+    @embed_views = true
   end
   
   def last_personalized

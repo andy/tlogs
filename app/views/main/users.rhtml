@@ -25,13 +25,15 @@
   </div>
 <% end %>
 
-<% content_for :sidebar_left do %>
-	<h2><span>На кого посмотрим?</span></h2>
-	<div class='users_nav'>
+<% content_for :sidebar_right do %>
+  <h2><span>На кого посмотрим?</span></h2>
+  <div class='users_nav'>
 		<%= link_to 'на кого угодно', { :action => :users }, :class => (params[:action] == 'users') ? 'highlight' : nil %><br/>
 		<%= link_to 'на новеньких', { :action => :new_users, :page => nil }, :class => (params[:action] == 'new_users') ? 'highlight' : nil %>
 	</div>
-	
 	<br/>
+<% end %>
+
+<% content_for :sidebar_left do %>
 	<%= render :partial => 'feedbacks/feedbacks' %>
 <% end %>

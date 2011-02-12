@@ -27,12 +27,12 @@
     donetext: '<em>На этом все, спасибо.</em>'    
   }, function(items) {
     // reinitialize fancybox 
-    items.each(function(item) { jQuery(item).find('a.fancybox').fancybox({ centerOnScroll: true, hideOnContentClick: true }); });
+    items.each(function(obj, i) { console.log('fancybox on ' + obj + ' also ' + i); jQuery(obj).find('a.fancybox').fancybox({ centerOnScroll: true, hideOnContentClick: true }); });
   });
 
 </script>
 
-<% if current_user
+<% if current_user && false
 	content_for :sidebar_right do %>
 	<div class='section'>
 		<h2><span>Немного навигации</span></h2>
