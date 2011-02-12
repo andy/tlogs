@@ -19,6 +19,7 @@
 
 <script type='text/javascript'>
   var inf_entry_id = <%= @entries.last.id.to_json %>;
+  var inf_page = 1;
 
   jQuery('.onair').infinitescroll({
     navSelector: 'div.entry_pg',
@@ -30,6 +31,11 @@
     loadingText: '<em>Загружаем ...</em>',
     donetext: '<em>На этом все, спасибо.</em>'    
   }, function(items) {
+    inf_page += 1;
+
+    // report to analytics
+    ga_event('Infinite Scroll', 'Live', current_user ? _user.url : 'anonymous', inf_page);
+    
     // reinitialize fancybox
     items.each(function(obj, i) { inf_entry_id = jQuery(obj).attr('id').split('_').last(); if(current_user) { enable_services_for_current_user(); } jQuery(obj).find('a.fancybox').fancybox({ centerOnScroll: true, hideOnContentClick: true }); });
   });

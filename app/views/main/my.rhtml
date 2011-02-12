@@ -10,6 +10,8 @@
 </div>
 
 <script type='text/javascript'>
+  var inf_page = 1;
+
   jQuery('.onair').infinitescroll({
     navSelector: '.entry_pagination',
     nextSelector: 'div.entry_pagination a.entry_paginate_prev',
@@ -19,6 +21,10 @@
     loadingText: '<em>Загружаем ...</em>',
     donetext: '<em>На этом все, спасибо.</em>'    
   }, function(items) {
+    inf_page += 1;
+
+    ga_event('Infinite Scroll', 'My', current_user ? _user.url : 'anonymous', inf_page);
+
     // reinitialize fancybox 
     items.each(function(obj, i) { if(current_user) { enable_services_for_current_user(); } jQuery(obj).find('a.fancybox').fancybox({ centerOnScroll: true, hideOnContentClick: true }); });
   });
