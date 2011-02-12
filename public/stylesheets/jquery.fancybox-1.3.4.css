@@ -35,7 +35,7 @@
 	left: 0;
 	width: 40px;
 	height: 480px;
-	background-image: url('/images/fancybox.png');
+	background-image: url('/images/fancybox/fancybox.png');
 }
 
 #fancybox-overlay {
@@ -282,7 +282,7 @@
 
 #fancybox-title-over {
 	padding: 10px;
-	background-image: url('fancy_title_over.png');
+	background-image: url('/images/fancybox/fancy_title_over.png');
 	display: block;
 }
 
