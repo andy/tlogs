@@ -119,8 +119,8 @@ class PublishController < ApplicationController
           @entry.visibility = params[:entry][:visibility] || current_user.tlog_settings.default_visibility
         end unless @entry.is_anonymous?
         
-        # inherit commenting options
-        @entry.comments_enabled = current_user.tlog_settings.comments_enabled?
+        # inherit commenting options, but always enable for anonymous entries
+        @entry.comments_enabled = @entry.is_anonymous? ? true : current_user.tlog_settings.comments_enabled?
         
         # set tag lists
         @entry.tag_list = params[:entry][:tag_list]
