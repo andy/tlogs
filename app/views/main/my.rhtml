@@ -10,10 +10,6 @@
 </div>
 
 <script type='text/javascript'>
-// <[!CDATA[
-	<%= "var comments_views_update = #{@comment_views.to_json(:only => [:id, :comments_count], :methods => [:last_comment_viewed])}" if @comment_views %>
-//	]]>
-
   jQuery('.onair').infinitescroll({
     navSelector: '.entry_pagination',
     nextSelector: 'div.entry_pagination a.entry_paginate_prev',

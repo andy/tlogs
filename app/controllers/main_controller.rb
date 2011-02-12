@@ -70,21 +70,29 @@ class MainController < ApplicationController
   def live
     sql_conditions = 'entries.is_mainpageable = 1'
     
-    # кешируем общее число записей, потому что иначе :page обертка будет вызывать счетчик на каждый показ
-    total = Rails.cache.fetch('entry_count_public', :expires_in => 1.minute) { Entry.count :conditions => sql_conditions, :joins => 'USE INDEX (index_entries_on_is_mainpageable)' }
-
-    @page = params[:page].to_i rescue total.to_pages  ##.reverse_page(total.to_pages)
-    @page = 1 if @page.zero?
-  #  @page = total.to_pages if @page == ''
-
-    # grab id-s only, this is an mysql optimization
-    @entries = WillPaginate::Collection.create(@page, Entry::PAGE_SIZE, total) do |pager|
-      entry_ids = Entry.find(:all, :select => 'entries.id', :joins => 'USE INDEX (index_entries_on_is_mainpageable)', :conditions => sql_conditions, :order => 'entries.id DESC', :limit => pager.per_page, :offset => pager.offset).map(&:id)
+    if params[:entry_id]
+      entry_ids = Entry.find(:all, :select => 'entries.id', :joins => 'USE INDEX (index_entries_on_is_mainpageable)', :conditions => [sql_conditions, " entries.id < #{params[:entry_id].to_i}"].join(' AND '), :order => 'entries.id DESC', :limit => Entry::PAGE_SIZE).map(&:id)
       result = Entry.find_all_by_id(entry_ids, :include => [:author, :rating, :attachments]).sort_by { |entry| entry_ids.index(entry.id) }
       
-      pager.replace(result.to_a)
+      @entries = result
+    else
+      # # кешируем общее число записей, потому что иначе :page обертка будет вызывать счетчик на каждый показ
+      # total = Rails.cache.fetch('entry_count_public', :expires_in => 1.minute) { Entry.count :conditions => sql_conditions, :joins => 'USE INDEX (index_entries_on_is_mainpageable)' }
+      total = Entry::PAGE_SIZE * 1000
+
+      @page = params[:page].to_i rescue total.to_pages  ##.reverse_page(total.to_pages)
+      @page = 1 if @page.zero?
+    #  @page = total.to_pages if @page == ''
+
+      # grab id-s only, this is an mysql optimization
+      @entries = WillPaginate::Collection.create(@page, Entry::PAGE_SIZE, total) do |pager|
+        entry_ids = Entry.find(:all, :select => 'entries.id', :joins => 'USE INDEX (index_entries_on_is_mainpageable)', :conditions => sql_conditions, :order => 'entries.id DESC', :limit => pager.per_page, :offset => pager.offset).map(&:id)
+        result = Entry.find_all_by_id(entry_ids, :include => [:author, :rating, :attachments]).sort_by { |entry| entry_ids.index(entry.id) }
       
-      pager.total_entries = Entry.count(:conditions => sql_conditions) unless pager.total_entries
+        pager.replace(result.to_a)
+      
+        pager.total_entries = Entry.count(:conditions => sql_conditions) unless pager.total_entries
+      end
     end
     
     @comment_views = User::entries_with_views_for(@entries.map(&:id), current_user)
