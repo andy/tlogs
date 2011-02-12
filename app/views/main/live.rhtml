@@ -27,7 +27,7 @@
     donetext: '<em>На этом все, спасибо.</em>'    
   }, function(items) {
     // reinitialize fancybox 
-    items.each(function(obj, i) { console.log('fancybox on ' + obj + ' also ' + i); jQuery(obj).find('a.fancybox').fancybox({ centerOnScroll: true, hideOnContentClick: true }); });
+    items.each(function(obj, i) { jQuery(obj).find('a.fancybox').fancybox({ centerOnScroll: true, hideOnContentClick: true }); });
   });
 
 </script>
