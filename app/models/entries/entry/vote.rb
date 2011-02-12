@@ -19,6 +19,10 @@ class Entry
 
           # сохраняем новое в базу
           user_vote.save && entry_rating.save
+          
+          # insert / remove watcher
+          # rating > 0 ? try_insert_watcher(user.id) : try_remove_watcher(user.id)
+
         end
       end
     rescue ActiveRecord::StatementInvalid

@@ -21,7 +21,10 @@ class Entry
       self.subscriber_ids,
     
       # tier2 - user subscribers
-      self.author.listed_me_as_all_friend_light_ids      
+      self.author.listed_me_as_all_friend_light_ids,
+      
+      # tier3 - users who positevely voted for this entry
+      self.votes.positive.map(&:user_id)
     ].flatten.compact.uniq
   end
   
@@ -40,6 +43,14 @@ class Entry
     end
 
     true
+  end
+  
+  def try_insert_watcher(user_id)
+    self.insert_watcher(user_id) if self.watchable?
+  end
+  
+  def try_remove_watcher(user_id)
+    self.remove_watcher(user_id)
   end
   
   def try_watchers_destroy
@@ -68,6 +79,14 @@ class Entry
         # BUT update this entry only if marked as mainpageable - all non public entries pop up only
         $redis.zadd(User::neighborhood_queue_key(self.author.id), self.updated_at.to_i, self.id) if self.is_mainpageable?
       end
+    end
+    
+    def insert_watcher(user_id)
+      $redis.zadd(User::personal_queue_key(user_id), self.updated_at.to_i, self.id)
+    end
+    
+    def remove_watcher(user_id)
+      $redis.zrem(User::personal_queue_key(user_id), self.id)
     end
   
     # remove entry from all queues where it could have been enqueued
