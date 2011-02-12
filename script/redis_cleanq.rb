@@ -1,4 +1,4 @@
-#!/usr/bin/env script/console
+#!/usr/bin/env script/runner
 
 # clean users queue
 m = 500
