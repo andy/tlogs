@@ -51,9 +51,7 @@ class Comment < ActiveRecord::Base
   end
   
   after_create do |comment|
-    comment.entry.update_attribute(:updated_at, Time.now)
-    
-    comment.entry.try_watchers_update
+    comment.entry.update_attribute(:updated_at, Time.now)    
   end
 
 
