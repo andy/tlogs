@@ -20,7 +20,7 @@
     donetext: '<em>На этом все, спасибо.</em>'    
   }, function(items) {
     // reinitialize fancybox 
-    items.each(function(obj, i) { jQuery(obj).find('a.fancybox').fancybox({ centerOnScroll: true, hideOnContentClick: true }); });
+    items.each(function(obj, i) { if(current_user) { enable_services_for_current_user(); } jQuery(obj).find('a.fancybox').fancybox({ centerOnScroll: true, hideOnContentClick: true }); });
   });
 
 </script>
@@ -30,7 +30,7 @@
     <h2><span>Об этом разделе</span></h2>
     
     <div>
-      <p>Здесь появляются только тех людей, на чьи тлоги вы подписаны.</p><br/><br/>
+      <p>Здесь появляются только тех людей, на чьи тлоги вы подписаны.</p><br/><br>
       <p>Записи сортируются по последнему комментарию, и места где идет активное обсуждение вы всегда будете видеть наверху.</p>
     </div>
     

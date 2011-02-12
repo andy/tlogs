@@ -4,7 +4,7 @@
 <% end %>
 <div class='onair'>
   <div class='entry_pg'>
-	  <%= paginate @entries, :reverse => false, :css_class => 'top_nav_paginator' if @page && @page > 1 %>
+	  <%= paginate @entries, :css_class => 'top_nav_paginator' if @page && @page > 1 %>
 	</div>
 
 	<% @entries.each do |entry| %>
@@ -12,7 +12,7 @@
 	<% end %>
 
   <div class='entry_pg'>
-  	<%= paginate @entries, :reverse => false if @page %>
+  	<%= paginate @entries if @page %>
   	<%= link_to 'infinitenext', { :action => :live, :page => nil, :entry_id => @entries.last.id }, :class => 'infinitenext', :style => 'display: none' %>
   </div>
 </div>
@@ -31,7 +31,7 @@
     donetext: '<em>На этом все, спасибо.</em>'    
   }, function(items) {
     // reinitialize fancybox
-    items.each(function(obj, i) { inf_entry_id = jQuery(obj).attr('id').split('_').last(); jQuery(obj).find('a.fancybox').fancybox({ centerOnScroll: true, hideOnContentClick: true }); });
+    items.each(function(obj, i) { inf_entry_id = jQuery(obj).attr('id').split('_').last(); if(current_user) { enable_services_for_current_user(); } jQuery(obj).find('a.fancybox').fancybox({ centerOnScroll: true, hideOnContentClick: true }); });
   });
 
 </script>
