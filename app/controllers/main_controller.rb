@@ -88,7 +88,6 @@ class MainController < ApplicationController
     end
     
     @comment_views = User::entries_with_views_for(@entries.map(&:id), current_user)
-    @embed_views = true
   end
   
   def my
@@ -106,7 +105,6 @@ class MainController < ApplicationController
     end
     
     @comment_views = User::entries_with_views_for(@entries.map(&:id), current_user)
-    @embed_views = true
   end
   
   def last_personalized
