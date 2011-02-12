@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100613183059) do
+ActiveRecord::Schema.define(:version => 20110212173631) do
 
   create_table "attachments", :force => true do |t|
     t.integer "entry_id",     :default => 0,  :null => false
@@ -119,15 +119,12 @@ ActiveRecord::Schema.define(:version => 20100613183059) do
 
   add_index "entries", ["created_at"], :name => "index_entries_on_created_at"
   add_index "entries", ["is_disabled"], :name => "index_entries_on_is_disabled"
-  add_index "entries", ["is_mainpageable", "created_at", "type"], :name => "index_entries_on_is_mainpageable_and_created_at_and_type"
+  add_index "entries", ["is_mainpageable", "id"], :name => "index_entries_on_is_mainpageable_and_id"
   add_index "entries", ["is_mainpageable"], :name => "index_entries_on_is_mainpageable"
   add_index "entries", ["is_private"], :name => "index_entries_on_is_private"
   add_index "entries", ["is_voteable"], :name => "index_entries_on_is_voteable"
-  add_index "entries", ["type", "is_disabled"], :name => "index_entries_on_type_and_is_disabled"
   add_index "entries", ["type"], :name => "index_entries_on_type"
-  add_index "entries", ["updated_at"], :name => "index_entries_on_updated_at"
   add_index "entries", ["user_id", "is_private", "created_at"], :name => "index_entries_on_uid_pvt_cat"
-  add_index "entries", ["user_id", "is_private", "id"], :name => "index_entries_on_user_id_and_is_private_and_id"
   add_index "entries", ["user_id"], :name => "index_entries_on_user_id"
 
   create_table "entry_ratings", :force => true do |t|
@@ -143,9 +140,7 @@ ActiveRecord::Schema.define(:version => 20100613183059) do
 
   add_index "entry_ratings", ["entry_id"], :name => "index_entry_ratings_on_entry_id", :unique => true
   add_index "entry_ratings", ["entry_type"], :name => "index_entry_ratings_on_entry_type"
-  add_index "entry_ratings", ["is_everything", "entry_type"], :name => "index_entry_ratings_on_is_everything_and_entry_type"
   add_index "entry_ratings", ["is_everything"], :name => "index_entry_ratings_on_is_everything"
-  add_index "entry_ratings", ["is_good", "entry_type"], :name => "index_entry_ratings_on_is_good_and_entry_type"
   add_index "entry_ratings", ["is_good"], :name => "index_entry_ratings_on_is_good"
   add_index "entry_ratings", ["is_great", "entry_type"], :name => "index_entry_ratings_on_is_great_and_entry_type"
   add_index "entry_ratings", ["is_great"], :name => "index_entry_ratings_on_is_great"
@@ -249,6 +244,15 @@ ActiveRecord::Schema.define(:version => 20100613183059) do
   add_index "relationships", ["user_id", "reader_id", "position"], :name => "index_relationships_on_user_id_and_reader_id_and_position"
   add_index "relationships", ["user_id", "reader_id"], :name => "index_relationships_on_user_id_and_reader_id", :unique => true
 
+  create_table "sessions", :force => true do |t|
+    t.string   "session_id"
+    t.text     "data"
+    t.datetime "updated_at"
+  end
+
+  add_index "sessions", ["session_id"], :name => "index_sessions_on_session_id"
+  add_index "sessions", ["updated_at"], :name => "index_sessions_on_updated_at"
+
   create_table "sidebar_elements", :force => true do |t|
     t.integer "sidebar_section_id",               :null => false
     t.string  "type",               :limit => 25
@@ -345,24 +349,25 @@ ActiveRecord::Schema.define(:version => 20100613183059) do
   add_index "tlog_design_settings", ["user_id"], :name => "index_tlog_design_settings_on_user_id", :unique => true
 
   create_table "tlog_settings", :force => true do |t|
-    t.integer  "user_id",                :default => 0,              :null => false
+    t.integer  "user_id",                              :default => 0,              :null => false
     t.string   "title"
     t.text     "about"
     t.datetime "updated_at"
     t.string   "rss_link"
-    t.boolean  "tasty_newsletter",       :default => true,           :null => false
-    t.string   "default_visibility",     :default => "mainpageable", :null => false
-    t.boolean  "comments_enabled",       :default => false
-    t.integer  "css_revision",           :default => 1,              :null => false
-    t.boolean  "sidebar_is_open",        :default => true,           :null => false
-    t.boolean  "is_daylog",              :default => false,          :null => false
-    t.boolean  "sidebar_hide_tags",      :default => true,           :null => false
-    t.boolean  "sidebar_hide_calendar",  :default => false,          :null => false
-    t.boolean  "sidebar_hide_search",    :default => false,          :null => false
-    t.boolean  "sidebar_hide_messages",  :default => false,          :null => false
+    t.boolean  "tasty_newsletter",                     :default => true,           :null => false
+    t.string   "default_visibility",                   :default => "mainpageable", :null => false
+    t.boolean  "comments_enabled",                     :default => false
+    t.integer  "css_revision",                         :default => 1,              :null => false
+    t.boolean  "sidebar_is_open",                      :default => true,           :null => false
+    t.boolean  "is_daylog",                            :default => false,          :null => false
+    t.boolean  "sidebar_hide_tags",                    :default => true,           :null => false
+    t.boolean  "sidebar_hide_calendar",                :default => false,          :null => false
+    t.boolean  "sidebar_hide_search",                  :default => false,          :null => false
+    t.boolean  "sidebar_hide_messages",                :default => false,          :null => false
     t.string   "sidebar_messages_title"
-    t.boolean  "email_messages",         :default => true,           :null => false
-    t.boolean  "past_disabled",          :default => false,          :null => false
+    t.boolean  "email_messages",                       :default => true,           :null => false
+    t.boolean  "past_disabled",                        :default => false,          :null => false
+    t.string   "privacy",                :limit => 16, :default => "open",         :null => false
   end
 
   add_index "tlog_settings", ["user_id"], :name => "index_tlog_settings_on_user_id"
@@ -374,9 +379,6 @@ ActiveRecord::Schema.define(:version => 20100613183059) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
-
-  add_index "transactions", ["state"], :name => "index_transactions_on_state"
-  add_index "transactions", ["user_id"], :name => "index_transactions_on_user_id"
 
   create_table "users", :force => true do |t|
     t.string   "email"

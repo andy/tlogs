@@ -2,7 +2,6 @@
 <% content_for :head do %>
 	<!-- content_for :head -->
 	<%= auto_discovery_link_tag(:rss, user_url(current_site, tlog_feed_path(:action => :rss))) %>
-	<%#= auto_discovery_link_tag(:rss, user_url(current_site, tlog_feed_path(:action => :photos)), { :title => 'только фоторафии' }) %>
 	<!-- /content_for :head -->
 <% end %>
 

@@ -1,9 +1,10 @@
 class TlogFeedController < ApplicationController
   layout nil
   before_filter :require_current_site
+  before_filter :disable_rss_on_private_tlogs, :only => [:rss, :photos]
   caches_action :rss, :photos, :last_personalized, :cache_path => Proc.new { |c| c.url_for(:expiring => (Time.now.to_i / 15.minutes).to_i, :page => c.params[:page]) }
 
-  def rss
+  def rss    
     # disable rss temporary
     # render(:text => 'internal error', :status => 500) and return
 
@@ -33,6 +34,11 @@ class TlogFeedController < ApplicationController
   end
 
   private
+    def disable_rss_on_private_tlogs
+      # rss is disabled for all non-public tlogs
+      render(:text => 'Извините, но RSS выключен для всех закрытых тлогов', :status => 403) and return false if current_site.tlog_settings.privacy != 'open'
+    end
+  
     def require_current_site
       render(:text => 'тлога по этому адресу не существует', :status => 404) and return false unless current_site
       render(:text => 'пользователь не подтвержден', :status => 403) and return false unless current_site.is_confirmed?

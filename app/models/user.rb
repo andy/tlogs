@@ -126,6 +126,27 @@ class User < ActiveRecord::Base
     self.feedback.destroy unless self.feedback.blank?
   end
   
+
+  # checks wether this tlog can be viewed by other users
+  def can_be_viewed_by?(user)
+    case self.tlog_settings.privacy
+    when 'open'
+      true
+      
+      # registration required
+    when 'rr'
+      user
+      
+      # friend-mode
+    when 'fr'
+      user && self.friend_ids.include?(user.id)
+      
+      # only me
+    when 'me'
+      user && user.id == self.id
+    end
+  end
+  
   # отключаем пользователя от друзей
   def disconnect!
     # удяляем relationships

@@ -23,10 +23,19 @@
 #  past_disabled          :boolean(1)      not null
 ########
 class TlogSettings < ActiveRecord::Base
+  DEFAULT_PRIVACY_FOR_SELECT = [
+      ['все могут видеть', 'open'],
+      ['только зарегистрированные пользователи', 'rr'],
+      ['только люди, на которых я подписался сам', 'fr'],
+      ['вообще никто, только я!', 'me']
+    ]
+  
   belongs_to :user
   
   validates_presence_of :user_id
   validates_inclusion_of :default_visibility, :in => %(public private mainpageable voteable), :on => :save
+
+  validates_inclusion_of :privacy, :in => %(open rr fr me), :on => :save
   
   def default_visibility
     read_attribute(:default_visibility) || 'mainpageable'

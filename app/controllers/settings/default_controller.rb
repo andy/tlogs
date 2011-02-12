@@ -15,6 +15,7 @@ class Settings::DefaultController < ApplicationController
       @tlog_settings.default_visibility = params[:tlog_settings][:default_visibility]
       @tlog_settings.comments_enabled = params[:tlog_settings][:comments_enabled]
       @tlog_settings.past_disabled = params[:tlog_settings][:past_disabled]
+      @tlog_settings.privacy = params[:tlog_settings][:privacy]
 
       if @tlog_settings.save
         flash[:good] = 'Настройки сохранены'

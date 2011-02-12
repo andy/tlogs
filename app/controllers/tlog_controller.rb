@@ -3,12 +3,13 @@ class TlogController < ApplicationController
   before_filter :find_entry, :only => [:show, :metadata, :subscribe, :unsubscribe, :destroy]
   before_filter :current_user_eq_current_site, :only => [:destroy, :private, :anonymous]
 
+  before_filter :check_if_can_be_viewed, :only => [:index, :day]
   # protect_from_forgery :only => [:relationship, :tags, :metadata, :subscribe, :unsubscribe]
 
   helper :comments
 
 
-  def index
+  def index    
     # обновляем статистику для текущего пользователя
     if current_user && current_site.entries_count > 0 && !is_owner?
       rel = current_user.reads(current_site)
@@ -61,6 +62,9 @@ class TlogController < ApplicationController
 
   # Вывести текущую запись
   def show
+    # hide all non-public entries in the tlog    
+    render :action => 'hidden' and return if !current_site.can_be_viewed_by?(current_user) && !@entry.is_mainpageable?
+    
     if current_user && !is_owner?
       rel = current_user.reads(current_site)
 
@@ -202,6 +206,10 @@ class TlogController < ApplicationController
   end  
   
   private
+    def check_if_can_be_viewed
+      render :action => 'hidden' and return false if not current_site.can_be_viewed_by?(current_user)
+    end
+
     def find_entry
       @entry = Entry.find_by_id_and_user_id params[:id], current_site.id
       if @entry.nil? || (@entry.is_anonymous? && !is_owner?)
