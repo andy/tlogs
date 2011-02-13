@@ -1,7 +1,6 @@
 <% @title = 'главная страница' %>
 <%- @sidebar_left_short = true -%>
-<div class="main_info_holder"><p class="main_info"><%= link_to "<i>Тлоги</i>", main_url(:action => 'about') %> &mdash; <span class="main_hightlight">это как блоги, только проще.<br/> Это нечто удобное и быстрое, для самовыражения,</span> а
-<nobr><i>Mmm... tasty</i></nobr> &mdash; это инструмент для создания тлогов.</p></div>
+<div class="main_info_holder"><p class="main_info"><%= link_to "<i>Тлоги</i>", main_url(:action => 'about') %> &mdash; <span class="main_hightlight">это как блоги, только проще.<br/> Это нечто удобное и быстрое, для самовыражения.</span></p></div>
 
 <div class='onair main_quotes'>
 	<% Feedback.published.random.all(:include => [:user], :limit => 10).each do |feedback|
