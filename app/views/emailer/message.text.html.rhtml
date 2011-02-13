@@ -6,25 +6,27 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
   <head></head>
 	<body style="padding:30px 20px 50px 30px; margin:0; background-color: #ffffff;">
+	  <div class='new-message notification' style='margin:0; padding:0;'>
     <p style="font-family:Trebuchet MS, Arial, sans serif; font-size:0.95em; width:600px; color:#404040; padding-bottom: 2em;">
       <b>Здравствуйте, <%= h @user.username %>!</b>
     </p>
 
 		<p style="font-family:Trebuchet MS, Arial, sans serif; font-size:0.95em; width:600px; color:#404040; padding-bottom: 1em;">
-		  Пользователь <%= link_to h(@sender.url), user_url(@sender) %> оставил вам <%= ' личное ' if @message.is_private? %> сообщение:
+		  Пользователь <span class='actor vcard'><%= link_to h(@sender.url), user_url(@sender), :class => 'url fn' %></span> оставил вам <%= ' личное ' if @message.is_private? %> сообщение:
 		</p>
 		
-		<p  style="font-style:italic; font-family:Trebuchet MS, Arial, sans serif; font-size:0.95em; width:600px; color:#404040; padding-bottom: 1em;">
+		<p  style="font-style:italic; font-family:Trebuchet MS, Arial, sans serif; font-size:0.95em; width:600px; color:#404040; padding-bottom: 1em;" class='text'>
 		  <%= h @message.body %>
 		</p>
 		
 		<p style="font-family:Trebuchet MS, Arial, sans serif; font-size:0.95em; width:600px; color:#404040; padding-bottom: 2em;">
       <%- message_link = user_url(@user, messages_path) -%>
-      <%= link_to message_link, message_link %>
+      <%= link_to message_link, message_link, :class => 'action-link read-link reply-link' %>
 		</p>
 		
 		<p style="font-family:Trebuchet MS, Arial, sans serif; font-size:0.95em; width:600px; color:#404040; text-align:right;">
 		  C уважением, <img src="<%= service_url %>/images/letter-logo.gif" width='101' height='27' style="position:relative; bottom:-6px;	margin-left:4px;" />
 		</p>
+		</div>
 	</body>
 </html>
