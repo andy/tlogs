@@ -1603,6 +1603,7 @@ td#main_left p  {
 
 #main_about .faq h2 {
 	text-decoration: underline;
+	cursor: hand; cursor: pointer;
 }
 #main_about .faq h2.clicked {
 	text-decoration: none;
