@@ -1,6 +1,6 @@
-<% @title = 'пожертвование' %>
+<% @title = 'помощь проекту' %>
 <% content_for :header do %>
-	Пожертвование
+	Помощь проекту
 	<% if current_user.transactions.success.count.nonzero? %>
 	  <sup>
 	  <% current_user.transactions.success.each do |transaction| %>
