@@ -16,7 +16,7 @@
 		<%= menu_item 'почтовая', user_url(current_user, settings_mobile_path(:action => :email)), %w(settings/mobile/email) %>
 		<%= menu_item 'браузерная', user_url(current_user, settings_mobile_path(:action => :bookmarklets, :id => nil)), %w(settings/mobile/bookmarklets) %>
 	<% end %>
-	<%#= menu_item "$ Donate", service_url(love_path), %w(love/index) %>
+	<%= menu_item "$ Пожертвование", service_url(love_path), %w(love/index) %>
 	<%= menu_item 'Выйти', user_url(current_user) %>
 	<%= menu_item '<span class="tlog_destroy">Удалить тлог</span>', :destroy %>
 </ul>

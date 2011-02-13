@@ -99,6 +99,8 @@ class MainController < ApplicationController
   end
   
   def my
+    redirect_to(service_url(main_path(:action => :live))) and return unless current_user
+    
     @page = params[:page].to_i
     @page = 1 if @page <= 0
 
@@ -116,7 +118,7 @@ class MainController < ApplicationController
   end
   
   def last_personalized
-    redirect_to(service_url(last_path)) and return unless current_user
+    redirect_to(service_url(main_path(:action => :live))) and return unless current_user
 
     # такая же штука определена в tlog_feed_controller.rb
     friend_ids = current_user.all_friend_r.map(&:user_id)
