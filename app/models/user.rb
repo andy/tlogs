@@ -138,7 +138,7 @@ class User < ActiveRecord::Base
       
       # registration required
     when 'rr'
-      user
+      user ? true : false
       
       # friend-mode
     when 'fr'
