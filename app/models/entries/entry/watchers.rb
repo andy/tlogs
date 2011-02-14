@@ -2,7 +2,7 @@ class Entry
   ## hooks
   after_create :try_watchers_update
   
-  after_destroy :try_watchers_destroy
+  # after_destroy :try_watchers_destroy
 
 
   ## class methods

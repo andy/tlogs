@@ -113,6 +113,9 @@ class Entry < ActiveRecord::Base
   before_create :set_default_metadata
 
   after_destroy do |entry|
+    # destroy watchers before entry subscribers are removed
+    entry.try_watchers_destroy
+
     # удаляем всех подписчиков этой записи
     entry.subscribers.clear
     # уменьшаем счетчик скрытых записей, если эта запись - скрытая
@@ -123,6 +126,7 @@ class Entry < ActiveRecord::Base
     Relationship.update_all "last_viewed_entries_count = last_viewed_entries_count - 1", "user_id = #{entry.user_id} AND last_viewed_entries_count > 0 AND last_viewed_at > '#{entry.created_at.to_s(:db)}'" unless entry.is_private?
 
     entry.author.update_attributes(:entries_updated_at => Time.now)
+    
   end
 
   after_create do |entry|
@@ -134,6 +138,9 @@ class Entry < ActiveRecord::Base
     # обновляем таймстамп который используется для инвалидации кеша тлоговых страниц, но только в том случае
     #  если меняются штуки отличные от комментариев
     entry.author.update_attributes(:entries_updated_at => Time.now) unless (entry.changes.keys - ['comments_count', 'updated_at']).blank?
+    
+    # add/remove watchers if entry is became anonymous or private
+    entry.is_private? ? entry.try_watchers_destroy : entry.try_watchers_update
   end
 
 
