@@ -752,14 +752,13 @@ div.quote_entry span.quote_entry_source {
 	padding-top:12px;
 } 
 .laquo, .raquo {
-	position:relative;
-	font-family:Times New Roman;
+/*	position:relative;*/
+	font-family: 'Times New Roman';
 	font-size:130%;
 	bottom:-1px;
 	padding:0 4px;
 	/*color:#ACACAC;*/
 	line-height:0.01em !important;
-	
 }
 /* choose your post */
 table.post {
