@@ -122,8 +122,7 @@ class AccountController < ApplicationController
     ipinfo = Ipgeobase.lookup(request.remote_addr)
     @allow_by_remote_addr = true if ipinfo && %w(Пермь пермь Тверь тверь).include?(ipinfo[:city])
     
-    
-    if @allow_by_remote_addr || ([6,0].include?(Date.today.wday) && [0, 1, 2, 3, 4, 22, 23, 24].include?(Time.now.hour))
+    if @allow_by_remote_addr || ([6,0].include?(Date.today.wday) && [22, 23, 24].include?(Time.now.hour)) || ([1,0].include?(Date.today.wday) && [0, 1, 2, 3, 4].include?(Time.now.hour))
       if request.post?
         email_or_openid = params[:user][:email]
         if email_or_openid.is_openid?
