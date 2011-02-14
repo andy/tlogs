@@ -129,6 +129,9 @@ class User < ActiveRecord::Base
 
   # checks wether this tlog can be viewed by other users
   def can_be_viewed_by?(user)
+    # you can always view your own tlog
+    return true if user && user.id == self.id
+    
     case self.tlog_settings.privacy
     when 'open'
       true
