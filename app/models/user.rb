@@ -142,7 +142,7 @@ class User < ActiveRecord::Base
       
       # friend-mode
     when 'fr'
-      user && self.friend_ids.include?(user.id)
+      user && self.all_friend_ids.include?(user.id)
       
       # only me
     when 'me'
