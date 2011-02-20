@@ -104,18 +104,18 @@ namespace :deploy do
   
   namespace :assets do
     desc "Create glued styles"
-    task :glue, :roles => :web do
+    task :glue, :roles => :app do
       assets.glue_temp
       assets.deploy
     end
 
     desc "Create glued styles in temp directory"
-    task :glue_temp, :roles => :web do
-      run "cd #{deploy_to} && RAILS_ENV=production rake assets:glue"
+    task :glue_temp, :roles => :app do
+      run "cd #{deploy_to} && RAILS_ENV=production bin/rake assets:glue"
     end
 
     desc "Deploy glued styles"
-    task :deploy, :roles => :web do
+    task :deploy, :roles => :app do
       run "cd #{deploy_to} && rm -f public/stylesheets/cache/*.css public/javascripts/cache/*.js"
       run "cp #{deploy_to}/public/stylesheets/cache-tmp/* #{deploy_to}/public/stylesheets/cache/"
       run "cp #{deploy_to}/public/javascripts/cache-tmp/* #{deploy_to}/public/javascripts/cache/"

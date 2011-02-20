@@ -62,6 +62,7 @@ DEPENDENCIES
   memcache-client
   mysql
   rails (= 2.3.8)
+  rake
   redis (>= 2.0.0)
   ruby-openid
   russian
