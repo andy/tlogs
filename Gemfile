@@ -2,6 +2,7 @@ source "http://rubygems.org"
 source "http://gems.rubyforge.org"
 source "http://gemcutter.org"
 
+gem 'unicorn'
 gem 'system_timer'
 gem 'RubyInline', :require => 'inline'
 gem 'rails', '2.3.8'
