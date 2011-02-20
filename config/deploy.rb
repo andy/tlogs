@@ -70,6 +70,7 @@ namespace :deploy do
     task :pull, :roles => :app do
       run "cd #{deploy_to} && git checkout db/schema.rb"
       run "cd #{deploy_to} && git pull origin master"
+      # run "cd #{deploy_to} && bundle update --deployment --binstubs"
     end
   end
   
