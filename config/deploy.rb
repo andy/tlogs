@@ -91,12 +91,22 @@ namespace :deploy do
     end
     
     desc "Stop webserver"
-    task :stop, :roles => :web do
+    task :stop, :roles => :app do
+      run "cd #{deploy_to} && kill -QUIT `cat tmp/pids/unicorn.pid`"
+    end
+    
+    desc "Start webserver"
+    task :start, :roles => :app do
+      run "cd #{deploy_to} && bin/unicorn_rails -c config/unicorn.rb -E production -D"
+    end
+    
+    desc "Block webserver"
+    task :block, :roles => :web do
       run "cd #{deploy_to} && touch public/maintenance.html"
     end
     
     desc "Start webserver"
-    task :start, :roles => :web do
+    task :unblock, :roles => :web do
       assets.glue_temp
       run "cd #{deploy_to} && rm -f public/maintenance.html"
       assets.deploy
