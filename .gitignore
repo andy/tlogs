@@ -1,5 +1,6 @@
 .DS_Store
 .svn
+bin
 public/uc
 public/assets
 tmp
