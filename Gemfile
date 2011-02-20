@@ -13,6 +13,7 @@ gem 'ruby-openid', :require => 'openid'
 gem 'memcache-client', :require => 'memcache'
 gem 'hpricot'
 gem 'russian'
+gem 'hiredis', '~> 0.3.0'
 gem 'redis', '>= 2.0.0'
 
 gem 'thinking-sphinx', :require => 'thinking_sphinx'
