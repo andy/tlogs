@@ -10,6 +10,7 @@ config/*.sphinx.conf
 config/environment.rb
 config/sphinx.conf
 config/redis.yml
+config/unicorn.yml
 config/mail_fetcher.yml
 config/mongrel_cluster.yml
 config/database.yml
