@@ -3,6 +3,9 @@ GEM
   remote: http://gems.rubyforge.org/
   remote: http://gemcutter.org/
   specs:
+    RubyInline (3.9.0)
+      ZenTest (~> 4.3)
+    ZenTest (4.5.0)
     actionmailer (2.3.8)
       actionpack (= 2.3.8)
     actionpack (2.3.8)
@@ -45,6 +48,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  RubyInline
   coderay
   hpricot
   image_science (>= 1.1.3)
