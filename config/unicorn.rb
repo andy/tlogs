@@ -5,16 +5,16 @@
 # Taken from http://github.com/blog/517-unicorn
 #
 
+rails_env = ENV['RAILS_ENV'] || 'production'
+
+rails_root = Dir.pwd
+
 begin
-  unicorn_opts = YAML.load_file(File.join(RAILS_ROOT, 'config/unicorn.yml')).symbolize_keys!
+  unicorn_opts = YAML.load_file(File.join(rails_root, 'config/unicorn.yml')).symbolize_keys!
 rescue
   puts 'Unicorn configuration file (config/unicorn.yml) is missing'
   exit
 end
-
-rails_env = ENV['RAILS_ENV'] || 'production'
-
-rails_root = Dir.pwd
 
 wpc = rails_env == 'production' ? unicorn_opts[:worker_processes] : 2
 
