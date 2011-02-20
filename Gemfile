@@ -2,6 +2,7 @@ source "http://rubygems.org"
 source "http://gems.rubyforge.org"
 source "http://gemcutter.org"
 
+gem 'rails', '2.3.8'
 gem 'image_science', '>= 1.1.3'
 gem 'will_paginate', '>= 2.2.2'
 gem 'coderay'
