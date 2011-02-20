@@ -2,6 +2,7 @@ source "http://rubygems.org"
 source "http://gems.rubyforge.org"
 source "http://gemcutter.org"
 
+gem 'system_timer'
 gem 'RubyInline', :require => 'inline'
 gem 'rails', '2.3.8'
 gem 'image_science', '>= 1.1.3'

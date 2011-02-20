@@ -36,6 +36,7 @@ GEM
     riddle (1.2.2)
     ruby-openid (2.1.8)
     russian (0.2.7)
+    system_timer (1.0)
     thinking-sphinx (1.4.3)
       activerecord (>= 1.15.6, < 3.0.0)
       after_commit (>= 1.0.7)
@@ -58,6 +59,7 @@ DEPENDENCIES
   redis (>= 2.0.0)
   ruby-openid
   russian
+  system_timer
   thinking-sphinx
   ts-datetime-delta (>= 1.0.0)
   will_paginate (>= 2.2.2)
