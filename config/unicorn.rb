@@ -10,17 +10,17 @@ rails_env = ENV['RAILS_ENV'] || 'production'
 rails_root = Dir.pwd
 
 begin
-  unicorn_opts = YAML.load_file(File.join(rails_root, 'config/unicorn.yml')).symbolize_keys!
+  unicorn_opts = YAML.load_file(File.join(rails_root, 'config/unicorn.yml'))
 rescue
   puts 'Unicorn configuration file (config/unicorn.yml) is missing'
   exit
 end
 
-wpc = rails_env == 'production' ? unicorn_opts[:worker_processes] : 2
+wpc = rails_env == 'production' ? unicorn_opts['worker_processes'] : 2
 
 worker_processes wpc
 
-listen File.join(rails_root, 'tmp/sockets/unicorn.sock'), :backlog => unicorn_opts[:backlog]
+listen File.join(rails_root, 'tmp/sockets/unicorn.sock'), :backlog => unicorn_opts['backlog']
 
 timeout 30
 
