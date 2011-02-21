@@ -32,11 +32,6 @@
 <meta http-equiv="imagetoolbar" content="no">
 <meta name="generator" content="tlogs.ru">
 
-<% if params[:action] == 'live' || params[:action] == 'last' %>
-  <!-- bookmate code -->
-  <script type='text/javascript' src='http://www.bookmate.ru/inline.js' charset='utf-8'></script>
-<% end %>
-
 <% if @title %>
 	<title><%= [h(current_site ? h(current_site.url) : 'ммм... тейсти'), strip_tags(@title)].reject(&:blank?).join(' – ') %></title>
 <% end %>
