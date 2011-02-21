@@ -57,8 +57,10 @@ namespace :deploy do
   desc "Update and restart web server"
   task :default do
     git.pull
+    sphinx.conf
     web.restart
     cache.flush
+    cron.update
   end
   
   desc "Update sources, but do not restart server"
@@ -75,15 +77,15 @@ namespace :deploy do
     end
     
     task :db, :roles => :db do
-      run "cd #{deploy_to} && bin/whenever -f config/crontabs/db.rb -i db"
+      run "cd #{deploy_to} && RAILS_ENV=production bin/whenever -f config/crontabs/db.rb -i db"
     end
 
     task :app, :roles => :app do
-      run "cd #{deploy_to} && bin/whenever -f config/crontabs/app.rb -i app"
+      run "cd #{deploy_to} && RAILS_ENV=production bin/whenever -f config/crontabs/app.rb -i app"
     end
 
     task :sphinx, :roles => :sphinx do
-      run "cd #{deploy_to} && bin/whenever -f config/crontabs/sphinx.rb -i sphinx"
+      run "cd #{deploy_to} && RAILS_ENV=production bin/whenever -f config/crontabs/sphinx.rb -i sphinx"
     end
 
   end
@@ -100,22 +102,22 @@ namespace :deploy do
   namespace :sphinx do
     desc "Sphinx conf"
     task :conf, :roles => :app do
-      run "cd #{deploy_to} && rake ts:conf"
+      run "cd #{deploy_to} && RAILS_ENV=production bin/rake ts:conf"
     end
     
     desc "Start sphinx"
     task :start, :roles => :sphinx do
-      run "cd #{deploy_to} && rake ts:start"
+      run "cd #{deploy_to} && RAILS_ENV=production bin/rake ts:start"
     end
     
     desc "Stop sphinx"
     task :stop, :roles => :sphinx do
-      run "cd #{deploy_to} && rake ts:stop"
+      run "cd #{deploy_to} && RAILS_ENV=production bin/rake ts:stop"
     end
     
     desc "Reindex"
     task :reindex, :roles => :sphinx do
-      run "cd #{deploy_to} && rake ts:reindex"
+      run "cd #{deploy_to} && RAILS_ENV=production bin/rake ts:reindex"
     end
   end
   
