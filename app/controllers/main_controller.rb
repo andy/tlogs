@@ -71,7 +71,7 @@ class MainController < ApplicationController
     sql_conditions = 'entries.is_mainpageable = 1'
     
     if params[:entry_id]
-      entry_ids = Entry.find(:all, :select => 'entries.id', :joins => 'USE INDEX (index_entries_on_is_mainpageable)', :conditions => [sql_conditions, " entries.id < #{params[:entry_id].to_i}"].join(' AND '), :order => 'entries.id DESC', :limit => Entry::PAGE_SIZE).map(&:id)
+      entry_ids = Entry.find(:all, :select => 'entries.id', :conditions => [sql_conditions, " entries.id < #{params[:entry_id].to_i}"].join(' AND '), :order => 'entries.id DESC', :limit => Entry::PAGE_SIZE).map(&:id)
       result = Entry.find_all_by_id(entry_ids, :include => [:author, :rating, :attachments]).sort_by { |entry| entry_ids.index(entry.id) }
       
       @entries = result
