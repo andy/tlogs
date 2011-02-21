@@ -65,6 +65,10 @@ class ApplicationController < ActionController::Base
 
       url = nil
       if request.host.ends_with?('mmm-tasty.ru')
+        # ban www.subdomain requests
+        redirect_to "#{request.protocol}www.mmm-tasty.ru#{request.port == 80 ? '' : ":#{request.port}"}" and return false if request.host.starts_with?('www.') && request.host != 'www.mmm-tasty.ru'
+        
+        
         url = request.subdomains.first
         
         # перенаправляем на сайт сервиса, если адрес запрещенный
