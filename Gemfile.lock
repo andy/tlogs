@@ -6,6 +6,7 @@ GEM
     RubyInline (3.9.0)
       ZenTest (~> 4.3)
     ZenTest (4.5.0)
+    aaronh-chronic (0.3.9)
     actionmailer (2.3.8)
       actionpack (= 2.3.8)
     actionpack (2.3.8)
@@ -48,6 +49,9 @@ GEM
     unicorn (3.4.0)
       kgio (~> 2.2)
       rack
+    whenever (0.6.2)
+      aaronh-chronic (>= 0.3.9)
+      activesupport (>= 2.3.4)
     will_paginate (2.3.15)
 
 PLATFORMS
@@ -70,4 +74,5 @@ DEPENDENCIES
   thinking-sphinx
   ts-datetime-delta (>= 1.0.0)
   unicorn
+  whenever
   will_paginate (>= 2.2.2)
