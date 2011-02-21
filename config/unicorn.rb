@@ -25,7 +25,7 @@ listen File.join(rails_root, 'tmp/sockets/unicorn.sock'), :backlog => unicorn_op
 timeout 30
 
 stderr_path File.join(rails_root, 'log/unicorn.stderr.log')
-stdout_path File.join(rails_root, 'log/unicorn.stdout.log')
+stdout_path '/dev/null' # File.join(rails_root, 'log/unicorn.stdout.log')
 
 # combine REE with "preload_app true" for memory savings
 # http://rubyenterpriseedition.com/faq.html#adapt_apps_for_cow
