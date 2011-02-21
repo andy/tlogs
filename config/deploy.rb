@@ -75,15 +75,15 @@ namespace :deploy do
     end
     
     task :db, :roles => :db do
-      run "cd #{deploy_to} && whenever -f config/crontabs/db.rb -i db"
+      run "cd #{deploy_to} && bin/whenever -f config/crontabs/db.rb -i db"
     end
 
     task :app, :roles => :app do
-      run "cd #{deploy_to} && whenever -f config/crontabs/app.rb -i app"
+      run "cd #{deploy_to} && bin/whenever -f config/crontabs/app.rb -i app"
     end
 
     task :sphinx, :roles => :sphinx do
-      run "cd #{deploy_to} && whenever -f config/crontabs/sphinx.rb -i sphinx"
+      run "cd #{deploy_to} && bin/whenever -f config/crontabs/sphinx.rb -i sphinx"
     end
 
   end
