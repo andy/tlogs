@@ -149,12 +149,12 @@ namespace :deploy do
     end
     
     desc "Block webserver"
-    task :block, :roles => :web do
+    task :disable, :roles => :web do
       run "cd #{deploy_to} && touch public/maintenance.html"
     end
     
     desc "Start webserver"
-    task :unblock, :roles => :web do
+    task :enable, :roles => :web do
       assets.glue_temp
       run "cd #{deploy_to} && rm -f public/maintenance.html"
       assets.deploy
