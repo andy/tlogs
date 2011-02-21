@@ -66,6 +66,28 @@ namespace :deploy do
     git.pull
   end
   
+  namespace :cron do
+    desc "Update all crontab files"
+    task :update do
+      cron.db
+      cron.app
+      cron.sphinx
+    end
+    
+    task :db, :roles => :db do
+      run "cd #{deploy_to} && whenever -f config/crontabs/db.rb -i db"
+    end
+
+    task :app, :roles => :app do
+      run "cd #{deploy_to} && whenever -f config/crontabs/app.rb -i app"
+    end
+
+    task :sphinx, :roles => :sphinx do
+      run "cd #{deploy_to} && whenever -f config/crontabs/sphinx.rb -i sphinx"
+    end
+
+  end
+  
   namespace :git do
     desc "Update sources from git"
     task :pull, :roles => :app do
@@ -76,6 +98,11 @@ namespace :deploy do
   end
   
   namespace :sphinx do
+    desc "Sphinx conf"
+    task :conf, :roles => :app do
+      run "cd #{deploy_to} && rake ts:conf"
+    end
+    
     desc "Start sphinx"
     task :start, :roles => :sphinx do
       run "cd #{deploy_to} && rake ts:start"
