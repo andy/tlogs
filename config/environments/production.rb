@@ -14,11 +14,10 @@ config.action_controller.perform_caching             = true
 config.action_view.cache_template_loading            = true
 
 # Logging
-config.log_level = :warn
-
+config.log_level = :info
 
 # Caching, woohoo!
-config.cache_store = :mem_cache_store, '127.0.0.1:11211', { :namespace => 'p', :no_reply => true, :timeout => nil, :autofix_keys => true }
+config.cache_store = :mem_cache_store, ['f1.tlogs.ru:11211', 'f2.tlogs.ru:11211'], { :namespace => 'p', :no_reply => true, :timeout => nil, :autofix_keys => true }
 
 # Enable serving of images, stylesheets, and javascripts from an asset server
 # config.action_controller.asset_host                  = Proc.new { |source, request| "http://assets#{source.hash % 4}.#{request.current_service.host}" }
