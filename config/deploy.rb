@@ -30,6 +30,7 @@ role :app, 'f1.tlogs.ru', 'f2.tlogs.ru'
 role :web, 'f2.tlogs.ru'
 role :redis, 'f1.tlogs.ru'
 role :cache, 'f1.tlogs.ru', 'f2.tlogs.ru'
+role :sphinx, 'f1.tlogs.ru'
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
 # =============================================================================
 # OPTIONAL VARIABLES
@@ -71,6 +72,23 @@ namespace :deploy do
       run "cd #{deploy_to} && git checkout db/schema.rb"
       run "cd #{deploy_to} && git pull origin master"
       # run "cd #{deploy_to} && bundle update --deployment --binstubs"
+    end
+  end
+  
+  namespace :sphinx do
+    desc "Start sphinx"
+    task :start, :roles => :sphinx do
+      run "cd #{deploy_to} && rake ts:start"
+    end
+    
+    desc "Stop sphinx"
+    task :stop, :roles => :sphinx do
+      run "cd #{deploy_to} && rake ts:stop"
+    end
+    
+    desc "Reindex"
+    task :reindex, :roles => :sphinx do
+      run "cd #{deploy_to} && rake ts:reindex"
     end
   end
   
