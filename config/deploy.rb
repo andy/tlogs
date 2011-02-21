@@ -2,8 +2,6 @@
 # (http://manuals.rubyonrails.com/read/book/17). It allows you to automate
 # (among other things) the deployment of your application.
 
-require "bundler/capistrano"
-
 # =============================================================================
 # REQUIRED VARIABLES
 # =============================================================================
@@ -58,6 +56,7 @@ namespace :deploy do
   task :default do
     git.pull
     sphinx.conf
+    bundle.install
     web.restart
     cache.flush
     cron.update
@@ -66,6 +65,9 @@ namespace :deploy do
   desc "Update sources, but do not restart server"
   task :light do
     git.pull
+    sphinx.conf
+    bundle.install
+    cron.update
   end
   
   namespace :cron do
@@ -95,7 +97,6 @@ namespace :deploy do
     task :pull, :roles => :app do
       run "cd #{deploy_to} && git checkout db/schema.rb"
       run "cd #{deploy_to} && git pull origin master"
-      # run "cd #{deploy_to} && bundle update --deployment --binstubs"
     end
   end
   
@@ -179,4 +180,11 @@ namespace :deploy do
       run "cp #{deploy_to}/public/javascripts/cache-tmp/* #{deploy_to}/public/javascripts/cache/"
     end
   end  
+  
+  namespace :bundle do
+    desc "Install & Update bundle"
+    task :install, :roles => :app do
+      run "cd #{deploy_to} && RAILS_ENV=production bin/bundle install --quiet --binstubs --deployment"
+    end
+  end
 end
