@@ -2,6 +2,7 @@ source "http://rubygems.org"
 source "http://gems.rubyforge.org"
 source "http://gemcutter.org"
 
+gem 'mime-types'
 gem 'rake'
 gem 'unicorn'
 gem 'system_timer'
