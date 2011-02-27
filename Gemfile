@@ -18,6 +18,7 @@ gem 'russian'
 gem 'hiredis', '~> 0.3.0'
 gem 'redis', '>= 2.0.0'
 gem 'whenever', :require => false
+gem 'json'
 
 gem 'thinking-sphinx', :require => 'thinking_sphinx'
 
