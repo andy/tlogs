@@ -54,8 +54,11 @@ class CreateConversations < ActiveRecord::Migration
       # ignore messages that have invalid users (odd)
       next if message.user.nil?
 
-      message.begin_conversation!
+      message.clone.begin_conversation!
     end
+
+    # 3/ remove all messages
+    Message.delete_all ['id <= ?', last_message_id]
   end
 
   def self.down

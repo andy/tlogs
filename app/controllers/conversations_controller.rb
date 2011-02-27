@@ -61,5 +61,13 @@ class ConversationsController < ApplicationController
     def preload_conversation
       @recipient    = User.find_by_url params[:id]
       @conversation = current_site.conversations.find_by_recipient_id(@recipient.id)
+      
+      if @conversation.nil? && @recipient.nil?
+        return false
+      elsif @conversation.nil? && @recipient
+        redirect_to user_url(current_site, named_new_conversation_path(:url => params[:id])) and return false
+      else
+        return true
+      end
     end
 end

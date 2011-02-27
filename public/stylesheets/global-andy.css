@@ -144,7 +144,6 @@ form.donation input.submit_donation { margin-top: 20px; margin-left: 380px; }
 .convos .conversation .conversation_controls .timestamp { float: right; }
 .convos .conversation .conversation_controls .delete { float: right; position: relative; left: 15px;}
 
-
 /* conversation */
 .convos .messages { margin: 0 4px 0px 4px; padding: 0px; }
 .convos .messages .showonhover { display: none; }
@@ -159,6 +158,9 @@ form.donation input.submit_donation { margin-top: 20px; margin-left: 380px; }
 .convos .messages .message_submit input { float:right; }
 .convos .messages #submitting { position: absolute; top: 2px; left: -25px; }
 
+.convos .centered { margin: 0px; padding: 10px 31px 30px 31px; }
+.convos .centered .linkback { text-align: center; margin-top: 40px; }
+
 /* new message */
 .convos #new_message { width: 450px; padding: 10px 31px 30px 31px; margin: 4px; }
 .convos #new_message #verifying { position: absolute; left: -25px; top: 4px;}
@@ -172,6 +174,9 @@ form.donation input.submit_donation { margin-top: 20px; margin-left: 380px; }
 .convos #new_message .message_submit span { font-size: 11px; color: #888888; }
 .convos #new_message #submitting { position: absolute; top: 2px; left: -25px; }
 .convos #new_message label { font-size: 11px; font-family: Georgia; padding-left: 2px; margin-bottom: 5px; display: block;}
+
+/* pagination */
+.convos .conversations .entry_pagination, .convos .messages .entry_pagination { padding: 10px 49px 20px 50px; }
 
 /* header */
 .convos .header { padding: 0px 0px 0px 31px; margin: 0px 0px 30px 4px; }

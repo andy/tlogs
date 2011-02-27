@@ -35,7 +35,7 @@
     	</div>
     
       <div class='message_recipient'>
-        <%= f.text_field :recipient_url, :style => 'width: 450px;' %>
+        <%= f.text_field :recipient_url, :style => 'width: 450px;', :tabindex => '1' %>
       
         <div class='subtext' id='message_recipient_subtext'>
           <span class='neutral' id='subtext_message'>Укажите имя пользователя которому хотите написать сообщение</span>
@@ -54,7 +54,7 @@
         <%= image_tag 'ajax-smaller-loader.gif', :size => '16x16', :alt => '', :title => '', :style => 'display: none', :id => 'submitting' %>
       </div>
 
-      <%= f.text_area :body, :style => 'width: 450px; height: 6em' %>
+      <%= f.text_area :body, :style => 'width: 450px; height: 6em', :tabindex => '2' %>
       <%= tasty_error_message_on :message, :body %>
     </div>
 
@@ -62,7 +62,7 @@
     <div class='message_submit'>
       <span>Теги запрещены, ссылки выделяются автоматически</span>
       <div class='submit_button'>
-        <%= f.submit 'Отправить' %>
+        <%= f.submit 'Отправить', :tabindex => '0' %>
       </div>
     </div>
   <% end %>

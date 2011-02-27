@@ -7,6 +7,7 @@ class MessagesController < ApplicationController
   def create
     @disable_ajax_refresh = params[:disable_ajax_refresh] || false
     @disable_flash        = params[:disable_flash] || false
+    @last_message_id      = params[:last_message_id].to_i rescue false
     
     # set message options
     @message           = Message.new

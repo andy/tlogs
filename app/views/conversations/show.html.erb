@@ -20,18 +20,17 @@
   <%= render :partial => 'messages/form', :locals => { :conversation => @conversation } if @messages.current_page == 1 %>
 
   <%= paginate @messages if @messages.current_page > 1 %>
-
 <% end %>
 
 <script type='text/javascript'>
   jQuery(".message", jQuery('div.messages')[0]).live({
     mouseenter: function() {
-      jQuery(this).find('.showonhover').show().fadeIn(100);
+      jQuery(this).find('.showonhover').show();
       
       return false;
     },    
     mouseleave: function() {
-      jQuery(this).find('.showonhover').fadeOut(100).hide();
+      jQuery(this).find('.showonhover').hide();
       
       return false;
     }

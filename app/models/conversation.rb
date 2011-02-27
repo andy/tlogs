@@ -9,7 +9,6 @@ class Conversation < ActiveRecord::Base
 
   before_create { |record| record.send_notifications = record.user.tlog_settings.email_messages }
 
-
   # shadow conversation — opposite conversation by other party
   def shadow
     Conversation.find_by_user_id_and_recipient_id(self.recipient_id, self.recipient_id)

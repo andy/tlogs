@@ -19,7 +19,7 @@
 	<%= link_to_function 'Поиск', "sidebar_toggle('conversations_search')", :title => "по перепискам", :class => "sidebar_toggle highlight", :id => 'sidebar_conversations_search_link' %>		
 	<div class='sidebar_section_content' id='sidebar_conversations_search_content'>
 	  <% content_tag :form, :method => 'get', :action => user_url(current_site, search_conversations_path) do %>
-	    <%= tag :input, :name => 'query', :value => params[:query] %>
+	    <%= tag :input, :name => 'query', :value => params[:query], :tabindex => '0' %>
 	  <% end %>
 	</div>    
 </div>

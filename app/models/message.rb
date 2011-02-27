@@ -53,7 +53,11 @@ class Message < ActiveRecord::Base
       convo.update_attributes!(:last_message_id => record.id, :last_message_user_id => record.user_id, :last_message_at => record.created_at, :is_replied => false)
     else
       # if that is your reply — just update the is_replied flag to true
-      convo.update_attributes!(:is_replied => true, :last_message_at => record.created_at)
+      convo.is_replied = true
+      
+      # update timestamp only on first message, other replies should keep things AS IS
+      convo.last_message_at = record.created_at if convo.last_message_at.nil?
+      convo.save!
     end
     
     true

@@ -10,7 +10,7 @@ page << "if(jQuery('#message_recipient_url').val() == #{@value.to_json}) {"
     # check wether they had conversation previously
     text = nil
     if @conversation
-      text = "#{user_url(@recipient)} — #{@conversation.messages_count.pluralize('сообщение', 'сообщения', 'сообщений', true)}.&nbsp;"
+      text = "#{user_url(@recipient).sub('http://', '')} — #{@conversation.messages_count.pluralize('сообщение', 'сообщения', 'сообщений', true)}.&nbsp;"
       text += "Посмотреть "
       text += link_to "всю переписку с #{@recipient.gender('ним', 'ней')} &rarr;", user_url(current_site, conversation_path(@conversation))
     else
@@ -23,23 +23,18 @@ page << "if(jQuery('#message_recipient_url').val() == #{@value.to_json}) {"
   
   else
     # remove the url
-    page << "
-      jQuery('#message_recipient').hide();  
-    "
+    page << "jQuery('#message_recipient').hide();"
   
     # update the status value
     if @value
-      page << "
-        jQuery('#subtext_message').attr('class', 'failure').html('указанный вами пользователь не найден');
-      "
+      page << "jQuery('#subtext_message').attr('class', 'failure').html('указанный вами пользователь не найден');"
     else
-      page << "
-        jQuery('#subtext_message').attr('class', 'neutral').html('Укажите имя пользователя которому хотите написать сообщение');
-      "
+      page << "jQuery('#subtext_message').attr('class', 'neutral').html('Укажите имя пользователя которому хотите написать сообщение');"
     end
   end
 
-page << "} else {
-  console.log('server value = ' + #{@value.to_json} + ' doesnt match local ' + jQuery('#message_recipient_url').val());
-}
-"
+if Rails.env.production?
+  page << "}"
+else
+  page << "} else { console.log('server value = ' + #{@value.to_json} + ' doesnt match local ' + jQuery('#message_recipient_url').val()); }"
+end

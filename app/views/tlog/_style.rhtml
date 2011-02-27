@@ -40,7 +40,7 @@ div.tlog { background: transparent url(<%= h @design.background_url %>) <%= @des
 <% end %>
 <% unless @design.color_tlog_text.blank? %>
 /* text of tlog */
-.post_content *, .comment_text *, .top_comments_text, div#post_comment_form_greeting, #allowed_html_tags, span.quote_entry_body, .filter {
+.post_content *, .comment_text *, .top_comments_text, div#post_comment_form_greeting, #allowed_html_tags, span.quote_entry_body, .filter, .convos .body, .convos .conversation_controls div, .convos .message_controls div, .convos #new_message label {
 	color:#<%= @design.color_tlog_text %>!important;
 }
 .post_text { border-color:#<%= @design.color_tlog_text %>!important; }
@@ -61,7 +61,7 @@ div.tlog { background: transparent url(<%= h @design.background_url %>) <%= @des
 <% end %>
 <% unless @design.color_sidebar_text.blank? %>
 /* sidebar text */
-#tlog_menu_url a, #tlog_menu_url, #tlog_menu_title, #footer a, #footer p, div.sidebar a, div.sidebar p, div.sidebar span, .messages_other, #message_is_private_label, #sidebar_hide<%= ', div.service_date span' if %w(huge outside).include?(@design.date_style) %> {
+#tlog_menu_url a, #tlog_menu_url, #tlog_menu_title, #footer a, #footer p, div.sidebar a, div.sidebar p, div.sidebar span, #sidebar_hide<%= ', div.service_date span' if %w(huge outside).include?(@design.date_style) %> {
 	color:#<%= @design.color_sidebar_text %>!important;
 }
 <% end %>
@@ -85,7 +85,7 @@ a, div.sidebar p, div.sidebar span, .messages_other, #message_is_private_label<%
 <% end %>
 <% unless @design.color_highlight.blank? %>
 /* highlight color */
-#sidebar_tag_cloud_content a:hover, #sidebar_calendar_content a:hover, #sidebar_personal_content a:hover, #sidebar_public_friends_content a:hover, .about_more, #sidebar_hide, .highlight {
+#sidebar_tag_cloud_content a:hover, #sidebar_calendar_content a:hover, #sidebar_personal_content a:hover, #sidebar_public_friends_content a:hover, .about_more, #sidebar_hide, .highlight, .convos .header .highlight {
 	background-color:#<%= @design.color_highlight %>!important;
 }
 <% end %>
@@ -95,7 +95,7 @@ a, div.sidebar p, div.sidebar span, .messages_other, #message_is_private_label<%
 	color:#<%= @design.color_link %>!important;
 	border-color:#<%= @design.color_link %>!important;
 }
-.post_comment_author .highlight, .entry_metadata_link {
+.post_comment_author .highlight, .entry_metadata_link, .convos .highlight {
 	background-color:#<%= @design.color_link %>!important;
 }
 <% end %>
