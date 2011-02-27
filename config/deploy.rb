@@ -55,8 +55,8 @@ namespace :deploy do
   desc "Update and restart web server"
   task :default do
     git.pull
-    sphinx.conf
     bundle.install
+    sphinx.conf
     web.restart
     cache.flush
     cron.update
