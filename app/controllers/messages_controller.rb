@@ -1,18 +1,22 @@
 class MessagesController < ApplicationController
   before_filter :require_current_site, :require_confirmed_current_site, :require_confirmed_current_user
 
-  before_filter :preload_message, :only => :destroy
+  before_filter :preload_message, :only => [:destroy]
 
   
   def create
+    @disable_ajax_refresh = params[:disable_ajax_refresh] || false
+    @disable_flash        = params[:disable_flash] || false
+    
     # set message options
     @message           = Message.new
     @message.body      = params[:message][:body]
     @message.user      = current_user
     @message.recipient = User.find_by_url(params[:message][:recipient_url])
     
-    # set conversation options
-    convo_options = params[:message].slice(:send_notifications)
+    # set conversation options, but only take them if they exist
+    convo_options = params[:message].slice(:send_notifications).symbolize_keys
+
     
     if @message.valid?
       # no way this can fail!
@@ -27,33 +31,8 @@ class MessagesController < ApplicationController
     else
       # bugs message
       respond_to do |wants|
-        wants.html
-        wants.js do
-          render :update do |page|
-            # re-enable submit button
-            page << "jQuery('.submit_button input').removeAttr('disabled');"
-
-            page.call :clear_all_errors
-            page << "jQuery('#message_recipient_url').removeClass('input_error');"
-            
-            # check wether recipient is ok
-            if @message.errors.on(:recipient)
-              # remove the url
-              page << "jQuery('#message_recipient').hide();"
-              page << "jQuery('#message_recipient_url').addClass('input_error');"
-
-              # update the status value
-              if @message.recipient.nil? && params[:message][:recipient_url] 
-                page << "jQuery('#subtext_message').attr('class', 'failure').html('указанный вами пользователь не найден');"
-              else
-                page << "jQuery('#subtext_message').attr('class', 'neutral').html('Укажите имя пользователя которому хотите написать сообщение');"
-              end
-            end
-
-            # check wether message body is ok
-            page.call :error_message_on, 'message_body', @message.errors.on(:body) if @message.errors.on(:body)
-          end
-        end
+        wants.html { } # FIX ME? what to do here?
+        wants.js
       end
     end
   end

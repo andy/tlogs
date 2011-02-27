@@ -18,6 +18,7 @@ class Message < ActiveRecord::Base
   belongs_to :conversation, :counter_cache => true
 
   ## validations
+  # validates_presence_of :conversation
   validates_presence_of :recipient
   validates_presence_of :user
   validates_length_of :body, :in => 2..4086, :allow_nil => false, :allow_blank => false, :too_short => 'уж напишите что-нибудь, пожалуйста', :too_long => 'слишком длинное сообщение получилось, не можем отправить'
@@ -41,7 +42,7 @@ class Message < ActiveRecord::Base
 	  set_property :delta => :datetime, :threshold => 1.hour
   end
 
-
+  ## hooks
   # update conversations field to the last message changed
   after_save do |record|
     convo = record.conversation
@@ -74,6 +75,7 @@ class Message < ActiveRecord::Base
     true
   end
 
+  ## public methods
   # initiates or updates curerntly ongoing conversation
   # returns recipient message
   def begin_conversation!(options = {})

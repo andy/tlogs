@@ -34,7 +34,7 @@ message = conversation.messages.last
 
 
     <div class='delete'>
-      <%= link_to_remote image_tag('delete.gif', :size => '9x11'), { :url => user_url(current_site, conversation_path(conversation)).downcase, :method => :delete }, :confirm => 'Действительно удалить всю переписку?' %>
+      <%= link_to_remote image_tag('delete.gif', :size => '9x11', :alt => '[x]'), { :url => user_url(current_site, conversation_path(conversation)).downcase, :method => :delete }, :confirm => 'Действительно удалить всю переписку?' %>
     </div>
 
   	<div class='timestamp'>

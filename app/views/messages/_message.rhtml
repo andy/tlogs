@@ -1,5 +1,5 @@
 <% content_tag_for :div, message do %>
-  <%= content_tag :a, '', :name => dom_id(message) %>
+  <%= content_tag :a, nil, :name => dom_id(message) %>
 
 	<div class='rel'>
 	  <div class='message_sender'><%= link_to_tlog message.user %></div>
@@ -9,7 +9,7 @@
   
   <div class='message_controls showonhover'>
     <div class='delete'>
-      <%= link_to_remote image_tag('delete.gif', :size => '9x11'), { :url => user_url(current_site, message_path(message)).downcase, :action => :destroy }, :confirm => 'Действительно удалить это сообщение?', :title => 'Удалить сообщение' %>
+      <%= link_to_remote image_tag('delete.gif', :size => '9x11', :alt => '[x]'), { :url => user_url(current_site, message_path(message)).downcase, :method => :delete }, :title => 'Удалить сообщение' %>
     </div>
 
     <%= content_tag :div, message.created_at.distance_between_in_words(Time.now, ' назад'), :title => Russian::strftime(message.created_at, '%d %B %Y в %H:%M'), :class => 'timestamp' %>

@@ -1,3 +1,5 @@
-page.visual_effect :highlight, @message.dom_id, { :duration => 0.3 }
-page.visual_effect :fade, @message.dom_id, { :duration => 0.3 }
-page.show :message_create
+page.visual_effect :highlight, dom_id(@message), { :duration => 0.3 }
+page.visual_effect :fade, dom_id(@message), { :duration => 0.3 }
+page.delay(1) do
+  page.remove dom_id(@message)
+end

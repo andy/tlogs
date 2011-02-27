@@ -77,6 +77,15 @@ document.observe('dom:loaded', function( ) {
 });
 
 
+function emulate_rails_flash(klass, message) {
+	// remove element if exists
+	if(jQuery('#flash_holder').length != 0) { jQuery('#flash_holder').remove(); }
+	
+	// create new one
+	jQuery('.onair').prepend("<div id='flash_holder'><table id='flash' onclick='new Effect.Fade (\'flash\', { duration: 0.3, afterFinish: function() { Element.remove(\'flash_holder\'); } } );'><tr><td id='flash_message'><p></p></td></tr></table></div>");
+	jQuery('#flash_holder #flash_message').addClass(klass).find('p').text(message);
+}
+
 var reply_to_comments = new Array;
 var reply_to_string = null;
 

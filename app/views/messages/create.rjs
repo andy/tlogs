@@ -2,5 +2,34 @@
 page.call :clear_all_errors
 page << "jQuery('#message_recipient_url').removeClass('input_error');"
 
-# reload the page
-page.call 'window.location.reload'
+if @message.valid?
+  # reload or update the page, whatever is more apropriate
+  if @disable_ajax_refresh
+    page.insert_html :before, 'new_message_placeholder', :partial => 'message', :local_assigns => { :message => @message }
+    page << "jQuery('#message_body').val('');"
+  else
+    page.redirect_to user_url(current_site, conversation_path(@message.conversation) + '#' + dom_id(@message))
+  end
+else
+  # re-enable submit button
+  page << "jQuery('.submit_button input').removeAttr('disabled');"
+  
+  page.call :emulate_rails_flash, 'bad', 'Ошибка! Похоже, что не все поля были заполнены корректно.' unless @disable_flash
+
+  # check wether recipient is ok
+  if @message.errors.on(:recipient)
+    # remove the url
+    page << "jQuery('#message_recipient').hide();"
+    page << "jQuery('#message_recipient_url').addClass('input_error');"
+
+    # update the status value
+    if @message.recipient.nil? && params[:message][:recipient_url] 
+      page << "jQuery('#subtext_message').attr('class', 'failure').html('указанный вами пользователь не найден');"
+    else
+      page << "jQuery('#subtext_message').attr('class', 'neutral').html('Укажите имя пользователя которому хотите написать сообщение');"
+    end
+  end
+
+  # check wether message body is ok
+  page.call :error_message_on, 'message_body', @message.errors.on(:body) if @message.errors.on(:body)
+end
