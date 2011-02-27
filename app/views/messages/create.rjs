@@ -1,3 +1,6 @@
-page.replace_html :sidebar_messages_content, :partial => 'sidebar'
-page.visual_effect :highlight, @message.dom_id, { :duration => 0.5 }
-page[:message_body].value = ''
+# clear all errors, including auto-error
+page.call :clear_all_errors
+page << "jQuery('#message_recipient_url').removeClass('input_error');"
+
+# reload the page
+page.call 'window.location.reload'

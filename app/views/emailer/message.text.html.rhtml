@@ -1,5 +1,5 @@
 <%-
-  @sender = @message.sender
+  @sender = @message.user
 -%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
     "http://www.w3.org/TR/xhtml1/DTD/xhtml-strict.dtd">
@@ -12,16 +12,16 @@
     </p>
 
 		<p style="font-family:Trebuchet MS, Arial, sans serif; font-size:0.95em; width:600px; color:#404040; padding-bottom: 1em;">
-		  Пользователь <span class='actor vcard'><%= link_to h(@sender.url), user_url(@sender), :class => 'url fn' %></span> оставил вам <%= ' личное ' if @message.is_private? %> сообщение:
+		  Пользователь <span class='actor vcard'><%= link_to h(@sender.url), user_url(@sender), :class => 'url fn' %></span> отправил вам сообщение:
 		</p>
 		
-		<p  style="font-style:italic; font-family:Trebuchet MS, Arial, sans serif; font-size:0.95em; width:600px; color:#404040; padding-bottom: 1em;" class='text'>
+		<p style="font-style:italic; font-family:Trebuchet MS, Arial, sans serif; font-size:0.95em; width:600px; color:#404040; padding-bottom: 1em;" class='text'>
 		  <%= h @message.body %>
 		</p>
 		
 		<p style="font-family:Trebuchet MS, Arial, sans serif; font-size:0.95em; width:600px; color:#404040; padding-bottom: 2em;">
-      <%- message_link = user_url(@user, messages_path) -%>
-      <%= link_to message_link, message_link, :class => 'action-link read-link reply-link' %>
+      <%- convo_link = user_url(@user, conversation_path(@message.conversation)) -%>
+      <%= link_to convo_link, convo_link, :class => 'action-link read-link reply-link' %>
 		</p>
 		
 		<p style="font-family:Trebuchet MS, Arial, sans serif; font-size:0.95em; width:600px; color:#404040; text-align:right;">

@@ -1,0 +1,49 @@
+<%
+# this is the message to show contents
+show_message = conversation.last_message
+
+# this is the metadata message
+message = conversation.messages.last
+
+%>
+
+<% content_tag_for :div, conversation do %>
+
+	<div class='rel'>
+	  <div class='message_sender'><%= link_to_tlog conversation.recipient %></div>
+	</div>
+
+  <% if show_message %>
+    <%= content_tag :div, simple_format(auto_link(show_message.body)), :class => 'body' %>
+	
+  	<%= content_tag :div, link_to('Вы уже отвечали на это сообщение &rarr;', user_url(current_site, conversation_path(conversation))), :class => 'already_replied' if conversation.is_replied? %>
+  <% else %>
+    <div class='not_yet_replied'>
+      <%= link_to("Вы отправили сообщение, но #{conversation.recipient.gender('он', 'она')} на него пока не ответил#{conversation.recipient.gender('', 'а')} &rarr;", user_url(current_site, conversation_path(conversation))) %>
+    </div>
+  <% end %>
+
+  <div class='conversation_controls showonhover'>
+	  <div class='stats'>
+  	  В вашей переписке <%= link_to conversation.messages_count.pluralize('сообщение', 'сообщения', 'сообщений', true), user_url(current_site, conversation_path(conversation)) %>
+  	</div>
+
+    <div class='reply'>
+  	  <%= link_to conversation.is_replied? ? 'Написать новое сообщение' : 'Ответить', user_url(current_site, conversation_path(conversation)), :class => 'reply_link' %>
+  	</div>
+
+
+    <div class='delete'>
+      <%= link_to_remote image_tag('delete.gif', :size => '9x11'), { :url => user_url(current_site, conversation_path(conversation)).downcase, :method => :delete }, :confirm => 'Действительно удалить всю переписку?' %>
+    </div>
+
+  	<div class='timestamp'>
+  	  <%= content_tag :p, message.created_at.distance_between_in_words(Time.now, ' назад'), :title => Russian::strftime(message.created_at, '%d %B %Y в %H:%M') %>
+  	</div>
+
+    <div class='clear'><div></div></div>  
+  </div>
+
+  <div class='clear'><div></div></div>  
+
+<% end %>

@@ -1,0 +1,18 @@
+<% content_tag :div, :class => 'conversations' do %>
+  <div class='header'>
+    <h3><%= @title %></h3>
+  </div>
+
+  <%= paginate @conversations if @conversations.current_page > 1 %>
+  
+	<%= render :partial => 'conversation', :collection => @conversations %>
+
+  <%= paginate @conversations %>
+<% end %>
+
+<script type='text/javascript'>
+  jQuery(".conversation").hover(
+      function() { jQuery(this).find('.showonhover').show().fadeIn(100); },
+      function() { jQuery(this).find('.showonhover').fadeOut(100).hide(); }
+    );
+</script>

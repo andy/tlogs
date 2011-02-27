@@ -15,7 +15,7 @@
 			<%# код из _relationship.rhtml, один в один %>
 			<%- relationship = current_user.relationship_with(current_site, true) -%>
 			<div id='sidebar_relationship'<%= ' class="subscribed"' if relationship.friendship_status >= Relationship::DEFAULT %>>
-				<%= link_to_remote relationship.say_it(current_site, current_user), :url => user_url(current_site, relationship_entries_path) -%>
+				<%= link_to_remote relationship.say_it(current_site, current_user), :url => user_url(current_site, relationship_entries_path).downcase -%>
 			</div>
 		<% end %>
 	</div>
@@ -104,15 +104,6 @@
 			<% current_site.public_friends.each do |user| %>
 				<%= link_to_tlog(user, nil, :title => user.title, :rel => 'friend') %>
 			<% end %>
-		</div>
-	</div>
-<% end %>
-
-<% unless current_site.tlog_settings.sidebar_hide_messages? %>
-	<div class='sidebar_section' id='sidebar_messages'>
-		<%= link_to_function 'Сообщения', "sidebar_toggle('messages')", :class => 'sidebar_toggle', :id => 'sidebar_messages_link' %>
-		<div class='sidebar_section_content' id='sidebar_messages_content' style='display: none'>
-			<%= render :partial => 'messages/sidebar' %>
 		</div>
 	</div>
 <% end %>

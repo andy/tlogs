@@ -1,0 +1,33 @@
+<% @title = "Переписка между вами и #{h @conversation.recipient.url}" %>
+
+<% content_tag :div, :class => 'messages' do %>
+
+  <div class='header'>
+    <h3><span class='gray'>Переписка между вами и </span><span class='highlight'><%= @conversation.recipient.url %></span></h3>
+
+    <div class='rel'>
+    	<div class='conversation_subscribe_controls'>
+    		<%= link_to_remote image_tag('letter.gif', :size => '17x15'), { :url => user_url(current_site, subscribe_conversation_path(@conversation)).downcase }, :id => 'subscribe_link', :style => "display: #{@conversation.send_notifications? ? 'none' : 'block'}", :title => 'подписаться новые сообщение' %>
+    		<%= link_to_remote image_tag('unletter.gif', :size => '17x15'), { :url => user_url(current_site, unsubscribe_conversation_path(@conversation)).downcase }, :id => 'unsubscribe_link', :style => "display: #{@conversation.send_notifications? ? 'block' : 'none'}", :title => 'отписаться от новых сообщений' %>
+    	</div>
+    </div>
+  </div>
+
+
+
+  <%= paginate @messages %>
+
+	<%= render :partial => 'messages/message', :collection => @messages.reverse %>
+
+  <%= render :partial => 'messages/form', :locals => { :conversation => @conversation } if @messages.current_page == 1 %>
+
+  <%= paginate @messages if @messages.current_page > 1 %>
+
+<% end %>
+
+<script type='text/javascript'>
+  jQuery(".message").hover(
+      function() { jQuery(this).find('.showonhover').show().fadeIn(100); },
+      function() { jQuery(this).find('.showonhover').fadeOut(100).hide(); }
+    );
+</script>

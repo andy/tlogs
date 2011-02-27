@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110212173631) do
+ActiveRecord::Schema.define(:version => 20110223155201) do
 
   create_table "attachments", :force => true do |t|
     t.integer "entry_id",     :default => 0,  :null => false
@@ -79,6 +79,22 @@ ActiveRecord::Schema.define(:version => 20110212173631) do
   add_index "comments", ["created_at"], :name => "index_comments_on_created_at"
   add_index "comments", ["entry_id"], :name => "index_comments_on_entry_id"
   add_index "comments", ["user_id"], :name => "index_comments_on_user_id"
+
+  create_table "conversations", :force => true do |t|
+    t.integer  "user_id",                                 :null => false
+    t.integer  "recipient_id",                            :null => false
+    t.integer  "messages_count",       :default => 0,     :null => false
+    t.boolean  "send_notifications",   :default => true,  :null => false
+    t.boolean  "is_replied",           :default => false, :null => false
+    t.integer  "last_message_id"
+    t.integer  "last_message_user_id"
+    t.datetime "last_message_at"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "conversations", ["user_id", "last_message_at"], :name => "index_conversations_on_user_id_and_last_message_at"
+  add_index "conversations", ["user_id", "recipient_id"], :name => "index_conversations_on_user_id_and_recipient_id"
 
   create_table "delayed_jobs", :force => true do |t|
     t.integer  "priority",   :default => 0
@@ -201,14 +217,12 @@ ActiveRecord::Schema.define(:version => 20110212173631) do
   end
 
   create_table "messages", :force => true do |t|
-    t.integer  "user_id",     :default => 0,     :null => false
-    t.integer  "sender_id",   :default => 0,     :null => false
+    t.integer  "user_id",         :default => 0, :null => false
     t.text     "body",                           :null => false
-    t.text     "body_html"
-    t.boolean  "is_private",  :default => false, :null => false
-    t.boolean  "is_disabled", :default => false, :null => false
     t.datetime "created_at",                     :null => false
     t.datetime "updated_at"
+    t.integer  "conversation_id",                :null => false
+    t.integer  "recipient_id",                   :null => false
   end
 
   add_index "messages", ["user_id"], :name => "index_messages_on_user_id"
@@ -401,9 +415,9 @@ ActiveRecord::Schema.define(:version => 20110212173631) do
     t.string   "username"
     t.string   "salt",                    :limit => 40
     t.string   "crypted_password",        :limit => 40
-    t.integer  "messages_count",                        :default => 0,     :null => false
     t.integer  "faves_count",                           :default => 0,     :null => false
     t.datetime "entries_updated_at"
+    t.integer  "conversations_count",                   :default => 0,     :null => false
   end
 
   add_index "users", ["domain"], :name => "index_users_on_domain"

@@ -1,0 +1,12 @@
+<% @title = "Поиск в сообщениях" %>
+
+<% content_tag_for :div, @messages do %>
+  <h3>Поиск в сообщениях <span class='large highlight'><%= h(params[:query]) %></span></h3>
+
+  <%= paginate @messages %>
+
+	<%= render :partial => 'messages/message', :collection => @messages %>
+
+  <%= paginate @messages if @messages.current_page > 1 %>
+
+<% end %>

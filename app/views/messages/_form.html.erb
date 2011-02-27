@@ -1,0 +1,18 @@
+<% message = conversation.messages.build %>
+
+<a name='form'></a>
+<% remote_form_for :message, message, :url => user_url(current_site, messages_path).downcase do |f| %>
+
+  <div class='rel'>
+	  <div class='message_sender'><%= link_to_tlog current_user %></div>
+	</div>
+
+  <%= tag :input, :name => 'message[recipient_url]', :type => 'hidden', :value => conversation.recipient.url %>
+
+  <%= f.text_area :body, :style => 'width: 450px; height: 6em' %>
+  
+  <div class='message_submit'>
+    <span>Теги запрещены, ссылки выделяются автоматически</span>
+    <%= f.submit 'Отправить' %>
+  </div>
+<% end %>

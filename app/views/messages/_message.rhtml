@@ -1,16 +1,21 @@
-<% unless message.sender.nil? %>
-<div class='message' id='<%= message.dom_id %>'>
-	<% if message.is_private? %>
-		<div class='rel'><%= image_tag 'lock.gif', :class => 'private_message' %></div>
-	<% end %>
+<% content_tag_for :div, message do %>
+  <%= content_tag :a, '', :name => dom_id(message) %>
+
 	<div class='rel'>
-	  <div class='message_sender'><%= link_to_tlog message.sender %></div>
+	  <div class='message_sender'><%= link_to_tlog message.user %></div>
 	</div>
-	<p>
-	  <%= h message.body %>
-    <!-- <span class='message_user'>&mdash; </span> -->
-		<span class='message_created_at' title='<%= message.created_at.to_timestamp_s %>'><%= message.created_at.distance_between_in_words(Time.now, ' назад') %></span>
-		<%= link_to_remote(image_tag('delete.gif'), { :url => user_url(current_site, message_path(message)), :method => :delete }, :title => 'удалить это сообщение') if message.is_owner?(current_user) %>
-	</p>
-</div>
+
+  <%= content_tag :div, simple_format(auto_link(h(message.body))), :class => 'body' %>
+  
+  <div class='message_controls showonhover'>
+    <div class='delete'>
+      <%= link_to_remote image_tag('delete.gif', :size => '9x11'), { :url => user_url(current_site, message_path(message)).downcase, :action => :destroy }, :confirm => 'Действительно удалить это сообщение?', :title => 'Удалить сообщение' %>
+    </div>
+
+    <%= content_tag :div, message.created_at.distance_between_in_words(Time.now, ' назад'), :title => Russian::strftime(message.created_at, '%d %B %Y в %H:%M'), :class => 'timestamp' %>
+
+    <div class='clear'><div></div></div>
+  </div>
+  
+  <div class='clear'><div></div></div>  
 <% end %>

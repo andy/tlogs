@@ -38,7 +38,7 @@ class User < ActiveRecord::Base
   has_many      :sidebar_sections, :dependent => :destroy
   has_many      :bookmarklets, :dependent => :destroy
   has_one       :feedback, :dependent => :destroy
-  has_many      :messages, :dependent => :destroy
+  has_many      :conversations, :dependent => :destroy, :order => 'last_message_at DESC'
   has_many      :faves, :dependent => :destroy
   has_many      :transactions
 
