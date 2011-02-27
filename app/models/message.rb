@@ -45,41 +45,41 @@ class Message < ActiveRecord::Base
   ## hooks
   # update conversations field to the last message changed
   after_save do |record|
-    convo = record.conversation
-    
-    # if tthat's a reply from convo owner perspective (e.g. message does not belong to him)
-    # OR special case where you message yourself ...
-    if record.user_id != convo.user_id || convo.user_id == convo.recipient_id
-      convo.update_attributes!(:last_message_id => record.id, :last_message_user_id => record.user_id, :last_message_at => record.created_at, :is_replied => false)
-    else
-      # if that is your reply — just update the is_replied flag to true
-      convo.is_replied = true
-      
-      # update timestamp only on first message, other replies should keep things AS IS
-      convo.last_message_at = record.created_at if convo.last_message_at.nil?
-      convo.save!
-    end
+    record.mark_as_last_message!
     
     true
   end
   
   # update conversations field if that's current last message there
   after_destroy do |message|
-    convo = message.conversation(true)
+    convo = message.conversation
     
-    if convo.last_message_id == message.id
-      if convo.messages_count.zero?
-        # if this is last message, destroy the conversation too
-        convo.destroy
-      else
-        convo.messages.last.save!
-      end
-    end
+    convo.update_attributes!(:last_message_id => nil) if convo.last_message_id == message.id
     
+    convo.destroy if convo.messages_count.zero?
+
     true
   end
 
   ## public methods
+  #
+  def mark_as_last_message!
+    convo = self.conversation
+    
+    # if tthat's a reply from convo owner perspective (e.g. message does not belong to him)
+    # OR special case where you message yourself ...
+    if self.user_id != convo.user_id || convo.user_id == convo.recipient_id
+      convo.update_attributes!(:last_message_id => self.id, :last_message_user_id => self.user_id, :last_message_at => self.created_at, :is_replied => false)
+    else
+      # if that is your reply — just update the is_replied flag to true
+      convo.is_replied = true
+      
+      # update timestamp only on first message, other replies should keep things AS IS
+      convo.last_message_at = self.created_at if convo.last_message_at.nil?
+      convo.save!
+    end
+  end
+  
   # initiates or updates curerntly ongoing conversation
   # returns recipient message
   def begin_conversation!(options = {})
