@@ -10,7 +10,10 @@ message = conversation.messages.last
 <% content_tag_for :div, conversation do %>
 
 	<div class='rel'>
-	  <div class='message_sender'><%= link_to_tlog conversation.recipient %></div>
+	  <div class='message_sender'>
+	    <div class='message_sender_link'><%= link_to_tlog conversation.recipient %></div>
+  	  <%= content_tag :div, message.created_at.distance_between_in_words(Time.now, ' назад'), :title => Russian::strftime(message.created_at, '%d %B %Y в %H:%M'), :class => 'message_sender_timestamp' %>   	
+	  </div>
 	</div>
 
   <% if show_message %>
@@ -36,10 +39,6 @@ message = conversation.messages.last
     <div class='delete'>
       <%= link_to_remote image_tag('delete.gif', :size => '9x11', :alt => '[x]'), { :url => user_url(current_site, conversation_path(conversation)).downcase, :method => :delete }, :confirm => 'Действительно удалить всю переписку?' %>
     </div>
-
-  	<div class='timestamp'>
-  	  <%= content_tag :p, message.created_at.distance_between_in_words(Time.now, ' назад'), :title => Russian::strftime(message.created_at, '%d %B %Y в %H:%M') %>
-  	</div>
 
     <div class='clear'><div></div></div>  
   </div>

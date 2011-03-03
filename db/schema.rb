@@ -86,6 +86,7 @@ ActiveRecord::Schema.define(:version => 20110223155201) do
     t.integer  "messages_count",       :default => 0,     :null => false
     t.boolean  "send_notifications",   :default => true,  :null => false
     t.boolean  "is_replied",           :default => false, :null => false
+    t.boolean  "is_viewed",            :default => false, :null => false
     t.integer  "last_message_id"
     t.integer  "last_message_user_id"
     t.datetime "last_message_at"

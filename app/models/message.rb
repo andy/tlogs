@@ -34,7 +34,7 @@ class Message < ActiveRecord::Base
 
 	  has conversation(:user_id), :as => :conversation_user_id
 	  has conversation(:recipient_id), :as => :conversation_recipient_id
-    has user_id, recipient_id, created_at, updated_at
+    has user_id, recipient_id, created_at, updated_at, is_replied, is_viewed
 
 	  group_by "conversation_user_id"	  
 	  group_by "conversation_recipient_id"

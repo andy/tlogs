@@ -1,5 +1,7 @@
 class ConversationsController < ApplicationController
   before_filter :require_current_site, :require_confirmed_current_site, :require_confirmed_current_user
+
+  before_filter :current_user_eq_current_site
   
   before_filter :preload_conversation, :only => [:show, :subscribe, :unsubscribe, :destroy]
 
@@ -30,6 +32,9 @@ class ConversationsController < ApplicationController
   end
 
   def show
+    # mark as viewed automatically
+    @conversation.toggle!(:is_viewed) unless @conversation.is_viewed?
+    
     @messages = @conversation.messages.paginate(:page => params[:page], :per_page => 15, :include => :user, :order => 'created_at DESC')
   end
   

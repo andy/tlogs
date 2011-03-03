@@ -2,20 +2,21 @@
   <%= content_tag :a, nil, :name => dom_id(message) %>
 
 	<div class='rel'>
-	  <div class='message_sender'><%= link_to_tlog message.user %></div>
+	  <div class='message_sender'>
+	    <div class='message_sender_link'><%= link_to_tlog(message.user) %></div>
+      <%= content_tag :div, message.created_at.distance_between_in_words(Time.now, ' назад'), :title => Russian::strftime(message.created_at, '%d %B %Y в %H:%M'), :class => 'message_sender_timestamp' %>
+	  </div>
 	</div>
-
-  <%= content_tag :div, simple_format(auto_link(h(message.body))), :class => 'body' %>
   
   <div class='message_controls showonhover'>
     <div class='delete'>
       <%= link_to_remote image_tag('delete.gif', :size => '9x11', :alt => '[x]'), { :url => user_url(current_site, message_path(message)).downcase, :method => :delete }, :title => 'Удалить сообщение' %>
     </div>
 
-    <%= content_tag :div, message.created_at.distance_between_in_words(Time.now, ' назад'), :title => Russian::strftime(message.created_at, '%d %B %Y в %H:%M'), :class => 'timestamp' %>
-
     <div class='clear'><div></div></div>
   </div>
+
+  <%= content_tag :div, simple_format(auto_link(h(message.body))), :class => 'body' %>
   
   <div class='clear'><div></div></div>  
 <% end %>

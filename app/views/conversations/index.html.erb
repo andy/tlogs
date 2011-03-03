@@ -1,18 +1,24 @@
 <% content_tag :div, :class => 'conversations' do %>
   <div class='header'>
+    <% if params[:action] != 'index' %>
+      <div class='rel'>
+        <div class='return'><%= link_to '&larr; все переписки', user_url(current_site, conversations_path) %></div>
+      </div>
+    <% end %>
+
     <h3><%= @title %></h3>
   </div>
 
   <%= paginate @conversations if @conversations.current_page > 1 %>
   
-	<%= render :partial => 'conversation', :collection => @conversations %>
+	<%= render :partial => 'conversation', :collection => @conversations, :spacer_template => 'conversation_spacer' %>
 
   <%= paginate @conversations %>
 <% end %>
 
 <script type='text/javascript'>
   jQuery(".conversation").hover(
-      function() { jQuery(this).find('.showonhover').show().fadeIn(100); },
-      function() { jQuery(this).find('.showonhover').fadeOut(100).hide(); }
+      function() { jQuery(this).find('.showonhover').show(); },
+      function() { jQuery(this).find('.showonhover').hide(); }
     );
 </script>

@@ -1,8 +1,18 @@
 class MessagesController < ApplicationController
   before_filter :require_current_site, :require_confirmed_current_site, :require_confirmed_current_user
+  
+  # can be viewed only by owner
+  before_filter :current_user_eq_current_site
 
   before_filter :preload_message, :only => [:destroy]
 
+  protect_from_forgery
+
+
+  # this is an legacy redirect url
+  def index
+    redirect_to user_url(current_site, conversations_path)
+  end
   
   def create
     @disable_ajax_refresh = params[:disable_ajax_refresh] || false
