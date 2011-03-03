@@ -8,7 +8,7 @@
 	<% "<div class='onair'>" unless current_site %>
 	  <%= "<span class='highlight'>Похоже, что здесь совершенно пусто</span>" if @tags.length.zero? %>
 		<% @tags.each do |tag, weight, count| %>
-			<%= link_to tag, tag_view_url(:tags => tag), { :style => "font-size: #{weight}px;", :title => "#{count.pluralize('запись', 'записи', 'записей', true)} с этим тегом" } %>
+			<%= link_to tag, user_url(current_site, tag_view_path(:tags => tag)), { :style => "font-size: #{weight}px;", :title => "#{count.pluralize('запись', 'записи', 'записей', true)} с этим тегом" } %>
 		<% end %>	
 	<% "</div>" unless current_site %>
 </div>

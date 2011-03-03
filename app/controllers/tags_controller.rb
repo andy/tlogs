@@ -1,6 +1,9 @@
 class TagsController < ApplicationController
+  before_filter :require_current_site, :require_confirmed_current_user, :require_confirmed_current_site
+
   helper :main
   layout 'main'
+
 
   def index
     options = { :max_rows => 100 }
