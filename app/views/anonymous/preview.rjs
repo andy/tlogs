@@ -1,0 +1,10 @@
+page.call :clear_all_errors
+# если есть ошибки...
+if @comment.errors.size > 0
+  @comment.errors.each do |element, message|
+    page.call :error_message_on, "comment_#{element}", message
+  end
+else
+  # иначе рендерим темлплейт
+  page.replace_html 'comment_preview', :partial => 'preview'
+end

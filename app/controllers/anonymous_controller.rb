@@ -1,8 +1,17 @@
 class AnonymousController < ApplicationController
+  before_filter :require_current_user, :only => [:subscribe, :unsubscribe, :comment, :comment_destroy]
+  before_filter :require_confirmed_current_user, :only => [:subscribe, :unsubscribe, :comment_destroy, :comment]
+  
+  before_filter :preload_entry, :only => [:show, :preview, :toggle, :comment, :subscribe, :unsubscribe]
+  before_filter :require_commentable_entry, :only => [:comment, :subscribe, :unsubscribe]
+
+  before_filter :require_post_request, :only => [:preview, :comment, :toggle, :subscribe, :unsubscribe]
+
   before_filter :require_moderator, :only => [:toggle]
 
   layout 'main'
   helper :main, :comments
+
 
   # смотрим список записей
   def index
@@ -19,28 +28,22 @@ class AnonymousController < ApplicationController
     @comment_views = User::entries_with_views_for(@entries.map(&:id), current_user)
   end
   
+
+  # скрывает или показывает запись
   def toggle
-    @entry = Entry.find_by_id_and_type params[:id], 'AnonymousEntry'
     @entry.toggle!(:is_disabled)
+
     Rails.cache.delete('entry_count_anonymous')
-    
-    render :update do |page|
-      page.visual_effect :highlight, dom_id(@entry, :toggle)
-    end
   end
+  
   
   # смотрим запись
   def show
-    @entry = Entry.find_by_id_and_type params[:id], 'AnonymousEntry'
-    
-    redirect_to :action => 'index' and return unless @entry    
-    redirect_to :action => 'index' and return if @entry.is_disabled?
-
-    @comment = Comment.new_from_cookie(cookies['comment_identity']) if !current_user && !cookies['comment_identity'].blank?
-    @comment ||= Comment.new
+    @comment = Comment.new
     
     @last_comment_viewed = current_user ? CommentViews.view(@entry, current_user) : 0    
   end
+  
   
   # удаляем комментарий
   def comment_destroy
@@ -63,24 +66,16 @@ class AnonymousController < ApplicationController
         end }
       end
     end
-  end  
+  end
+  
   
   # добавляем комментарий
   def comment
-    render :nothing => true and return unless request.post?
-    
-    @entry = Entry.find_by_id_and_type params[:id], 'AnonymousEntry'
-    render(:text => 'oops, entry not found') and return unless @entry
-    render(:text => 'oops, entry deleted') and return if @entry.is_disabled?
-    render(:text => 'comments disabled for this entry, sorry') and return unless @entry.comments_enabled?
-    render(:text => 'sorry, anonymous users are not allowed to comment') and return unless current_user
-    render(:text => 'sorry, you need to confirm your email address first') and return unless current_user.is_confirmed?
-
-    user = current_user if current_user
-    @comment = Comment.new(params[:comment])
-    @comment.user = user
-    @comment.request = request
+    @comment          = Comment.new(params[:comment])
+    @comment.user     = current_user
+    @comment.request  = request
     @comment.entry_id = @entry.id
+
     @comment.valid?
     
     if @comment.errors.empty?
@@ -115,36 +110,68 @@ class AnonymousController < ApplicationController
 
     respond_to do |wants|
       wants.html { redirect_to service_url(anonymous_path(:action => :show, :id => @entry.id)) }
-      wants.js # create.rjs
+      wants.js # comment.rjs
     end
   end
   
+  
   # предпросматриваем комментарий
   def preview
-    render :nothing => true and return unless request.post?
-    render :text => 'sorry, anonymous users are not allowed' and return unless current_user
+    @comment            = Comment.new(params[:comment])
+    @comment.user       = current_user
+    @comment.remote_ip  = request.remote_ip
 
-    @entry = Entry.find_by_id_and_type params[:id], 'AnonymousEntry'
-
-    render(:text => 'oops, entry not found') and return unless @entry
-    render(:text => 'oops, entry deleted') and return if @entry.is_disabled?
-    
-    @comment = Comment.new(params[:comment])
-    @comment.user = current_user if current_user
-    @comment.remote_ip = request.remote_ip
     @comment.valid?
-
-    render :update do |page|
-      page.call :clear_all_errors
-      # если есть ошибки...
-      if @comment.errors.size > 0
-        @comment.errors.each do |element, message|
-          page.call :error_message_on, "comment_#{element}", message
-        end
-      else
-        # иначе рендерим темлплейт
-        page.replace_html 'comment_preview', :partial => 'preview'
-      end
-    end
   end
+
+  
+  # subscribe to entry comments
+  def subscribe
+    @entry.subscribers << current_user
+
+  rescue ActiveRecord::StatementInvalid
+    # ignore ... and just render nothing (this happens when user clicks too fast before getting previous update)
+    render :nothing => true
+  end
+
+
+  # unsubscribe from entry comments
+  def unsubscribe
+    @entry.subscribers.delete(current_user)
+  end
+  
+  protected
+    def preload_entry
+      @entry = Entry.find_by_id_and_type params[:id], 'AnonymousEntry'
+
+      # если запись не была найдена
+      unless @entry
+        request.get? ? redirect_to(:action => 'index') : render(:text => 'oops, entry not found', :status => 404)
+
+        return false
+      end
+
+      # если анонимка была удалена
+      if @entry.is_disabled?
+
+        if request.get?
+          flash[:bad] = 'Запрошиваемая вами анонимка была удалена'
+          redirect_to :action => 'index'          
+        else
+          render :text => 'Запрашиваемая вами анонимка была удалена', :status => 404
+        end
+        
+        return false
+      end
+      
+      # все окей ...
+    end
+    
+    def require_post_request
+      render :nothing => true and return false unless request.post?
+    end
+    
+    def require_commentable_entry
+      render(:text => 'comments disabled for this entry, sorry') and return false unless @entry.comments_enabled?
+    end
 end
