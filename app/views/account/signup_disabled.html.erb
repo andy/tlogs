@@ -4,3 +4,12 @@
   <p>На данный момент, свободная регистрация открыта только для жителей <b>Перми</b> и <b>Твери</b><%= " (ваш город #{@ipinfo[:city]})" if @ipinfo && @ipinfo[:city] %>.</p>
   <p>Общая регистрация открывается каждую субботу и воскресенье поздним <i>московским</i> вечером.</p>
 </div>
+
+<div style='display: none'>
+  remote ip: <%= request.remote_ip %> <br/>
+  <% if @ipinfo %>
+  country: <%= @ipinfo[:country] %>
+  city: <%= @ipinfo[:city] %>
+  region: <%= @ipinfo[:region] %>
+  <% end %>
+</div>
