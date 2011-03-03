@@ -20,8 +20,7 @@
 <script type='text/javascript'>
   var inf_entry_id = <%= @entries.last.id.to_json %>;
   var inf_page = 1;
-
-  jQuery('.onair').infinitescroll({
+  var inf_opts = {
     navSelector: 'div.entry_pg',
     nextSelector: 'div.entry_pg a.infinitenext',
     itemSelector: 'div.post_body',
@@ -30,16 +29,42 @@
     loadingImg: 'http://assets0.mmm-tasty.ru/images/blank.gif',
     loadingText: '<em>Загружаем ...</em>',
     donetext: '<em>На этом все, спасибо.</em>'    
-  }, function(items) {
+  }
+  
+  function inf_loaded_handler(items) {
     inf_page += 1;
 
     // report to analytics
     ga_event('Infinite Scroll', 'Live', current_user ? _user.url : 'anonymous', inf_page);
     
-    // reinitialize fancybox
-    items.each(function(obj, i) { inf_entry_id = jQuery(obj).attr('id').split('_').last(); if(current_user) { enable_services_for_current_user(); } jQuery(obj).find('a.fancybox').fancybox({ centerOnScroll: true, hideOnContentClick: true }); });
-  });
+    // fix fancybox changing document height issue
+    // jQuery('#fancybox-overlay').
+    //   clone().
+    //   append('#fancybox-overlay').
+    //   prev().
+    //   remove();
 
+    // reinitialize fancybox & update last entry id
+    items.each(function(obj, i) {
+      var jqo = jQuery(obj);
+
+      inf_entry_id = jqo.attr('id').split('_').last();
+
+      if (current_user) { enable_services_for_current_user(); };
+
+      jqo.
+        find('a.fancybox').
+        removeClass('fancybox').
+        fancybox({
+            centerOnScroll: true,
+            hideOnContentClick: true,
+            showNavArrows: false,
+            enableKeyboardNav: false
+          });
+    });
+  }
+
+  jQuery('.onair').infinitescroll(inf_opts, inf_loaded_handler);
 </script>
 
 <% if current_user

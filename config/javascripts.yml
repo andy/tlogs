@@ -13,6 +13,7 @@ application:
 - jquery.hotkeys
 - jquery.autoresize.min
 - jquery.infinitescroll.min
+# - jquery.easing-1.3.pack
 - jquery.fancybox-1.3.4.pack
 # flash: swfobject & swfupload
 - swfobject.min
