@@ -100,7 +100,7 @@ class User
 
     result
   end
-
+  
   # ID последних записей ПЛЮС количество комментариев с количеством просмотров для пользователя user
   def recent_entries_with_views_for(user=nil, options = {})
     entry_ids = recent_entries(options.merge(:only_ids => true))
@@ -129,15 +129,6 @@ class User
     # else
     #   entries.find_by_sql("SELECT id,comments_count FROM entries e #{conditions_sql} ORDER BY e.id DESC LIMIT #{(page > 0 ? (page - 1) : 0)  * Entry::PAGE_SIZE}, #{Entry::PAGE_SIZE}")
     # end
-  end
-  
-  def recent_entries_with_ratings(options = {})
-    page            = (options[:page] || 1).to_i
-    include_private = options[:include_private] || false
-
-    conditions_sql = " WHERE e.user_id = #{self.id}"
-    conditions_sql += " AND e.is_private = 0" unless include_private
-    entries.find_by_sql("SELECT e.id,r.value FROM entries AS e LEFT JOIN entry_ratings AS r ON r.entry_id = e.id AND r.user_id = #{self.id} #{conditions_sql} ORDER BY e.id DESC LIMIT #{(page > 0 ? (page - 1) : 0)  * Entry::PAGE_SIZE}, #{Entry::PAGE_SIZE}")
   end
   
   ## private methods  

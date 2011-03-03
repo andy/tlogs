@@ -10,6 +10,18 @@
   <% cache "#{current_site.url}/page:#{@page}/spec:#{is_owner? && current_site.tlog_settings.past_disabled?}/updated_at:#{current_site.entries_updated_at.to_i}/date:#{Date.today.to_s(:db)}", :expires_in => 1.day do %>
   	<%= render :partial => 'lenta' %>
   <% end %>
+  
+  <%
+    @comment_views = User::entries_with_views_for(@entries.map(&:id), current_user)
+    @entry_ratings = EntryRating.find_all_by_entry_id(@entries.map(&:id), :select => 'entry_id AS id, value')
+  %>
+  <script type='text/javascript'>
+  // <[!CDATA[
+  	<%= "var comments_views_update = #{@comment_views.to_json(:only => [:id, :comments_count], :methods => [:last_comment_viewed])};" if @comment_views %>
+  	<%= "var entry_ratings_update = #{@entry_ratings.to_json};" if @entry_ratings %>
+  //	]]>
+  </script>
+
 <% else %>
   <%= render :partial => 'lenta' %>
 <% end %>

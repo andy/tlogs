@@ -21,15 +21,6 @@
   		<%= paginate @entries, :reverse => reverse %>
   	<% end %>
   <% end %>
-  
-  <% @comment_views = User::entries_with_views_for(@entries.map(&:id), current_user) %>
-  <script type='text/javascript'>
-  // <[!CDATA[
-  	<%= "var comments_views_update = #{@comment_views.to_json(:only => [:id, :comments_count], :methods => [:last_comment_viewed])}" if @comment_views %>
-  	<%= "var entry_ratings_update = #{@entry_ratings.to_json}" if @entry_ratings %>
-  //	]]>
-  </script>
-  
 	
 <% else %>
 	<% if params[:action] == 'day' %>

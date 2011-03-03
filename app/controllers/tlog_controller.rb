@@ -11,7 +11,7 @@ class TlogController < ApplicationController
 
   def index    
     # обновляем статистику для текущего пользователя
-    if current_user && current_site.entries_count > 0 && !is_owner?
+    if current_user && current_site.entries_count > 0 && !is_owner? && current_user.subscribed_to?(current_site)
       rel = current_user.reads(current_site)
       # обновляем количество просмотренных записей, если оно изменилось
       if current_site.entries_count_for(current_user) != rel.last_viewed_entries_count
@@ -33,8 +33,6 @@ class TlogController < ApplicationController
         if @page == 1 || is_owner? || !current_site.tlog_settings.past_disabled?
           @entries = current_site.recent_entries(options) # uses paginator, so entries are not really loaded
           @entries_array = @entries.to_a if @page > 1
-          # @comment_views = current_site.recent_entries_with_views_for(current_user, options)
-          @entry_ratings = current_site.recent_entries_with_ratings(options)
         else
           @past_disabled = true
           @entries = []
