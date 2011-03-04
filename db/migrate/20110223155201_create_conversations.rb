@@ -20,6 +20,9 @@ class CreateConversations < ActiveRecord::Migration
     add_index :conversations, [:user_id, :recipient_id], :uniq => true
     add_index :conversations, [:user_id, :last_message_at]
     
+    add_index :conversations, [:user_id, :is_replied]
+    add_index :conversations, [:user_id, :is_viewed]
+    
     # counter cache for users
     add_column :users, :conversations_count, :integer, :null => false, :default => 0
     remove_column :users, :messages_count

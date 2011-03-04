@@ -21,22 +21,29 @@
 
 	<%= render :partial => 'messages/message', :collection => @messages.reverse, :spacer_template => 'messages/message_spacer' %>
 
+  <%= render :partial => 'messages/message_spacer' %>
+
   <%= render :partial => 'messages/form', :locals => { :conversation => @conversation } if @messages.current_page == 1 %>
 
   <%= paginate @messages if @messages.current_page > 1 %>
 <% end %>
 
 <script type='text/javascript'>
-  jQuery(".message", jQuery('div.messages')[0]).live({
-    mouseenter: function() {
-      jQuery(this).find('.showonhover').show();
-      
-      return false;
-    },    
-    mouseleave: function() {
-      jQuery(this).find('.showonhover').hide();
-      
-      return false;
-    }
+  jQuery(document).ready(function() {
+    // enable hover stuff
+    jQuery(".message", jQuery('div.messages')[0]).live({
+      mouseenter: function() {
+        jQuery(this).find('.showonhover').show();
+
+        return false;
+      },    
+      mouseleave: function() {
+        jQuery(this).find('.showonhover').hide();
+
+        return false;
+      }
+    });
+    
+    jQuery('abbr.timeago').timeago();
   });
 </script>

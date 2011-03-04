@@ -5,16 +5,22 @@ page << "jQuery('#message_recipient_url').removeClass('input_error');"
 if @message.valid?
   # reload or update the page, whatever is more apropriate
   if @disable_ajax_refresh
+    # empty post textarea
     page << "jQuery('#message_body').val('');"
 
     # usually, this is required when reloading the page is pointless (e.g. form is submitted from the same url)
     if @last_message_id
       messages = @message.conversation.messages.find(:all, :conditions => ['messages.id > ?', @last_message_id])
-      page.insert_html :before, 'new_message_placeholder', :partial => 'message', :collection => messages
+      page.insert_html :before, 'new_message_placeholder', :partial => 'message', :collection => messages, :spacer_template => 'message_spacer'
+      page.insert_html :before, 'new_message_placeholder', :partial => 'message_spacer'
 
+      page << messages.map { |msg| "jQuery('##{dom_id(msg)}').find('abbr.timeago').timeago();" }
       page << "jQuery('#last_message_id').val('#{messages.map(&:id).max}');"
     else
+      page.insert_html :before, 'new_message_placeholder', :partial => 'message_spacer'
       page.insert_html :before, 'new_message_placeholder', :partial => 'message', :locals => { :message => @message }
+      
+      page << "jQuery('##{dom_id(msg)}').find('abbr.timeago').timeago();"
     end
   else
     page.redirect_to user_url(current_site, conversation_path(@message.conversation) + '#' + dom_id(@message))

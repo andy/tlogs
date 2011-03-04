@@ -6,8 +6,12 @@ class Conversation < ActiveRecord::Base
   belongs_to :last_message, :class_name => 'Message'
   
   named_scope :unreplied, :conditions => 'is_replied = 0'
+  
+  named_scope :unviewed, :conditions => 'is_viewed = 0'
+
 
   before_create { |record| record.send_notifications = record.user.tlog_settings.email_messages }
+
 
   # shadow conversation — opposite conversation by other party
   def shadow

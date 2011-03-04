@@ -14,6 +14,8 @@ application:
 - jquery.autoresize.min
 - jquery.infinitescroll.min
 - jquery.fancybox-1.3.4.pack
+- jquery.timeago
+- jquery.timeago.ru
 # flash: swfobject & swfupload
 - swfobject.min
 - swfupload.min

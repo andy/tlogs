@@ -16,9 +16,20 @@
   <%= paginate @conversations %>
 <% end %>
 
-<script type='text/javascript'>
-  jQuery(".conversation").hover(
-      function() { jQuery(this).find('.showonhover').show(); },
-      function() { jQuery(this).find('.showonhover').hide(); }
-    );
+<script type='text/javascript'>    
+  
+  jQuery(document).ready(function() {
+    // click on conversation body will follow specified link
+    jQuery('.convos .conversation .body[link]').click(function(evt) {
+      window.location.href = jQuery(this).attr('link');
+    });
+
+    // hover on conversations to show delete 
+    jQuery(".conversation").hover(
+        function() { jQuery(this).find('.showonhover').show(); },
+        function() { jQuery(this).find('.showonhover').hide(); }
+      );
+    
+    jQuery('abbr.timeago').timeago();
+  });
 </script>

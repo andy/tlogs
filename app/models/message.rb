@@ -34,7 +34,9 @@ class Message < ActiveRecord::Base
 
 	  has conversation(:user_id), :as => :conversation_user_id
 	  has conversation(:recipient_id), :as => :conversation_recipient_id
-    has user_id, recipient_id, created_at, updated_at, is_replied, is_viewed
+	  has conversation(:is_replied), :as => :conversation_is_replied
+	  has conversation(:is_viewed), :as => :conversation_is_viewed
+    has user_id, recipient_id, created_at, updated_at
 
 	  group_by "conversation_user_id"	  
 	  group_by "conversation_recipient_id"
@@ -97,6 +99,7 @@ class Message < ActiveRecord::Base
       # post that on shadow conversation only if that's a different userid
       if self.recipient_id != self.user_id
         shade = Conversation.find_or_create_by_user_id_and_recipient_id(self.recipient_id, self.user_id)
+        shade.toggle!(:is_viewed) if shade.is_viewed?
         shade.messages << self.clone
       end
 

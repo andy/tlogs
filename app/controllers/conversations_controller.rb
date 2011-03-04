@@ -3,7 +3,7 @@ class ConversationsController < ApplicationController
 
   before_filter :current_user_eq_current_site
   
-  before_filter :preload_conversation, :only => [:show, :subscribe, :unsubscribe, :destroy]
+  before_filter :preload_conversation, :only => [:show, :subscribe, :unsubscribe, :mav, :destroy]
 
   protect_from_forgery
 
@@ -44,6 +44,10 @@ class ConversationsController < ApplicationController
   
   def unsubscribe
     @conversation.update_attribute(:send_notifications, false)
+  end
+  
+  def mav
+    @conversation.toggle!(:is_viewed) unless @conversation.is_viewed?
   end
   
   def verify_recipient

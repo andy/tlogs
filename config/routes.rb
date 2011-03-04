@@ -33,7 +33,7 @@ tlog_settings = lambda { |tlog|
 
   # conversations
   tlog.resources :messages, :controller => 'messages'
-  tlog.resources :conversations, :as => 'convos', :controller => 'conversations', :collection => { :unreplied => :get, :search => :get, :verify_recipient => :post }, :member => { :subscribe => :post, :unsubscribe => :post }
+  tlog.resources :conversations, :as => 'convos', :controller => 'conversations', :collection => { :unreplied => :get, :search => :get, :verify_recipient => :post }, :member => { :subscribe => :post, :unsubscribe => :post, :mav => :post }
   tlog.named_new_conversation 'convos/new/:url', :controller => 'conversations', :action => 'new', :requirements => { :url => /[a-z0-9]([a-z0-9\-]{1,20})?/i }
 
   tlog.resources :faves, :controller => 'faves'

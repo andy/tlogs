@@ -4,7 +4,7 @@
 	<div class='rel'>
 	  <div class='message_sender'>
 	    <div class='message_sender_link'><%= link_to_tlog(message.user) %></div>
-      <%= content_tag :div, message.created_at.distance_between_in_words(Time.now, ' назад'), :title => Russian::strftime(message.created_at, '%d %B %Y в %H:%M'), :class => 'message_sender_timestamp' %>
+	    <%= timeago message.created_at %>
 	  </div>
 	</div>
   
