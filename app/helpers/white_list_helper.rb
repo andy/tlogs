@@ -47,6 +47,7 @@ module WhiteListHelper
     require 'hpricot'
 
     valid_flash_params = %w(movie allowfullscreen allowscriptaccess wmode flashvars)
+    valid_iframe_params = %w(title width height src frameborder allowfullscreen alt)
     
     html.gsub!('&amp;', '&')
     html.gsub!('amp;', '')
@@ -57,7 +58,7 @@ module WhiteListHelper
     doc = Hpricot(simple_tasty_format(html), :fixup_tags => true)
 
     # Делаем сканирование элементов
-    allowed_tags = %w(a b i s br img p strong em ul ol li h1 h2 h3 h4 h5 h6 div object param)
+    allowed_tags = %w(a b i s br img p strong em ul ol li h1 h2 h3 h4 h5 h6 div object iframe param)
     allowed_attributes = %w(class id href alt src width height title border tag name value)
     
     doc = Hpricot(sanitize(doc.to_html, :tags => allowed_tags, :attributes => allowed_attributes), :fixup_tags => true)
@@ -78,6 +79,30 @@ module WhiteListHelper
         text.swap(new_text) unless new_text.blank?        
       end
     end
+    
+    (doc/"//iframe").each do |iframe|
+      valid_iframe_attrs = %w(width height src title border frameborder)
+
+      attrs = {}
+      valid_iframe_attrs.each { |k| attrs[k] = iframe.attributes[k] unless iframe.attributes[k].blank? }
+
+      # check wether this is allowed
+      if attrs['src'] && allowed_flash_domain?(attrs['src'])
+        width  = attrs['width'].to_i || flash_width
+        height = attrs['height'].to_i || flash_width
+
+        if width > flash_width
+          attrs['height'] = ((flash_width / width.to_f) * height.to_f).to_i
+          attrs['width']  = flash_width
+        end
+        
+        iframe.swap content_tag(:iframe, nil, attrs)
+      else
+        iframe.swap("<p>Извините, но вставлять такой код запрещено.</p>")
+      end
+
+    end
+    
     
     (doc/"//object").each do |flash|
       
