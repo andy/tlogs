@@ -3,7 +3,10 @@ class FavesController < ApplicationController
   before_filter :require_confirmed_current_site, :except => [:create, :destroy]
   before_filter :require_current_user, :only => [:create, :destroy]
 
+  protect_from_forgery
+
   layout 'tlog'
+
   
   def index
     @page = params[:page].to_i.reverse_page(current_site.faves.size.to_pages)

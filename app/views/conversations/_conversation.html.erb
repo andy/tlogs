@@ -20,7 +20,7 @@ message = conversation.messages.last
     </div></div>
   <% end %>
   
-  <% if not conversation.is_viewed? %>
+  <% if !conversation.is_viewed? && !conversation.is_replied? %>
     <div class='rel'><div class='unviewed'>
   	  <%= link_to_remote image_tag('unread-conversation.png', :size => '8x8', :alt => '[n]'), { :url => user_url(current_site, mav_conversation_path(conversation)).downcase }, :title => 'Отметить как прочитанное' %>
   	</div></div>

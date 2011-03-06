@@ -1,6 +1,6 @@
 <% content_tag :div, :class => 'conversations' do %>
   <div class='header'>
-    <% if params[:action] != 'index' %>
+    <% if params[:action] != 'index' || @conversations.current_page > 1 %>
       <div class='rel'>
         <div class='return'><%= link_to '&larr; все переписки', user_url(current_site, conversations_path) %></div>
       </div>
