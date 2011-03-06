@@ -159,7 +159,7 @@ class TlogController < ApplicationController
       @past_disabled = true
       @entries = []
     else
-      @entries = current_site.recent_entries(:time => @time)
+      @entries = current_site.recent_entries(:time => @time, :per_page => 50)
     end
     render :action => 'day'
   end
