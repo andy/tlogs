@@ -70,12 +70,20 @@ module WhiteListHelper
       next if paragraph.children.blank?
 
       paragraph.children.select { |e| e.text? }.each do |text|
-        new_text = auto_link(text.to_html).
+        new_text = auto_link(text.to_html)
+
         # [andy] -> ссылка на пользователя
-        gsub(/(\[([a-z0-9_-]{2,20})\])/) do
+        new_text.gsub!(/(\[([a-z0-9_-]{2,20})\])/) do
           user = User.find_by_url($2)
           user ? "<a href='#{user_url(user)}' class='entry_tlog_link'>#{user.url}</a>" : $1
         end
+
+        # @andy -> ссылка на пользователя
+        new_text.gsub!(/(\@([a-z0-9_-]{2,20}))/) do
+          user = User.find_by_url($2)
+          user ? "<a href='#{user_url(user)}' class='entry_tlog_link'>@#{user.url}</a>" : $1
+        end
+
         text.swap(new_text) unless new_text.blank?        
       end
     end
@@ -100,7 +108,6 @@ module WhiteListHelper
       else
         iframe.swap("<p>Извините, но вставлять такой код запрещено.</p>")
       end
-
     end
     
     
