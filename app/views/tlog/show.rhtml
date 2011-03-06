@@ -17,6 +17,13 @@
 <% cache "#{current_site.url}/show:#{@entry.id}/date:#{Date.today.to_s(:db)}/owner:#{is_owner?}/updated_at:#{@entry.updated_at.to_i}", :expires_in => 1.day do %>
   <%= render :partial => 'entries/entry_display', :locals => { :entry => @entry, :show_datetime => true, :show_tags => is_owner? } %>
 <% end %>
+
+<% if @entry.rating %>
+  <script type='text/javascript'>
+    var entry_ratings_update = <%= [{:id => @entry.id, :value => @entry.rating.value }].to_json %>;
+  </script>
+<% end %>
+
 <a name="comments"></a>
 <% if @entry.comments_enabled? || @entry.comments_count > 0 %>
 	<div class="post_comments">
@@ -53,5 +60,5 @@
 </div>
 
 <% content_for :sidebar do %>
-	<%= render :partial => 'tlog/sidebar' %>
+	<%#= render :partial => 'tlog/sidebar' %>
 <% end %>

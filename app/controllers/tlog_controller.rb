@@ -63,7 +63,7 @@ class TlogController < ApplicationController
     # hide all non-public entries in the tlog    
     render :action => 'hidden' and return if !current_site.can_be_viewed_by?(current_user) && !@entry.is_mainpageable?
     
-    if current_user && !is_owner?
+    if current_user && !is_owner? && current_user.subscribed_to?(current_site)
       rel = current_user.reads(current_site)
 
       if current_site.entries_count_for(current_user) != rel.last_viewed_entries_count
