@@ -8,6 +8,8 @@ class Conversation < ActiveRecord::Base
   named_scope :unreplied, :conditions => 'is_replied = 0'
   
   named_scope :unviewed, :conditions => 'is_viewed = 0'
+  
+  named_scope :with, lambda { |user| { :conditions => ['recipient_id = ?', user.id] } }
 
 
   before_create { |record| record.send_notifications = record.user.tlog_settings.email_messages }

@@ -58,7 +58,8 @@ class Message < ActiveRecord::Base
     
     convo.update_attributes!(:last_message_id => nil) if convo.last_message_id == message.id
     
-    convo.destroy if convo.messages_count.zero?
+    # <= 1 because counters are decremented after after_destroy
+    convo.destroy if convo.messages_count <= 1
 
     true
   end
@@ -75,6 +76,9 @@ class Message < ActiveRecord::Base
     else
       # if that is your reply — just update the is_replied flag to true
       convo.is_replied = true
+      
+      # mark as viewed if you just have replied
+      convo.is_viewed = false
       
       # update timestamp only on first message, other replies should keep things AS IS
       convo.last_message_at = self.created_at if convo.last_message_at.nil?

@@ -22,6 +22,14 @@ class ConversationsController < ApplicationController
     render :action => 'index'
   end
   
+  def unviewed
+    @title = 'Непросмотренные'
+    @conversations = current_site.conversations.unviewed.paginate(:page => params[:page], :per_page => 15, :include => :last_message)
+    
+    render :action => 'index'
+  end
+  
+  
   def new
     # @recipient = User.find_by_url(params[:url]) if params[:url]
     @message = Message.new :recipient_url => params[:url]
