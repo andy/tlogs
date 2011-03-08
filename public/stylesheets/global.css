@@ -149,7 +149,7 @@ div.post_name a {
 	font-size:0.75em;
 }
 .sidebar_left_short {
-	left:-30px;!important
+	left:-30px!important;
 }
 .sidebar_left_short .content {
 	padding:0;
@@ -703,7 +703,7 @@ span.post_text_h1 p {
 
 div.post_link_entry a.big_link {
 	font-size:162%;		
-	font-style:bold;
+	font-weight:bold;
 	line-height:1.1em;
 	overflow:hidden;
 	/*padding-left:15px;*/
@@ -924,7 +924,7 @@ form.small .radio input {
 }
 
 form.small fieldset {
-	padding:15 25px 20px 25px;
+	padding:15px 25px 20px 25px;
 	border:1px dotted  #777;
 	margin-bottom:14px;
 	margin-top:20px;
@@ -1464,7 +1464,7 @@ h3 {
 .sidebar h3 {
 	color:#404040;
 	font-family:Arial;
-	font-weight:noraml;
+	font-weight:normal;
 	letter-spacing:0px;
 	line-height:1.3em;
 	margin:16px 0pt 0 0;
@@ -1530,7 +1530,7 @@ div#entry_helper {
 	height: 26px;
 	margin-top: 2px;
 	margin-bottom: 0px;
-	vertical-align: center;
+	vertical-align: middle;
 	padding: 2px 4px;
 }
 
@@ -1710,7 +1710,7 @@ div#howto div.rel img {
 }
 
 #tlog_menu_tasty a {
-	font-style:bold;
+	font-weight:bold;
 	font-size:1.5em;
 	border-bottom:1px solid orange;
 	margin-bottom:15px;
@@ -2105,7 +2105,7 @@ div.popular {
 } 
 div.popular a {
 	line-height:1.5em;
-	border-bottom:#ffe515solid 1px!important;
+	border-bottom:#ffe515 solid 1px!important;
 }
 div.live p, div.popular p  {
 	font-size:0.6em;
@@ -2131,7 +2131,7 @@ div.popular p a, div.live p a {
 #settings_menu ul {
 	display:block;
 	clear:both;
-	padding-botom:45px
+	padding-bottom:45px
 }
 #settings_menu ul {
 	list-style:none;
@@ -2782,7 +2782,7 @@ div.post_author:hover a.heart_red {
 }
 
 #friends_table ul li {
-	white-space:nowrpap;
+	white-space:nowrap;
 	padding:0;
 	margin:0;
 }
