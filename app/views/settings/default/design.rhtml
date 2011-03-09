@@ -158,6 +158,13 @@
 	</div>
 
 	<h2>Ваш CSS</h2>
+	<div style='margin: 0px 0px 20px 0px; padding: 5px 20px; background-color: #eee; font-size: 12px;'>
+	  <p style='font-size: 12px;'>
+	    Пожалуйста, прежде чем задавать вопросы про <abbr title='Cascading Style Sheets'>CSS</abbr> и оформление, ознакомьтесь с <a href='http://vladchernik.ru/tastyfaq/css/'>неофициальным FAQ по оформлению тлога</a> от Влада Черника.</p>
+	  <p style='font-size: 12px;'>Спасибо.</p>
+	</div>
+  
+	
 	<%= link_to_function 'Добавьте ваш собственный CSS-код', 'Effect.toggle("design_css", "blind", { duration: 0.3 });', :class => 'design_css_toggle' %>
 	<div id='design_css'<%= " style='display: none'" if @design.user_css.blank? %>>
 		<div>
