@@ -65,8 +65,10 @@ namespace :deploy do
   desc "Update sources, but do not restart server"
   task :light do
     git.pull
-    sphinx.conf
     bundle.install
+    sphinx.conf
+    assets.glue
+    cache.flush
     cron.update
   end
   

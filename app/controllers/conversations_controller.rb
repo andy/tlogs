@@ -1,7 +1,7 @@
 class ConversationsController < ApplicationController
   before_filter :require_current_site, :require_confirmed_current_site, :require_confirmed_current_user
 
-  # before_filter :current_user_eq_current_site
+  before_filter :current_user_eq_current_site
   
   before_filter :preload_conversation, :only => [:show, :subscribe, :unsubscribe, :mav, :destroy]
 
