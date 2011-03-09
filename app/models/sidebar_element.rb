@@ -1,13 +1,19 @@
-# = Schema Information
+# == Schema Information
+# Schema version: 20110223155201
 #
-# Table name: *sidebar_elements*
+# Table name: sidebar_elements
 #
 #  id                 :integer(4)      not null, primary key
 #  sidebar_section_id :integer(4)      not null
 #  type               :string(25)
 #  content            :text            default(""), not null
 #  position           :integer(4)
-########
+#
+# Indexes
+#
+#  index_sidebar_elements_on_sidebar_section_id  (sidebar_section_id)
+#
+
 class SidebarElement < ActiveRecord::Base
   belongs_to :section, :class_name => 'SidebarSection', :foreign_key => 'sidebar_section_id'
   validates_length_of :content, :within => 1..8192

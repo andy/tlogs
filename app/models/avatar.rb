@@ -1,6 +1,7 @@
-# = Schema Information
+# == Schema Information
+# Schema version: 20110223155201
 #
-# Table name: *avatars*
+# Table name: avatars
 #
 #  id           :integer(4)      not null, primary key
 #  user_id      :integer(4)      default(0), not null
@@ -12,7 +13,13 @@
 #  thumbnail    :string(255)
 #  width        :integer(4)
 #  height       :integer(4)
-########
+#
+# Indexes
+#
+#  index_avatars_on_user_id    (user_id)
+#  index_avatars_on_parent_id  (parent_id)
+#
+
 class Avatar < ActiveRecord::Base
   ## included modules & attr_*
   ## associations

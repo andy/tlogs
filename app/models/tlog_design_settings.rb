@@ -1,6 +1,7 @@
-# = Schema Information
+# == Schema Information
+# Schema version: 20110223155201
 #
-# Table name: *tlog_design_settings*
+# Table name: tlog_design_settings
 #
 #  id                              :integer(4)      not null, primary key
 #  user_id                         :integer(4)
@@ -20,11 +21,16 @@
 #  color_date                      :string(6)
 #  color_voter_bg                  :string(6)
 #  color_voter_text                :string(6)
-#  background_fixed                :boolean(1)      not null
-#  color_tlog_bg_is_transparent    :boolean(1)      not null
-#  color_sidebar_bg_is_transparent :boolean(1)      not null
-#  color_voter_bg_is_transparent   :boolean(1)      not null
-########
+#  background_fixed                :boolean(1)      default(FALSE), not null
+#  color_tlog_bg_is_transparent    :boolean(1)      default(FALSE), not null
+#  color_sidebar_bg_is_transparent :boolean(1)      default(FALSE), not null
+#  color_voter_bg_is_transparent   :boolean(1)      default(FALSE), not null
+#
+# Indexes
+#
+#  index_tlog_design_settings_on_user_id  (user_id) UNIQUE
+#
+
 class TlogDesignSettings < ActiveRecord::Base
   belongs_to :user
   has_one :tlog_background, :dependent => :destroy

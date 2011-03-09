@@ -1,6 +1,7 @@
-# = Schema Information
+# == Schema Information
+# Schema version: 20110223155201
 #
-# Table name: *tlog_settings*
+# Table name: tlog_settings
 #
 #  id                     :integer(4)      not null, primary key
 #  user_id                :integer(4)      default(0), not null
@@ -10,18 +11,24 @@
 #  rss_link               :string(255)
 #  tasty_newsletter       :boolean(1)      default(TRUE), not null
 #  default_visibility     :string(255)     default("mainpageable"), not null
-#  comments_enabled       :boolean(1)
+#  comments_enabled       :boolean(1)      default(FALSE)
 #  css_revision           :integer(4)      default(1), not null
 #  sidebar_is_open        :boolean(1)      default(TRUE), not null
-#  is_daylog              :boolean(1)      not null
+#  is_daylog              :boolean(1)      default(FALSE), not null
 #  sidebar_hide_tags      :boolean(1)      default(TRUE), not null
-#  sidebar_hide_calendar  :boolean(1)      not null
-#  sidebar_hide_search    :boolean(1)      not null
-#  sidebar_hide_messages  :boolean(1)      not null
+#  sidebar_hide_calendar  :boolean(1)      default(FALSE), not null
+#  sidebar_hide_search    :boolean(1)      default(FALSE), not null
+#  sidebar_hide_messages  :boolean(1)      default(FALSE), not null
 #  sidebar_messages_title :string(255)
 #  email_messages         :boolean(1)      default(TRUE), not null
-#  past_disabled          :boolean(1)      not null
-########
+#  past_disabled          :boolean(1)      default(FALSE), not null
+#  privacy                :string(16)      default("open"), not null
+#
+# Indexes
+#
+#  index_tlog_settings_on_user_id  (user_id)
+#
+
 class TlogSettings < ActiveRecord::Base
   DEFAULT_PRIVACY_FOR_SELECT = [
       ['все могут видеть', 'open'],

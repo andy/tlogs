@@ -1,17 +1,21 @@
-# = Schema Information
+# == Schema Information
+# Schema version: 20110223155201
 #
-# Table name: *messages*
+# Table name: messages
 #
-#  id          :integer(4)      not null, primary key
-#  user_id     :integer(4)      default(0), not null
-#  sender_id   :integer(4)      default(0), not null
-#  body        :text            default(""), not null
-#  body_html   :text
-#  is_private  :boolean(1)      not null
-#  is_disabled :boolean(1)      not null
-#  created_at  :datetime        not null
-#  updated_at  :datetime
-########
+#  id              :integer(4)      not null, primary key
+#  user_id         :integer(4)      default(0), not null
+#  body            :text            default(""), not null
+#  created_at      :datetime        not null
+#  updated_at      :datetime
+#  conversation_id :integer(4)      not null
+#  recipient_id    :integer(4)      not null
+#
+# Indexes
+#
+#  index_messages_on_user_id  (user_id)
+#
+
 class Message < ActiveRecord::Base
   belongs_to :user # пользователь создавший сообщение
   belongs_to :recipient, :class_name => 'User' # пользователь получивший его
