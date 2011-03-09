@@ -50,6 +50,9 @@ class AccountController < ApplicationController
       
       if !@user.errors.on("url")
         @user.update_attribute(:url, @user.url)
+        
+        @user.remove_subscribers! if params['remove_subscribers'] && params['remove_subscribers'] == '1'
+        
         current_user.url = @user.url
         flash[:good] = 'Прекрасно! Адрес вашего тлога изменен'
       else

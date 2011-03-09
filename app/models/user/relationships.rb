@@ -99,6 +99,11 @@ class User
     relationship.last_comment_at = Time.now
     relationship.save!
   end
+  
+  # this removes all people that are subscribed to my tlog
+  def remove_subscribers!
+    Relationship.delete_all ["user_id = ?", self.id]
+  end
 
   
   ## private methods  
