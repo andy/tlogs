@@ -16,7 +16,7 @@
     <div class='clear'><div></div></div>
   </div>
 
-  <%= content_tag :div, simple_format(auto_link(h(message.body))), :class => 'body' %>
+  <%= content_tag :div, simple_tasty_format(auto_link(h(message.body))), :class => 'body' %>
   
   <div class='clear'><div></div></div>  
 <% end %>
