@@ -1,3 +1,50 @@
-page.replace_html :sidebar_messages_content, :partial => 'sidebar'
-page.visual_effect :highlight, @message.dom_id, { :duration => 0.5 }
-page[:message_body].value = ''
+# clear all errors, including auto-error
+page.call :clear_all_errors
+page << "jQuery('#message_recipient_url').removeClass('input_error');"
+
+if @message.valid?
+  # reload or update the page, whatever is more apropriate
+  if @disable_ajax_refresh
+    # empty post textarea
+    page << "jQuery('#message_body').val('');"
+
+    # usually, this is required when reloading the page is pointless (e.g. form is submitted from the same url)
+    if @last_message_id
+      messages = @message.conversation.messages.find(:all, :conditions => ['messages.id > ?', @last_message_id])
+      page.insert_html :before, 'new_message_placeholder', :partial => 'message', :collection => messages, :spacer_template => 'message_spacer'
+      page.insert_html :before, 'new_message_placeholder', :partial => 'message_spacer'
+
+      page << messages.map { |msg| "jQuery('##{dom_id(msg)}').find('abbr.timeago').timeago();" }
+      page << "jQuery('#last_message_id').val('#{messages.map(&:id).max}');"
+    else
+      page.insert_html :before, 'new_message_placeholder', :partial => 'message_spacer'
+      page.insert_html :before, 'new_message_placeholder', :partial => 'message', :locals => { :message => @message }
+      
+      page << "jQuery('##{dom_id(msg)}').find('abbr.timeago').timeago();"
+    end
+  else
+    page.redirect_to user_url(current_site, conversation_path(@message.conversation) + '#' + dom_id(@message))
+  end
+else
+  # re-enable submit button
+  page << "jQuery('.submit_button input').removeAttr('disabled');"
+  
+  page.call :emulate_rails_flash, 'bad', 'Ошибка! Похоже, что не все поля были заполнены корректно.' unless @disable_flash
+
+  # check wether recipient is ok
+  if @message.errors.on(:recipient)
+    # remove the url
+    page << "jQuery('#message_recipient').hide();"
+    page << "jQuery('#message_recipient_url').addClass('input_error');"
+
+    # update the status value
+    if @message.recipient.nil? && params[:message][:recipient_url] 
+      page << "jQuery('#subtext_message').attr('class', 'failure').html('указанный вами пользователь не найден');"
+    else
+      page << "jQuery('#subtext_message').attr('class', 'neutral').html('Укажите имя пользователя которому хотите написать сообщение');"
+    end
+  end
+
+  # check wether message body is ok
+  page.call :error_message_on, 'message_body', @message.errors.on(:body) if @message.errors.on(:body)
+end

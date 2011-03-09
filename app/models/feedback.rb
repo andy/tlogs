@@ -1,15 +1,23 @@
-# = Schema Information
+# == Schema Information
+# Schema version: 20110223155201
 #
-# Table name: *feedbacks*
+# Table name: feedbacks
 #
 #  id           :integer(4)      not null, primary key
 #  user_id      :integer(4)      not null
 #  created_at   :datetime        not null
 #  updated_at   :datetime        not null
 #  message      :text            default(""), not null
-#  is_public    :boolean(1)      not null
-#  is_moderated :boolean(1)      not null
-########
+#  is_public    :boolean(1)      default(FALSE), not null
+#  is_moderated :boolean(1)      default(FALSE), not null
+#
+# Indexes
+#
+#  index_feedbacks_on_user_id                      (user_id) UNIQUE
+#  index_feedbacks_on_is_public_and_created_at     (is_public,created_at)
+#  index_feedbacks_on_is_moderated_and_created_at  (is_moderated,created_at)
+#
+
 class Feedback < ActiveRecord::Base
   belongs_to :user
   

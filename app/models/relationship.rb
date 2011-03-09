@@ -1,6 +1,7 @@
-# = Schema Information
+# == Schema Information
+# Schema version: 20110223155201
 #
-# Table name: *relationships*
+# Table name: relationships
 #
 #  id                        :integer(4)      not null, primary key
 #  user_id                   :integer(4)      default(0), not null
@@ -15,7 +16,16 @@
 #  last_viewed_at            :datetime
 #  last_viewed_entries_count :integer(4)      default(0), not null
 #  title                     :string(128)
-########
+#
+# Indexes
+#
+#  index_relationships_on_user_id_and_reader_id               (user_id,reader_id) UNIQUE
+#  index_relationships_on_user_id_and_reader_id_and_position  (user_id,reader_id,position)
+#  index_relationships_on_reader_id_and_user_id_and_position  (reader_id,user_id,position)
+#  index_relationships_on_reader_id_and_votes_value           (reader_id,votes_value)
+#  index_relationships_on_reader_id_and_friendship_status     (reader_id,friendship_status)
+#
+
 class Relationship < ActiveRecord::Base
   # есть пользователь :user которого читает другой пользователь, :reader
   belongs_to :user

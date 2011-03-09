@@ -1,12 +1,18 @@
-# = Schema Information
+# == Schema Information
+# Schema version: 20110223155201
 #
-# Table name: *comment_views*
+# Table name: comment_views
 #
 #  id                  :integer(4)      not null, primary key
 #  entry_id            :integer(4)      default(0), not null
 #  user_id             :integer(4)      default(0), not null
 #  last_comment_viewed :integer(4)      default(0), not null
-########
+#
+# Indexes
+#
+#  index_comment_views_on_entry_id_and_user_id  (entry_id,user_id) UNIQUE
+#
+
 class CommentViews < ActiveRecord::Base
   belongs_to :entry
   belongs_to :user

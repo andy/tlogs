@@ -1,7 +1,0 @@
-<%
-  fave = Fave.find(fave_activity.id, :include => [:user, :entry])
-  user = fave.user
-  entry = fave.entry
-  author = entry.author
-%>
-<%= link_to_tlog(user) %> добавил в избранное <%= entry.to_russian(:whom) %> из тлога <%= link_to_tlog(author) %>: <%= link_to h(entry.excerpt), user_url(author, entry_path(entry)) %>

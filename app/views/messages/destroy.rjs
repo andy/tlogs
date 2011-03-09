@@ -1,3 +1,8 @@
-page.visual_effect :highlight, @message.dom_id, { :duration => 0.3 }
-page.visual_effect :fade, @message.dom_id, { :duration => 0.3 }
-page.show :message_create
+page.visual_effect :highlight, dom_id(@message), { :duration => 0.3 }
+page.visual_effect :fade, dom_id(@message), { :duration => 0.3 }
+
+# remove spacer after fade
+page.delay(0.3) do
+  page << "jQuery('##{dom_id(@message)}').next('.message_spacer').remove();"
+  page.remove dom_id(@message)
+end

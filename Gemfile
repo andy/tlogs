@@ -27,3 +27,7 @@ gem 'ts-datetime-delta', '>= 1.0.0', :require => 'thinking_sphinx/deltas/datetim
 gem 'mysql'
 
 gem 'newrelic_rpm'
+
+group :development do
+	gem 'annotate'
+end

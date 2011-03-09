@@ -1,14 +1,23 @@
-# = Schema Information
+# == Schema Information
+# Schema version: 20110223155201
 #
-# Table name: *faves*
+# Table name: faves
 #
 #  id            :integer(4)      not null, primary key
 #  user_id       :integer(4)      not null
 #  entry_id      :integer(4)      not null
-#  entry_type    :string(64)      not null
+#  entry_type    :string(0)       default("TextEntry"), not null
 #  entry_user_id :integer(4)      not null
 #  created_at    :datetime
-########
+#
+# Indexes
+#
+#  index_faves_on_user_id_and_entry_id       (user_id,entry_id) UNIQUE
+#  index_faves_on_user_id_and_entry_user_id  (user_id,entry_user_id)
+#  index_faves_on_user_id_and_entry_type     (user_id,entry_type)
+#  index_faves_on_entry_id                   (entry_id)
+#
+
 class Fave < ActiveRecord::Base
   belongs_to :user, :counter_cache => true
   belongs_to :entry

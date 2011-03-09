@@ -1,0 +1,35 @@
+<% content_tag :div, :class => 'conversations' do %>
+  <div class='header'>
+    <% if params[:action] != 'index' || @conversations.current_page > 1 %>
+      <div class='rel'>
+        <div class='return'><%= link_to '&larr; все переписки', user_url(current_site, conversations_path) %></div>
+      </div>
+    <% end %>
+
+    <h3><%= @title %></h3>
+  </div>
+
+  <%= paginate @conversations if @conversations.current_page > 1 %>
+  
+	<%= render :partial => 'conversation', :collection => @conversations, :spacer_template => 'conversation_spacer' %>
+
+  <%= paginate @conversations %>
+<% end %>
+
+<script type='text/javascript'>    
+  
+  jQuery(document).ready(function() {
+    // click on conversation body will follow specified link
+    jQuery('.convos .conversation .body[link]').click(function(evt) {
+      window.location.href = jQuery(this).attr('link');
+    });
+
+    // hover on conversations to show delete 
+    jQuery(".conversation").hover(
+        function() { jQuery(this).find('.showonhover').show(); },
+        function() { jQuery(this).find('.showonhover').hide(); }
+      );
+    
+    jQuery('abbr.timeago').timeago();
+  });
+</script>

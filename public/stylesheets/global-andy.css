@@ -33,6 +33,12 @@ div#sidebar_personal ul li span { font-size: 0.8em; }
 div#sidebar_about_content p { display: block; padding-bottom: 1em; }
 div#sidebar_about_content div#about_submenu span { font-size: 0.8em; }
 
+/* sidebar conversations */
+div#sidebar_messages ul { list-style-type: none; margin: 0; padding: 0; }
+div#sidebar_messages ul li { margin-bottom: 1em; }
+div#sidebar_messages ul li a.highlight { font-size: 1.1em; font-weight: bold; }
+div#sidebar_messages ul li span { font-size: 0.8em; }
+
 /* anonymous entries page */
 .anonymous_entry_delete_link { margin-top: 20px!important; }
 
@@ -43,27 +49,6 @@ div#sidebar_about_content div#about_submenu span { font-size: 0.8em; }
 /* quotes fix */
 div.quote_entry span.quote_entry_body p { display: inline; }
 div.quote_entry span.quote_entry_source p { display: inline; font-style: italic; font-size: 90%; }
-
-/* new messages look */
-div.message_sender {
-	left: -240px;
-	padding-bottom:5px;
-	position:absolute;
-	width:200px;
-	text-align:right;
-}
-div.message_sender a {
-	font-size:0.75em;
-	background: #404040;
-	color:white!important;
-	width:auto!important;
-	margin:0 0 0 0;
-	padding:0 5px;
-	display:inline;
-	font-family:Georgia, Times New Roman, Courier New;
-	font-weight:bold;
-	font-style:italic;
-} 
 
 /* news message notify */
 .main_page .top_menu li a sup {
@@ -149,3 +134,4 @@ form.donation input.submit_donation { margin-top: 20px; margin-left: 380px; }
 #footer a img.f_twitter { vertical-align: bottom; }
 #footer a img.f_facebook { vertical-align: bottom; }
 #footer a img.f_vkontakte { vertical-align: bottom; }
+

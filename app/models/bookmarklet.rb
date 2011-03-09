@@ -1,6 +1,7 @@
-# = Schema Information
+# == Schema Information
+# Schema version: 20110223155201
 #
-# Table name: *bookmarklets*
+# Table name: bookmarklets
 #
 #  id         :integer(4)      not null, primary key
 #  user_id    :integer(4)      not null
@@ -9,9 +10,15 @@
 #  entry_type :string(16)      default("text"), not null
 #  tags       :text
 #  visibility :string(16)      default("private"), not null
-#  autosave   :boolean(1)      not null
-#  is_public  :boolean(1)      not null
-########
+#  autosave   :boolean(1)      default(FALSE), not null
+#  is_public  :boolean(1)      default(FALSE), not null
+#
+# Indexes
+#
+#  index_bookmarklets_on_user_id_and_created_at    (user_id,created_at)
+#  index_bookmarklets_on_is_public_and_created_at  (is_public,created_at)
+#
+
 class Bookmarklet < ActiveRecord::Base
   ## included modules & attr_*
   attr_protected :user_id

@@ -1,14 +1,14 @@
 <%-
-  @sender = @message.sender
+  @sender = @message.user
 -%>
 Здравствуйте, <%= h @user.username %>!
 
-Пользователь <%= h @sender.url %> оставил вам<%= ' личное ' if @message.is_private? %> сообщение:
+Пользователь <%= h @sender.url %> отправил вам сообщение:
   <%= h @message.body %>
 
 Посмотреть на сайте:
-<%- message_link = user_url(@user, messages_path) -%>
-<%= link_to message_link, message_link %>
+<%- convo_link = user_url(@user, conversation_path(@message.conversation)) -%>
+<%= link_to convo_link, convo_link %>
 
 --
 С уважением, Ммм... тейсти.

@@ -1,0 +1,22 @@
+<% content_tag_for :div, message do %>
+  <%= content_tag :a, nil, :name => dom_id(message) %>
+
+	<div class='rel'>
+	  <div class='message_sender'>
+	    <div class='message_sender_link'><%= link_to_tlog(message.user) %></div>
+	    <%= timeago message.created_at %>
+	  </div>
+	</div>
+  
+  <div class='message_controls showonhover'>
+    <div class='delete'>
+      <%= link_to_remote image_tag('delete.gif', :size => '9x11', :alt => '[x]'), { :url => user_url(current_site, message_path(message)).downcase, :method => :delete }, :title => 'Удалить сообщение' %>
+    </div>
+
+    <div class='clear'><div></div></div>
+  </div>
+
+  <%= content_tag :div, simple_format(auto_link(h(message.body))), :class => 'body' %>
+  
+  <div class='clear'><div></div></div>  
+<% end %>

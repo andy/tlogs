@@ -82,5 +82,10 @@ END
   
   def paginate(pageable, options = {})
     render :partial => 'globals/pagination', :locals => options.merge(:pageable => pageable)
-  end  
+  end
+  
+  def timeago(time, options = {})
+    options[:class] ||= 'timeago'
+    content_tag(:abbr, Russian::strftime(time, '%d %B %Y в %H:%M'), options.merge(:title => time.getutc.iso8601))
+  end
 end

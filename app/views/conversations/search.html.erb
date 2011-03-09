@@ -1,0 +1,24 @@
+<% @title = "Поиск в сообщениях" %>
+
+<% content_tag_for :div, @messages do %>
+  <div class='header'>
+    <h3>Поиск по сообщениям: <span class='highlight'><%= h(params[:query]) %></span></h3>
+  </div>
+
+  <% if @messages.total_entries.zero? %>
+    <div class='centered'>
+      <p>К сожалению, по вашему запросу не найдено ни одного сообщения.</p>
+      
+      <div class='linkback'>
+        <%= link_to '&larr; вернуться к сообщениям', user_url(current_site, conversations_path) %>
+      </div>
+    </div>
+  <% else %>
+    <%= paginate @messages %>
+
+  	<%= render :partial => 'messages/message', :collection => @messages %>
+
+    <%= paginate @messages if @messages.current_page > 1 %>
+  <% end %>
+
+<% end %>

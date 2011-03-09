@@ -1,0 +1,1 @@
+page.toggle('subscribe_link', 'unsubscribe_link')

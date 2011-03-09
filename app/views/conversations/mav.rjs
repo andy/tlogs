@@ -1,0 +1,1 @@
+page << "jQuery('##{dom_id(@conversation)} .unviewed').parent().hide().remove();"

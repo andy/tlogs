@@ -1,6 +1,7 @@
-# = Schema Information
+# == Schema Information
+# Schema version: 20110223155201
 #
-# Table name: *attachments*
+# Table name: attachments
 #
 #  id           :integer(4)      not null, primary key
 #  entry_id     :integer(4)      default(0), not null
@@ -14,7 +15,13 @@
 #  width        :integer(4)
 #  height       :integer(4)
 #  user_id      :integer(4)      default(0), not null
-########
+#
+# Indexes
+#
+#  index_attachments_on_entry_id   (entry_id)
+#  index_attachments_on_parent_id  (parent_id)
+#
+
 class Attachment < ActiveRecord::Base
   ## included modules & attr_*
   serialize :metadata, Hash

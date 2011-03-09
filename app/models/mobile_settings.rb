@@ -1,13 +1,20 @@
-# = Schema Information
+# == Schema Information
+# Schema version: 20110223155201
 #
-# Table name: *mobile_settings*
+# Table name: mobile_settings
 #
 #  id         :integer(4)      not null, primary key
 #  user_id    :integer(4)      default(0), not null
 #  keyword    :string(255)     default(""), not null
 #  created_at :datetime
 #  updated_at :datetime
-########
+#
+# Indexes
+#
+#  index_mobile_settings_on_user_id  (user_id) UNIQUE
+#  index_mobile_settings_on_keyword  (keyword) UNIQUE
+#
+
 class MobileSettings < ActiveRecord::Base
   belongs_to :user
   

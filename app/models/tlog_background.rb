@@ -1,6 +1,7 @@
-# = Schema Information
+# == Schema Information
+# Schema version: 20110223155201
 #
-# Table name: *tlog_backgrounds*
+# Table name: tlog_backgrounds
 #
 #  id                      :integer(4)      not null, primary key
 #  tlog_design_settings_id :integer(4)
@@ -12,7 +13,13 @@
 #  width                   :integer(4)
 #  height                  :integer(4)
 #  db_file_id              :integer(4)
-########
+#
+# Indexes
+#
+#  index_tlog_backgrounds_on_tlog_design_settings_id  (tlog_design_settings_id)
+#  index_tlog_backgrounds_on_parent_id                (parent_id)
+#
+
 class TlogBackground < ActiveRecord::Base
   belongs_to :tlog_design_settings
 

@@ -1,0 +1,51 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+   "http://www.w3.org/TR/html4/strict.dtd">
+<!-- layout tlog_rounded_new -->
+<html>
+<head>
+	<%= render :partial => 'globals/head' %>
+	<% cache "#{current_site.url}/#{current_site.id}/tlog/style/#{current_site.tlog_settings.css_revision}", :expires_in => 1.day do %>
+  	<%= render :partial => 'tlog/style' %>
+	<% end if current_site.tlog_settings %>
+</head>
+<body id='the_tlog_body'>
+	<div class='tlog'>
+		<div class="tlog_header">
+			<div id='tlog_menu'>
+				<span id='tlog_menu_desc'>
+					<div>
+						<span id='tlog_menu_url'>
+							<%= link_to_tlog_if(params[:action] != 'index' || params[:controller] != 'tlog' || (@page && @page != 1), current_site) %>
+						</span>
+					</div>
+					<% unless current_site.tlog_settings.title.blank? %>
+						<span id='tlog_menu_title'><%= h(current_site.tlog_settings.title) %></span>
+					<% end %>
+				</span>
+			</div>
+
+			<div class='sidebar_holder sidebar_tlog_right' id='tlog_sidebar'>
+				<div class='rel'>
+					<div class='sidebar' id='tlog_sidebar_content' style='display: block'>
+						<div class="personal round">
+						  <div class="content">
+								<%= render :partial => 'conversations/sidebar' %>
+						  </div>
+						</div>								
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="main_rounded_holder">
+			<div class="rounded_main_center">
+				<div class='onair convos'>
+					<%= flash_div %>
+					<%= yield %>
+				</div>
+			</div>
+		</div>
+		<%= render :partial => 'globals/foot' %>
+	</div>	
+	<%= render :partial => 'globals/top_nav' %>
+</body>
+</html>

@@ -6,6 +6,7 @@ class FavesController < ApplicationController
   protect_from_forgery
 
   layout 'tlog'
+
   
   def index
     @page = params[:page].to_i.reverse_page(current_site.faves.size.to_pages)
