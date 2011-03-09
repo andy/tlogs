@@ -1891,7 +1891,7 @@ div.main_page {
 }
 
 * html div.main_page {
-	background:url("/images/bg_bg_orange.gif");
+	background:url("/images/bg001.gif");
 	height:100%;
 }
 
@@ -1959,7 +1959,7 @@ div.popular a {
 
 
 body.main_page {
-	background:url("/images/bg_bg_orange.gif") fixed;
+	background:url("/images/bg001.gif") fixed;
 }
 
 .main_rounded_holder {
