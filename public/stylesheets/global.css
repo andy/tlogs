@@ -1891,7 +1891,7 @@ div.main_page {
 }
 
 * html div.main_page {
-	background:url("/images/bg001.gif");
+	background:url("/images/bg/waves.gif");
 	height:100%;
 }
 
@@ -1959,7 +1959,7 @@ div.popular a {
 
 
 body.main_page {
-	background:url("/images/bg001.gif") fixed;
+	background:url("/images/bg/waves.gif") fixed;
 }
 
 .main_rounded_holder {
@@ -3188,12 +3188,13 @@ img.heart {
 .top_hello {
 	font-size:74%;
 	font-weight:normal;
-	color: #404040;
+/*	color: #404040;*/
 }
 .top_hello a {
 	border:none!important;
 	background:none;
-	color:#404040!important;
+/*	color:#404040!important;*/
+	color:white!important;
 }
 .tl {
 	/*width:246px;
