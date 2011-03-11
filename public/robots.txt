@@ -10,6 +10,10 @@ Disallow: /settings/
 # nothing interesting here:
 Disallow: /vote/
 Disallow: /main/random
+Disallow: /main/my
+Disallow: /main/last_personalized
 Disallow: /global/fave
 Disallow: /search
+Disallow: /convos
+Disallow: /messages
 # Disallow: /entries
