@@ -80,7 +80,8 @@ class ConversationsController < ApplicationController
       @conversation = current_site.conversations.find_by_recipient_id(@recipient.id)
       
       if @conversation.nil? && @recipient.nil?
-        return false
+        flash[:bad] = 'Запрошенная вами переписка не найдена'
+        redirect_to user_url(current_site, conversations_path) and return false
       elsif @conversation.nil? && @recipient
         redirect_to user_url(current_site, named_new_conversation_path(:url => params[:id])) and return false
       else
