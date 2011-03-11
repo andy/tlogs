@@ -51,6 +51,7 @@ class User < ActiveRecord::Base
   has_many      :bookmarklets, :dependent => :destroy
   has_one       :feedback, :dependent => :destroy
   has_many      :conversations, :dependent => :destroy, :order => 'last_message_at DESC'
+  has_many      :shade_conversations, :class_name => 'Conversation', :dependent => :destroy, :order => 'last_message_at DESC', :foreign_key => 'recipient_id'
   has_many      :faves, :dependent => :destroy
   has_many      :transactions
 
@@ -133,7 +134,8 @@ class User < ActiveRecord::Base
     self.disconnect!
       
     # удаляем личную переписку, избранное и feedback, если был
-    self.messages.map(&:destroy)
+    self.conversations.map(&:destroy)
+    self.shade_conversations.map(&:destroy)
     self.faves.map(&:destroy)
     self.feedback.destroy unless self.feedback.blank?
   end
