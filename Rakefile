@@ -10,3 +10,5 @@ require 'rake/rdoctask'
 require 'tasks/rails'
 require 'thinking_sphinx/tasks'
 require 'thinking_sphinx/deltas/datetime_delta/tasks'
+
+require 'resque/tasks'

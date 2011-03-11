@@ -19,16 +19,13 @@ gem 'hiredis', '~> 0.3.0'
 gem 'redis', '>= 2.0.0'
 gem 'whenever', :require => false
 gem 'json'
-
 gem 'thinking-sphinx', :require => 'thinking_sphinx'
-
 gem 'ts-datetime-delta', '>= 1.0.0', :require => 'thinking_sphinx/deltas/datetime_delta'
-
 gem 'mysql'
 
 gem 'newrelic_rpm'
-
 gem 'hoptoad_notifier'
+gem 'resque'
 
 group :development do
 	gem 'annotate'
