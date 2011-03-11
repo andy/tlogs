@@ -1,8 +1,6 @@
 class ApplicationController < ActionController::Base
   filter_parameter_logging :password
   
-  # include ExceptionNotifiable if RAILS_ENV == 'production'
-  
   helper :white_list, :url, :asset_gluer
 
   # MAIN FILTERS

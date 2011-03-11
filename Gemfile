@@ -28,6 +28,8 @@ gem 'mysql'
 
 gem 'newrelic_rpm'
 
+gem 'hoptoad_notifier'
+
 group :development do
 	gem 'annotate'
 end

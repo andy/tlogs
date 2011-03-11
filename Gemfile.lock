@@ -20,8 +20,12 @@ GEM
     after_commit (1.0.8)
       activerecord (< 3.0.0)
     annotate (2.4.0)
+    builder (3.0.0)
     coderay (0.9.7)
     hiredis (0.3.1)
+    hoptoad_notifier (2.4.7)
+      activesupport
+      builder
     hpricot (0.8.4)
     image_science (1.2.1)
     json (1.5.1)
@@ -66,6 +70,7 @@ DEPENDENCIES
   annotate
   coderay
   hiredis (~> 0.3.0)
+  hoptoad_notifier
   hpricot
   image_science (>= 1.1.3)
   json
