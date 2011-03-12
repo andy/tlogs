@@ -12,19 +12,19 @@ class ConversationsController < ApplicationController
 
   def index
     @title = 'Все переписки'
-    @conversations = current_site.conversations.paginate(:page => params[:page], :per_page => 15, :include => [:recipient, :last_message])
+    @conversations = current_site.conversations.active.paginate(:page => params[:page], :per_page => 15, :include => [:recipient, :last_message])
   end
   
   def unreplied
     @title = 'Неотвеченные'
-    @conversations = current_site.conversations.unreplied.paginate(:page => params[:page], :per_page => 15, :include => :last_message)
+    @conversations = current_site.conversations.active.unreplied.paginate(:page => params[:page], :per_page => 15, :include => :last_message)
     
     render :action => 'index'
   end
   
   def unviewed
     @title = 'Непросмотренные'
-    @conversations = current_site.conversations.unviewed.paginate(:page => params[:page], :per_page => 15, :include => :last_message)
+    @conversations = current_site.conversations.active.unviewed.paginate(:page => params[:page], :per_page => 15, :include => :last_message)
     
     render :action => 'index'
   end
@@ -62,11 +62,11 @@ class ConversationsController < ApplicationController
     @value        = params[:url]
     
     @recipient    = User.find_by_url(@value) if @value
-    @conversation = current_site.conversations.find_by_recipient_id(@recipient) if @recipient    
+    @conversation = current_site.conversations.active.find_by_recipient_id(@recipient) if @recipient    
   end
   
   def destroy    
-    @conversation.destroy
+    @conversation.async_destroy!
     
     respond_to do |wants|
       wants.html { redirect_to user_url(current_site, conversations_path) }
@@ -77,7 +77,7 @@ class ConversationsController < ApplicationController
   protected
     def preload_conversation
       @recipient    = User.find_by_url params[:id]
-      @conversation = current_site.conversations.find_by_recipient_id(@recipient.id)
+      @conversation = current_site.conversations.active.find_by_recipient_id(@recipient.id)
       
       if @conversation.nil? && @recipient.nil?
         flash[:bad] = 'Запрошенная вами переписка не найдена'

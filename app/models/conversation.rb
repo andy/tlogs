@@ -35,6 +35,10 @@ class Conversation < ActiveRecord::Base
   
   named_scope :with, lambda { |user| { :conditions => ['recipient_id = ?', user.id] } }
 
+  named_scope :active, :conditions => 'is_disabled = 0'
+  
+  named_scope :disabled, :conditions => 'is_disabled = 1'
+
 
   before_create { |record| record.send_notifications = record.user.tlog_settings.email_messages }
 
@@ -46,5 +50,16 @@ class Conversation < ActiveRecord::Base
   
   def to_param
     recipient.url
+  end
+  
+  
+  def block!
+    update_attributes!(:is_disabled => true) unless is_disabled?
+  end
+  
+  def async_destroy!
+    block!
+
+    Resque.enqueue(ConversationDestroyJob, self.id)
   end
 end

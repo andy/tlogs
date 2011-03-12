@@ -126,18 +126,13 @@ class Entry < ActiveRecord::Base
   before_validation :reset_data_parts_if_blank
   before_create :set_default_metadata
 
+  before_destroy do |entry|
+    entry.disable!
+  end
+  
   after_destroy do |entry|
-    # destroy watchers before entry subscribers are removed
-    entry.try_watchers_destroy
-
-    # удаляем всех подписчиков этой записи
-    entry.subscribers.clear
     # уменьшаем счетчик скрытых записей, если эта запись - скрытая
     User.decrement_counter(:private_entries_count, entry.user_id) if entry.is_private?
-    # уменьшаем количество просмотренных записей для всех пользователей которые подписаны на ленту, но только если это 
-    #  была видимая запись И если она не входила в число _новых_ записей для пользователя который просматривает. Поэтому, как 
-    #  критерий мы испльзуем поле last_viewed_at для того чтобы определить входила ли запись в число новых 
-    Relationship.update_all "last_viewed_entries_count = last_viewed_entries_count - 1", "user_id = #{entry.user_id} AND last_viewed_entries_count > 0 AND last_viewed_at > '#{entry.created_at.to_s(:db)}'" unless entry.is_private?
 
     entry.author.update_attributes(:entries_updated_at => Time.now)
     
@@ -186,6 +181,48 @@ class Entry < ActiveRecord::Base
   # русское написание
   def to_russian(key=:who)
     entry_russian_dict[key]
+  end
+  
+  # this is a way to block a record fastly
+  def block!
+    unless self.is_disabled? || self.frozen?
+      self.is_disabled      = true
+      self.is_mainpageable  = false
+      self.is_voteable      = false
+    
+      self.save!
+    end
+  end
+  
+  def disable!
+    self.block!
+
+    # disconnect other people from this record
+    self.disconnect!
+    
+    # clear social stuff
+    self.faves.map(&:destroy)
+    self.rating.destroy if self.rating
+    self.votes.map(&:destroy)
+    
+    # destroy watchers before entry subscribers are removed
+    self.try_watchers_destroy
+    
+    # уменьшаем количество просмотренных записей для всех пользователей которые подписаны на ленту, но только если это 
+    #  была видимая запись И если она не входила в число _новых_ записей для пользователя который просматривает. Поэтому, как 
+    #  критерий мы испльзуем поле last_viewed_at для того чтобы определить входила ли запись в число новых 
+    Relationship.update_all "last_viewed_entries_count = last_viewed_entries_count - 1", "user_id = #{self.user_id} AND last_viewed_entries_count > 0 AND last_viewed_at > '#{self.created_at.to_s(:db)}'" unless self.is_private?
+  end
+  
+  def disconnect!
+    # удаляем всех подписчиков этой записи
+    self.subscribers.clear    
+  end
+  
+  def async_destroy!
+    block!
+
+    Resque.enqueue(EntryDestroyJob, self.id)
   end
     
   ## private methods

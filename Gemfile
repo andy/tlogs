@@ -25,7 +25,10 @@ gem 'mysql'
 
 gem 'newrelic_rpm'
 gem 'hoptoad_notifier'
+
 gem 'resque'
+gem 'resque-lock'
+# gem 'resque-ensure-connected'
 
 group :development do
 	gem 'annotate'

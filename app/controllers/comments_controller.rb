@@ -32,39 +32,16 @@ class CommentsController < ApplicationController
   def create
     render :nothing => true and return unless request.post?
     
-    user = current_user if current_user
-    @comment = Comment.new(params[:comment])
-    @comment.user = user
-    @comment.request = request
+    @comment          = Comment.new(params[:comment])
+    @comment.user     = current_user
+    @comment.request  = request
     @comment.entry_id = @entry.id
     @comment.valid?
     
     if @comment.errors.empty?
       @comment.save!
-      current_user.comments(current_site) if current_user
 
-      users = []
-      if !params[:reply_to].blank?
-        comment_ids = params[:reply_to].split(',').map(&:to_i)
-        # выбирает все комментарии для этой записи и достает оттуда уникальных пользователей
-        reply_to = Comment.find(comment_ids, :conditions => "entry_id = #{@entry.id}").map(&:user_id).reject { |id| id <= 0 }.uniq
-        users = User.find(reply_to).reject { |user| !user.email_comments? }
-      end
-
-      # отправляем комментарий владельцу записи
-      if current_site.is_emailable? && current_site.email_comments? && (!current_user || current_site.id != current_user.id)
-        Emailer.deliver_comment(current_service, current_site, @comment)
-      end
-      
-      # отправляем комменатрий каждому пользователю
-      users.each do |user|
-        Emailer.deliver_comment_reply(current_service, user, @comment) if user.is_emailable? && user.email_comments? && user.id != current_site.id
-      end
-      
-      # отправляем сообщение всем тем, кто наблюдает за этой записью, и кому мы еще ничего не отправляли
-      (@entry.subscribers - users).each do |user|
-        Emailer.deliver_comment_to_subscriber(current_service, user, @comment) if user.is_emailable? && user.email_comments? && user.id != current_user.id
-      end
+      @comment.async_deliver!(current_service, params[:reply_to])
       
       # автоматически подписываем пользователя если на комментарии к этой записи если он еще не подписан
       @entry.subscribers << current_user if current_user && current_user.comments_auto_subscribe? && @entry.user_id != current_user.id && !@entry.subscribers.map(&:id).include?(current_user.id)

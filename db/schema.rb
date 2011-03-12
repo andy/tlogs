@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110223155201) do
+ActiveRecord::Schema.define(:version => 20110312170820) do
 
   create_table "attachments", :force => true do |t|
     t.integer "entry_id",     :default => 0,  :null => false
@@ -92,8 +92,13 @@ ActiveRecord::Schema.define(:version => 20110223155201) do
     t.datetime "last_message_at"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "is_disabled",          :default => false, :null => false
   end
 
+  add_index "conversations", ["is_disabled"], :name => "index_conversations_on_is_disabled"
+  add_index "conversations", ["is_replied"], :name => "index_conversations_on_is_replied"
+  add_index "conversations", ["is_viewed"], :name => "index_conversations_on_is_viewed"
+  add_index "conversations", ["last_message_at"], :name => "index_conversations_on_last_message_at"
   add_index "conversations", ["user_id", "last_message_at"], :name => "index_conversations_on_user_id_and_last_message_at"
   add_index "conversations", ["user_id", "recipient_id"], :name => "index_conversations_on_user_id_and_recipient_id"
 
@@ -419,6 +424,7 @@ ActiveRecord::Schema.define(:version => 20110223155201) do
     t.integer  "faves_count",                           :default => 0,     :null => false
     t.datetime "entries_updated_at"
     t.integer  "conversations_count",                   :default => 0,     :null => false
+    t.datetime "disabled_at"
   end
 
   add_index "users", ["domain"], :name => "index_users_on_domain"

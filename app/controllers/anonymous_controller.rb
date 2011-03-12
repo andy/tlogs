@@ -80,29 +80,8 @@ class AnonymousController < ApplicationController
     
     if @comment.errors.empty?
       @comment.save!
-
-      users = []
-      if !params[:reply_to].blank?
-        comment_ids = params[:reply_to].split(',').map(&:to_i)
-        # выбирает все комментарии для этой записи и достаем оттуда уникальных пользователей
-        reply_to = Comment.find(comment_ids, :conditions => "entry_id = #{@entry.id}").map(&:user_id).reject { |id| id <= 0 }.uniq
-        users = User.find(reply_to).reject { |user| !user.email_comments? }
-      end
-
-      # отправляем комментарий владельцу записи
-      if @entry.author.is_emailable? && @entry.author.email_comments? && (!current_user || @entry.user_id != current_user.id)
-        Emailer.deliver_comment(current_service, @entry.author, @comment)
-      end
       
-      # отправляем комменатрий каждому пользователю
-      users.each do |user|
-        Emailer.deliver_comment_reply(current_service, user, @comment) if user.is_emailable? && user.email_comments? && user.id != @entry.author.id
-      end
-      
-      # отправляем сообщение всем тем, кто наблюдает за этой записью, и кому мы еще ничего не отправляли
-      (@entry.subscribers - users).each do |user|
-        Emailer.deliver_comment_to_subscriber(current_service, user, @comment) if user.is_emailable? && user.email_comments? && user.id != current_user.id
-      end
+      @comment.async_deliver!(current_service, params[:reply_to])
       
       # автоматически подписываем пользователя если на комментарии к этой записи если он еще не подписан
       @entry.subscribers << current_user if current_user && current_user.comments_auto_subscribe? && @entry.user_id != current_user.id && !@entry.subscribers.map(&:id).include?(current_user.id)      
@@ -119,7 +98,7 @@ class AnonymousController < ApplicationController
   def preview
     @comment            = Comment.new(params[:comment])
     @comment.user       = current_user
-    @comment.remote_ip  = request.remote_ip
+    @comment.request    = request
 
     @comment.valid?
   end

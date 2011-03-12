@@ -1,8 +1,6 @@
 class Entry
   ## hooks
   after_create :try_watchers_update
-  
-  # after_destroy :try_watchers_destroy
 
 
   ## class methods
@@ -13,7 +11,11 @@ class Entry
 
   ## public methods
   def watcher_ids
-    @watcher_ids ||= [
+    @watcher_ids ||= build_watcher_ids    
+  end
+  
+  def build_watcher_ids
+    ids = [
       # author himself
       self.author.id,
 
@@ -24,8 +26,24 @@ class Entry
       self.author.listed_me_as_all_friend_light_ids,
       
       # tier3 - users who positevely voted for this entry
-      self.votes.positive.map(&:user_id)
+      # self.votes.positive.map(&:user_id)
     ].flatten.compact.uniq
+    
+    # respect user's privacy settings
+    case self.author.tlog_settings.privacy
+    when 'open'
+      ids
+      
+    when 'rr'
+      ids
+      
+    when 'fr'
+      (ids & self.author.all_friend_ids) << self.author.id
+      
+    when 'me'
+      [self.author.id]
+      
+    end    
   end
   
   # is this entry even WATCHABLE? must be public and not anonymous
@@ -104,5 +122,4 @@ class Entry
     def enqueue_watchers_update
       $redis.zadd(Entry::enqueue_key, self.updated_at.to_i, self.id)
     end
-  
 end

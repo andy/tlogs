@@ -9,11 +9,9 @@ require File.join(File.dirname(__FILE__), '../lib/tlogs')
 Rails::Initializer.run do |config|
   config.action_controller.session = { :key => Tlogs::SESSION.key, :secret => Tlogs::SESSION.secret }
 
-  config.action_mailer.delivery_method = :sendmail
-  config.action_mailer.default_charset = "utf-8"
-  
   config.load_paths += %W( 
     #{RAILS_ROOT}/app/models/entries
+    #{RAILS_ROOT}/app/jobs
     #{RAILS_ROOT}/lib/asset_gluer
   )
 

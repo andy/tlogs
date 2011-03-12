@@ -43,6 +43,7 @@ class User < ActiveRecord::Base
   ## included modules & attr_*
   ## associations
 	has_many      :entries, :dependent => :destroy
+	has_many      :anonymous_entries, :class_name => 'AnonymousEntry'
 	has_one       :avatar, :dependent => :destroy
   has_one       :tlog_settings, :dependent => :destroy
   has_one       :tlog_design_settings, :dependent => :destroy
@@ -74,7 +75,8 @@ class User < ActiveRecord::Base
   named_scope   :unconfirmed, :conditions => 'is_confirmed = 0'
   named_scope   :active, :conditions => 'is_disabled = 0'
   named_scope   :disabled, :conditions => 'is_disabled = 1'
-  
+  named_scope   :expired, :conditions => 'is_disabled = 1 AND disabled_at < DATE_SUB(CURDATE(), INTERVAL 1 MONTH)'
+
   
   ## validations
   validates_format_of     :domain,
@@ -85,7 +87,7 @@ class User < ActiveRecord::Base
 
 
   ## callbacks
-  after_destroy { |user| user.disconnect! }
+  before_destroy { |user| user.disable! }
   after_create do |user|
     user.is_mainpageable = true
     user.tlog_settings = TlogSettings.create :user => user
@@ -109,37 +111,69 @@ class User < ActiveRecord::Base
     @username ||= read_attribute(:username).blank? ? self.url : read_attribute(:username)
   end      
 
-  # блокируем пользователя
-  def disable!
-    return false if self.is_disabled?
+  # blocks access to tlog
+  def block!
+    unless self.is_disabled?
+      self.is_disabled = true
+      self.is_mainpageable = false
+      self.save!
 
-    # выставляем флаг заблокированности
-    self.is_disabled = true
-    self.is_mainpageable = false
-    self.save    
+      self.touch(:disabled_at)
+    end
+  end
+
+  # блокируем пользователя
+  # в основном удаляются вещи которые попадают или могут попадать в ленты других пользователей
+  # или как-то влиять на общий флоу в сервисе
+  def disable!
+    block!
 
     # на данный моммент не удаляем, а скрываем все записи из прямого эфира
-    self.entries.each do |entry|
-      # публичные записи прячем
-      if entry.is_mainpageable?
-        entry.visibility = 'public' 
-        entry.save
-      end
-      
-      # а анонимки - удаляем
-      entry.destroy if entry.is_anonymous?
-    end
+    self.entries.paginated_each { |entry| entry.disable! }
+    
+    # анонимки - удаляем
+    Entry.destroy(self.anonymous_entry_ids)
 
     # отключаем пользователя от друзей
-    self.disconnect!
-      
-    # удаляем личную переписку, избранное и feedback, если был
-    self.conversations.map(&:destroy)
-    self.shade_conversations.map(&:destroy)
+    self.disconnect!(true)
+
+    # destroy faves
     self.faves.map(&:destroy)
+    
+    # destroy feedback if he had one
     self.feedback.destroy unless self.feedback.blank?
   end
+
+  # asynchronously delete tlog
+  def async_disable!
+    block!
+
+    Resque.enqueue(TlogDisableJob, self.id)
+  end
   
+  # asynchronously destroy tlog
+  def async_destroy!
+    block!
+    
+    Resque.enqueue(TlogDestroyJob, self.id)
+  end
+  
+  # отключаем друзей от пользователя
+  # full - так же отключаем пользователя от друзей
+  def disconnect!(full = false)
+    # delete both sides of conversations
+    self.conversations.map(&:destroy)
+    self.shade_conversations.map(&:destroy)
+
+    # удаляем все комменатрии — по ним можно найти
+    # TO DO
+    
+    # удяляем relationships
+    self.connection.delete("DELETE FROM relationships WHERE user_id = #{self.id} OR reader_id = #{self.id}")
+    # удаляем все подписки
+    self.connection.delete("DELETE FROM entry_subscribers WHERE user_id = #{self.id}")
+  end
+
 
   # checks wether this tlog can be viewed by other users
   def can_be_viewed_by?(user)
@@ -162,14 +196,6 @@ class User < ActiveRecord::Base
     when 'me'
       user && user.id == self.id
     end
-  end
-  
-  # отключаем пользователя от друзей
-  def disconnect!
-    # удяляем relationships
-    self.connection.delete("DELETE FROM relationships WHERE user_id = #{self.id} OR reader_id = #{self.id}")
-    # удаляем все подписки
-    self.connection.delete("DELETE FROM entry_subscribers WHERE user_id = #{self.id}")
   end
   
   def destroy_code

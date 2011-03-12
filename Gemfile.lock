@@ -52,6 +52,7 @@ GEM
       redis-namespace (~> 0.8.0)
       sinatra (>= 0.9.2)
       vegas (~> 0.1.2)
+    resque-lock (0.1.1)
     riddle (1.2.2)
     ruby-openid (2.1.8)
     russian (0.2.7)
@@ -96,6 +97,7 @@ DEPENDENCIES
   rake
   redis (>= 2.0.0)
   resque
+  resque-lock
   ruby-openid
   russian
   system_timer

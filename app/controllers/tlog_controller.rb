@@ -196,7 +196,10 @@ class TlogController < ApplicationController
     if @entry.is_anonymous?
       flash[:bad] = 'Извините, к сожалению, анонимки нельзя удалять'
     else
+      # async is not working properly yet
+      # @entry.async_destroy!
       @entry.destroy
+      
       flash[:good] = 'Запись была удалена'
     end
 
