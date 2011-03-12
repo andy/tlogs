@@ -16,6 +16,8 @@ class AccountController < ApplicationController
     if request.post?
       @user = User.authenticate params[:user][:email], params[:user][:password]
       if @user.nil?
+        # keep email
+        @user = User.new :email => params[:user][:email]
         if params[:user][:email].is_openid?
           flash[:bad] = 'Пользователь с таким адресом не найден'
         else
