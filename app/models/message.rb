@@ -40,10 +40,13 @@ class Message < ActiveRecord::Base
 	  has conversation(:recipient_id), :as => :conversation_recipient_id
 	  has conversation(:is_replied), :as => :conversation_is_replied
 	  has conversation(:is_viewed), :as => :conversation_is_viewed
+	  has conversation(:is_disabled), :as => :conversation_is_disabled
     has user_id, recipient_id, created_at, updated_at
 
-	  group_by "conversation_user_id"	  
+	  group_by "conversation_user_id"
 	  group_by "conversation_recipient_id"
+	  
+	  where "conversations.is_disabled = 0"
 	  
 	  set_property :delta => :datetime, :threshold => 1.hour
   end
@@ -136,5 +139,14 @@ class Message < ActiveRecord::Base
     return false unless self.conversation.send_notifications?
     
     true
+  end
+  
+  # Emailer.deliver_message(current_service, @message.recipient, @recipient_message) if @recipient_message.should_be_delivered?
+  def deliver!(current_service)
+    Emailer.deliver_message(current_service, self.recipient, self) if self.should_be_delivered?
+  end
+  
+  def async_deliver!(current_service)
+    Resque.enqueue(MessageDeliverJob, self.id, current_service.domain) if self.should_be_delivered?
   end
 end

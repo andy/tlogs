@@ -33,12 +33,13 @@ class MessagesController < ApplicationController
       # no way this can fail!
       @recipient_message = @message.begin_conversation!(convo_options)
 
+      @recipient_message.async_deliver!(current_service)
+
       respond_to do |wants|
         wants.html { redirect_to user_url(current_site, conversation_path(@message.conversation)) }
         wants.js # render create.js
       end
 
-      Emailer.deliver_message(current_service, @message.recipient, @recipient_message) if @recipient_message.should_be_delivered?
     else
       # bugs message
       respond_to do |wants|

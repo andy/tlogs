@@ -96,29 +96,31 @@ class Comment < ActiveRecord::Base
     if !reply_to.blank?
       comment_ids = reply_to.split(',').map(&:to_i)
       # выбирает все комментарии для этой записи и достает оттуда уникальных пользователей
-      user_ids  = Comment.find(comment_ids, :conditions => "entry_id = #{@entry.id}").map(&:user_id).reject { |id| id <= 0 }.uniq
+      user_ids  = Comment.find(comment_ids, :conditions => "entry_id = #{entry.id}").map(&:user_id).reject { |id| id <= 0 }.uniq
       users     = User.find(user_ids).reject { |u| !u.email_comments? }
     end
 
     # отправляем комментарий владельцу записи
     if entry.author.is_emailable? && entry.author.email_comments? && entry.author.id != self.user_id
-      Emailer.deliver_comment(current_service, user, self)
+      Emailer.deliver_comment(current_service, entry.author, self)
     end
     
     # отправляем комменатрий каждому пользователю
-    users.each do |user|
-      Emailer.deliver_comment_reply(current_service, user, self) if user.is_emailable? && user.email_comments? && user.id != entry.author.id
+    users.each do |u|
+      Emailer.deliver_comment_reply(current_service, u, self) if u.is_emailable? && u.email_comments? && u.id != entry.author.id
     end
     
     # отправляем сообщение всем тем, кто наблюдает за этой записью, и кому мы еще ничего не отправляли
-    (self.entry.subscribers - users).each do |user|
-      Emailer.deliver_comment_to_subscriber(current_service, user, self) if user.is_emailable? && user.email_comments? && user.id != entry.author.id
+    (self.entry.subscribers - users).each do |u|
+      Emailer.deliver_comment_to_subscriber(current_service, u, self) if u.is_emailable? && u.email_comments? && u.id != self.user_id
     end
   end
 
   # do the same delivery, but asynchronously
   def async_deliver!(current_service, reply_to)
-    Resque.enqueue(CommentEmailJob, self.id, current_service.domain, reply_to)
+    Resque.enqueue(CommentDeliverJob, self.id, current_service.domain, reply_to)
   end
+
+
   ## private methods
 end

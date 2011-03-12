@@ -1,4 +1,4 @@
-class CommentEmailJob
+class CommentDeliverJob
   @queue = :mailout
   
   def self.perform(comment_id, service_domain, reply_to)
