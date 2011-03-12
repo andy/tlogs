@@ -1,6 +1,8 @@
 require 'resque/plugins/lock'
 
 class EntryDestroyJob
+  extend Resque::Plugins::Lock
+
   @queue = :killers
   
   def self.perform(entry_id)
