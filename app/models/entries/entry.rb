@@ -190,7 +190,7 @@ class Entry < ActiveRecord::Base
       self.is_mainpageable  = false
       self.is_voteable      = false
     
-      self.save!
+      self.save(false)
     end
   end
   

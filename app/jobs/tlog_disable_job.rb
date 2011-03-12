@@ -1,3 +1,5 @@
+require 'resque/plugins/lock'
+
 class TlogDisableJob
   extend Resque::Plugins::Lock
 

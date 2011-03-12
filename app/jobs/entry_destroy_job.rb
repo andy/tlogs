@@ -1,3 +1,5 @@
+require 'resque/plugins/lock'
+
 class EntryDestroyJob
   @queue = :killers
   
