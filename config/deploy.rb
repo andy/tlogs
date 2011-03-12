@@ -29,6 +29,7 @@ role :web, 'f2.tlogs.ru'
 role :redis, 'f1.tlogs.ru'
 role :cache, 'f1.tlogs.ru', 'f2.tlogs.ru'
 role :sphinx, 'f1.tlogs.ru'
+role :resque, 'f1.tlogs.ru'
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
 # =============================================================================
 # OPTIONAL VARIABLES
@@ -57,6 +58,7 @@ namespace :deploy do
     git.pull
     bundle.install
     sphinx.conf
+    resque.restart
     web.restart
     cache.flush
     cron.update
@@ -78,6 +80,7 @@ namespace :deploy do
       cron.db
       cron.app
       cron.sphinx
+      cron.resque
     end
     
     task :db, :roles => :db do
@@ -92,6 +95,9 @@ namespace :deploy do
       run "cd #{deploy_to} && RAILS_ENV=production bin/whenever -f config/crontabs/sphinx.rb -i sphinx"
     end
 
+    task :resque, :roles => :resque do
+      run "cd #{deploy_to} && RAILS_ENV=production bin/whenever -f config/crontabs/resque.rb -i resque"
+    end
   end
   
   namespace :git do
@@ -188,6 +194,21 @@ namespace :deploy do
     task :install, :roles => :app do
       run "cd #{deploy_to} && RAILS_ENV=production bin/bundle install --quiet --binstubs --deployment --without development"
     end
+  end
+  
+  namespace :resque do
+    desc "Restart resque servers"
+    task :restart, :roles => :resque do
+      run "cd #{deploy_to} && RAILS_ENV=production bin/bundle exec god restart resque"
+    end
+    
+    task :stop, :roles => :resque do
+      run "cd #{deploy_to} && RAILS_ENV=production bin/bundle exec god stop resque"
+    end
+
+    task :start, :roles => :resque do
+      run "cd #{deploy_to} && RAILS_ENV=production bin/bundle exec god start resque"
+    end    
   end
 end
 

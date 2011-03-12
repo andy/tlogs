@@ -22,6 +22,7 @@ GEM
     annotate (2.4.0)
     builder (3.0.0)
     coderay (0.9.7)
+    god (0.11.0)
     hiredis (0.3.1)
     hoptoad_notifier (2.4.7)
       activesupport
@@ -84,6 +85,7 @@ DEPENDENCIES
   RubyInline
   annotate
   coderay
+  god
   hiredis (~> 0.3.0)
   hoptoad_notifier
   hpricot

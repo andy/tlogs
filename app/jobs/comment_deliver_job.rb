@@ -1,5 +1,5 @@
 class CommentDeliverJob
-  @queue = :mailout
+  @queue = :high
   
   def self.perform(comment_id, service_domain, reply_to)
     comment = Comment.find_by_id(comment_id)

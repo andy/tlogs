@@ -1,5 +1,5 @@
 class MessageDeliverJob
-  @queue = :mailout
+  @queue = :high
   
   def self.perform(message_id, service_domain)
     message = Message.find_by_id(message_id)

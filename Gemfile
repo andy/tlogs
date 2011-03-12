@@ -30,6 +30,8 @@ gem 'resque'
 gem 'resque-lock'
 # gem 'resque-ensure-connected'
 
+gem 'god'
+
 group :development do
 	gem 'annotate'
 end

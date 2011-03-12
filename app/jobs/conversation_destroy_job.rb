@@ -1,5 +1,5 @@
 class ConversationDestroyJob
-  @queue = :killers
+  @queue = :low
   
   def self.perform(convo_id)
     convo = Conversation.find_by_id(convo_id)
