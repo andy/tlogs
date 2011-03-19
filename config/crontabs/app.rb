@@ -6,5 +6,5 @@ every 1.day do
 end
 
 every :reboot do
-  command "cd #{RAILS_ROOT} && bundle exec unicorn_rails -c config/unicorn.rb -E production -D"
+  command "cd :path && RAILS_ENV=:environment bundle exec unicorn_rails -c config/unicorn.rb -E production -D"
 end
