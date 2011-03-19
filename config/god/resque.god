@@ -15,10 +15,10 @@ num_workers.times do |num|
     w.stop_signal   = 'QUIT'
     w.stop_timeout  = 1.minute
 
-    if rails_env == 'production'
-      w.uid   = 'tasty'
-      w.gid   = 'tasty'
-    end
+    # if rails_env == 'production'
+    #   w.uid   = 'tasty'
+    #   w.gid   = 'tasty'
+    # end
 
     # retart if memory gets too high
     w.transition(:up, :restart) do |on|
