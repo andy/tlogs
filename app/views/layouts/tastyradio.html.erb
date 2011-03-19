@@ -8,6 +8,9 @@
   
   <script type='text/javascript'>
     soundManager.url = <%= service_url('/swf/').to_json %>;
+    soundManager.flashVersion = 9;
+    soundManager.useFastPolling = true;
+    soundManager.useHighPerformance = true;
     soundManager.debugMode = false;
     soundManager.debugFlash = false;
     soundManager.useConsole = false;
