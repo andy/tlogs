@@ -1,5 +1,5 @@
 rails_env   = ENV['RAILS_ENV']  || 'development'
-rails_root  = ENV['RAILS_ROOT'] || '/home/tlogs-git/tasty'
+rails_root  = ENV['RAILS_ROOT'] || '/home/tasty/tlogs-git'
 num_workers = rails_env == 'production' ? 5 : 2
 
 num_workers.times do |num|
