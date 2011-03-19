@@ -1,6 +1,7 @@
 env :MAILTO, 'servers@mmm-tasty.ru'
 
+job_type :bundle, "cd :path && RAILS_ENV=:environment bin/bundle exec :task :output"
+
 every :reboot do
-  command "cd :path && RAILS_ENV=:environment RAILS_ROOT=:path bin/bundle exec god"
-  command "cd :path && RAILS_ENV=:environment RAILS_ROOT=:path bin/bundle exec god load config/god/resque.god"
+  bundle "god -c config/god/resque.god start"
 end
