@@ -17,6 +17,7 @@ application:
 - jquery.fancybox-1.3.4.pack
 - jquery.timeago
 - jquery.timeago.ru
+- jquery.popupWindow
 # flash: swfobject & swfupload
 - swfobject.min
 - swfupload.min
@@ -37,3 +38,7 @@ application:
 - google-analytics
 - blink
 - application
+
+soundmanager:
+- soundmanager2
+- page-player

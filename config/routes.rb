@@ -67,6 +67,8 @@ ActionController::Routing::Routes.draw do |map|
     www.search 'search/:action/:id', :controller => 'search'
     www.tag_view 'tag/*tags', :controller => 'tags', :action => 'view'
     www.tags 'tags/:action/:id', :controller => 'tags'
+    
+    www.tastyradio 'tastyradio/:action', :controller => 'tastyradio'
 
     map.bookmarklet 'bookmarklet/:action', :controller => 'bookmarklet'
 

@@ -5,6 +5,8 @@
 			<%= text_field_tag 'query', params[:query], :type => :search, :autosave => "com.tlogs", :results => 10 %>
 		</form>
 	</div>
+
+	<%= render(:partial => 'globals/tastyradio') if params[:action] == 'live' || params[:action] == 'last' || (params[:controller] == 'main' && params[:action] == 'index') %>
 	
 	<%#= render(:partial => 'globals/bookmate') if params[:action] == 'live' || params[:action] == 'last' %>
 <% end %>
@@ -17,7 +19,7 @@
 </head>
 <body class="main_page">
 	<div class="logo">
-		<%= link_to_if (params[:controller] != 'main' || params[:action] != 'index'), image_tag("logo_white.png", :size => '212x45', :alt => 'Mmm... tasty', :class => 'logo_img'), main_url, :class => 'logo_link' %>
+		<%= link_to_if (params[:controller] != 'main' || params[:action] != 'index'), image_tag("logo_white.png", :size => '212x45', :alt => 'Mmm... tasty', :class => 'logo_img'), service_url('/'), :class => 'logo_link' %>
 	</div>	
 	<div class="register_enter">
 		<% if current_user %>

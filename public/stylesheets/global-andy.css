@@ -135,3 +135,12 @@ form.donation input.submit_donation { margin-top: 20px; margin-left: 380px; }
 #footer a img.f_facebook { vertical-align: bottom; }
 #footer a img.f_vkontakte { vertical-align: bottom; }
 
+/* tasty radio */
+.main_page .sidebar_holder #tastyradio p {  }
+.main_page .sidebar_holder #tastyradio p img { background-color: white; }
+.main_page .sidebar_holder #tastyradio p img.popout { padding-left: 5px; }
+.main_page .sidebar_holder #tastyradio p img.play { padding-right: 5px; }
+
+.main_page .sidebar_holder #tastyradio .radioannounce_header { font-weight: bold; }
+.main_page .sidebar_holder #tastyradio abbr.timeago { background-color: white; padding: 0 2px; font-weight: bold;;}
+.main_page .sidebar_holder #tastyradio .radioannounce { margin-bottom: 5px; }
