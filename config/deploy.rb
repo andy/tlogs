@@ -74,6 +74,13 @@ namespace :deploy do
     cron.update
   end
   
+  desc "Use this deploy when only views have changed"
+  task :views do
+    git.pull
+    web.restart
+    cache.flush
+  end
+  
   namespace :cron do
     desc "Update all crontab files"
     task :update do
