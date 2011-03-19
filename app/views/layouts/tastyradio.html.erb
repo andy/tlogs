@@ -478,5 +478,7 @@
   <div class='tastyradio'>
   	<%= yield %>
   </div>
+  
+  <%= render :partial => 'globals/counters' if Rails.env.production? %>
 </body>
 </html>
