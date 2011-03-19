@@ -199,15 +199,15 @@ namespace :deploy do
   namespace :resque do
     desc "Restart resque servers"
     task :restart, :roles => :resque do
-      run "cd #{deploy_to} && RAILS_ENV=production bin/bundle exec god restart resque"
+      run "cd #{deploy_to} && RAILS_ENV=production RAILS_ROOT=#{deploy_to} god restart resque"
     end
     
     task :stop, :roles => :resque do
-      run "cd #{deploy_to} && RAILS_ENV=production bin/bundle exec god stop resque"
+      run "cd #{deploy_to} && RAILS_ENV=production RAILS_ROOT=#{deploy_to} god stop resque"
     end
 
     task :start, :roles => :resque do
-      run "cd #{deploy_to} && RAILS_ENV=production bin/bundle exec god start resque"
+      run "cd #{deploy_to} && RAILS_ENV=production RAILS_ROOT=#{deploy_to} god start resque"
     end    
   end
 end
