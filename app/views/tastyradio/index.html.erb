@@ -14,4 +14,4 @@
   <li><a href='http://stream12.radiostyle.ru:8012/tastyradio' class='playable'>Прямой эфир</a></li>
 </ul>
 
-<div class='info'>Все вопросы и пожелания по эфиру, направляйте, пожалуйста, в <%= link_to 'редакцию @radio', user_url(@radio, named_new_conversation_path(:url => 'radio')), :target => '_blank' %>.</div>
+<div class='info'>Все вопросы и пожелания по эфиру, направляйте, пожалуйста, в <%= link_to 'редакцию радио', current_user ? user_url(current_user, named_new_conversation_path(:url => 'radio')) : user_url(@radio), :target => '_blank' %>.</div>

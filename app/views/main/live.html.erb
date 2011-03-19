@@ -65,6 +65,15 @@
   }
 
   jQuery('.onair').infinitescroll(inf_opts, inf_loaded_handler);
+  // unbind normal behavior. needs to occur after normal infinite scroll setup.
+  // jQuery(window).unbind('.infscr');
+  // 
+  // msg = jQuery('<div id="infscr-loading" style="text-align: center;"><div id="infscr-click">&darr; Загрузить &darr;</div></div>');
+  // msg.appendTo(jQuery('div.entry_pg')).show().click(function() {
+  //     jQuery(document).trigger('retrieve.infscr');
+  //     return false;
+  //   });
+  // jQuery('div.entry_pagination').hide();
 </script>
 
 <% content_for :sidebar_right do %>
