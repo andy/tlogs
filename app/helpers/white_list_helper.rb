@@ -96,7 +96,7 @@ module WhiteListHelper
 
       # check wether this is allowed
       if attrs['src'] && allowed_flash_domain?(attrs['src'])
-        width = (attrs['width'] && attrs['width'].ends_with?('%')) ? (flash_width * attrs['width'].to_i / 100) : (flash.attributes['width'].to_i || flash_width)
+        width = (attrs['width'] && attrs['width'].ends_with?('%')) ? (flash_width * attrs['width'].to_i / 100) : (attrs['width'].to_i || flash_width)
         # width  = attrs['width'].to_i || flash_width
         height = attrs['height'].to_i || flash_width
 
