@@ -4,7 +4,7 @@ class AdminController < ApplicationController
   before_filter :require_admin
 
   def disable
-    current_site.disable!
+    current_site.async_disable!
 
     render :update do |page|
       page.call 'window.location.reload'
@@ -15,10 +15,10 @@ class AdminController < ApplicationController
   def demainpage
     # block user from ever appearing on main page again
     current_site.is_mainpageable = false
-    current_site.save
+    current_site.save!
     
     # block all old entries from mainpage
-    current_site.entries.each do |entry|
+    current_site.entries.paginated_each do |entry|
       if entry.is_mainpageable?
         # remove from mainpage
         entry.is_mainpageable = false
@@ -28,7 +28,7 @@ class AdminController < ApplicationController
         entry.is_good         = false
         entry.is_everything   = false
 
-        entry.save
+        entry.save!
       end
     end
 

@@ -26,6 +26,28 @@ class User
   def is_emailable?
     self.is_confirmed? && !self.email.blank? && !self.is_disabled?
   end
+  
+  def allowed_visibilities
+    allow  = Entry::VISIBILITY.keys
+    reject = []
+    
+    # premium users are unlimited
+    return allow if self.is_premium?
+
+    entries = self.entries.find(:all, :select => 'entries.id, entries.is_voteable, entries.is_mainpageable', :conditions => 'entries.is_mainpageable = 1 AND entries.created_at > DATE_SUB(NOW(), INTERVAL 24 HOUR)')
+    
+    mainpageable_entries = entries.select { |e| e.is_mainpageable? }.length
+    voteable_entries     = entries.select { |e| e.is_voteable? }.length
+
+    reject << [:mainpageable, :voteable] if mainpageable_entries >= 3
+    reject << :voteable if voteable_entries >= 1
+
+    allow - reject.flatten
+  end
+
+  def is_allowed_visibility?(value)
+    self.allowed_visibilities.include?(value.to_sym) ? true : false
+  end
 
   # возвращает причину по которой нельзя создавать запись (Reason), либо nil если запись можно создавать
   def can_create?(klass)
@@ -62,7 +84,7 @@ class User
           reason = Reason.new "Анонимки можно писать только спустя месяц после регистрации."
           reason.expires_at = self.created_at + 1.month
         end
-          
+
     end unless self.is_premium?
     
     reason

@@ -17,6 +17,7 @@
   </div>
 </div>
 
+<% if !@page || @page <= 1 %>
 <script type='text/javascript'>
   var inf_entry_id = <%= @entries.last.id.to_json %>;
   var inf_page = 1;
@@ -75,6 +76,7 @@
   //   });
   // jQuery('div.entry_pagination').hide();
 </script>
+<% end %>
 
 <% content_for :sidebar_right do %>
 	<div class='section'>

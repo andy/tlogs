@@ -20,14 +20,16 @@
 					<div id='entry_visibility_div'>
 						<% if entry.visibility != 'voteable' || @new_record %>
 							<label for='entry_visibility'>Тип записи:</label><br/>
-							<%= select :entry, :visibility, @new_record ? Entry::VISIBILITY_FOR_SELECT_NEW : Entry::VISIBILITY_FOR_SELECT_EDIT %>
+							<%= select :entry, :visibility, @new_record ? entry_visibility_new(current_site) : entry_visibility_edit(current_site, @entry) %>
+							<div class='visibility_comments'><b>Важно!</b> Вы можете публиковать не более 3 записей в прямой эфир, и не более 1 записи с голосованием в течение 24-х часов.</div>
 						<% end %>
 					</div>
 			
 					<div id='entry_tags'>
 						<label for='entry_tag_list'>Теги: </label><br/>
 						<%= text_field 'entry', 'tag_list', { :id => 'entry_tag_list' } %>
-						<%= tasty_error_message_on 'entry', 'tag_list' %>						
+						<%= tasty_error_message_on 'entry', 'tag_list' %>
+						<div class='tags_comments'>Указывайте теги через запятую. Вы можете указать до 10 тегов.</div>
 					</div>
 				</div>
 			</div>

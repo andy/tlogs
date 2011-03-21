@@ -1174,12 +1174,24 @@ div.post_comment_avatar {
 	padding:6px 0;
 	width:150px;*/
 }
+
 #entry_options_toggle a {
 	font-size:0.78em;
-
 	color:#404040;
-
 }
+
+#entry_options_toggle .tags_comments {
+	font-size:0.78em;
+	color: #999;
+}
+
+#entry_options_toggle .visibility_comments {
+	font-size: 0.78em;
+	color: #999;
+	margin-top: 10px;
+	width: 500px;
+}
+
 div#post_preview {
 	font-size:87%;
 	padding-right:222px;	

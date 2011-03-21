@@ -18,8 +18,10 @@ Disallow: /messages
 #
 Disallow: /main/random
 Disallow: /main/my
+Disallow: /main/new_users/
 Disallow: /main/last_personalized
 Disallow: /main/live?page=
+Disallow: /main/live?entry_id=
 Disallow: /main/last?page=
 Disallow: /main/last/great
 Disallow: /main/last/good

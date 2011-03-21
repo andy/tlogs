@@ -1,4 +1,9 @@
 class Entry
+  # fix visibility for entries that are over limit
+  before_validation do |entry|
+    entry.visibility = 'public' if entry.id.nil? && !entry.author.is_allowed_visibility?(entry.visibility)
+  end
+
   # видимость записи, @entry.visibility - это виртуальное поле, options: 0 - is_voteable, 1 - is_mainpageable, 2 - is_private
   VISIBILITY = {
     :private => { :new => 'закрытая - не увидит никто, кроме вас', :edit => 'закрытая - не увидит никто, кроме вас', :options => [false, false, true], :order => 1 },
