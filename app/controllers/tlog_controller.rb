@@ -206,6 +206,11 @@ class TlogController < ApplicationController
     redirect_to url
   end  
   
+  
+  def robots
+    render :file => 'tlog/robots.txt'
+  end
+  
   private
     def check_if_can_be_viewed
       render :action => 'hidden' and return false if not current_site.can_be_viewed_by?(current_user)

@@ -1,19 +1,27 @@
 # See http://www.robotstxt.org/wc/norobots.html for documentation on how to use the robots.txt file
 
 User-agent: *
-#Disallow: /
-# duplicate content
-Disallow: /faves/
-# only for logged-in users
-Disallow: /publish/
-Disallow: /settings/
-# nothing interesting here:
-Disallow: /vote/
-Disallow: /main/random
-Disallow: /main/my
-Disallow: /main/last_personalized
-Disallow: /global/fave
+#
+# Globally banned urls
+# 
+Disallow: /faves
+Disallow: /publish
+Disallow: /settings
+Disallow: /vote
+Disallow: /global
 Disallow: /search
 Disallow: /convos
 Disallow: /messages
-# Disallow: /entries
+
+#
+# Main site banned urls
+#
+Disallow: /main/random
+Disallow: /main/my
+Disallow: /main/last_personalized
+Disallow: /main/live?page=
+Disallow: /main/last?page=
+Disallow: /main/last/great
+Disallow: /main/last/good
+Disallow: /main/last/everything
+Disallow: /tastyradio

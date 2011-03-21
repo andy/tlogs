@@ -13,6 +13,8 @@ tlog_settings = lambda { |tlog|
   tlog.connect 'tag/*tags', :controller => 'tags', :action => 'view'
   tlog.connect 'tags/:action/:id', :controller => 'tags'
   
+  tlog.robots 'robots.txt', :controller => 'tlog', :action => 'robots'
+  
   tlog.resources :activities, :controller => 'activities'
 
   tlog.day ':year/:month/:day', :controller => 'tlog', :action => 'day', :requirements => { :year => /\d{4}/, :month => /\d{1,2}/, :day => /\d{1,2}/ }
