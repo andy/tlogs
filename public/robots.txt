@@ -25,3 +25,8 @@ Disallow: /main/last/great
 Disallow: /main/last/good
 Disallow: /main/last/everything
 Disallow: /tastyradio
+
+#
+# Allow everything else
+#
+Allow: /
