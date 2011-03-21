@@ -56,6 +56,7 @@ ActionController::Routing::Routes.draw do |map|
     www.anonymous 'main/anonymous/:action/:id', :controller => 'anonymous'
     www.connect 'main/:action/:page', :controller => 'main', :page => /\d+/
     www.main 'main/:action', :controller => 'main'
+    www.robots 'robots.txt', :controller => 'main', :action => 'robots'
 
     # account routes, jf helper methods
     www.login 'account/login', :controller => 'account', :action => 'login'

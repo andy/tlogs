@@ -177,4 +177,8 @@ class MainController < ApplicationController
     
     # redirect_to service_url(main_path)
   end
+  
+  def robots
+    render :file => 'main/robots.txt'
+  end
 end
