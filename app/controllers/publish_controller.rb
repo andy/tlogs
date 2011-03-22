@@ -101,7 +101,6 @@ class PublishController < ApplicationController
         # set this virtual attribute
         @entry.has_attachment = !@entry.attachments.empty?
       end
-      
 
       if request.post?
         if @entry.nil?
@@ -156,11 +155,17 @@ class PublishController < ApplicationController
           @entry.visibility = visibility || current_user.tlog_settings.default_visibility
         else
           # выставляем флаг видимости в значение по-умолчанию, сама модель этого сделать не может
-          @entry.visibility = current_user.tlog_settings.default_visibility if @new_record
+          if @new_record
+            @entry.visibility = current_user.tlog_settings.default_visibility
+            @entry.visibility = 'public' unless current_user.is_allowed_visibility?(@entry.visibility)
+          end
         end
         @attachment = Attachment.new
       end
 
+      require 'pp'
+      puts @entry.visibility
+      pp @entry
       render :action => 'edit'
     rescue ActiveRecord::RecordInvalid => e
       logger.debug "entry is not valid for some reason"
