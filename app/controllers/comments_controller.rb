@@ -46,10 +46,6 @@ class CommentsController < ApplicationController
       # автоматически подписываем пользователя если на комментарии к этой записи если он еще не подписан
       @entry.subscribers << current_user if current_user && current_user.comments_auto_subscribe? && @entry.user_id != current_user.id && !@entry.subscribers.map(&:id).include?(current_user.id)
       
-      # update watchers for this entry (this now includes current user who commented)
-      @entry.reload
-      # @entry.try_watchers_update
-      
       respond_to do |wants|
         wants.html { redirect_to user_url(@entry.author, entry_path(@entry)) }
         wants.js { render :update do |page|
