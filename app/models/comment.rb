@@ -114,6 +114,11 @@ class Comment < ActiveRecord::Base
     (self.entry.subscribers - users).each do |u|
       Emailer.deliver_comment_to_subscriber(current_service, u, self) if u.is_emailable? && u.email_comments? && u.id != self.user_id
     end
+    
+    # update watchers
+    self.entry.try_watchers_update
+    
+    true
   end
 
   # do the same delivery, but asynchronously

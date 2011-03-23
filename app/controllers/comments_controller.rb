@@ -48,7 +48,7 @@ class CommentsController < ApplicationController
       
       # update watchers for this entry (this now includes current user who commented)
       @entry.reload
-      @entry.try_watchers_update
+      # @entry.try_watchers_update
       
       respond_to do |wants|
         wants.html { redirect_to user_url(@entry.author, entry_path(@entry)) }
