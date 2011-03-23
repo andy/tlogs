@@ -36,7 +36,7 @@ class User
       (1.year...100.years) => { :mainpageable_entries => nil, :voteable_entries => nil }
     }
 
-    age   = 2.months # Time.now - self.created_at
+    age   = Time.now - self.created_at
     limit = limits.find { |l| l[0].include?(age) }[1]
   end
   

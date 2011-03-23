@@ -26,7 +26,9 @@
 							  limit = current_site.visibility_limit
 							  if limit[:mainpageable_entries]
 							%>
-							<div class='visibility_comments'><b>Важно!</b> Вы можете публиковать не более <%= limit[:mainpageable_entries] %> <%= Russian.p(limit[:mainpageable_entries], 'записи', 'записей', 'записей') %> в прямой эфир, и не более <%= limit[:voteable_entries] %> <%= Russian.p(limit[:voteable_entries], 'записи', 'записей', 'записей') %> с голосованием в течение 24-х часов.</div>
+							<div class='visibility_comments'><b>Важно!</b> Вы можете публиковать не более <%= limit[:mainpageable_entries] %> <%= Russian.p(limit[:mainpageable_entries], 'записи', 'записей', 'записей') %> в прямой эфир, и не более <%= limit[:voteable_entries] %> <%= Russian.p(limit[:voteable_entries], 'записи', 'записей', 'записей') %> с голосованием в течение 24-х часов. Публикации в личный тлог <b>никак не ограничиваются</b>.</div>
+							<% else %>
+							  <div class='visibility_comments'><b>Жизнь удалась.</b> Вы никак не ограничены в количестве публикаций в прямой эфир.</div>
 						  <% end %>
 						<% end %>
 					</div>
