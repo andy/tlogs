@@ -8,6 +8,8 @@
 
 	<%= render(:partial => 'globals/tastyradio') if params[:action] == 'live' || params[:action] == 'last' || (params[:controller] == 'main' && params[:action] == 'index') %>
 	
+	<%= render(:partial => 'globals/adsense') if params[:action] == 'news' || params[:action] == 'last' || params[:action] == 'live' %>
+	
 	<%#= render(:partial => 'globals/bookmate') if params[:action] == 'live' || params[:action] == 'last' %>
 <% end %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"

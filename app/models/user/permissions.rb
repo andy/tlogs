@@ -27,6 +27,19 @@ class User
     self.is_confirmed? && !self.email.blank? && !self.is_disabled?
   end
   
+  def visibility_limit
+    # limits
+    limits = {
+      (0..3.months) => { :mainpageable_entries => 3, :voteable_entries => 1 },
+      (3.months...6.months) => { :mainpageable_entries => 6, :voteable_entries => 2 },
+      (6.months...1.year) => { :mainpageable_entries => 50, :voteable_entries => 10 },
+      (1.year...100.years) => { :mainpageable_entries => nil, :voteable_entries => nil }
+    }
+
+    age   = 2.months # Time.now - self.created_at
+    limit = limits.find { |l| l[0].include?(age) }[1]
+  end
+  
   def allowed_visibilities
     allow  = Entry::VISIBILITY.keys
     reject = []
@@ -38,9 +51,11 @@ class User
     
     mainpageable_entries = entries.select { |e| e.is_mainpageable? }.length
     voteable_entries     = entries.select { |e| e.is_voteable? }.length
+    
+    limit = self.visibility_limit
 
-    reject << [:mainpageable, :voteable] if mainpageable_entries >= 3
-    reject << :voteable if voteable_entries >= 1
+    reject << [:mainpageable, :voteable] if limit[:mainpageable_entries] && mainpageable_entries >= limit[:mainpageable_entries]
+    reject << :voteable if limit[:voteable_entries] && voteable_entries >= limit[:voteable_entries]
 
     allow - reject.flatten
   end
