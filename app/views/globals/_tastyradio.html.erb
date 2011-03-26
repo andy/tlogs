@@ -11,7 +11,7 @@
 
     <% radio = User.find_by_url('radio')
       announce_entries = radio.entries.count_tagged_with('announce', :include_private => true)
-      if announce_entries > 0
+      if announce_entries > 0 && false
         announces = radio.entries.find_tagged_with('announce', :limit => 5, :order => 'entries.id DESC')
     %>
     <br/>

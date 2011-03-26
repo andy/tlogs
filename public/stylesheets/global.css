@@ -1903,7 +1903,7 @@ div.main_page {
 }
 
 * html div.main_page {
-	background:url("/images/bg/waves.gif");
+	background:url("/images/bg_bg_orange.gif");
 	height:100%;
 }
 
@@ -1963,7 +1963,7 @@ div.popular a {
 
 .register_enter, .register_enter a {
 	color:white!important;
-	
+/*	color:black!important;*/
 }
 .live a:hover, .popular a:hover {
 	background:#eef9ff;
@@ -1971,7 +1971,7 @@ div.popular a {
 
 
 body.main_page {
-	background:url("/images/bg/waves.gif") fixed;
+	background:url("/images/bg_bg_orange.gif") fixed;
 }
 
 .main_rounded_holder {
