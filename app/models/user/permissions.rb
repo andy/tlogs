@@ -12,9 +12,9 @@ class User
     [1, 2].include?(self.id)
   end
   
-  # moderators (admins + astramak)
+  # moderators (admins + no one yet)
   def is_moderator?
-    is_admin? || [9471].include?(self.id)
+    is_admin?
   end
   
   # пользователь выключен, анонимен, либо имеет неподтвержденный емейл адрес
