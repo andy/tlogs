@@ -22,7 +22,7 @@
 				<%= f.text_area :comment, :class => 'comment_body resizable' %>
 				<%= tasty_error_message_on 'comment', 'comment' %>
 			</label>
-			<div id='allowed_html_tags'>разрешенные теги: b i big small a s img</div>
+			<div id='allowed_html_tags'>разрешенные теги: b, i, a, s и img</div>
 			<%= submit_to_remote "button", "Предпросмотр", :url => service_url(anonymous_path(:action => :preview, :id => @entry.id)), :before => "$('#{@entry.dom_id(:ajax_spinner)}').show(); remote_request_started('generate_preview', 'Подготавливаем ...');", :complete => "$('#{@entry.dom_id(:ajax_spinner)}').hide(); remote_request_finished('generate_preview', 'Предпросмотр');", :html => { :id => 'generate_preview', :class => 'button' } %>&nbsp;
 		<%= submit_tag 'Отправить комментарий', :id => 'comment_submit_button', :class => 'comment_send' %>
 		<%= image_tag 'ajax-small-loader.gif', :size => '15x15', :style => 'display: none;', :id => @entry.dom_id(:ajax_spinner) %>

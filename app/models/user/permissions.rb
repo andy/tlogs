@@ -30,10 +30,9 @@ class User
   def visibility_limit
     # limits
     limits = {
-      (0..3.months) => { :mainpageable_entries => 3, :voteable_entries => 1 },
-      (3.months...6.months) => { :mainpageable_entries => 6, :voteable_entries => 2 },
-      (6.months...1.year) => { :mainpageable_entries => 50, :voteable_entries => 10 },
-      (1.year...100.years) => { :mainpageable_entries => nil, :voteable_entries => nil }
+      (0..3.weeks) => { :mainpageable_entries => 3, :voteable_entries => 1 },
+      (3.weeks...4.weeks) => { :mainpageable_entries => 6, :voteable_entries => 2 },
+      (4.weeks...100.years) => { :mainpageable_entries => nil, :voteable_entries => nil }
     }
 
     age   = Time.now - self.created_at
