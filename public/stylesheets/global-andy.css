@@ -144,3 +144,7 @@ form.donation input.submit_donation { margin-top: 20px; margin-left: 380px; }
 .main_page .sidebar_holder #tastyradio .radioannounce_header { font-weight: bold; }
 .main_page .sidebar_holder #tastyradio abbr.timeago { background-color: white; padding: 0 2px; font-weight: bold;;}
 .main_page .sidebar_holder #tastyradio .radioannounce { margin-bottom: 5px; }
+
+/* conversations & heart */
+#pref_friends_rel .pref_friends_control div.pref_friends_convos { font-size: 11px; margin: 0; padding: 0; position: absolute; top: -35px; }
+#pref_friends_rel .pref_friends_control div.pref_friends_convos a { font-size: 11px; text-decoration: underline!important; }
