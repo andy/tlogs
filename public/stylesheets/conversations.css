@@ -9,13 +9,14 @@
 
 
 /* conversations */
-.convos .conversations .conversation { margin: 0 4px 0px 4px; padding: 10px 31px 10px 31px; }
+.convos .conversations .conversation { margin: 0 4px 0px 4px; padding: 10px 31px 0px 31px; }
 .convos .conversations .conversation_spacer { margin: 0px; padding: 5px 15px; }
 .convos .conversations .conversation_spacer hr { border: 0px; border-top: 1px solid #ddd; }
 .convos .conversation_subscribe_controls { position: absolute; vertical-align:middle; top: -17px; left: -26px;}
 .convos .conversation .showonhover { display: none; }
 
 .convos .conversation .body { font-size: 14px; font-family: Georgia; margin-bottom: 5px; width: 460px; cursor: hand; cursor: pointer; }
+.convos .conversation .body p { margin-bottom: 10px; }
 .convos .conversation .body p.italic { font-style: italic; }
 .convos .conversation .reply { position: absolute; left: -20px; }
 .convos .conversation .unviewed { position: absolute; left: -20px; }
@@ -25,10 +26,11 @@
 /* conversation */
 .convos .messages { margin: 0 4px 0px 4px; padding: 0px; }
 .convos .messages .showonhover { display: none; }
-.convos .messages .message { margin: 0px; padding: 10px 31px 10px 31px; }
+.convos .messages .message { margin: 0px; padding: 10px 31px 0px 31px; }
 .convos .messages .message_spacer { margin: 0px; padding: 5px 30px; }
 .convos .messages .message_spacer hr { border: 0px; border-top: 1px solid #eee; }
 .convos .messages .message .body { font-size: 14px; font-family: Georgia; margin-bottom: 5px; width: 460px; }
+.convos .messages .message .body p { margin-bottom: 10px; }
 .convos .messages .message .message_controls { font-size: 10px; font-family: 'Georgia'; position: relative; top: 4px;}
 .convos .messages .message .message_controls .delete { position: absolute; left: 473px; }
 

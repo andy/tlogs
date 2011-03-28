@@ -32,7 +32,7 @@ message = conversation.messages.last
 
   <% content_tag :div, :class => 'body', :link => user_url(current_site, conversation_path(conversation)) do %>
     <% if show_message %>
-      <%= simple_tasty_format(auto_link(show_message.body)) %>
+      <%= simple_tasty_format(auto_link(h(show_message.body))) %>
     <% else %>
       <p class='italic'>Вы отправили сообщение, но <%= conversation.recipient.gender('он', 'она') %> на него пока не ответил<%= conversation.recipient.gender('', 'а') %></p>
     <% end %>
