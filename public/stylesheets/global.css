@@ -231,6 +231,7 @@ div.post_name a {
 }
 .sidebar_right .content{
 	padding-left:58px;
+	width:220px!important;
 }
 *html .main_page .sidebar {
 	
