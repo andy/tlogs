@@ -1,0 +1,50 @@
+<% @title = 'Программа эфира тейсти радио' %>
+<div class='onair'>
+
+  <%= flash_div %>
+
+  <div class='entry_pg'>
+    <%= paginate @radio_schedules if @radio_schedules.current_page > 1 %>
+  </div>
+
+  <div id='new_radio_schedule_block'>
+    
+    <%= link_to_function 'Добавить новую передачу', "jQuery('#new_radio_schedule').toggle();", :id => 'new_radio_schedule_showform' %>
+    <%= render :partial => 'form' %>
+  </div>
+
+  <%
+  last_end_at = nil
+  emptyslot   = nil
+  @radio_schedules.each_with_index do |schedule, index|
+    break if schedule.onair?
+    
+    emptyslot = index and break if last_end_at && (schedule.air_at.to_i..last_end_at.to_i).include?(Time.now.to_i)
+    
+    last_end_at = schedule.end_at
+    
+  end
+  
+  
+  @radio_schedules.each_with_index do |schedule, index| %>
+    <%= render :partial => 'schedule_blank' if emptyslot && emptyslot == index %>
+    <%= render :partial => 'schedule', :locals => { :schedule => schedule } %>
+  <% end %>
+
+  <div class='entry_pg'>
+    <%= paginate @radio_schedules %>
+  </div>
+
+</div>
+
+<script type='text/javascript'>
+  jQuery(document).ready(function() {
+    // hover on conversations to show delete 
+    jQuery(".radio_schedule").hover(
+        function() { jQuery(this).find('.showonhover').show(); },
+        function() { jQuery(this).find('.showonhover').hide(); }
+      );
+  
+    jQuery('abbr.timeago').timeago();
+  });
+</script>

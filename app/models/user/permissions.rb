@@ -7,6 +7,10 @@ class User
   ## callbacks
   ## class methods
   ## public methods
+  
+  def self.admins
+    [1, 2]
+  end
 
   def is_admin?
     [1, 2].include?(self.id)

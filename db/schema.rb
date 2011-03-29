@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110312170820) do
+ActiveRecord::Schema.define(:version => 20110329131105) do
 
   create_table "attachments", :force => true do |t|
     t.integer "entry_id",     :default => 0,  :null => false
@@ -242,6 +242,15 @@ ActiveRecord::Schema.define(:version => 20110312170820) do
 
   add_index "mobile_settings", ["keyword"], :name => "index_mobile_settings_on_keyword", :unique => true
   add_index "mobile_settings", ["user_id"], :name => "index_mobile_settings_on_user_id", :unique => true
+
+  create_table "radio_schedules", :force => true do |t|
+    t.integer  "user_id",    :null => false
+    t.string   "body",       :null => false
+    t.datetime "air_at",     :null => false
+    t.datetime "end_at",     :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "relationships", :force => true do |t|
     t.integer  "user_id",                                  :default => 0, :null => false

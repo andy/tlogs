@@ -1,0 +1,2 @@
+page.visual_effect :highlight, dom_id(@radio_schedule), { :duration => 0.3 }
+page.visual_effect :fade, dom_id(@radio_schedule), { :duration => 0.3 }

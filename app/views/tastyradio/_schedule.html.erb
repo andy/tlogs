@@ -1,0 +1,19 @@
+<% div_for schedule, :class => schedule.onair? ? 'radio_schedule_onair' : nil do %>
+
+  <% if schedule.is_owner?(current_user) %>
+    <div class='radio_schedule_controls showonhover'>
+      <%= link_to_remote image_tag('delete.gif', :size => '9x11', :alt => '[x]'), { :url => service_url(tastyradio_path(schedule)).downcase, :method => :delete, :confirm => 'Действительно удалить передачу из эфира?' }, :class => 'radio_schedule_delete' %>
+    </div>
+  <% end %>
+
+  <div class='radio_schedule_air_at'>
+    <%= Russian::strftime(schedule.air_at, "%A, %d %B в %H:%M") %>, <%= ((schedule.end_at - schedule.air_at) / 1.minute).to_i %> минут
+  </div>
+
+  <%= content_tag :p, schedule.body, :class => 'radio_schedule_body' %>
+
+  <div class='radio_schedule_owner'>
+    &mdash; <%= link_to_tlog(schedule.user) %>, <%= timeago(schedule.created_at) %>
+  </div>
+
+<% end %>

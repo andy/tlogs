@@ -88,4 +88,36 @@ END
     options[:class] ||= 'timeago'
     content_tag(:abbr, Russian::strftime(time, '%d %B %Y в %H:%M'), options.merge(:title => time.getutc.iso8601))
   end
+  
+  def say_schedule_in_words(time)
+    distance    = (time - Time.now).round
+    in_minutes  = (distance / 1.minute).round
+    
+    if distance > 0
+      # future
+      if distance <= 1.hour
+        # через час или через 30 минут
+        if distance < 5.minutes
+          "через пару минут"
+        elsif distance <= 1.hour
+          "через #{in_minutes} #{Russian::p(in_minutes, "минуту", "минуты", "минут")}"
+        end
+      else
+        # точное время
+        if time.day == Time.now.day && distance < 1.day
+          Russian::strftime(time, "в %H:%M")
+        elsif time.day == Time.now.tomorrow.day && distance < 1.day && time.hour < 4
+          # поздно ночью
+          Russian::strftime(time, "ночью в %H:%M")
+        elsif time.day == Time.now.tomorrow.day
+          Russian::strftime(time, "завтра в %H:%M")
+        else
+          Russian::strftime(time, "%d %B в %H:%M")
+        end
+      end
+    else
+      # past
+      "уже была"
+    end
+  end
 end

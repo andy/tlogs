@@ -2,29 +2,20 @@
   <h2><span>Тейсти Радио</span></h2>
   
   <div id='tastyradio'>
-    <div class='radiocontrol'>
+    <% RadioSchedule.onair.each do |schedule| %>
+      <p>
+        <%= content_tag :span, schedule.onair? ? 'сейчас' : say_schedule_in_words(schedule.air_at), :class => "strong#{' highlight' if schedule.onair?}" %>
+        <%= content_tag :span, h(schedule.body) %>
+      </p>    
+    <% end %>
+    
+    <div id='tastyradio_holder'>
 	    <p>
-	      <%= link_to "Включить", service_url(tastyradio_path), :target => '_blank', :id => 'tastyradio_link' %>
+	      <%= link_to "Включить радио", service_url(tastyradio_index_path), :target => '_blank', :id => 'tastyradio_link' %>
 	      <%= image_tag 'popout.jpg', :class => 'popout', :title => 'Ссылка откроется в новом окне' %>
+	      <%= link_to '(edit)', service_url(all_tastyradio_path), :title => 'Редактировать программу передач', :id => 'tastyradio_edit' if current_user && RadioSchedule.djs.include?(current_user.id) %>
 	    </p>
 	  </div>
-
-    <% radio = User.find_by_url('radio')
-      announce_entries = radio.entries.count_tagged_with('announce', :include_private => true)
-      if announce_entries > 0 && false
-        announces = radio.entries.find_tagged_with('announce', :limit => 5, :order => 'entries.id DESC')
-    %>
-    <br/>
-    <div class='radioannounces'>
-      <p class='radioannounce_header'>Анонсы:</p>
-	    <% announces.each do |entry| %>
-	      <div class='radioannounce'>
-	        <%= white_list_html entry.data_part_1, :flash_width => 200, :link_target => '_blank' %>
-	        <span><%= timeago(entry.created_at) %></span>
-	      </div>
-      <%  end %>
-    </div>
-    <% end %>
   </div>
   
   <script type='text/javascript'>

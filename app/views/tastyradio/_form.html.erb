@@ -1,0 +1,40 @@
+<%
+  @radio_schedule ||= RadioSchedule.new
+%>
+
+<% form_for @radio_schedule, :url => tastyradio_index_path, :html => { :method => :post, :style => request.get? ? 'display: none' : nil } do |f| %>
+  <table cellspacing='5' cellpadding='5'>
+    <tr class='rs_air_at'>
+      <td width='40%' style='text-align: right; vertical-align: middle;'>
+        <label>Начало:</label>
+      </td>
+      <td>
+        <%= f.datetime_select :air_at, :default => 1.hour.from_now, :discard_year => true %>
+      </td>
+    </tr>
+    <tr class='rs_duration'>
+      <td style='text-align: right; vertical-align: middle;'>
+        <label for='radio_schedule_duration'>Продолжительность:</label>
+      </td>
+      <td>
+        <%= f.text_field :duration, :style => 'width: 5em' %> минут
+      </td>
+    </tr>
+    <tr class='rs_body'>
+      <td style='text-align: right; vertical-align: middle;'>
+        <label for='radio_schedule_body'>Описание:</label>
+      </td>
+      <td>
+        <%= f.text_field :body, :style => 'width: 90%' %>
+      </td>
+    </tr>
+    <tr class='rs_submit'>
+      <td></td>
+      <td style='text-align: right'>
+        <%= link_to_function 'отменить', "jQuery('#new_radio_schedule').hide(); jQuery('#new_radio_schedule_showform').show();" if request.get? %>
+        <%= link_to 'отменить', service_url(all_tastyradio_path) if request.post? %>
+         или <%= f.submit 'Сохранить', :style => 'margin-right: 20px; font-size: 12px;', :class => 'button' %>
+      </td>
+    </tr>
+  </table>
+<% end %>

@@ -136,15 +136,36 @@ form.donation input.submit_donation { margin-top: 20px; margin-left: 380px; }
 #footer a img.f_vkontakte { vertical-align: bottom; }
 
 /* tasty radio */
-.main_page .sidebar_holder #tastyradio p {  }
+.main_page .sidebar_holder #tastyradio { line-height: 1.6em!important;}
+.main_page .sidebar_holder #tastyradio p { display: block; background: transparent; margin-bottom: 4px; }
+.main_page .sidebar_holder #tastyradio #tastyradio_holder { margin-top: 1em; }
+.main_page .sidebar_holder #tastyradio #tastyradio_holder p { display: inline; background-color: white;}
+.main_page .sidebar_holder #tastyradio a#tastyradio_edit { background: transparent!important; font-size: 11px; font-style: italic;}
+.main_page .sidebar_holder #tastyradio p a { background-color: white; }
+.main_page .sidebar_holder #tastyradio p span { background-color: white; padding: 0 2px;}
 .main_page .sidebar_holder #tastyradio p img { background-color: white; }
 .main_page .sidebar_holder #tastyradio p img.popout { padding-left: 5px; }
 .main_page .sidebar_holder #tastyradio p img.play { padding-right: 5px; }
 
-.main_page .sidebar_holder #tastyradio .radioannounce_header { font-weight: bold; }
-.main_page .sidebar_holder #tastyradio abbr.timeago { background-color: white; padding: 0 2px; font-weight: bold;;}
-.main_page .sidebar_holder #tastyradio .radioannounce { margin-bottom: 5px; }
-
 /* conversations & heart */
 #pref_friends_rel .pref_friends_control div.pref_friends_convos { font-size: 11px; margin: 0; padding: 0; position: absolute; top: -35px; }
 #pref_friends_rel .pref_friends_control div.pref_friends_convos a { font-size: 11px; text-decoration: underline!important; }
+
+/* radioedit */
+.new_radio_schedule { font-size: 11px; text-align: left; padding: 20px; }
+.new_radio_schedule h3 { padding-top: 0px; margin-top: 0px;}
+.new_radio_schedule table { width: 100%; }
+
+.radio_schedule { margin: 20px; text-align: center;padding: 10px; }
+.radio_schedule .showonhover { display: none; }
+.radio_schedule_onair { background-color: #ccffcc; }
+.radio_schedule .radio_schedule_air_at { font-size: 11px; }
+.radio_schedule .radio_schedule_body { font-size: 16px; font-family: Georgia; }
+.radio_schedule .radio_schedule_owner { font-size: 9px; }
+.radio_schedule .radio_schedule_owner a { color: gray!important;}
+
+#new_radio_schedule_block { text-align: center; }
+a#new_radio_schedule_showform { font-size: 12px; color: gray; }
+
+.radio_schedule_controls { position: relative; }
+.radio_schedule_controls .radio_schedule_delete { position: absolute; left: 460px; }
