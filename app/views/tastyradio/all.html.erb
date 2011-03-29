@@ -18,13 +18,11 @@
   emptyslot   = nil
   @radio_schedules.each_with_index do |schedule, index|
     break if schedule.onair?
-    
+
     emptyslot = index and break if last_end_at && (schedule.air_at.to_i..last_end_at.to_i).include?(Time.now.to_i)
-    
+
     last_end_at = schedule.end_at
-    
   end
-  
   
   @radio_schedules.each_with_index do |schedule, index| %>
     <%= render :partial => 'schedule_blank' if emptyslot && emptyslot == index %>
@@ -48,3 +46,18 @@
     jQuery('abbr.timeago').timeago();
   });
 </script>
+
+<% content_for :sidebar_right do %>
+  <div class='section'>
+		<h2><span>Что это?</span></h2>
+		
+		<div>
+		  <p>Это админка для эфирной информации по тейсти радио. Все программы, добавленные на этой странице, будут показываться в боковой панели на сайте.</p> <br/><br/>
+		  <p>Сюда имеют доступ все пользователи, которых @radio добавил к себе в друзья.</p> <br/><br/>
+		  <p>Зеленый блок означает программу, которая сейчас идет в эфире.</p> <br/><br/>
+		  <p>Вы можете удалять только программы добавленные вами.</p>
+		</div>
+	</div>
+	
+	<%= render :partial => 'globals/tastyradio' %> 
+<% end %>

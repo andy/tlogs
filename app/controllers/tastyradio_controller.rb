@@ -13,7 +13,7 @@ class TastyradioController < ApplicationController
   end
   
   def all
-    @radio_schedules = RadioSchedule.all.paginate :page => params[:page], :per_page => 2
+    @radio_schedules = RadioSchedule.all.paginate :page => params[:page], :per_page => 15
   end
   
   def create
