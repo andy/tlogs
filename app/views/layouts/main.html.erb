@@ -6,10 +6,10 @@
 		</form>
 	</div>
 
-	<%= render(:partial => 'globals/tastyradio') if params[:action] == 'live' || params[:action] == 'last' || (params[:controller] == 'main' && params[:action] == 'index') %>
+	<%= render(:partial => 'globals/tastyradio') if params[:action] == 'live' || params[:action] == 'last' || (params[:controller] == 'main' && params[:action] == 'index') || params[:controller] == 'anonymous' %>
 	
 	<%#= render(:partial => 'globals/adsense') if params[:action] == 'news' || params[:action] == 'last' || params[:action] == 'live' %>
-	<%= render(:partial => 'globals/dfp240x400') if params[:action] == 'news' || params[:action] == 'last' || params[:action] == 'live' %>
+	<%= render(:partial => 'globals/dfp240x400') if params[:action] == 'news' || params[:action] == 'last' || params[:action] == 'live'  || (params[:controller] == 'anonymous' && params[:action] == 'index') %>
 	<%#= render(:partial => 'globals/bookmate_quotes') if params[:action] == 'news' || params[:action] == 'last' || params[:action] == 'live' %>
 	<%#= render(:partial => 'globals/bookmate') if params[:action] == 'live' || params[:action] == 'last' %>
 <% end %>
