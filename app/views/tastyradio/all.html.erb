@@ -54,10 +54,21 @@
 		<div>
 		  <p>Это админка для эфирной информации по тейсти радио. Все программы, добавленные на этой странице, будут показываться в боковой панели на сайте.</p> <br/><br/>
 		  <p>Сюда имеют доступ все пользователи, которых @radio добавил к себе в друзья.</p> <br/><br/>
-		  <p>Зеленый блок означает программу, которая сейчас идет в эфире.</p> <br/><br/>
-		  <p>Вы можете удалять только программы добавленные вами.</p>
+		  <p><span class='strong'>Зеленый блок</span> означает программу, которая сейчас идет в эфире.</p> <br/><br/>
+		  <p>Вы можете <span class='strong'>удалять</span> только программы добавленные вами.</p> <br/><br/>
+		  <p><span class='strong'>Время</span> нужно указывать московское. К сожалению, пока только так.</p>
 		</div>
 	</div>
 	
 	<%= render :partial => 'globals/tastyradio' %> 
+<% end %>
+
+<% content_for :sidebar_left do %>
+  <div class='section sidebar_others'>
+    <h2><span>Кто мы?</span></h2>
+    
+    <% @radio.public_friends.each do |user| %>
+      <%= link_to h(user.url), user_url(user), :class => (current_user.id == user.id) ? 'highlight' : nil %>
+    <% end %>
+  </div>
 <% end %>
