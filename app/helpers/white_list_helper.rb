@@ -96,12 +96,16 @@ module WhiteListHelper
 
       # check wether this is allowed
       if attrs['src'] && allowed_flash_domain?(attrs['src'])
+        # scale height?
+        scale_height = true
+        scale_height = false if attrs['src'].include?('prostopleer.com')
+        
         width = (attrs['width'] && attrs['width'].ends_with?('%')) ? (flash_width * attrs['width'].to_i / 100) : (attrs['width'].to_i || flash_width)
         # width  = attrs['width'].to_i || flash_width
         height = attrs['height'].to_i || flash_width
 
         if width > flash_width
-          attrs['height'] = ((flash_width / width.to_f) * height.to_f).to_i
+          attrs['height'] = scale_height ? ((flash_width / width.to_f) * height.to_f).to_i : height
           attrs['width']  = flash_width
         end
         
@@ -112,38 +116,45 @@ module WhiteListHelper
     end
     
     
-    (doc/"//object").each do |flash|
-      
+    (doc/"//object").each do |flash|      
       width = (flash.attributes['width'] && flash.attributes['width'].ends_with?('%')) ? (flash_width * flash.attributes['width'].to_i / 100) : (flash.attributes['width'].to_i || flash_width)
       height = flash.attributes['height'].to_i || flash_width
-      src    = flash.attributes['src']
-      
-      if width > flash_width
-        height = ((flash_width / width.to_f) * height.to_f).to_i
-        width = flash_width
-      end
 
       # параметры по-умолчанию для флеша
       embed_params = {'allowfullscreen' => 'false', 'allowscriptaccess' => 'never'}
-      
-      # для белых доменов, разрешаем полноэкранный режим
-      embed_params['allowfullscreen'] = 'true' if allowed_flash_domain?(src)
 
       # processing params
       (flash/"//param").each do |param|
         if valid_flash_params.include?(param.attributes['name'].downcase.to_s)
           embed_params[param.attributes['name'].downcase.to_s] = param.attributes['value']
         end
-      end      
-      src = embed_params["movie"] if src.blank?
-      embed_params['movie'] = src if !src.blank? && embed_params['movie'].blank?
+      end
+      src = embed_params["movie"]
+      src ||= (flash/"//embed[@src]").attr('src') rescue nil
 
-      text = "<object width='#{width}' height='#{height}'>#{embed_params.map{|name, value| "<param name='#{name}' value='#{value}' >"}.join}<embed src='#{src}' type='application/x-shockwave-flash' #{embed_params.except('movie').map{|name, value| "#{name}='#{value}'"}.join(" ")} width='#{width}' height='#{height}'></object>"
+      if src
 
-      if flash.css_path.include?(" p ") || flash.css_path.include?("p:")
-        flash.swap(text)
+        # для белых доменов, разрешаем полноэкранный режим
+        embed_params['allowfullscreen'] = 'true' if allowed_flash_domain?(src)
+
+        # scale height?
+        scale_height = true
+        scale_height = false if src.include?('prostopleer.com')
+      
+        if width > flash_width
+          height = scale_height ? ((flash_width / width.to_f) * height.to_f).to_i : height
+          width = flash_width
+        end
+
+        text = "<object width='#{width}' height='#{height}'>#{embed_params.map{|name, value| "<param name='#{name}' value='#{value}' >"}.join}<embed src='#{src}' type='application/x-shockwave-flash' #{embed_params.except('movie').map{|name, value| "#{name}='#{value}'"}.join(" ")} width='#{width}' height='#{height}'></object>"
+
+        if flash.css_path.include?(" p ") || flash.css_path.include?("p:")
+          flash.swap(text)
+        else
+          flash.swap("<p>#{text}</p>")
+        end
       else
-        flash.swap("<p>#{text}</p>")
+        flash.swap("Ошибка: неверные данные во вставляемом коде.")
       end
     end
     

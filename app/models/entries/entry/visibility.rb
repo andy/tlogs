@@ -45,7 +45,12 @@ class Entry
       'magicwish.ru',
       'lovetree.rulezz.ru',
       'lleo.aha.ru/test/vicont',
-      'rupoll.com'
+      'rupoll.com',
+      'life-sense.ru',
+      'alolo.ru',
+      'chedelat.ru',
+      'nefart.ru',
+      'http://www.formspring.me'
       ]
     
     bads.find { |bad| contents.include?(bad) } ? true : false    
