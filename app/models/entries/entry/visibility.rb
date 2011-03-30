@@ -2,6 +2,8 @@ class Entry
   # fix visibility for entries that are over limit
   before_validation do |entry|
     entry.visibility = 'public' if entry.id.nil? && !entry.author.is_allowed_visibility?(entry.visibility)
+    
+    entry.visibility = 'public' if %w(mainpageable voteable).include?(entry.visibility) && entry.unwanted_content?
   end
 
   # видимость записи, @entry.visibility - это виртуальное поле, options: 0 - is_voteable, 1 - is_mainpageable, 2 - is_private
@@ -33,5 +35,19 @@ class Entry
       # is_mainpageable сбрасывается, если у пользователя отсутствует этот флаг
       self.is_mainpageable = false if self.author && !self.author.is_mainpageable?
     end
+  end
+  
+  def unwanted_content?
+    contents = [self.data_part_1, self.data_part_2, self.data_part_3].compact.join("\n")
+    
+    bads = [
+      'testkub.ru',
+      'magicwish.ru',
+      'lovetree.rulezz.ru',
+      'lleo.aha.ru/test/vicont',
+      'rupoll.com'
+      ]
+    
+    bads.find { |bad| contents.include?(bad) } ? true : false    
   end
 end
