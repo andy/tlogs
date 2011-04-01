@@ -100,7 +100,7 @@ body.body_layout_main div#wrapper {
 }
 
 .l_2 {
-	background:url(/images/becool.gif) ;
+	background:url(/images/bg_octo.gif) ;
 	text-align:center;
 	padding-top:30px;
 }
@@ -306,7 +306,7 @@ div.tlog {
 	height:100%;
 }
 div.l_2 {
-	background:url("/images/becool.gif");
+	background:url("/images/bg_octo.gif");
 	min-height:100%;
 	position:relative;
 	bottom:0;
@@ -1904,7 +1904,7 @@ div.main_page {
 }
 
 * html div.main_page {
-	background:url("/images/bg_bg_orange.gif");
+	background:url("/images/becool.gif");
 	height:100%;
 }
 
@@ -1972,7 +1972,7 @@ div.popular a {
 
 
 body.main_page {
-	background:url("/images/bg_bg_orange.gif") fixed;
+	background:url("/images/becool.gif") fixed;
 }
 
 .main_rounded_holder {
@@ -3201,13 +3201,13 @@ img.heart {
 .top_hello {
 	font-size:74%;
 	font-weight:normal;
-/*	color: #404040;*/
+	color: #404040;
 }
 .top_hello a {
 	border:none!important;
 	background:none;
-/*	color:#404040!important;*/
-	color:white!important;
+	color:#404040!important;
+/*	color:white!important;*/
 }
 .tl {
 	/*width:246px;
