@@ -45,7 +45,7 @@
 				<%= menu_item 'Анонимки', :anonymous, %w(anonymous/*) %>
 				<%= menu_item "Моё", :my, %w(main/my main/last_personalized) if current_user %>
 				<%= menu_item 'Прямой эфир', :live %>
-				<%= menu_item 'День из жизни', :random %>
+				<%= menu_item "День из жизни#{current_user ? ' ' + h(current_user.url) : ''}", :random %>
 			</ul>
 		</div>
 	</div>

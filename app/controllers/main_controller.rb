@@ -154,16 +154,20 @@ class MainController < ApplicationController
     if params[:entry_id]
       entry = Entry.find_by_id params[:entry_id]
       redirect_to(service_url(main_path)) and return if entry.nil?
-    end
-      
-    max_id = Entry.maximum(:id)
-    unless entry
-      10.times do
-        entry_id = Entry.find_by_sql("SELECT id FROM entries WHERE id >= #{rand(max_id)} AND is_private = 0 LIMIT 1").first[:id]
-        entry = Entry.find entry_id if entry_id
-        break if entry
+    elsif current_user
+      entry = current_user.entries.last
+      redirect_to(service_url(main_path)) and return if entry.nil?
+    else
+      max_id = Entry.maximum(:id)
+      unless entry
+        10.times do
+          entry_id = Entry.find_by_sql("SELECT id FROM entries WHERE id >= #{rand(max_id)} AND is_private = 0 LIMIT 1").first[:id]
+          entry = Entry.find entry_id if entry_id
+          break if entry
+        end
       end
     end
+
     if entry
       @time = entry.created_at
       @user = entry.author
