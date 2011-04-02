@@ -50,7 +50,8 @@ class Entry
       'alolo.ru',
       'chedelat.ru',
       'nefart.ru',
-      'http://www.formspring.me'
+      'formspring.me/',
+      'beon.ru/test'
       ]
     
     bads.find { |bad| contents.include?(bad) } ? true : false    
