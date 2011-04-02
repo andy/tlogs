@@ -49,5 +49,7 @@ class EntryRating < ActiveRecord::Base
       else
         self.is_great = self.is_good = self.is_everything = false
       end
+      
+      true
     end
 end
