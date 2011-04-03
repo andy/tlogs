@@ -51,7 +51,8 @@ class Entry
       'chedelat.ru',
       'nefart.ru',
       'formspring.me/',
-      'beon.ru/test'
+      'beon.ru/test',
+      'summer-breath.com'
       ]
     
     bads.find { |bad| contents.include?(bad) } ? true : false    

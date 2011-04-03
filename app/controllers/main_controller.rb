@@ -154,9 +154,9 @@ class MainController < ApplicationController
     if params[:entry_id]
       entry = Entry.find_by_id params[:entry_id]
       redirect_to(service_url(main_path)) and return if entry.nil?
-    elsif current_user
-      entry = current_user.entries.last
-      redirect_to(service_url(main_path)) and return if entry.nil?
+    # elsif current_user
+    #   entry = current_user.entries.last
+    #   redirect_to(service_url(main_path)) and return if entry.nil?
     else
       max_id = Entry.maximum(:id)
       unless entry
