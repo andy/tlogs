@@ -53,7 +53,8 @@ class Entry
       'formspring.me/',
       'beon.ru/test',
       'summer-breath.com',
-      'uath.org/nev'
+      'uath.org/nev',
+      'sprashivai.ru'
       ]
     
     bads.find { |bad| contents.include?(bad) } ? true : false    
