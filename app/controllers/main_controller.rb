@@ -161,8 +161,12 @@ class MainController < ApplicationController
       max_id = Entry.maximum(:id)
       unless entry
         10.times do
-          entry_id = Entry.find_by_sql("SELECT id FROM entries WHERE id >= #{rand(max_id)} AND is_private = 0 LIMIT 1").first[:id]
-          entry = Entry.find entry_id if entry_id
+          entry_id = Entry.find_by_sql("SELECT id FROM entries WHERE id >= #{rand(max_id)} AND is_private = 0 AND is_mainpageable = 1 LIMIT 1").first[:id]
+          entry = Entry.find(entry_id, :include => :author) if entry_id
+          
+          next if entry.author.is_disabled?
+          # Rails.logger.debug "#{entry.author.url} c #{entry.author.is_confirmed}, d #{entry.author.is_disabled?}, m #{entry.author.is_mainpageable?}"
+          # entry = nil if entry.author.is_disabled? || !entry.author.is_confirmed? || !entry.author.is_mainpageable?
           break if entry
         end
       end
@@ -176,9 +180,9 @@ class MainController < ApplicationController
       @calendar = @user.calendar(@time)
       
       @others = User.find_by_sql("SELECT u.id, u.url, e.id AS day_first_entry_id, count(*) AS day_entries_count FROM users AS u LEFT JOIN entries AS e ON u.id = e.user_id WHERE e.created_at > '#{@time.midnight.to_s(:db)}' AND e.created_at < '#{@time.tomorrow.midnight.to_s(:db)}' AND u.is_confirmed = 1 AND u.entries_count > 1 GROUP BY e.user_id")
+    else  
+      redirect_to service_url(main_path)
     end
-    
-    # redirect_to service_url(main_path)
   end
   
   def robots
