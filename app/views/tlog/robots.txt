@@ -1,2 +1,17 @@
 User-Agent: *
-Disallow: /
+
+#
+# Globally banned urls
+# 
+Disallow: /publish
+Disallow: /settings
+Disallow: /vote
+Disallow: /global
+Disallow: /search
+Disallow: /convos
+Disallow: /messages
+
+#
+# Allow everything else
+#
+Allow: /
