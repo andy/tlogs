@@ -5,6 +5,8 @@ User-Agent: *
 # 
 Disallow: /publish
 Disallow: /settings
+Disallow: /private
+Disallow: /anonymous
 Disallow: /vote
 Disallow: /global
 Disallow: /search
@@ -16,6 +18,7 @@ Disallow: /messages
 #
 Disallow: /entries
 Disallow: /page
+Disallow: /tag
 Disallow: /2007
 Disallow: /2008
 Disallow: /2009

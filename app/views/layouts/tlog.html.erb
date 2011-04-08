@@ -24,16 +24,16 @@
 				</span>
 			</div>
 
-			<div class='sidebar_holder sidebar_tlog_right <%= ' sidebar_is_closed' unless current_site.tlog_settings.sidebar_is_open? %>' id='tlog_sidebar'>
+			<div class='sidebar_holder sidebar_tlog_right <%= ' sidebar_is_closed' unless (current_site.tlog_settings.sidebar_is_open? || is_robot?) %>' id='tlog_sidebar'>
 				<div class='rel'>
-					<div class='sidebar' id='tlog_sidebar_content' style='<%= current_site.tlog_settings.sidebar_is_open? ? 'display: block' : 'display: none' %>'>
+					<div class='sidebar' id='tlog_sidebar_content' style='<%= (current_site.tlog_settings.sidebar_is_open? || is_robot?) ? 'display: block' : 'display: none' %>'>
 						<div class="personal round">
 						  <div class="content">
 								<%= yield :sidebar %>
 						  </div>
 						</div>								
 					</div>
-					<div class='show_sidebar' id='show_sidebar' style='<%= current_site.tlog_settings.sidebar_is_open? ? 'display: none' : 'display: block' %>' onclick='new Effect.Move("show_sidebar", { x: -25, duration: 0.2, afterFinish: function() { $("show_sidebar").hide(); $("tlog_sidebar_content").show(); new Effect.Move("tlog_sidebar", { x: 216, duration: 0.3 }); } });'>i</div>
+					<div class='show_sidebar' id='show_sidebar' style='<%= (current_site.tlog_settings.sidebar_is_open? || is_robot?) ? 'display: none' : 'display: block' %>' onclick='new Effect.Move("show_sidebar", { x: -25, duration: 0.2, afterFinish: function() { $("show_sidebar").hide(); $("tlog_sidebar_content").show(); new Effect.Move("tlog_sidebar", { x: 216, duration: 0.3 }); } });'>i</div>
 				</div>
 			</div>
 		</div>

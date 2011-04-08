@@ -21,11 +21,11 @@
 	</div>
 </div>
 
-<% unless current_site.tlog_settings.about.blank? %>
+<% if is_robot? || !current_site.tlog_settings.about.blank? %>
 	<div class='sidebar_section' id='sidebar_about'>
 		<%= link_to_function "О #{current_site.gender('нём', 'ней')}", "sidebar_toggle('about')", :class => 'sidebar_toggle', :id => 'sidebar_about_link' %>
-		<div class='sidebar_section_content' id='sidebar_about_content' style='display: none'>
-				<%= white_list_entry(current_site.tlog_settings.about) %>
+		<div class='sidebar_section_content' id='sidebar_about_content' style='display: <%= is_robot? ? 'block' : 'none' %>'>
+				<%= white_list_entry(current_site.tlog_settings.about) unless current_site.tlog_settings.about.blank? %>
 				
 				<% unless current_site.faves.size.zero? %>
 					<div id='about_submenu'>
@@ -100,7 +100,7 @@
 <% if current_site.public_friends.size > 0 %>
 	<div class='sidebar_section' id='sidebar_public_friends'>
 		<%= link_to_function 'Друзья', "sidebar_toggle('public_friends')", :class => 'sidebar_toggle', :id => 'sidebar_public_friends_link' %>
-		<div class='sidebar_section_content' id='sidebar_public_friends_content'<%= ' style="display: none"' unless inline_friends %>>
+		<div class='sidebar_section_content' id='sidebar_public_friends_content'<%= ' style="display: none"' if !is_robot? && !inline_friends %>>
 			<% current_site.public_friends.each do |user| %>
 				<%= link_to_tlog(user, nil, :title => user.title, :rel => 'friend') %>
 			<% end %>
@@ -159,7 +159,7 @@
 			</div>
 		</div>
 	<% end %>
-<% end %>
+<% end unless is_robot? %>
 
 <% if current_user && current_user.is_admin? %>
   <div class='sidebar_section'>

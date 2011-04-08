@@ -208,6 +208,8 @@ class TlogController < ApplicationController
   
   
   def robots
+    expires_in 15.days, :public => true
+
     render :file => 'tlog/robots.txt'
   end
   
