@@ -152,8 +152,9 @@ class MainController < ApplicationController
     # ищем публичную запись которую можно еще на главной показать
     entry = nil
     if params[:entry_id]
-      entry = Entry.find_by_id params[:entry_id]
-      redirect_to(service_url(main_path)) and return if entry.nil?
+      entry = Entry.find_by_id(params[:entry_id])
+      
+      redirect_to(service_url(main_path)) and return if entry.nil? || entry.is_disabled? || entry.is_private? || entry.author.is_disabled?
     # elsif current_user
     #   entry = current_user.entries.last
     #   redirect_to(service_url(main_path)) and return if entry.nil?
@@ -164,7 +165,7 @@ class MainController < ApplicationController
           entry_id = Entry.find_by_sql("SELECT id FROM entries WHERE id >= #{rand(max_id)} AND is_private = 0 AND is_mainpageable = 1 LIMIT 1").first[:id]
           entry = Entry.find(entry_id, :include => :author) if entry_id
           
-          next if entry.author.is_disabled?
+          next if entry.author.is_disabled?          
           # Rails.logger.debug "#{entry.author.url} c #{entry.author.is_confirmed}, d #{entry.author.is_disabled?}, m #{entry.author.is_mainpageable?}"
           # entry = nil if entry.author.is_disabled? || !entry.author.is_confirmed? || !entry.author.is_mainpageable?
           break if entry
