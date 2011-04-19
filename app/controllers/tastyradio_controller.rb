@@ -1,8 +1,8 @@
 class TastyradioController < ApplicationController
   before_filter :preload_radio
 
-  before_filter :require_current_user, :except => [:index]
-  before_filter :require_radio_dj, :except => [:index]
+  before_filter :require_current_user, :except => [:index, :data]
+  before_filter :require_radio_dj, :except => [:index, :data]
 
   helper :main
   layout 'main'
