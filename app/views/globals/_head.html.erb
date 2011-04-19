@@ -1,5 +1,6 @@
 <%
   disable_css ||= false unless local_assigns.has_key?(:disable_css) && disable_css
+  enable_mobile ||= false unless local_assigns.has_key?(:enable_mobile) && enable_mobile
 %>
 <!-- template: globals/head -->
 
@@ -37,7 +38,7 @@
 <meta name="MSSmartTagsPreventParsing" content="true">
 <meta http-equiv="imagetoolbar" content="no">
 <meta name="generator" content="tlogs.ru">
-<% if is_mobile? %>
+<% if is_mobile? && enable_mobile %>
 <meta name=”viewport” content=”width=320, initial-scale=1.0, maximum-scale=1.0, user-scalable=0″/>
 <meta name="viewport" content="user-scalable=no, width=device-width" />
 <% end %>
