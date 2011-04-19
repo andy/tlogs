@@ -60,7 +60,11 @@ function loadSong() {
 					mqRotate(mqr);
 				}
 			}
-			jQuery('.online span').text(json.online);
+			if(json.online > 0) {
+				jQuery('.online span').text(json.online);
+			} else {
+				jQuery('.online span').text('неизвестно');
+			}
 		}
 	});
 	songTimer = setTimeout("loadSong()", 5000);

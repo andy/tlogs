@@ -13,7 +13,10 @@ class TastyradioController < ApplicationController
   end
   
   def data
-    @data = Rails.cache.fetch("tr:data", :expires_in => 5.seconds) { TastyradioData.fetch }
+    @data = Rails.cache.fetch("tr:data", :expires_in => 5.seconds) { TastyradioData.fetch }.dup
+    
+    @air = RadioSchedule.onair.first
+    @data[:song] = @air.body if @air && @air.onair?
     
     render :json => @data
   end
