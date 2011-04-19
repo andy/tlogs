@@ -155,6 +155,11 @@ class MainController < ApplicationController
       entry = Entry.find_by_id(params[:entry_id])
       
       redirect_to(service_url(main_path)) and return if entry.nil? || entry.is_disabled? || entry.is_private? || entry.author.is_disabled?
+      
+      redirect_to(service_url(main_path)) and return if %w(fr me).include?(entry.author.tlog_settings.privacy)
+      
+      redirect_to(service_url(main_path)) and return if entry.author.tlog_settings.privacy == 'rr' && !current_user
+      
     # elsif current_user
     #   entry = current_user.entries.last
     #   redirect_to(service_url(main_path)) and return if entry.nil?
