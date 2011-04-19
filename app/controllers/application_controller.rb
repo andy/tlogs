@@ -16,6 +16,7 @@ class ApplicationController < ActionController::Base
   helper_method   :is_admin?
   helper_method   :is_moderator?
   helper_method   :is_robot?
+  helper_method   :is_mobile?
 
   before_filter :preload_current_service
   before_filter :remove_old_cookies
@@ -148,6 +149,10 @@ class ApplicationController < ActionController::Base
     def is_robot?
       # true
       request.user_agent =~ /\b(Baidu|Googlebot|libwww-perl|lwp-trivial|msnbot|SiteUptime|Slurp|WordPress|Mail\.Ru|YandexBlogs|StackRambler|YandexBot|YandexWebmaster)\b/i
+    end
+    
+    def is_mobile?
+      request.user_agent =~ /\b(ipod|iphone|android)\b/i
     end
 
     def is_moderator?

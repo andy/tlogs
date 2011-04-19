@@ -12,6 +12,12 @@ class TastyradioController < ApplicationController
     render :layout => 'tastyradio'
   end
   
+  def data
+    @data = Rails.cache.fetch("tr:data", :expires_in => 5.seconds) { TastyradioData.fetch }
+    
+    render :json => @data
+  end
+  
   def all
     @radio_schedules = RadioSchedule.all.paginate :page => params[:page], :per_page => 15
   end

@@ -1,17 +1,31 @@
-<script type='text/javascript'>
-  var PP_CONFIG = {
-    autoStart: true,
-    playNext: false,
-    debug: false
-  }
-</script>
-
-<div id="sm2-container">
-  <!-- SM2 flash goes here -->
+<div class="<%= is_mobile? ? 'small_player' : 'big_player' %>">
+	<div class="header">
+		<div class="logo_holder">
+		  <%= image_tag 'tastyradio/logo.png', :size => '200x35' %>
+			<div class="online">Слушателей: <span>загружаем...</span></div>
+		</div>
+		<div class="desktop_players">
+			Слушать в плеере:
+			<div><a href="http://stream12.radiostyle.ru/play.php?pltype=m3u&amp;media=http://stream12.radiostyle.ru:8012/tastyradio" target="_blank">WinAmp</a></div>
+			<div><a href="http://stream12.radiostyle.ru/play.php?pltype=asx&amp;media=http://stream12.radiostyle.ru:8012/tastyradio" target="_blank">Windows Media Player</a></div>
+			<div><a href="http://stream12.radiostyle.ru/play.php?pltype=ram&amp;media=http://stream12.radiostyle.ru:8012/tastyradio" target="_blank">RealOne Player</a></div>
+		</div>
+	</div>
+	<div class="content">
+		<div class="stop_btn control_margin" id="play_stop"></div>
+		<div class="meta">
+			В эфире:
+			<div class="song_holder" id="song"><span class="song">загружаем...</span></div>
+		</div>
+		<div class="volume">
+			<div class="icons">
+				<div class="up"></div>
+				<div class="down"></div>
+			</div>
+			<div class="slider"><div class="knob"></div></div>
+		</div>
+	</div>
+	<div class='info'>Все вопросы и пожелания по эфиру, направляйте, пожалуйста, в <nobr><%= link_to 'редакцию радио', current_user ? user_url(current_user, named_new_conversation_path(:url => 'radio')) : user_url(@radio), :target => '_blank' %>.</nobr></div>  
 </div>
+<div id="song_label_hidden"></div>
 
-<ul class='playlist'>
-  <li><a href='http://stream12.radiostyle.ru:8012/tastyradio' class='playable'>Прямой эфир</a></li>
-</ul>
-
-<div class='info'>Все вопросы и пожелания по эфиру, направляйте, пожалуйста, в <%= link_to 'редакцию радио', current_user ? user_url(current_user, named_new_conversation_path(:url => 'radio')) : user_url(@radio), :target => '_blank' %>.</div>

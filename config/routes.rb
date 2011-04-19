@@ -71,7 +71,7 @@ ActionController::Routing::Routes.draw do |map|
     www.tag_view 'tag/*tags', :controller => 'tags', :action => 'view'
     www.tags 'tags/:action/:id', :controller => 'tags'
     
-    www.resources :tastyradio, :controller => 'tastyradio', :collection => { :all => :get }
+    www.resources :tastyradio, :controller => 'tastyradio', :collection => { :all => :get, :data => :get }
 
     map.bookmarklet 'bookmarklet/:action', :controller => 'bookmarklet'
 

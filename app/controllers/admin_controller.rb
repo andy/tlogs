@@ -11,6 +11,10 @@ class AdminController < ApplicationController
     end
   end
   
+  def destroy
+    current_site.async_destroy!
+  end
+  
   # remove all entries from mainpage, alter user
   def demainpage
     # block user from ever appearing on main page again

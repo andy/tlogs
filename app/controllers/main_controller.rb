@@ -165,7 +165,12 @@ class MainController < ApplicationController
           entry_id = Entry.find_by_sql("SELECT id FROM entries WHERE id >= #{rand(max_id)} AND is_private = 0 AND is_mainpageable = 1 LIMIT 1").first[:id]
           entry = Entry.find(entry_id, :include => :author) if entry_id
           
-          next if entry.author.is_disabled?          
+          next if entry.author.is_disabled?
+          
+          next if %w(fr me).include?(entry.author.tlog_settings.privacy)
+          
+          next if entry.author.tlog_settings.privacy == 'rr' && !current_user
+
           # Rails.logger.debug "#{entry.author.url} c #{entry.author.is_confirmed}, d #{entry.author.is_disabled?}, m #{entry.author.is_mainpageable?}"
           # entry = nil if entry.author.is_disabled? || !entry.author.is_confirmed? || !entry.author.is_mainpageable?
           break if entry
