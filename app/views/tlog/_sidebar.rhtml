@@ -21,7 +21,7 @@
 	</div>
 </div>
 
-<% if is_robot? || !current_site.tlog_settings.about.blank? %>
+<% if is_robot? || !current_site.tlog_settings.about.blank? || !current_site.faves.size.zero? %>
 	<div class='sidebar_section' id='sidebar_about'>
 		<%= link_to_function "О #{current_site.gender('нём', 'ней')}", "sidebar_toggle('about')", :class => 'sidebar_toggle', :id => 'sidebar_about_link' %>
 		<div class='sidebar_section_content' id='sidebar_about_content' style='display: <%= is_robot? ? 'block' : 'none' %>'>
