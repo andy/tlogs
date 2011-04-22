@@ -216,7 +216,7 @@ function egychStart() {
 	soundManager.onready(function() {
 		tastyradio = soundManager.createSound({
 			id: 'tastyradio',
-			url: 'http://f1.tlogs.ru:8000/stream.mp3',
+			url: 'http://radio.tlogs.ru:8000/stream.mp3',
 			autoPlay: true,
 			pan: -75,
 			volume: vol
