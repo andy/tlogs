@@ -70,7 +70,7 @@ class Settings::DefaultController < ApplicationController
   end
   
   def password
-    redirect_to :action => 'index' if current_user.crypted_password.blank?
+    redirect_to :action => 'index' and return if current_user.crypted_password.blank?
     if request.post?
       if User.encrypt(params[:user_old_password], current_user.salt) == current_user.crypted_password && params[:user_new_password] == params[:user_new_password_repeat]
         current_user.password = params[:user_new_password]
