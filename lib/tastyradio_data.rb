@@ -6,8 +6,8 @@ require 'uri'
 module TastyradioData
   def fetch
     begin
-      req = Net::HTTP::Get.new("/status2.xsl?mount=/tastyradio_1")
-      res = Net::HTTP.start('stream12.radiostyle.ru', 8012) { |http| http.request(req) }
+      req = Net::HTTP::Get.new("/status2.xsl")
+      res = Net::HTTP.start('f1.tlogs.ru', 8000) { |http| http.request(req) }
 
       if res.is_a?(Net::HTTPOK)
         # xsl = Iconv.iconv('utf-8', 'windows-1251', res.body).to_s
