@@ -57,7 +57,7 @@ class MainController < ApplicationController
     rating = 'good' unless EntryRating::RATINGS.include?(rating.to_sym)
 
     @filter = Struct.new(:kind, :rating).new(kind, rating)
-    sql_conditions = "#{EntryRating::RATINGS[@filter.rating.to_sym][:filter]} AND #{Entry::KINDS[@filter.kind.to_sym][:filter]} AND entries.is_mainpageable = 1"
+    sql_conditions = "#{EntryRating::RATINGS[@filter.rating.to_sym][:filter]} AND #{Entry::KINDS[@filter.kind.to_sym][:filter]}"
     
     # высчитываем общее число записей и запоминаем в кеше
     total = Rails.cache.fetch("entry_ratings_count_#{kind}_#{rating}", :expires_in => 1.minute) { EntryRating.count :conditions => sql_conditions }
