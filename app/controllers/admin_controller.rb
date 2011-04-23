@@ -28,9 +28,9 @@ class AdminController < ApplicationController
         entry.is_mainpageable = false
 
         # also, remove from all lists
-        entry.is_great        = false
-        entry.is_good         = false
-        entry.is_everything   = false
+        # entry.is_great        = false
+        # entry.is_good         = false
+        # entry.is_everything   = false
 
         entry.save!
       end
