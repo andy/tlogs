@@ -134,7 +134,7 @@ class AnonymousController < ApplicationController
       if @entry.is_disabled?
 
         if request.get?
-          flash[:bad] = 'Запрошиваемая вами анонимка была удалена'
+          flash[:bad] = 'Запрашиваемая вами анонимка была удалена'
           redirect_to :action => 'index'          
         else
           render :text => 'Запрашиваемая вами анонимка была удалена', :status => 404
@@ -142,8 +142,9 @@ class AnonymousController < ApplicationController
         
         return false
       end
-      
+
       # все окей ...
+      return true
     end
     
     def require_post_request
