@@ -70,7 +70,21 @@ class MainController < ApplicationController
   def live
     sql_conditions = 'entries.is_mainpageable = 1'
     
-    if params[:entry_id]
+    if params[:tag]
+      total = Entry::PAGE_SIZE * 1000
+
+      @page = params[:page].to_i rescue 1
+      @page = 1 if @page.zero?
+
+      # grab id-s only, this is an mysql optimization
+      @entries = WillPaginate::Collection.create(@page, Entry::PAGE_SIZE, total) do |pager|
+        result = Entry.paginate_by_category(params[:tag], { :total => total, :page => pager.current_page }, { :is_mainpageable => true })
+      
+        pager.replace(result.to_a)
+      
+        pager.total_entries = total unless pager.total_entries
+      end
+    elsif params[:entry_id]
       entry_ids = Entry.find(:all, :select => 'entries.id', :conditions => [sql_conditions, " entries.id < #{params[:entry_id].to_i}"].join(' AND '), :order => 'entries.id DESC', :limit => Entry::PAGE_SIZE).map(&:id)
       result = Entry.find_all_by_id(entry_ids, :include => [:author, :rating, :attachments]).sort_by { |entry| entry_ids.index(entry.id) }
       
@@ -96,6 +110,15 @@ class MainController < ApplicationController
     
     @comment_views = User::entries_with_views_for(@entries.map(&:id), current_user)
   end
+  
+  def tagged
+    options = {}
+
+    # @tags_global_count = current_site ? (Entry.count_tagged_with(@tags) - total) : 0
+
+    render :layout => 'tlog' if current_site
+  end  
+  
   
   def my
     redirect_to(service_url(main_path(:action => :live))) and return unless current_user

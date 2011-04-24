@@ -4,7 +4,7 @@
 <% end %>
 <div class='onair'>
   <div class='entry_pg'>
-	  <%= paginate @entries, :css_class => 'top_nav_paginator' if @page && @page > 1 %>
+	  <%= paginate @entries, { :css_class => 'top_nav_paginator', :url_options => { :tag => params[:tag] } } if @page && @page > 1 %>
 	</div>
 
 	<% @entries.each do |entry| %>
@@ -12,12 +12,12 @@
 	<% end %>
 
   <div class='entry_pg'>
-  	<%= paginate @entries if @page %>
+  	<%= paginate @entries, { :url_options => { :tag => params[:tag] } } if @page %>
   	<%= link_to 'infinitenext', { :action => :live, :page => nil, :entry_id => @entries.last.id }, :class => 'infinitenext', :style => 'display: none' %>
   </div>
 </div>
 
-<% if !@page || @page <= 1 %>
+<% if (!@page || @page <= 1) && !params[:tag] %>
 <script type='text/javascript'>
   var inf_entry_id = <%= @entries.last.id.to_json %>;
   var inf_page = 1;
@@ -82,7 +82,7 @@
 	<div class='section'>
 		<h2><span>Немного навигации</span></h2>
 		<div class='vertical_nav'>
-			<%= link_to 'общий прямой эфир', { :action => :live, :page => nil }, :class => (params[:action] == 'live') ? 'highlight' : nil %><br/>
+			<%= link_to 'общий прямой эфир', { :action => :live, :page => nil }, :class => (params[:action] == 'live' && !params[:tag]) ? 'highlight' : nil %><br/>
 			<%= link_to 'моё', :action => :my %>
 			<%#= link_to('персональная лента', { :action => :my, :page => nil }, :class => (params[:action] == 'last_personalized') ? 'highlight' : nil) %>
 		</div>

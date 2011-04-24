@@ -18,6 +18,7 @@ class Entry
     
     conditions = "tags.name IN (#{categories.map(&:sql_quote)})" 
     conditions += " AND entries.user_id = #{find_options[:owner].id}" if find_options[:owner]
+    conditions += ' AND entries.is_mainpageable = 1' if find_options[:is_mainpageable]
     conditions += ' AND entries.is_private = 0' unless find_options[:include_private] 
     
 
