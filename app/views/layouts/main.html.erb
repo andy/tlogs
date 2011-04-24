@@ -6,7 +6,7 @@
 		</form>
 	</div>
 	
-	<% if current_user && is_admin? %>
+	<% if params[:action] == 'live' && current_user && is_admin? %>
 	  <div class='section'>
   	  <h2><span>Теги</span></h2>
   		<div class='vertical_nav'>
