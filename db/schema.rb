@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110329131105) do
+ActiveRecord::Schema.define(:version => 20110523121915) do
 
   create_table "attachments", :force => true do |t|
     t.integer "entry_id",     :default => 0,  :null => false
@@ -434,6 +434,7 @@ ActiveRecord::Schema.define(:version => 20110329131105) do
     t.datetime "entries_updated_at"
     t.integer  "conversations_count",                   :default => 0,     :null => false
     t.datetime "disabled_at"
+    t.datetime "ban_ac_till"
   end
 
   add_index "users", ["domain"], :name => "index_users_on_domain"

@@ -66,7 +66,8 @@ class User < ActiveRecord::Base
                   :entries,
                   :permissions,
                   :calendar,
-                  :entries_queue
+                  :entries_queue,
+                  :ban
   
 
 
@@ -173,37 +174,10 @@ class User < ActiveRecord::Base
     # удаляем все подписки
     self.connection.delete("DELETE FROM entry_subscribers WHERE user_id = #{self.id}")
   end
-
-
-  # checks wether this tlog can be viewed by other users
-  def can_be_viewed_by?(user)
-    # you can always view your own tlog
-    return true if user && user.id == self.id
-    
-    case self.tlog_settings.privacy
-    when 'open'
-      true
-      
-      # registration required
-    when 'rr'
-      user ? true : false
-      
-      # friend-mode
-    when 'fr'
-      user && self.all_friend_ids.include?(user.id)
-      
-      # only me
-    when 'me'
-      user && user.id == self.id
-    end
-  end
   
   def destroy_code
     Digest::SHA1.hexdigest("#{self.email}--#{self.url}--#{self.entries_updated_at}")
   end
 
-  
-  ## private methods  
-
-
+  ## private methods
 end

@@ -31,6 +31,29 @@ class User
     self.is_confirmed? && !self.email.blank? && !self.is_disabled?
   end
   
+  # checks wether this tlog can be viewed by other users
+  def can_be_viewed_by?(user)
+    # you can always view your own tlog
+    return true if user && user.id == self.id
+    
+    case self.tlog_settings.privacy
+    when 'open'
+      true
+      
+      # registration required
+    when 'rr'
+      user ? true : false
+      
+      # friend-mode
+    when 'fr'
+      user && self.all_friend_ids.include?(user.id)
+      
+      # only me
+    when 'me'
+      user && user.id == self.id
+    end
+  end
+  
   def visibility_limit
     # limits
     limits = {}
@@ -125,7 +148,7 @@ class User
     true
   end
   
-  # сила голоса пользователя. Пока что абсолютно равне для всех
+  # сила голоса пользователя. Пока что абсолютно равное значение для всех
   def vote_power
     1
   end

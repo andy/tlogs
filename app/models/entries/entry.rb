@@ -107,6 +107,8 @@ class Entry < ActiveRecord::Base
 	  group_by "is_private"
 	  
     where 'entries.is_disabled = 0'
+    
+    # FIXME: запретить поиск записей из закрытых тлогов
 
 	  set_property :delta => :datetime, :threshold => 1.hour
   end

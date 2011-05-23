@@ -5,9 +5,11 @@ class AnonymousController < ApplicationController
   before_filter :preload_entry, :only => [:show, :preview, :toggle, :comment, :subscribe, :unsubscribe]
   before_filter :require_commentable_entry, :only => [:comment, :subscribe, :unsubscribe]
 
-  before_filter :require_post_request, :only => [:preview, :comment, :toggle, :subscribe, :unsubscribe]
+  before_filter :require_post_request, :only => [:preview, :comment, :toggle, :subscribe, :unsubscribe, :ban_ac]
 
-  before_filter :require_moderator, :only => [:toggle]
+  before_filter :require_not_ac_banned, :only => [:preview, :comment, :comment_destroy]
+
+  before_filter :require_moderator, :only => [:toggle, :ban_ac]
 
   layout 'main'
   helper :main, :comments
@@ -119,6 +121,17 @@ class AnonymousController < ApplicationController
     @entry.subscribers.delete(current_user)
   end
   
+  def ban_ac
+    @comment = Comment.find_by_id(params[:id])
+
+    @comment.user.ban_ac!(@comment.entry, @comment, params[:duration])
+    
+    render :update do |page|
+      page.replace(dom_id(@comment, :ban), :partial => 'ban_controls', :locals => { :comment => @comment })
+      page.visual_effect :highlight, dom_id(@comment, :ban)
+    end
+  end
+  
   protected
     def preload_entry
       @entry = Entry.find_by_id_and_type params[:id], 'AnonymousEntry'
@@ -145,6 +158,10 @@ class AnonymousController < ApplicationController
 
       # все окей ...
       return true
+    end
+    
+    def require_not_ac_banned
+      render :nothing => true and return false unless current_user.is_ac_banned?
     end
     
     def require_post_request
