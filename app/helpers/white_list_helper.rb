@@ -58,8 +58,8 @@ module WhiteListHelper
     doc = Hpricot(simple_tasty_format(html), :fixup_tags => true)
 
     # Делаем сканирование элементов
-    allowed_tags = %w(a b i s br img p strong em ul ol li h1 h2 h3 h4 h5 h6 div object iframe param)
-    allowed_attributes = %w(class id href alt src width height title border tag name value)
+    allowed_tags = Set.new(%w(a b i s br img p strong em ul ol li h1 h2 h3 h4 h5 h6 div object iframe param))
+    allowed_attributes = Set.new(%w(class id href alt src width height title border tag name value style))
     
     doc = Hpricot(sanitize(doc.to_html, :tags => allowed_tags, :attributes => allowed_attributes), :fixup_tags => true)
 
@@ -116,9 +116,44 @@ module WhiteListHelper
     end
     
     
-    (doc/"//object").each do |flash|      
-      width = (flash.attributes['width'] && flash.attributes['width'].ends_with?('%')) ? (flash_width * flash.attributes['width'].to_i / 100) : (flash.attributes['width'].to_i || flash_width)
-      height = flash.attributes['height'].to_i || flash_width
+    (doc/"//object").each do |flash|
+      width = nil
+      
+      # try attr width - px
+      width ||= $1.to_i if flash.attributes['width'].match(/^(\d+)$/)
+
+      # try attr width - %
+      width ||= flash_width * flash.attributes['width'].to_i / 100 if flash.attributes['width'].match(/^\d+%$/)
+
+      # try style width - px
+      width ||= $2.to_i if flash.attributes['style'].match(/width:(\s+)?(\d+)px/i)
+
+      # try style width - %
+      width ||= (flash_width * $2.to_i / 100) if flash.attributes['style'].match(/width:(\s+)?(\d+)%/i)
+
+      # finalize with default
+      width ||= flash_width
+
+
+      height = nil
+
+      # try attr height - px
+      height ||= $1.to_i if flash.attributes['height'].match(/^(\d+)$/)
+
+      # try attr height - %
+      height ||= flash_width * flash.attributes['height'].to_i / 100 if flash.attributes['height'].match(/^\d+%$/)
+      
+      # try style height - px
+      height ||= $2.to_i if flash.attributes['style'].match(/height:(\s+)?(\d+)px/i)
+
+      # try style height - %
+      height ||= (flash_width * $2.to_i / 100) if flash.attributes['style'].match(/height:(\s+)?(\d+)%/i)
+      
+      # finalize with default
+      height ||= flash_width
+      
+        
+      Rails.logger.debug "width #{width}, height #{height}"
 
       # параметры по-умолчанию для флеша
       embed_params = {'allowfullscreen' => 'false', 'allowscriptaccess' => 'never'}
@@ -147,6 +182,8 @@ module WhiteListHelper
         end
 
         text = "<object width='#{width}' height='#{height}'>#{embed_params.map{|name, value| "<param name='#{name}' value='#{value}' >"}.join}<embed src='#{src}' type='application/x-shockwave-flash' #{embed_params.except('movie').map{|name, value| "#{name}='#{value}'"}.join(" ")} width='#{width}' height='#{height}'></object>"
+        
+        Rails.logger.debug "result text #{text}"
 
         if flash.css_path.include?(" p ") || flash.css_path.include?("p:")
           flash.swap(text)
@@ -170,7 +207,12 @@ module WhiteListHelper
       html = doc.to_html
     end
 
-    html    
+    # Делаем сканирование элементов (same as above, without style)
+    allowed_tags = Set.new(%w(a b i s br img p strong em ul ol li h1 h2 h3 h4 h5 h6 div object iframe param))
+    allowed_attributes = Set.new(%w(class id href alt src width height title border tag name value))        
+
+    doc = Hpricot(sanitize(html, :tags => allowed_tags, :attributes => allowed_attributes), :fixup_tags => true)    
+    doc.to_html
   end
 
   def allowed_flash_domain?(url)
