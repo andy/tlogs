@@ -8,6 +8,11 @@
 		<p>Для того чтобы оставить комменатрий, вам осталось лишь подтвердить свой емейл адрес, <%= h current_user.url %>!</p>
 	</div>  
 <% else %>
+
+<div class='comments_warning'>
+  <p><b>Внимание!</b> За оскорбления и хамство в комментариях ваш аккаунт может быть заблокирован без&nbsp;предупреждения.</p>
+</div>
+
 <div id='comment_preview'></div>
 
 <div class='post_comment_form' id='post_comment_form'>
