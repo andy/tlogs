@@ -161,7 +161,7 @@ class AnonymousController < ApplicationController
     end
     
     def require_not_ac_banned
-      render :nothing => true and return false unless current_user.is_ac_banned?
+      render :nothing => true and return false if current_user.is_ac_banned?
     end
     
     def require_post_request
