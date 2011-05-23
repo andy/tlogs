@@ -151,9 +151,7 @@ module WhiteListHelper
       
       # finalize with default
       height ||= flash_width
-      
-        
-      Rails.logger.debug "width #{width}, height #{height}"
+
 
       # параметры по-умолчанию для флеша
       embed_params = {'allowfullscreen' => 'false', 'allowscriptaccess' => 'never'}
