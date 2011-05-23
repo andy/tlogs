@@ -33,11 +33,21 @@ class User
   
   def visibility_limit
     # limits
-    limits = {
-      (0..3.weeks) => { :mainpageable_entries => 3, :voteable_entries => 1 },
-      (3.weeks...4.weeks) => { :mainpageable_entries => 6, :voteable_entries => 2 },
-      (4.weeks...100.years) => { :mainpageable_entries => nil, :voteable_entries => nil }
-    }
+    limits = {}
+
+    # on 27 apr 2011 registration was open, limit those people forever
+    if self.created_at > "27 apr 2011".to_time
+      limits = {
+        (0...4.weeks) => { :mainpageable_entries => 3, :voteable_entries => 1 },
+        (4.weeks..100.years) => { :mainpageable_entries => 6, :voteable_entries => 2 }
+      }
+    else
+      limits = {
+        (0..3.weeks) => { :mainpageable_entries => 3, :voteable_entries => 1 },
+        (3.weeks...4.weeks) => { :mainpageable_entries => 6, :voteable_entries => 2 },
+        (4.weeks...100.years) => { :mainpageable_entries => nil, :voteable_entries => nil }
+      }
+    end    
 
     age   = Time.now - self.created_at
     limit = limits.find { |l| l[0].include?(age) }[1]
@@ -89,18 +99,18 @@ class User
         entry = Entry.anonymous.for_user(self).last
         if entry
           if entry.is_disabled?
-            if entry.created_at > 1.month.ago
+            if entry.created_at > 2.month.ago
               reason = Reason.new "Ваша последняя анонимка была удалена меньше месяца назад."
-              reason.expires_at = entry.created_at + 1.month
+              reason.expires_at = entry.created_at + 2.month
             end
-          elsif entry.created_at > 1.week.ago
-            reason = Reason.new "Анонимки можно писать не чаще раза в неделю."
-            reason.expires_at = entry.created_at + 1.week
+          elsif entry.created_at > 2.weeks.ago
+            reason = Reason.new "Анонимки можно писать не чаще раза в две недели."
+            reason.expires_at = entry.created_at + 2.weeks
           end
         # и только спустя месяц после регистрации
-        elsif self.created_at > 1.month.ago
-          reason = Reason.new "Анонимки можно писать только спустя месяц после регистрации."
-          reason.expires_at = self.created_at + 1.month
+        elsif self.created_at > 6.months.ago
+          reason = Reason.new "Анонимки можно писать только спустя шесть месяцев после регистрации."
+          reason.expires_at = self.created_at + 6.months
         end
 
     end unless self.is_premium?
