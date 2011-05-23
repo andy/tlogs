@@ -180,8 +180,6 @@ module WhiteListHelper
         end
 
         text = "<object width='#{width}' height='#{height}'>#{embed_params.map{|name, value| "<param name='#{name}' value='#{value}' >"}.join}<embed src='#{src}' type='application/x-shockwave-flash' #{embed_params.except('movie').map{|name, value| "#{name}='#{value}'"}.join(" ")} width='#{width}' height='#{height}'></object>"
-        
-        Rails.logger.debug "result text #{text}"
 
         if flash.css_path.include?(" p ") || flash.css_path.include?("p:")
           flash.swap(text)
