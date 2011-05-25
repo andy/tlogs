@@ -7,7 +7,7 @@
 
 <% if @entries.size > 0 %>
   <%# spec - только если мы показываем другую навигацию %>
-  <% cache "#{current_site.url}/page:#{@page}/spec:#{is_owner? && current_site.tlog_settings.past_disabled?}/updated_at:#{current_site.entries_updated_at.to_i}/date:#{Date.today.to_s(:db)}", :expires_in => 1.day do %>
+  <% cache "#{current_service.domain}/#{current_site.url}/page:#{@page}/spec:#{is_owner? && current_site.tlog_settings.past_disabled?}/updated_at:#{current_site.entries_updated_at.to_i}/date:#{Date.today.to_s(:db)}", :expires_in => 1.day do %>
   	<%= render :partial => 'lenta' %>
   <% end %>
   

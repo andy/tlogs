@@ -148,7 +148,7 @@
 	</div>
 <% end %>
 
-<% cache "#{current_site.url}/sidebar_sections", :expires_in => 1.day do %>
+<% cache "#{current_service.domain}/#{current_site.url}/sidebar_sections", :expires_in => 1.day do %>
 	<% current_site.sidebar_sections.each do |section| %>
 		<div class='sidebar_section' id='<%= section.dom_id %>'>
 			<%= link_to_function h(section.name), "sidebar_toggle('section_#{section.id}')", :class => "sidebar_toggle #{'highlight' if section.is_open?}", :id => section.dom_id(nil, :link) %>

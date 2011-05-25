@@ -4,7 +4,7 @@
 <html>
 <head>
 	<%= render :partial => 'globals/head' %>
-	<% cache "#{current_site.url}/tlog/style/#{current_site.tlog_settings.css_revision}", :expires_in => 1.day do %>
+	<% cache "#{current_service.domain}/#{current_site.url}/tlog/style/#{current_site.tlog_settings.css_revision}", :expires_in => 1.day do %>
   	<%= render :partial => 'tlog/style' %>
 	<% end if current_site.tlog_settings %>
 </head>
