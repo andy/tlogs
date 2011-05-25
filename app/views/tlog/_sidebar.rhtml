@@ -168,7 +168,6 @@
       <p>
         <%= content_tag :span, "id #{current_site.id}", :title => "#{current_site.created_at.to_s(:db)}, #{current_site.created_at.distance_between_in_words(Time.now, ' назад')}" %><br />
         <%= h current_site.email %><br />
-        vid <%= EntryVote.sum(:value, :conditions => "user_id = #{current_site.id}") %><br />
     
         <%= link_to_remote 'Скрыть с главной', {
                           :url => user_url(current_site, admin_path(:action => 'demainpage')),
