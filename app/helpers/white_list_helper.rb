@@ -204,10 +204,10 @@ module WhiteListHelper
     end
 
     # Делаем сканирование элементов (same as above, without style)
-    # allowed_tags = Set.new(%w(a b i s br img p strong em ul ol li h1 h2 h3 h4 h5 h6 div object embed iframe param))
+    allowed_tags = Set.new(%w(a b i s br img p strong em ul ol li h1 h2 h3 h4 h5 h6 div object embed iframe param))
     allowed_attributes = Set.new(%w(class id href alt src width height title border tag name value type))        
 
-    doc = Hpricot(sanitize(html, :attributes => allowed_attributes), :fixup_tags => true)    
+    doc = Hpricot(sanitize(html, :tags => allowed_tags, :attributes => allowed_attributes), :fixup_tags => true)    
     doc.to_html
   end
 
