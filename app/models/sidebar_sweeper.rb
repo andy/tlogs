@@ -18,6 +18,6 @@ class SidebarSweeper < ActionController::Caching::Sweeper
       section = element.section if element.is_a?(SidebarElement)
       section = element if element.is_a?(SidebarSection)
 
-      expire_fragment("#{section.user.url}/sidebar_sections") unless section.blank?
+      expire_fragment("#{current_service.domain}/#{section.user.url}/sidebar_sections") unless section.blank?
     end  
 end
