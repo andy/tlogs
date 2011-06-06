@@ -19,8 +19,12 @@ module ActionControllerExtensions
     def set_session_domain
       if @env['HTTP_HOST']
         # turn "brendan.app.local:3000" to ".app.local"
-        domain = @env['HTTP_HOST'].gsub(/:\d+$/, '').gsub(/^[^.]*/, '') unless @env['HTTP_HOST'] == 'localhost'
-        @env['rack.session.options'] = @env['rack.session.options'].merge(:domain => domain) unless domain.blank?
+        host = @env['HTTP_HOST'].gsub(/:\d+$/, '')
+        
+        unless %w(localhost tlogs.ru).include?(host)
+          domain = host.gsub(/^[^.]*/, '')
+          @env['rack.session.options'] = @env['rack.session.options'].merge(:domain => domain) unless domain.blank?
+        end
       end
     end
   end
