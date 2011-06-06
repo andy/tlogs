@@ -45,7 +45,7 @@ module Tlogs
         @protocol = @options[:protocol] || 'http://'
         @port = @options[:port] || 80
 
-        @name = @options[:name] || 'tlogs service'
+        @name = @options[:name] || 'tlogs'
         @url = "#{protocol}#{domain_with_port}"
       end
       
@@ -73,6 +73,10 @@ module Tlogs
         else
           "#{protocol}#{name}.#{domain_with_port}"
         end
+      end
+      
+      def logo
+        @options[:logo] || 'logos/default.png'
       end
       
       # Домен для добавления глобальной куки

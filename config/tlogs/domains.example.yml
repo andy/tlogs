@@ -3,7 +3,9 @@ mmm-tasty.ru:
   name: ммм...тейсти
   
 tlogs.ru:
+  name: tlogs.ru
   users: inline
+  logo: logos/tlogs.png
   
 localhost:
   users: inline
