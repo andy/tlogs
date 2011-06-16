@@ -1,0 +1,19 @@
+<%-
+  book = {
+    :cover  => 'http://assets.bookmate.com/7847537411/assets/documents-covers/9e/de/RF4i1qks-large.jpg',
+    :book   => 'http://www.bookmate.com/books/PRCVZapq',
+    :uuid   => 'RF4i1qks',
+    :title  => '«Москва и москвичи» (Владимир Гиляровский)'
+  }
+-%>
+<script src="http://www.bookmate.com/embed.js?parse=true"></script>
+<div class='section'>
+	<h2><span>Книга дня</span></h2>
+
+  <div class='sidebar_book'>
+    <%= link_to image_tag(book[:cover], :style => 'border-shadow: 4px solid red'), book[:book], :title => book[:title] %>
+    <div style='position: relative; top: -70px; left: 17px'>
+      <bm:read src="http://www.bookmate.com/r#d=RF4i1qks" style="light"></bm:read>
+    </div>
+  </div>
+</div>
