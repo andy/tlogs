@@ -150,6 +150,15 @@ class Entry < ActiveRecord::Base
     #  если меняются штуки отличные от комментариев
     entry.author.update_attributes(:entries_updated_at => Time.now) unless (entry.changes.keys - ['comments_count', 'updated_at']).blank?
     
+    # при изменении флага is_private меняем соответсвующий счетчик
+    if entry.changes.keys.include?('is_private')
+      if entry.is_private?
+        User.increment_counter(:private_entries_count, entry.user_id)
+      else
+        User.decrement_counter(:private_entries_count, entry.user_id)
+      end
+    end      
+    
     # add/remove watchers if entry is became anonymous or private
     entry.is_private? ? entry.try_watchers_destroy : entry.try_watchers_update
   end
