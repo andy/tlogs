@@ -1,4 +1,4 @@
-#!/usr/bin/env bundle exec script/runner
+#!/usr/bin/env script/runner
 
 User.paginated_each do |user|
   User.transaction do
