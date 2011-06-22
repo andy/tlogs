@@ -36,8 +36,33 @@ function run_comments_views_update( ) {
       text = '+' + object.comments_count
     }
     var element = $('entry_comments_count_' + object.id);
-    if (element)
+    if (element) {
       Element.update(element, text);
+
+			if(object.comments_count > 0) {
+				/* add .has_comments class to two parent divs (this will make bubble visible) */
+				var elm_p = element.up('div.comment_cloud');
+				if(elm_p && !elm_p.hasClassName('has_comments')) {
+					elm_p.addClassName('has_comments');
+				}
+			
+				var elm_p = elm_p.up('div.service_comments');
+				if(elm_p && !elm_p.hasClassName('has_comments')) {
+					elm_p.addClassName('has_comments');
+				}
+			} else {
+				/* remove .has_comments class to two parent divs (this will make bubble invisible) */
+				var elm_p = element.up('div.comment_cloud');
+				if(elm_p && elm_p.hasClassName('has_comments')) {
+					elm_p.removeClassName('has_comments');
+				}
+			
+				var elm_p = elm_p.up('div.service_comments');
+				if(elm_p && elm_p.hasClassName('has_comments')) {
+					elm_p.removeClassName('has_comments');
+				}
+			}
+		}
   });
 }
 

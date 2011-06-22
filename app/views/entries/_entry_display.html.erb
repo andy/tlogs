@@ -50,7 +50,7 @@ if show_datetime -%>
 	<%- if show_comments_bubble -%>
 		<%- if entry.comments_enabled? || entry.comments_count > 0 -%>
 			<div class='service_comments<%= ' has_comments' unless entry.comments_count.zero? %>'>
-				<div class="comment_cloud iePNG<%= ' has_comments' unless entry.comments_count.zero? %>"><a href="<%= user_url(entry.author, entry_path(entry)) + '#new' %>" title='комментарии к этой записи'><span id='entry_comments_count_<%= entry.id %>'><%= comment_views ? updated_comments_count(entry, comment_views) : entry.comments_count %></span></a></div>
+				<div class="comment_cloud iePNG<%= ' has_comments' unless entry.comments_count.zero? %>"><a href="<%= user_url(entry.author, entry_path(entry)) + '#new' %>" title='комментарии'><span id='entry_comments_count_<%= entry.id %>'><%= comment_views ? updated_comments_count(entry, comment_views) : entry.comments_count %></span></a></div>
 			</div>
 		<%- else -%>
 			<div class='service_link'><a href="<%= user_path(entry.author, entry_path(entry)) %>" title='постоянная ссылка на эту запись'>link</a></div>
