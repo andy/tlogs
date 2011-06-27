@@ -29,7 +29,7 @@ module ActionController
           :method => request.method,
           :subdomain => request.subdomains.first.to_s, 
           :domain => request.domain, 
-          :port => request.port, 
+          :port => request.port,
           :remote_ip => request.remote_ip, 
           :content_type => request.content_type, 
           :accepts => request.accepts.map(&:to_s).join(','), 

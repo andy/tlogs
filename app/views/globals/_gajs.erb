@@ -1,0 +1,9 @@
+<script type='text/javascript'>
+  /* asynchronous google analytics */
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-1562460-1']);
+  _gaq.push(['_setDomainName', '.mmm-tasty.ru']);
+  _gaq.push(['_setCustomVar', 1, 'Viewport', 'Desktop', 1]);
+  _gaq.push(['_setCustomVar', 2, 'User Type', <%= current_user ? '"Logged in"' : '"Anonymous"' %>, 1]);
+  _gaq.push(['_trackPageview']);
+</script>

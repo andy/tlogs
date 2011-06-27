@@ -5,6 +5,7 @@
 application:
   default: application
   ie: application.ie
+  mobile: mobile
 
 # Light layout
 light:

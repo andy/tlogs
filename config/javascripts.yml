@@ -39,6 +39,14 @@ application:
 - blink
 - application
 
+mobile:
+- jquery-1.6.1.min
+- mobile
+- jquery.mobile-1.0b1.min
+- jquery.timeago
+- jquery.timeago.ru
+- google-analytics
+
 soundmanager:
 - soundmanager2
 - egych-player

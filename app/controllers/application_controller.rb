@@ -1,5 +1,12 @@
 class ApplicationController < ActionController::Base
   filter_parameter_logging :password
+
+  MOBILE_USER_AGENTS =  'palm|blackberry|nokia|phone|midp|mobi|symbian|chtml|ericsson|minimo|' +
+                            'audiovox|motorola|samsung|telit|upg1|windows ce|ucweb|astel|plucker|' +
+                            'x320|x240|j2me|sgh|portable|sprint|docomo|kddi|softbank|android|mmp|' +
+                            'pdxgw|netfront|xiino|vodafone|portalmmm|sagem|mot-|sie-|ipod|up\\.b|' +
+                            'webos|amoi|novarra|cdm|alcatel|pocket|ipad|iphone|mobileexplorer|' +
+                            'mobile'
   
   helper :white_list, :url, :asset_gluer
 
@@ -16,7 +23,7 @@ class ApplicationController < ActionController::Base
   helper_method   :is_admin?
   helper_method   :is_moderator?
   helper_method   :is_robot?
-  helper_method   :is_mobile?
+  helper_method   :is_mobile_device?
 
   before_filter :preload_current_service
   before_filter :remove_old_cookies
@@ -58,6 +65,13 @@ class ApplicationController < ActionController::Base
   
     def preload_current_service
       @current_service = Tlogs::Domains::CONFIGURATION.options_for(request.host || 'localhost', request)
+      Rails.logger.debug "current service is #{@current_service.domain}, subdomain #{request.subdomains.first.to_s}, domain #{request.domain}"
+      
+      set_mobile_format if @current_service.is_mobile?
+    end
+
+    def set_mobile_format
+      request.format = :mobile
     end
   
     def preload_current_site
@@ -73,7 +87,7 @@ class ApplicationController < ActionController::Base
         
         # перенаправляем на сайт сервиса, если адрес запрещенный
         redirect_to "#{request.protocol}www.mmm-tasty.ru#{request.port == 80 ? '' : ":#{request.port}"}" and return false if User::RESERVED.include?(url) && url != 'www'
-      elsif request.host == 'localhost' || request.host == 'tlogs.ru'
+      elsif Tlogs::Domains::CONFIGURATION.domains.include?(request.host)
         url = params[:current_site] if request.path.starts_with?('/users/')
         
         # перенаправляем на сайт сервиса, если адрес запрещенный
@@ -151,9 +165,11 @@ class ApplicationController < ActionController::Base
       request.user_agent =~ /\b(Baidu|Googlebot|libwww-perl|lwp-trivial|msnbot|SiteUptime|Slurp|WordPress|Mail\.Ru|YandexBlogs|StackRambler|YandexBot|YandexWebmaster)\b/i
     end
     
-    def is_mobile?
-      request.user_agent =~ /\b(ipod|iphone|android)\b/i
+    def is_mobile_device?
+      request.user_agent.to_s.downcase =~ Regexp.new(ApplicationController::MOBILE_USER_AGENTS)
+      # request.user_agent =~ /\b(ipod|iphone|android)\b/i
     end
+    
 
     def is_moderator?
       current_user && current_user.is_moderator?

@@ -32,11 +32,11 @@ module Tlogs
       
       def domains
         @domains.keys
-      end
+      end      
     end
 
     class Options
-      attr_reader :domain, :name, :url, :protocol, :port, :host
+      attr_reader :domain, :name, :url, :protocol, :port, :host, :mobile
 
       def initialize(domain, options = {})
         @domain = domain
@@ -55,6 +55,10 @@ module Tlogs
       
       def domain_with_port
         @domain + port_postfix
+      end
+      
+      def is_mobile?
+        !!@options[:mobile]
       end
     
       def is_inline?
@@ -75,8 +79,8 @@ module Tlogs
         end
       end
       
-      def logo
-        @options[:logo] || 'logos/default.png'
+      def logo(style = nil)
+        @options[:logo] || "logos/default#{style ? "_#{style}" : ''}.png"
       end
       
       # Домен для добавления глобальной куки

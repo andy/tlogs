@@ -1,0 +1,4 @@
+
+<% content_tag :div, :class => 't-entry', :id => dom_id(entry) do %>
+  <%= render :partial => 'entries/display/' + entry.class.to_s.underscore, :locals => { :entry => entry } %>
+<% end %>
