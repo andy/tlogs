@@ -1,4 +1,4 @@
 <div class='t-entry-convo'>
-  <% if entry.data_part_2 %><h2 class='t-entry-convo-header'><%= strip_tags entry.data_part_2 %></h2><% end %>
-  <div class='t-entry-convo-body'><%= Convoray.scan entry.data_part_1 %></div>
+  <% if entry.data_part_2 %><h2 class='t-entry-convo-header'><%= strip_tags(entry.data_part_2) %></h2><% end %>
+  <div class='t-entry-convo-body'><%= Convoray.scan(entry.data_part_1) %></div>
 </div>

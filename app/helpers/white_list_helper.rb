@@ -20,7 +20,7 @@ module WhiteListHelper
 
   
   def white_list_entry(text, options = {})
-    white_list_html_with_rescue(text)
+    white_list_html_with_rescue(text, options.dup)
   end
   
   def white_list_sidebar(text, options = {})

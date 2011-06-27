@@ -4,16 +4,16 @@
 -%>
 <div class='t-entry-image'>
   <% if entry.data_part_1 %>
-    <%= image_tag entry.data_part_1, options.merge(entry.geometry) %>  
+    <%= image_tag entry.data_part_1, options.merge(entry.geometry(:width => 285)) %>
   <% elsif !entry.attachments.empty? %>
     <%
       image = entry.attachments.first
       thumb = image.thumbnails.select { |i| i.thumbnail == 'tlog' }.first
     %>
     <% if thumb %>
-      <%= link_to image_tag(thumb.public_filename, options.merge(entry.geometry(:image => thumb))), image_path(image.public_filename), :rel => 'follow', :class => 't-entry-image-thumb' %>
+      <%= link_to image_tag(thumb.public_filename, options.merge(entry.geometry(:width => 285, :image => thumb))), image_path(image.public_filename), :rel => 'follow', :class => 't-entry-image-thumb' %>
     <% else %>
-      <%= image_tag image.public_filename, options.merge(entry.geometry) %>
+      <%= image_tag image.public_filename, options.merge(entry.geometry(:width => 285)) %>
   	<% end %>
   <% end %>
 

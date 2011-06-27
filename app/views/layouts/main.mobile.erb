@@ -1,6 +1,3 @@
-<%-
-  @title = 'главная страница'
--%>
 <!DOCTYPE html>
 <html>
   <head>
@@ -10,20 +7,17 @@
   <body lang='ru'>
     <div data-role="page">
       <div data-role="header">
-        <%= link_to 'На главную', service_url(main_path), 'data-icon' => 'home', 'data-iconpos' => 'notext' %>
-        <h1>Ммм... тейсти</h1><%#= image_tag current_service.logo(:white), :size => '106x22' %>
+        <%= link_to 'На главную', service_url(main_path), 'data-icon' => 'arrow-l', 'data-transition' => 'slide', 'data-direction' => 'reverse', 'data-iconpos' => 'notext' %>
 
-        <% if current_user %>
-          <%= link_to 'Выйти', service_url(logout_path), 'data-rel' => 'dialog' %>
-        <% else %>
-          <%= link_to 'Войти', service_url(login_path), 'data-rel' => 'dialog' %>
-        <% end %>
+        <h1>Ммм... тейсти</h1>
+
+        <%= yield :header_r %>
       </div>
 
       <!-- <div data-role="content" data-theme="d"> ... </div> -->      
       <%= yield %>
       
-      <div data-role="footer" data-position="fixed" data-id="footer">
+      <div data-role="footer" x-data-position="fixed" x-data-id="footer">
         <div data-role='navbar'>
           <ul>
             <li><%= link_to 'Моё', main_url(:action => :my), 'data-icon' => 'forward', 'data-iconpos' => 'top' %></li>
@@ -33,9 +27,26 @@
             <li><%= link_to 'Профиль', '#', 'data-icon' => 'info', 'data-iconpos' => 'top' %>
           </ul>
         </div>
-
-        <%= render :partial => 'globals/counters' if Rails.env.production? %>
       </div>
-    </div>		
+    </div>
+    
+    <%= yield :extra %>
+
+    <div data-role="page" data-url="/main/last&ui-page=settings">
+      <div data-role="header">
+        <h1>Что показывать?</h1>
+      </div>
+      <div data-role="content" data-theme="d">
+        <form method='get' action='/main/last_redirect'>
+      		<%= select :filter, :rating, EntryRating::RATINGS_FOR_SELECT %>
+      		<%= select :filter, :kind, Entry::KINDS_FOR_SELECT %>
+      		<%= submit_tag "обновить", :name => nil, :class => 'button_1' %>
+      	</form>
+      </div>
+      <div data-role="footer">
+      </div>
+    </div>
   </body>
+
+  <%= render :partial => 'globals/counters' if Rails.env.production? %>
 </html>

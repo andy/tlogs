@@ -1,10 +1,6 @@
 <div class='t-entry-quote'>
 	<span class='t-entry-quote-body'>
-		<span class='t-entry-quote-laquo'>&laquo;</span><%= white_list_entry entry.data_part_1, :use_br => true %><span class='t-entry-quote-raquo'>&raquo;</span>
-	</span>
-	<% if entry.data_part_2 %>
-		<span class='t-entry-quote-source'>
-			&mdash;&nbsp;<%= white_list_entry entry.data_part_2, :use_br => true %>
-		</span>
-	<% end %>
+		<span class='t-entry-quote-laquo'>&laquo;</span><%= white_list_entry entry.data_part_1, :flash_width => 285, :use_br => true %><span class='t-entry-quote-raquo'>&raquo;</span>
+	</span>	
+	<%= content_tag :span, '&mdash;&nbsp;' + white_list_entry(entry.data_part_2, :flash_width => 285, :use_br => true), :class => 't-entry-quote-source' if entry.data_part_2 %>
 </div>

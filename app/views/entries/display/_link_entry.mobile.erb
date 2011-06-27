@@ -4,5 +4,5 @@
 -%>
 <div class='t-entry-link'>
   <%= link_to link_text, h(entry.data_part_1), :target => '_blank', :rel => 'nofollow', :class => 't-entry-link-href' %>
-  <%= content_tag :div, white_list_entry(entry.data_part_3), :class => 't-entry-link-comment' if entry.data_part_3 %>
+  <%= content_tag :div, white_list_entry(entry.data_part_3, :flash_width => 285), :class => 't-entry-link-comment' if entry.data_part_3 %>
 </div>

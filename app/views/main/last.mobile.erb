@@ -1,0 +1,18 @@
+<div data-role="content" data-theme="d">
+  <% if @entry_ratings.blank? %>
+  	<p class='last_is_empty_note'>
+  		По вашему запросу не было найдено ни одной записи.
+  	</p>
+  <% else %>  
+    <div class='t-entries'>
+      <% @entry_ratings.each_with_index do |entry_rating, index| %>
+  			<%= render :partial => 'entries/entry_display', :locals => { :entry => entry_rating.entry } %>
+  		<% end %>
+  	</div>
+
+  	<%#= paginate @entry_ratings, :reverse => true, :url_options => { :kind => @filter.kind, :rating => @filter.rating } %>	
+  <% end %>
+</div>
+<% content_for :header_r do %>
+  <%= link_to 'Настройки', '/main/last&ui-page=settings', 'data-icon' => 'gear', 'data-iconpos' => 'notext', 'data-rel' => 'dialog', 'data-transition' => 'flip' %>
+<% end %>

@@ -13,10 +13,9 @@
   <% end %>
 
   <div class='t-entry-footer'>
-    <%= link_to entry.comments_count.pluralize('комментарий', 'комментария', 'комментариев', true), user_url(entry.author, entry_path(entry)) unless entry.comments_count.zero? %>
-
     <div class='t-entry-footer-ctl'>
-      <%= link_to 'comment', user_url(entry.author, entry_path(entry)) %>
+      <%= content_tag :span, entry.rating.value > 0 ? "+#{entry.rating.value}" : entry.rating.value, :class => 't-entry-rating' if entry.is_voteable? %>
+      <%= link_to entry.comments_count.zero? ? 'comment' : entry.comments_count.pluralize('comment', 'comments', 'comments', true), user_url(entry.author, entry_path(entry)) %>
       <%= link_to 'fave', '#' %>
     </div>
   </div>

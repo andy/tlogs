@@ -2,7 +2,7 @@
   <!-- <h2><span>Поиск по тлогам</span></h2> -->
 	<div class='sidebar_search'>
 		<form method='get' action='<%= service_url(search_path) %>'>
-			<%= text_field_tag 'query', params[:query], :placeholder => 'Искать в тлогах', :type => :search, :autosave => "com.tlogs", :results => 10 %>
+			<%= text_field_tag 'query', params[:query], :placeholder => 'Поиск по тлогам', :type => :search, :autosave => "com.tlogs", :results => 10 %>
 		</form>
 	</div>	
 	<%= render(:partial => 'globals/tastyradio') if params[:action] == 'live' || params[:action] == 'last' || (params[:controller] == 'main' && params[:action] == 'index') %>
