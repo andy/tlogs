@@ -3,10 +3,13 @@
   news_count = news.new_entries_count_for(current_user)
   news_count = 15
 -%>
-<ul data-role="listview">
-  <li><%= link_to "Новости #{content_tag(:span, news_count, :class => 'ui-li-count') if news_count > 0}", main_url(:action => :news) %></li>
-  <li><%= link_to 'Лучшее', main_url(:action => :last) %></li>
-  <li><%= link_to 'Анонимки', main_url(:action => :anonymous) %></li>
-  <li><%= link_to 'Моё', main_url(:action => :my) %></li>
-  <li><%= link_to 'Прямой эфир', main_url(:action => :live) %></li>
-</ul>
+<div data-role="content">
+  <ul data-role="listview" data-inset="true">
+    <li data-role="list-divider">Общее</li>
+    <li><%= link_to "Новости #{content_tag(:span, news_count, :class => 'ui-li-count') if news_count > 0}", main_url(:action => :news) %></li>
+    <li><%= link_to 'Лучшее', main_url(:action => :last) %></li>
+    <li><%= link_to 'Анонимки', main_url(:action => :anonymous) %></li>
+    <li><%= link_to 'Моё', main_url(:action => :my) %></li>
+    <li><%= link_to 'Прямой эфир', main_url(:action => :live) %></li>
+  </ul>
+</div>

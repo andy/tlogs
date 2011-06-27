@@ -1,4 +1,92 @@
+/* entries */
+.t-entries {
+	font-size: 0.8em;
+	background-color: white;
+}
 
-.t-entries { margin: -10px; font-size: 0.8em;}
 
-.t-entry-text { border-left: 1px dotted black; padding-left: 10px; }
+/* entry styling */
+.t-entry {
+	padding-bottom: 20px;
+}
+
+.t-entry .t-entry-header {
+	padding: 10px 0;
+}
+
+.t-entry .t-entry-header-userpic {
+	vertical-align: middle;
+	padding-right: 3px;
+}
+
+.t-entry .t-entry-header-author {
+	text-decoration: none;
+}
+
+.t-entry .t-entry-text {
+	text-overflow: ellipsis-word;
+	-o-text-overflow: ellipsis-word;
+}
+
+.t-entry .t-entry-text-body {
+	border-left: 1px dotted black;
+	padding-left: 10px;	
+	text-overflow: ellipsis-word;
+	-o-text-overflow: ellipsis-word;
+}
+
+.t-entry .t-entry-quote-body {
+	font-size: 150%;
+	display: block;
+	line-height:1.35em;
+	color:#333;
+	letter-spacing:-1px;
+	text-indent:-20px;
+	padding:0 20px;
+}
+
+.t-entry .t-entry-quote-body p {
+	display: inline;
+}
+
+.t-entry .t-entry-quote-source {
+	font-size: 100%;
+	font-style: italic;
+	display:block;
+}
+
+.t-entry .t-entry-quote-source p {
+	display: inline;
+}
+
+.t-entry .t-entry-quote-laquo, .t-entry .t-entry-quote-raquo {
+	display: inline;
+	font-family: 'Times New Roman';
+	font-size: 130%;
+	bottom: -1px;
+	padding: 0 4px;
+	color:#ACACAC;
+	line-height: 0.01em;
+}
+
+.t-entry .t-entry-footer-ctl a {
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+	background-color: #ddd;
+	padding: 2px 6px;
+	text-decoration: none;
+	color: #666;
+	font-weight: bold;
+	font-size: 1em;
+	text-shadow: 1px 1px 1px white;
+}
+
+.t-entry .t-entry-image img.t-entry-image-img {
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+	border-color: #ddd;
+	background-color: #ddd;
+	padding: 4px;
+}

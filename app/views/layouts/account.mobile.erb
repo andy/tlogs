@@ -12,16 +12,9 @@
       <div data-role="header">
         <%= link_to 'На главную', service_url(main_path), 'data-icon' => 'home', 'data-iconpos' => 'notext' %>
         <h1>Ммм... тейсти</h1><%#= image_tag current_service.logo(:white), :size => '106x22' %>
-
-        <% if current_user %>
-          <%= link_to 'Выйти', service_url(logout_path), 'data-rel' => 'dialog' %>
-        <% else %>
-          <%= link_to 'Войти', service_url(login_path), 'data-rel' => 'dialog' %>
-        <% end %>
       </div>
 
-      <!-- <div data-role="content" data-theme="d"> ... </div> -->      
-      <%= yield %>
+      <div data-role="content" data-theme="c"><%= yield %></div>
       
       <div data-role="footer" data-position="fixed" data-id="footer">
         <div data-role='navbar'>

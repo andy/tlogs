@@ -1,4 +1,25 @@
+<div class='t-entry'>
+  <div class='t-entry-header'>
+    <% if entry.author.avatar %>
+      <%= image_tag entry.author.avatar.public_filename, :class => 't-entry-header-userpic', :size => '24x24'  %>
+    <% else %>
+      <%= image_tag 'noavatar.gif', :class => 't-entry-header-userpic', :size => '24x24' %>
+    <% end %>
+    <%= link_to entry.author.url, user_url(entry.author), :class => 't-entry-header-author' %>
+  </div>
 
-<% content_tag :div, :class => 't-entry', :id => dom_id(entry) do %>
-  <%= render :partial => 'entries/display/' + entry.class.to_s.underscore, :locals => { :entry => entry } %>
-<% end %>
+  <% content_tag :div, :id => dom_id(entry) do %>
+    <%= render :partial => 'entries/display/' + entry.class.to_s.underscore, :locals => { :entry => entry } %>
+  <% end %>
+
+  <div class='t-entry-footer'>
+    <%= link_to entry.comments_count.pluralize('комментарий', 'комментария', 'комментариев', true), user_url(entry.author, entry_path(entry)) unless entry.comments_count.zero? %>
+
+    <div class='t-entry-footer-ctl'>
+      <%= link_to 'comment', user_url(entry.author, entry_path(entry)) %>
+      <%= link_to 'fave', '#' %>
+    </div>
+  </div>
+</div>
+
+

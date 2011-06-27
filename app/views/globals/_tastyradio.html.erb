@@ -1,5 +1,5 @@
 <div class='section'>
-  <h2><span>Тейсти Радио</span></h2>
+  <!-- <h2><span>Тейсти Радио</span></h2> -->
   
   <div id='tastyradio'>
     <% RadioSchedule.onair.each do |schedule| %>
@@ -12,7 +12,7 @@
     <div id='tastyradio_holder'>
 	    <p>
 	      <%= link_to "Включить радио", service_url(tastyradio_index_path), :target => '_blank', :id => 'tastyradio_link' %>
-	      <%= image_tag 'popout.jpg', :class => 'popout', :title => 'Ссылка откроется в новом окне' %>
+	      <%= image_tag 'fastforward.png', :alt => '', :class => 'popout', :size => '12x12', :title => 'Ссылка откроется в новом окне' %>
 	      <%= link_to '(edit)', service_url(all_tastyradio_path), :title => 'Редактировать программу передач', :id => 'tastyradio_edit' if current_user && RadioSchedule.djs.include?(current_user.id) %>
 	    </p>
 	  </div>

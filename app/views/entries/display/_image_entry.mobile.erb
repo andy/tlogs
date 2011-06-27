@@ -1,17 +1,22 @@
 <%# если картинка ссылкой на удаленный ресурс %>
-<% if entry.data_part_1 %>
-  <%= image_tag entry.data_part_1, { :title => '', :alt => 'изображение' }.merge(entry.geometry) %>  
-<% elsif !entry.attachments.empty? %>
-  <%
-    image = entry.attachments.first
-    thumb = image.thumbnails.select { |i| i.thumbnail == 'tlog' }.first
-  %>
-  <% if thumb %>
-    <%= link_to image_tag(thumb.public_filename, { :title => '', :alt => 'изображение' }.merge(entry.geometry(:image => thumb))), image_path(image.public_filename), :rel => 'follow', :class => 't-entry-image-original' %>
-  <% else %>
-    <%= image_tag image.public_filename, { :title => '', :alt => 'изображение' }.merge(entry.geometry) %>
-	<% end %>
-<% end %>
+<%-
+  options = { :title => '', :alt => '', :class => 't-entry-image-img' }
+-%>
+<div class='t-entry-image'>
+  <% if entry.data_part_1 %>
+    <%= image_tag entry.data_part_1, options.merge(entry.geometry) %>  
+  <% elsif !entry.attachments.empty? %>
+    <%
+      image = entry.attachments.first
+      thumb = image.thumbnails.select { |i| i.thumbnail == 'tlog' }.first
+    %>
+    <% if thumb %>
+      <%= link_to image_tag(thumb.public_filename, options.merge(entry.geometry(:image => thumb))), image_path(image.public_filename), :rel => 'follow', :class => 't-entry-image-thumb' %>
+    <% else %>
+      <%= image_tag image.public_filename, options.merge(entry.geometry) %>
+  	<% end %>
+  <% end %>
 
-<%= content_tag :div, link_to(truncate(entry.data_part_3, :length => 50), entry.data_part_3, :rel => 'nofollow'), :class => 't-entry-image-link' unless entry.data_part_3.blank? %>
-<%= content_tag :div, white_list_entry(entry.data_part_2), :class => 't-entry-image-comment' unless entry.data_part_2.blank? %>
+  <%= content_tag :div, link_to(truncate(entry.data_part_3, :length => 50), entry.data_part_3, :rel => 'nofollow'), :class => 't-entry-image-link' unless entry.data_part_3.blank? %>
+  <%= content_tag :div, white_list_entry(entry.data_part_2), :class => 't-entry-image-comment' unless entry.data_part_2.blank? %>
+</div>

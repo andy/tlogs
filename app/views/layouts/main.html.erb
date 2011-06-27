@@ -1,21 +1,10 @@
 <% content_for :sidebar_right do %>
-	<h2><span>Поиск по тлогам</span></h2>
+  <!-- <h2><span>Поиск по тлогам</span></h2> -->
 	<div class='sidebar_search'>
 		<form method='get' action='<%= service_url(search_path) %>'>
-			<%= text_field_tag 'query', params[:query], :type => :search, :autosave => "com.tlogs", :results => 10 %>
+			<%= text_field_tag 'query', params[:query], :placeholder => 'Искать в тлогах', :type => :search, :autosave => "com.tlogs", :results => 10 %>
 		</form>
-	</div>
-	
-	<% if false && params[:action] == 'live' && current_user && is_admin? %>
-	  <div class='section'>
-  	  <h2><span>Теги</span></h2>
-  		<div class='vertical_nav'>
-  		  <% %w(я любовь дизайн вкусно мск истории).each do |kw| %>
-    		  <%= link_to kw, { :action => :live, :tag => kw, :page => nil }, :class => (params[:action] == 'live' && params[:tag] && params[:tag] == kw) ? 'highlight' : nil %><br/>
-  		  <% end %>
-  	  </div>
-  	</div>
-	<% end %>
+	</div>	
 	<%= render(:partial => 'globals/tastyradio') if params[:action] == 'live' || params[:action] == 'last' || (params[:controller] == 'main' && params[:action] == 'index') %>
 	<%= render(:partial => 'globals/dfp240x400') if params[:action] == 'news' || params[:action] == 'last' || params[:action] == 'live'  || params[:controller] == 'anonymous' %>
 	<%= render(:partial => 'globals/bookmate_botd') if params[:action] == 'news' || params[:action] == 'last' || params[:action] == 'live'  || params[:controller] == 'anonymous' %>

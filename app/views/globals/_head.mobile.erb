@@ -1,20 +1,22 @@
-<meta name="robots" content="index,follow">
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="index,follow" />
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 
-<meta name="MSSmartTagsPreventParsing" content="true">
-<meta http-equiv="imagetoolbar" content="no">
-<meta name="generator" content="tlogs.ru">
-<link rel="shortcut icon" href='/favicon.ico'>
+<meta name="MSSmartTagsPreventParsing" content="true" />
+<meta http-equiv="imagetoolbar" content="no" />
+<meta name="generator" content="tlogs.ru" />
+
+<link rel="shortcut icon" href="/favicon.ico" />
+
+<!-- apple devices configuration -->
+<!-- <link rel="apple-touch-icon" href="/customIcon.png" /> -->
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black" />
 
 <script type='text/javascript'>
   var current_user = <%= current_user ? current_user.id : 0 %>;
   <%- if current_user -%>
-  var _user = <%= {
-        :id   => current_user.id,
-        :url  => current_user.url
-        # :sid  => cookies[ActionController::Base.session_options[:key]]
-      }.to_json %>;
+  var _user = <%= { :id   => current_user.id, :url  => current_user.url }.to_json %>;
   <%- end -%>
   
   /* validations */
