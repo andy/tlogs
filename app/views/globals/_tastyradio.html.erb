@@ -1,7 +1,18 @@
+<%-
+  show_track = RadioSchedule.onair.select { |s| s.onair? }.length > 0 ? false : true
+  track_info = TastyradioData.fetch if show_track
+  show_track = false if track_info.nil?
+-%>
 <div class='section'>
   <!-- <h2><span>Тейсти Радио</span></h2> -->
   
   <div id='tastyradio'>
+    <% if show_track %>
+      <p>
+        <%= content_tag :span, 'сейчас', :class => "strong highlight" %>
+        <%= content_tag :span, content_tag(:marquee, track_info[:song], :behavior => 'alternate', :scrollamount => '1', :style => 'width: 150px; position: relative; top: 2px') %>
+      </p>
+    <% end %>
     <% RadioSchedule.onair.each do |schedule| %>
       <p>
         <%= content_tag :span, schedule.onair? ? 'сейчас' : say_schedule_in_words(schedule.air_at), :class => "strong#{' highlight' if schedule.onair?}" %>

@@ -15,7 +15,7 @@ module TastyradioData
         xsl = res.body.to_s
 
         result = {
-          :online  => 0,
+          :online     => 0,
           :song       => 'Не удалось получить данные'
         }
         
