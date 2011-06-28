@@ -49,8 +49,8 @@ ActionController::Routing::Routes.draw do |map|
 
   # это главный сайт, mmm-tasty.ru или www.mmm-tasty.ru
   # FIXME: TURN ME OFF!
-  map.with_options :conditions => {  } do |www|
-  # map.with_options :conditions => { :subdomain => /^(www|m|)$/, :domain => Regexp.new(Tlogs::Domains::CONFIGURATION.domains.join('|'))  } do |www|
+  # map.with_options :conditions => {  } do |www|
+  map.with_options :conditions => { :subdomain => /^(www|m|)$/, :domain => Regexp.new(Tlogs::Domains::CONFIGURATION.domains.join('|'))  } do |www|
     www.connect '', :controller => 'main', :action => 'index'
 
     www.main_feed 'main/feed/:action/:rating/:kind.xml', :controller => 'main_feed', :action => 'last', :rating => 'default', :kind => 'default', :requirements => { :rating => /[a-z]{3,20}/ }
@@ -85,9 +85,6 @@ ActionController::Routing::Routes.draw do |map|
   end
 
   map.with_options :controller => 'tlog', :conditions => { :subdomain => /^(www|m|)$/, :domain => Regexp.new(Tlogs::Domains::CONFIGURATION.domains.join('|').gsub('.', '\.')) }, :path_prefix => 'users/:current_site', :name_prefix => 'current_site_', &tlog_settings
-  
-  # # mobile
-  # map.with_options :controller => 'tlog', :conditions => { :subdomain => /m/, :domain => Regexp.new(Tlogs::Domains::CONFIGURATION.domains.select { |d| d.starts_with?('m.') }.map { |d| d.sub('m.', '') }.join('|').gsub('.', '\.')) }, :path_prefix => 'users/:current_site', :name_prefix => 'current_site_', &tlog_settings
   
   # это домены пользователей: andy.mmm-tasty.ru, genue.mmm-tasty.ru и так далее
   map.with_options :controller => 'tlog', &tlog_settings
