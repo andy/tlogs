@@ -2999,9 +2999,11 @@ img.heart {
 	margin:0 0 20px 0;
 }
 .sidebar_search input {
-	width:157px;
-	border:1px solid #333;
-	margin:0!important;
+	padding: 2px;
+	width: 157px;
+	border: 1px solid #999;
+	font-size: 12px;
+	margin: 0!important;
 }
 #tlog_menu_url a {
 	/*text-decoration:none;*/
@@ -3223,6 +3225,8 @@ img.heart {
 	border:none!important;
 	background:none;
 	color:#404040!important;
+	padding: 0;
+	text-decoration: underline;
 /*	color:white!important;*/
 }
 .tl {

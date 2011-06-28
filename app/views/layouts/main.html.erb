@@ -27,6 +27,10 @@
 			<div class='top_hello'>
 					Будьте собой, <%= link_to_tlog(current_user, :link => :username) %>!
 			</div>
+		<% else %>
+		  <div class='top_hello'>
+		    Хватит быть никем, <%= link_to 'зарегистрируйся', service_url(login_path) %>.
+		  </div>
 		<% end %>
 		
 		<div class='top_menu'>
