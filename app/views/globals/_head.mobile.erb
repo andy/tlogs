@@ -30,8 +30,6 @@
 
 <%= glued_javascript_include_tag 'mobile' %>
 
-<% if @title %>
-	<title><%= [h(current_site ? h(current_site.url) : current_service.name), strip_tags(@title)].reject(&:blank?).join(' – ') %></title>
-<% end %>
+<title>Тейсти</title>
 
 <%= yield :head %>
