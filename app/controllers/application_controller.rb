@@ -78,7 +78,7 @@ class ApplicationController < ActionController::Base
       @current_site = nil
 
       url = nil
-      if request.host.ends_with?('mmm-tasty.ru')
+      if request.host.ends_with?('mmm-tasty.ru') && request.host != 'm.mmm-tasty.ru'
         # ban www.subdomain requests
         redirect_to "#{request.protocol}www.mmm-tasty.ru#{request.port == 80 ? '' : ":#{request.port}"}" and return false if request.host.starts_with?('www.') && request.host != 'www.mmm-tasty.ru'
         
