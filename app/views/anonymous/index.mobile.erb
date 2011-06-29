@@ -1,0 +1,15 @@
+<%-
+  prev_entry = nil
+-%>
+<div data-role="content" data-theme="d">
+	<div class='t-entries'>
+  	<% @entries.each_with_index do |entry, index| %>
+  		<%= render :partial => 'entries/anonymous_entry_display', :locals => { :entry => entry, :show_datetime => !(prev_entry.created_at.same_day?(entry.created_at) rescue false), :show_comments => true } %>
+  		<%- prev_entry = entry -%>
+  	<% end %>
+  </div>
+</div>
+
+<div data-role='footer'>
+  <%= paginate @entry_ids, :reverse => true %>
+</div>

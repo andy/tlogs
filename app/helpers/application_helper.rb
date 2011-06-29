@@ -20,7 +20,18 @@ module ApplicationHelper
     avatar    = user.avatar
     empty     = options.delete(:empty) || false
     if avatar
-      "<img src='#{image_path avatar.public_filename}' class='avatar' style='width: #{avatar.width}px; height: #{avatar.height}px' />"
+      width = avatar.width
+      height = avatar.height
+
+      if options[:width] && options[:width] < width
+        ratio = options[:width] > 0 ? options[:width].to_f / width.to_f : 1
+
+        # пересчитываем
+        width = ratio < 1 ? (width * ratio).to_i : width
+        height = ratio < 1 ? (height * ratio).to_i : height
+      end
+      
+      "<img src='#{image_path avatar.public_filename}' class='avatar' style='width: #{width}px; height: #{height}px' />"
     elsif empty
       case empty
       when :blank, 'blank'

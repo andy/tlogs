@@ -16,9 +16,7 @@
     <div class='t-entry-footer-ctl'>
       <%= content_tag :span, entry.rating.value > 0 ? "+#{entry.rating.value}" : entry.rating.value, :class => 't-entry-rating' if entry.is_voteable? %>
       <%= link_to entry.comments_count.zero? ? 'comment' : entry.comments_count.pluralize('comment', 'comments', 'comments', true), user_url(entry.author, entry_path(entry)) %>
-      <%= link_to 'fave', '#' %>
+      <%#= link_to 'fave', '#' %>
     </div>
   </div>
 </div>
-
-

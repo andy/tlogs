@@ -121,7 +121,7 @@ class MainController < ApplicationController
   
   
   def my
-    redirect_to(service_url(main_path(:action => :live))) and return unless current_user
+    redirect_to(service_url(login_path)) and return unless current_user
     
     @page = params[:page].to_i
     @page = 1 if @page <= 0

@@ -17,7 +17,7 @@
       <!-- <div data-role="content" data-theme="d"> ... </div> -->      
       <%= yield %>
       
-      <div data-role="footer" x-data-position="fixed" x-data-id="footer">
+      <!-- <div data-role="footer" x-data-position="fixed" x-data-id="footer">
         <div data-role='navbar'>
           <ul>
             <li><%= link_to 'Моё', main_url(:action => :my), 'data-icon' => 'forward', 'data-iconpos' => 'top' %></li>
@@ -27,7 +27,7 @@
             <li><%= link_to 'Профиль', '#', 'data-icon' => 'info', 'data-iconpos' => 'top' %>
           </ul>
         </div>
-      </div>
+      </div> -->
     </div>
     
     <%= yield :extra %>
@@ -40,11 +40,11 @@
         <form method='get' action='/main/last_redirect'>
       		<%= select :filter, :rating, EntryRating::RATINGS_FOR_SELECT %>
       		<%= select :filter, :kind, Entry::KINDS_FOR_SELECT %>
-      		<%= submit_tag "обновить", :name => nil, :class => 'button_1' %>
+      		<%= submit_tag "обновить", :name => nil %>
       	</form>
       </div>
-      <div data-role="footer">
-      </div>
+      <!-- <div data-role="footer">
+      </div> -->
     </div>
   </body>
 

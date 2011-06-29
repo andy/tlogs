@@ -1,0 +1,21 @@
+<%-
+	show_datetime ||= false unless local_assigns.has_key?(:show_datetime) && show_datetime
+	show_comments ||= false unless local_assigns.has_key?(:show_comments) && show_comments
+-%>
+<div class='t-entry'>
+  <div class='t-entry-header'>
+    <%= image_tag 'noavatar.gif', :class => 't-entry-header-userpic', :size => '24x24' %>
+    <span class='t-entry-header-author'>аноним</span>
+  </div>
+
+  <% content_tag :div, :id => dom_id(entry) do %>
+    <%= render :partial => 'entries/display/anonymous_entry', :locals => { :entry => entry, :show_datetime => show_datetime } %>
+  <% end %>
+
+  <div class='t-entry-footer'>
+    <div class='t-entry-footer-ctl'>
+      <%= content_tag :span, entry.rating.value > 0 ? "+#{entry.rating.value}" : entry.rating.value, :class => 't-entry-rating' if entry.is_voteable? %>
+      <%= link_to entry.comments_count.zero? ? 'comment' : entry.comments_count.pluralize('comment', 'comments', 'comments', true), service_url("/main/anonymous/show/#{entry.id}") if show_comments %>
+    </div>
+  </div>
+</div>

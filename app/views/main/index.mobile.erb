@@ -4,23 +4,19 @@
   news_count = 15
 -%>
 <div data-role="content">
-  <ul data-role="listview" x-data-inset="true">
+  <ul data-role="listview" data-inset="true">
     <li data-role="list-divider">Общее</li>
     <li><%= link_to 'Прямой эфир', main_url(:action => :live) %></li>
     <li><%= link_to 'Лучшее', main_url(:action => :last) %></li>
     <li><%= link_to 'Анонимки', main_url(:action => :anonymous) %></li>
-
-    <li data-role="list-divider">Личное</li>
     <li><%= link_to 'Моё', main_url(:action => :my) %></li>
-    <li>Мой тлог</li>
+    <!-- <li><%#= link_to "Новости#{content_tag(:span, news_count, :class => 'ui-li-count') unless news_count.zero?}" %></li> -->
+
+    <!-- <li data-role="list-divider">Личное</li> -->
+    <!-- <li>Мой тлог</li>
     <li>Друзья <span class='ui-li-count'>12</span></li>
-    <li>Сообщения <span class='ui-li-count'>3</span></li>
-
+    <li>Сообщения <span class='ui-li-count'>3</span></li> -->
   </ul>
-
-  <!-- <ul data-role="listview" data-inset="true">
-    <li></li>
-  </ul> -->
 </div>
 <% content_for :header_r do %>
   <%= link_to 'Обновить', '', 'data-icon' => 'refresh', 'data-iconpos' => 'notext' %>

@@ -1,0 +1,16 @@
+
+<div data-role="content" data-theme="d">
+  <div class='t-entries'>
+    <%= render :partial => 'entries/anonymous_entry_display', :locals => { :entry => @entry, :show_datetime => true } %>
+  </div>
+
+	<div class="t-entry-comments">
+	  <h4>
+		  <% if @entry.comments.size == 0 %>Комментариев еще нет<% else %>Комментарии (<span id='t-entry-comments-count'><%= @entry.comments.size %></span>):<% end %>
+		</h4>
+
+		<%= render :partial => 'tlog/comment', :collection => Comment.find(:all, :conditions => ['comments.entry_id = ?', @entry.id], :include => { :user => :avatar }, :order => 'comments.id').reject { |c| c.user.nil? } if @entry.comments.size %>
+
+		<%#= render :partial => 'comment_form' %>
+	</div>
+</div>

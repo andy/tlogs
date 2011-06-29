@@ -134,3 +134,32 @@
 }
 .person_4 {
 	background:#acacac;
+}
+.t-comment {
+	font-size: 0.8%;
+	margin-bottom: 20px;
+	clear: left;
+}
+.t-comment .t-comment-avatar {
+	width: 40px;
+	height: 40px;
+	float: left;
+}
+.t-comment .t-comment-body {
+	float: left;
+	margin-bottom: 20px;
+}
+.t-comment .t-comment-meta {
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+.t-comment .t-comment-meta .t-comment-username a {
+	text-decoration: none;
+}
+.t-comment-by-anonymous .t-comment-username {
+	font-weight: bold;
+}
+.t-comment .t-comment-meta .t-comment-time {
+	color: #999;
+	font-weight: italic;
+}

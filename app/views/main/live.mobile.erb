@@ -5,6 +5,14 @@
     <% end %>
   </div>
 </div>
+<div data-role="footer">
+  <div data-role='navbar'>
+    <ul>
+      <li><%= link_to 'далее', { :action => :live, :page => nil, :entry_id => @entries.last.id },  'data-icon' => 'arrow-r', 'data-iconpos' => 'top' %></li>
+    </ul>
+  </div>
+</div>
 <% content_for :header_r do %>
   <%= link_to 'Обновить', '', 'data-icon' => 'refresh', 'data-iconpos' => 'notext' %>
 <% end %>
+
