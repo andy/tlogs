@@ -1,3 +1,7 @@
+<%-
+	show_datetime ||= false unless local_assigns.has_key?(:show_datetime) && show_datetime
+	show_comments ||= false unless local_assigns.has_key?(:show_comments) && show_comments
+-%>
 <div class='t-entry'>
   <div class='t-entry-header'>
     <%= avatar_tag(entry.author, :class => 't-entry-header-avatar', :blank => true, :height => 24, :width => 24) %>
