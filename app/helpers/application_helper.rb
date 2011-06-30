@@ -13,31 +13,42 @@ module ApplicationHelper
     end
   end
   
-  # >> avatar_image_tag(current_user, :empty => false)       DEFAULT
-  # >> avatar_image_tag(current_user, :empty => :blank)
-  def avatar_image_tag(user=nil, options = {})
-    user    ||= current_user
+  # avatar_tag
+  #   user
+  #   options
+  #     :blank
+  #     :width
+  #     :height
+  def avatar_tag(user, options = {})
     avatar    = user.avatar
-    empty     = options.delete(:empty) || false
-    if avatar
-      width = avatar.width
-      height = avatar.height
+    blank     = options[:blank] || false
 
-      if options[:width] && options[:width] < width
-        ratio = options[:width] > 0 ? options[:width].to_f / width.to_f : 1
+    # backwards compatibility
+    empty     = options[:empty] || false
+    blank   ||= true if empty && empty.to_sym == :blank
 
-        # пересчитываем
-        width = ratio < 1 ? (width * ratio).to_i : width
-        height = ratio < 1 ? (height * ratio).to_i : height
-      end
+    # rescale image
+    width = avatar ? avatar.width : 64
+    height = avatar ? avatar.height : 64
+
+    if (options[:width] && options[:width] < width) || (options[:height] && options[:height] < height)
+      w_ratio = (options[:width] && options[:width] > 0) ? options[:width].to_f / width.to_f : 1
+      h_ratio = (options[:height] && options[:height] > 0) ? options[:height].to_f / height.to_f : 1
       
-      "<img src='#{image_path avatar.public_filename}' class='avatar' style='width: #{width}px; height: #{height}px' />"
-    elsif empty
-      case empty
-      when :blank, 'blank'
-        image_tag 'noavatar.gif', :class => 'avatar'
-      end
+      ratio = [w_ratio, h_ratio].min
+
+      width = ratio < 1 ? (width * ratio).to_i : width
+      height = ratio < 1 ? (height * ratio).to_i : height
     end
+
+    url = avatar ? image_path(avatar.public_filename) : (blank ? 'noavatar.gif' : nil)
+
+    url ? image_tag(url,
+            :class => classes('avatar', [options[:class], options[:class]]),
+            :alt => user.url,
+            :width => width,
+            :height => height
+          ) : ''
   end
   
   def flash_div
@@ -58,6 +69,19 @@ END
     ""
   end
   
+  # classes is to set css-classes or other attributes conditionally
+  # classes("class-without-conditions", ["logged-class", logged_in?], "third-class-without-conditions")
+  def classes(*pairs)
+    glued_classes = []
+    pairs.each do |pair| 
+      next if pair.blank?
+      arr = Array(pair)
+      raise ArgumentError, "css_class or [css_class, condition] are expected (got #{pair.inspect})" if arr.size.zero? || arr.size > 2
+      glued_classes << arr[0] if arr[1] || arr.size == 1
+    end
+    glued_classes.any? ? glued_classes.join(" ") : nil
+  end
+  
   def audio_player_id
     @audio_player_id ||= 0
     @audio_player_id += 1
@@ -74,7 +98,7 @@ END
 
     username = case options.delete(:link) || :url
                   when :avatar
-                    avatar_image_tag(user, options)
+                    avatar_tag(user, options)
                   when :username
                     CGI::escapeHTML(user.username)
                   else

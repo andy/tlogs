@@ -6,7 +6,7 @@
 <div class="sidebar_section" id='sidebar_avatar'>
 	<div class='sidebar_section_content' id='sidebar_avatar_content'>
 		<% if params[:action] == 'index' && @page == 1 %>
-			<%= avatar_image_tag current_site %>
+			<%= avatar_tag(current_site) %>
 		<% else %>
 			<%= link_to_tlog current_site, :link => :avatar if current_site.avatar %>
 		<% end %>

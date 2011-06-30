@@ -1,9 +1,13 @@
+/* global */
+.avatar {
+	border: 1px solid #aaa;
+}
+
 /* entries */
 .t-entries {
 	font-size: 0.8em;
 	background-color: white;
 }
-
 
 /* entry styling */
 .t-entry {
@@ -14,9 +18,9 @@
 	padding: 10px 0;
 }
 
-.t-entry .t-entry-header-userpic {
+.t-entry .t-entry-header-avatar {
 	vertical-align: middle;
-	padding-right: 3px;
+	margin-right: 3px;
 }
 
 .t-entry .t-entry-header-author {
