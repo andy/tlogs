@@ -48,5 +48,24 @@
     </div>
   </body>
 
+  <script type='text/javascript'>
+    $('.t-btn-refresh-live').live('click', function() {
+      $.mobile.changePage('/main/live', { reloadPage: true, transition: 'fade' });
+      return false;
+    });
+    $('.t-btn-refresh-last').live('click', function() {
+      $.mobile.changePage('/main/last', { reloadPage: true, transition: 'fade' });
+      return false;
+    });
+    $('.t-btn-refresh-fl').live('click', function() {
+      $.mobile.changePage('/main/fl', { reloadPage: true, transition: 'fade' });
+      return false;
+    });
+    $('.t-btn-refresh-main').live('click', function() {
+      $.mobile.changePage('/', { reloadPage: true, transition: 'fade' });
+      return false;
+    });
+  </script>
+
   <%= render :partial => 'globals/counters' if Rails.env.production? %>
 </html>

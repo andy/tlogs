@@ -12,7 +12,8 @@
   <% end %>
 </div>
 <% content_for :header_r do %>
-  <%= link_to 'Настройки', '/main/last&ui-page=settings', 'data-icon' => 'gear', 'data-iconpos' => 'notext', 'data-rel' => 'dialog', 'data-transition' => 'flip' %>
+  <%#= link_to 'Настройки', '/main/last&ui-page=settings', 'data-icon' => 'gear', 'data-iconpos' => 'notext', 'data-rel' => 'dialog', 'data-transition' => 'flip' %>
+  <%= link_to 'Обновить', '', 'data-icon' => 'refresh', 'data-iconpos' => 'notext', :class => 't-btn-refresh-last' %>  
 <% end %>
 <div data-role="footer">
   <%= paginate @entry_ratings, :reverse => true, :url_options => { :kind => @filter.kind, :rating => @filter.rating } %>

@@ -120,6 +120,13 @@ class MainController < ApplicationController
   end  
   
   
+  def fl
+    redirect_to(service_url(login_path)) and return unless current_user
+
+    
+  end
+
+  
   def my
     redirect_to(service_url(login_path)) and return unless current_user
     
