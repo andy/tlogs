@@ -15,7 +15,7 @@ module WhiteListHelper
   end
   
   def white_list_video_entry(text)
-    white_list_html_with_rescue(text, :flash_width => 420)
+    white_list_html_with_rescue(text, :media_width => 420)
   end
 
   
@@ -28,7 +28,7 @@ module WhiteListHelper
   end
   
   def white_list_comment(text)
-    white_list_html_with_rescue(text, :flash_width => 290)
+    white_list_html_with_rescue(text, :media_width => 290)
   end
   
   def white_list_html_with_rescue(html, options = {})
@@ -52,7 +52,7 @@ module WhiteListHelper
     html.gsub!('&amp;', '&')
     html.gsub!('amp;', '')
     
-    flash_width = options[:flash_width] || 400
+    media_width = options[:media_width] || 400
     link_target = options[:link_target] || nil
     
     doc = Hpricot(simple_tasty_format(html), :fixup_tags => true)
@@ -100,13 +100,13 @@ module WhiteListHelper
         scale_height = true
         scale_height = false if attrs['src'].include?('prostopleer.com')
         
-        width = (attrs['width'] && attrs['width'].ends_with?('%')) ? (flash_width * attrs['width'].to_i / 100) : (attrs['width'].to_i || flash_width)
-        # width  = attrs['width'].to_i || flash_width
-        height = attrs['height'].to_i || flash_width
+        width = (attrs['width'] && attrs['width'].ends_with?('%')) ? (media_width * attrs['width'].to_i / 100) : (attrs['width'].to_i || media_width)
+        # width  = attrs['width'].to_i || media_width
+        height = attrs['height'].to_i || media_width
 
-        if width > flash_width
-          attrs['height'] = scale_height ? ((flash_width / width.to_f) * height.to_f).to_i : height
-          attrs['width']  = flash_width
+        if width > media_width
+          attrs['height'] = scale_height ? ((media_width / width.to_f) * height.to_f).to_i : height
+          attrs['width']  = media_width
         end
         
         iframe.swap content_tag(:iframe, nil, attrs)
@@ -123,16 +123,16 @@ module WhiteListHelper
       width ||= $1.to_i if flash.attributes['width'].match(/^(\d+)$/)
 
       # try attr width - %
-      width ||= flash_width * flash.attributes['width'].to_i / 100 if flash.attributes['width'].match(/^\d+%$/)
+      width ||= media_width * flash.attributes['width'].to_i / 100 if flash.attributes['width'].match(/^\d+%$/)
 
       # try style width - px
       width ||= $2.to_i if flash.attributes['style'].match(/width:(\s+)?(\d+)px/i)
 
       # try style width - %
-      width ||= (flash_width * $2.to_i / 100) if flash.attributes['style'].match(/width:(\s+)?(\d+)%/i)
+      width ||= (media_width * $2.to_i / 100) if flash.attributes['style'].match(/width:(\s+)?(\d+)%/i)
 
       # finalize with default
-      width ||= flash_width
+      width ||= media_width
 
 
       height = nil
@@ -141,16 +141,16 @@ module WhiteListHelper
       height ||= $1.to_i if flash.attributes['height'].match(/^(\d+)$/)
 
       # try attr height - %
-      height ||= flash_width * flash.attributes['height'].to_i / 100 if flash.attributes['height'].match(/^\d+%$/)
+      height ||= media_width * flash.attributes['height'].to_i / 100 if flash.attributes['height'].match(/^\d+%$/)
       
       # try style height - px
       height ||= $2.to_i if flash.attributes['style'].match(/height:(\s+)?(\d+)px/i)
 
       # try style height - %
-      height ||= (flash_width * $2.to_i / 100) if flash.attributes['style'].match(/height:(\s+)?(\d+)%/i)
+      height ||= (media_width * $2.to_i / 100) if flash.attributes['style'].match(/height:(\s+)?(\d+)%/i)
       
       # finalize with default
-      height ||= flash_width
+      height ||= media_width
 
 
       # параметры по-умолчанию для флеша
@@ -174,9 +174,9 @@ module WhiteListHelper
         scale_height = true
         scale_height = false if src.include?('prostopleer.com')
       
-        if width > flash_width
-          height = scale_height ? ((flash_width / width.to_f) * height.to_f).to_i : height
-          width = flash_width
+        if width > media_width
+          height = scale_height ? ((media_width / width.to_f) * height.to_f).to_i : height
+          width = media_width
         end
 
         text = "<object width='#{width}' height='#{height}'>#{embed_params.map{|name, value| "<param name='#{name}' value='#{value}' >"}.join}<embed src='#{src}' type='application/x-shockwave-flash' #{embed_params.except('movie').map{|name, value| "#{name}='#{value}'"}.join(" ")} width='#{width}' height='#{height}'></object>"
