@@ -13,7 +13,7 @@
 	<div class='t-comment-body'>
 	  <div class='t-comment-meta'>
   	  <span class='t-comment-username'><%= is_anonymous_author ? 'аноним' : link_to_comment_author(comment, current_site && comment.user_id == current_site.id) %></span>
-  	  <span class='t-comment-time' title='<%= comment.created_at.to_timestamp_s %>'><%= comment.created_at.distance_between_in_words(Time.now, ' назад') %></span>
+  	  <span class='t-comment-time' title='<%= comment.created_at.to_timestamp_s %>'><%= say_time_in_words(comment.created_at) %></span>
     </div>
     <div class='t-comment-comment'>
   		<%= white_list_entry(comment.comment, :flash_width => '220') %>

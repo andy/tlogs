@@ -15,7 +15,7 @@
     <% end %>
     <% RadioSchedule.onair.each do |schedule| %>
       <p>
-        <%= content_tag :span, schedule.onair? ? 'сейчас' : say_schedule_in_words(schedule.air_at), :class => "strong#{' highlight' if schedule.onair?}" %>
+        <%= content_tag :span, schedule.onair? ? 'сейчас' : say_time_in_words(schedule.air_at), :class => "strong#{' highlight' if schedule.onair?}" %>
         <%= content_tag :span, h(schedule.body) %>
       </p>    
     <% end %>

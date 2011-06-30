@@ -149,6 +149,9 @@
 	height: 40px;
 	float: left;
 }
+.t-comment .t-comment-avatar img.avatar {
+	border: 1px solid #aaa;
+}
 .t-comment .t-comment-body {
 	float: left;
 	margin-bottom: 20px;

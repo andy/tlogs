@@ -124,7 +124,7 @@ END
     content_tag(:abbr, Russian::strftime(time, '%d %B %Y в %H:%M'), options.merge(:title => time.getutc.iso8601))
   end
   
-  def say_schedule_in_words(time)
+  def say_time_in_words(time)
     distance    = (time - Time.now).round
     in_minutes  = (distance / 1.minute).round
     
@@ -147,12 +147,31 @@ END
         elsif time.day == Time.now.tomorrow.day
           Russian::strftime(time, "завтра в %H:%M")
         else
-          Russian::strftime(time, "%d %B в %H:%M")
+          Russian::strftime(time, "%e %B в %H:%M")
         end
       end
     else
+      distance = distance.abs
       # past
-      "уже была"
+      if distance <= 1.hour
+        # через час или через 30 минут
+        if distance < 5.minutes
+          "пару минут назад"
+        elsif distance <= 1.hour
+          "#{in_minutes} #{Russian::p(in_minutes, "минуту", "минуты", "минут")} назад"
+        end
+      else
+        # точное время
+        if time.day == Time.now.day && distance < 1.day
+          Russian::strftime(time, "сегодня в %H:%M")
+        elsif time.day == Time.now.yesterday.day
+          Russian::strftime(time, "вчера в %H:%M")
+        elsif time.year == Time.now.year
+          Russian::strftime(time, "%e %B в %H:%M")
+        else
+          Russian::strftime(time, "%e %B %Y в %H:%M")
+        end
+      end
     end
   end
 end
