@@ -53,7 +53,7 @@ module ApplicationHelper
   
   def flash_div
     [:bad, :good].each do |key|
-      if flash[key]
+      if flash && flash[key]
         flash.discard key
         return <<-END
 <div id='flash_holder'><table id='flash' onclick="new Effect.Fade ('flash', { duration: 0.3, afterFinish: function() { Element.remove('flash_holder'); } } );">
