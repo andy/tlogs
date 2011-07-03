@@ -2010,12 +2010,17 @@ body.main_page {
 	z-index:100;
 	margin:0 0 0 -30px;
 	padding:40px 0;
-	-webkit-box-shadow: rgba(0, 0, 0, 0.199219) 0px 2px 2px;
-	-webkit-border-radius: 5px;
-	-moz-border-radius: 5px;
-	border-radius: 5px;
 }
 .main_page .rounded_main_center {
+	-webkit-box-shadow: rgba(0, 0, 0, 0.199219) 0px 2px 2px;
+	-moz-box-shadow: rgba(0, 0, 0, 0.199219) 0px 2px 2px;
+	-o-box-shadow: rgba(0, 0, 0, 0.199219) 0px 2px 2px;
+	box-shadow: rgba(0, 0, 0, 0.199219) 0px 2px 2px;
+
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	-o-border-radius: 5px;
+	border-radius: 5px;
 	min-height:732px;
 }
 *html .main_page .rounded_main_center {

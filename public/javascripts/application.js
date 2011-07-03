@@ -166,5 +166,5 @@ if(/MSIE/.test(navigator.userAgent) && !window.opera) {
 }
 
 jQuery(document).ready(function() {
-	jQuery('a.fancybox').removeClass('fancybox').fancybox({ centerOnScroll: true, hideOnContentClick: true, showNavArrows: false, enableKeyboardNav: false });
+	jQuery('a.fancybox').removeClass('fancybox').fancybox({ centerOnScroll: false, hideOnContentClick: true, showNavArrows: false, enableKeyboardNav: false, autoScale: false });
 });

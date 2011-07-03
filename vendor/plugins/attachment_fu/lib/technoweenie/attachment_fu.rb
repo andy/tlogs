@@ -1,6 +1,6 @@
 module Technoweenie # :nodoc:
   module AttachmentFu # :nodoc:
-    @@default_processors = %w(ImageScience Rmagick MiniMagick Gd2 CoreImage)
+    @@default_processors = %w(MiniMagick ImageScience Rmagick Gd2 CoreImage)
     @@tempfile_path      = File.join(RAILS_ROOT, 'tmp', 'attachment_fu')
     @@content_types      = ['image/jpeg', 'image/pjpeg', 'image/gif', 'image/png', 'image/x-png', 'image/jpg']
     mattr_reader :content_types, :tempfile_path, :default_processors
@@ -236,7 +236,7 @@ module Technoweenie # :nodoc:
           ext = s; ''
         end
         # ImageScience doesn't create gif thumbnails, only pngs
-        ext.sub!(/gif$/, 'png') if attachment_options[:processor] == "ImageScience"
+        # ext.sub!(/gif$/, 'png') if attachment_options[:processor] == "ImageScience"
         "#{basename}_#{thumbnail}#{ext}"
       end
 
