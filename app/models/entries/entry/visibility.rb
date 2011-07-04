@@ -54,7 +54,8 @@ class Entry
       'beon.ru/test',
       'summer-breath.com',
       'uath.org/nev',
-      'sprashivai.ru'
+      'sprashivai.ru',
+      'florist.ru'
       ]
     
     bads.find { |bad| contents.include?(bad) } ? true : false    
