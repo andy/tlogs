@@ -55,7 +55,9 @@ class Entry
       'summer-breath.com',
       'uath.org/nev',
       'sprashivai.ru',
-      'florist.ru'
+      'florist.ru',
+      'freeflashtoys.com',
+      'viewy.ru'
       ]
     
     bads.find { |bad| contents.include?(bad) } ? true : false    
