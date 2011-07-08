@@ -10,7 +10,16 @@ $redis.subscribe(:ping) do |on|
   end
 
   on.message do |channel, message|
-    entry = Entry.find(message, :include => { :author => [ :tlog_settings ]})
+    rt = 0
+
+    begin
+      entry = Entry.find(message, :include => { :author => [ :tlog_settings ]})      
+    rescue ActiveRecord::RecordNotFound
+      next if rt > 1
+      rt += 1
+      sleep(1)
+      retry 
+    end
     user  = entry.author
     
     if entry.is_private?
