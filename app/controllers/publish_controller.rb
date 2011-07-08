@@ -164,7 +164,7 @@ class PublishController < ApplicationController
       end
 
       render :action => 'edit'
-    rescue ActiveRecord::RecordInvalid => e
+    rescue ActiveRecord::RecordInvalid => ex
       HoptoadNotifier.notify(
         :error_class    => ex.class.name,
         :error_message  => "#{ex.class.name}: #{ex.message}",
