@@ -38,6 +38,7 @@ module WhiteListHelper
       HoptoadNotifier.notify(
         :error_class    => 'WhiteListHtml Error',
         :error_message  => "WhiteListHtml: #{ex.message}",
+        :backtrace      => ex.backtrace,
         :parameters     => options.merge(:html => html)
       )
 
