@@ -39,12 +39,19 @@ $redis.subscribe(:ping) do |on|
     desc += ' — ' + user.tlog_settings.about unless user.tlog_settings.about.blank?
 
     server = XMLRPC::Client.new2('http://ping.blogs.yandex.ru/RPC2')
-    result = server.call('weblogUpdates.ping', desc, "http://#{user.url}.mmm-tasty.ru/")
+    begin
+      result = server.call('weblogUpdates.ping', desc, "http://#{user.url}.mmm-tasty.ru/")
+    rescue Exception => ex
+      puts "- ping failed: #{ex.class.name}: #{ex.message}"
+      next
+    end
 
     if result && result['flerror']
       puts "- ping failed: #{result['message']}"
-    else
+    elsif result
       puts "+ ping (#{user.url}, #{entry.id})"
+    else
+      puts "- ping failed: unknown reason"
     end
   end
 end
