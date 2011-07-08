@@ -108,7 +108,7 @@ class PublishController < ApplicationController
           @entry.has_attachment = params[:attachment] && !params[:attachment][:uploaded_data].blank?
           @entry.author = current_user
           @entry.visibility = @entry.is_anonymous? ? 'private' : current_user.tlog_settings.default_visibility
-          logger.info "creating new entry of type #{type}" if @entry.new_record?
+          Rails.logger.info "creating new entry of type #{type}" if @entry.new_record?
         end
         
         @new_record = @entry.new_record?
@@ -130,7 +130,7 @@ class PublishController < ApplicationController
         
           if @entry.can_have_attachments? && @entry.has_attachment && @new_record
             @attachment = @entry.attachment_class.new params[:attachment]
-            logger.info "adding attachment to entry id = #{@entry.id}"
+            Rais.logger.info "adding attachment to entry id = #{@entry.id}"
             @attachment.entry = @entry
             @attachment.user = current_user
             @attachment.save!
@@ -163,16 +163,11 @@ class PublishController < ApplicationController
         @attachment = Attachment.new
       end
 
-      require 'pp'
-      puts @entry.visibility
-      pp @entry
       render :action => 'edit'
     rescue ActiveRecord::RecordInvalid => e
-      logger.debug "entry is not valid for some reason"
       @attachment.valid? unless @attachment.nil? # force error checking
       render :action => 'edit'
     rescue
-      logger.debug "entry is not valid for some reason"
       @attachment.valid? unless @attachment.nil?
       render :action => 'edit'
     end

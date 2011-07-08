@@ -57,7 +57,10 @@ class Entry
       'sprashivai.ru',
       'florist.ru',
       'freeflashtoys.com',
-      'viewy.ru'
+      'viewy.ru',
+      'media.tumblr.com',
+      'rghost.net',
+      'qip.ru/test'
       ]
     
     bads.find { |bad| contents.include?(bad) } ? true : false    

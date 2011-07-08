@@ -1,6 +1,5 @@
 require 'net/http'
 require 'uri'
-require 'hpricot'
 
 module Ipgeobase
   def lookup(addr)
