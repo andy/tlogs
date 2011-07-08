@@ -298,51 +298,51 @@ module WhiteListHelper
       end
     end
     
-    # Создаем slideshow из последовательных //a/img или просто //img
-    ss = [[]]
-    ss_idx = 0
-    (doc/"//img").each do |img|
-      node = img
-      node = node.parent if node.parent && node.parent.name == 'a'
-      
-      # skip few br backwards
-      ps = node.previous_sibling
-      ps = ps.previous_sibling if ps && ps.name == 'br'
-      ps = ps.previous_sibling if ps && ps.name == 'br'
-      
-      if ss[ss_idx].any? && ps && ss[ss_idx].last != ps
-        puts "skip because diff sibling #{ps.to_html} with #{ss[ss_idx].last.to_html}"
-        ss_idx += 1
-        ss[ss_idx] = []
-      end
-    
-      ss[ss_idx] << node
-      
-      # should include next one with this?
-      pt = ''
-      nn = node
-      while nn = nn.next do
-        break if nn.elem? && nn.name != 'br'
-        pt += nn.to_plain_text.strip
-      end
-      
-      if !pt.strip.empty?
-        ss_idx += 1
-        ss[ss_idx] = []
-      end
-      
-    end if (doc/"//img").length > 1
-    
-    ss.each do |images|
-      next if images.empty? || images.first.empty? || images.length <= 1
-      
-      replacement = images.map(&:to_s).join("\n")
-      
-      images[0].swap("<div class='t-slides'><div class='t-slides-container'>#{replacement}</div><a href='#' class='t-slide-prev'><img src='/images/slides/arrow-prev.png' width='24' height='43' alt='Arrow Prev'></a><a href='#' class='t-slide-next'><img src='/images/slides/arrow-next.png' width='24' height='43' alt='Arrow Next'></a></div>")
-      # images[1..images.length].each do |image|
-      #   # image.swap('')
-      # end
-    end if ss.any?
+    # # Создаем slideshow из последовательных //a/img или просто //img
+    # ss = [[]]
+    # ss_idx = 0
+    # (doc/"//img").each do |img|
+    #   node = img
+    #   node = node.parent if node.parent && node.parent.name == 'a'
+    #   
+    #   # skip few br backwards
+    #   ps = node.previous_sibling
+    #   ps = ps.previous_sibling if ps && ps.name == 'br'
+    #   ps = ps.previous_sibling if ps && ps.name == 'br'
+    #   
+    #   if ss[ss_idx].any? && ps && ss[ss_idx].last != ps
+    #     puts "skip because diff sibling #{ps.to_html} with #{ss[ss_idx].last.to_html}"
+    #     ss_idx += 1
+    #     ss[ss_idx] = []
+    #   end
+    # 
+    #   ss[ss_idx] << node
+    #   
+    #   # should include next one with this?
+    #   pt = ''
+    #   nn = node
+    #   while nn = nn.next do
+    #     break if nn.elem? && nn.name != 'br'
+    #     pt += nn.to_plain_text.strip
+    #   end
+    #   
+    #   if !pt.strip.empty?
+    #     ss_idx += 1
+    #     ss[ss_idx] = []
+    #   end
+    #   
+    # end if (doc/"//img").length > 1
+    # 
+    # ss.each do |images|
+    #   next if images.empty? || images.first.empty? || images.length <= 1
+    #   
+    #   replacement = images.map(&:to_s).join("\n")
+    #   
+    #   images[0].swap("<div class='t-slides'><div class='t-slides-container'>#{replacement}</div><a href='#' class='t-slide-prev'><img src='/images/slides/arrow-prev.png' width='24' height='43' alt='Arrow Prev'></a><a href='#' class='t-slide-next'><img src='/images/slides/arrow-next.png' width='24' height='43' alt='Arrow Next'></a></div>")
+    #   # images[1..images.length].each do |image|
+    #   #   # image.swap('')
+    #   # end
+    # end if ss.any?
 
     
     (doc/"//iframe").each do |iframe|
