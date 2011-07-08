@@ -35,7 +35,8 @@ $redis.subscribe(:ping) do |on|
       next
     end
     
-    desc = user.url + ' — ' + user.tlog_settings.about
+    desc = user.url
+    desc += ' — ' + user.tlog_settings.about unless user.tlog_settings.about.blank?
 
     server = XMLRPC::Client.new2('http://ping.blogs.yandex.ru/RPC2')
     result = server.call('weblogUpdates.ping', desc, "http://#{user.url}.mmm-tasty.ru/")
