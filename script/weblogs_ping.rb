@@ -15,7 +15,10 @@ $redis.subscribe(:ping) do |on|
     begin
       entry = Entry.find(message, :include => { :author => [ :tlog_settings ]})      
     rescue ActiveRecord::RecordNotFound
-      next if rt > 1
+      if rt > 1
+        puts "- failed to find (#{message})"
+        next
+      end
       rt += 1
       sleep(1)
       retry 
@@ -23,12 +26,12 @@ $redis.subscribe(:ping) do |on|
     user  = entry.author
     
     if entry.is_private?
-      puts "- skipping private entry (#{user.url})"
+      puts "- skipping private entry (#{user.url}, #{entry.id})"
       next 
     end
 
     if user.tlog_settings.privacy != 'open'
-      puts "- skipping private tlog (#{user.url})"
+      puts "- skipping private tlog (#{user.url}, #{entry.id})"
       next
     end
     
@@ -40,7 +43,7 @@ $redis.subscribe(:ping) do |on|
     if result && result['flerror']
       puts "- ping failed: #{result['message']}"
     else
-      puts "+ ping (#{user.url})"
+      puts "+ ping (#{user.url}, #{entry.id})"
     end
   end
 end
