@@ -35,11 +35,17 @@ module WhiteListHelper
     begin
       white_list_html(html, options)
     rescue Exception => ex
+      HoptoadNotifier.notify(
+        :error_class    => 'WhiteListHtml Error',
+        :error_message  => "WhiteListHtml: #{ex.message}",
+        :parameters     => options.merge(:html => html)
+      )
+
       Rails.logger.error "> Failed to render the following content"
       Rails.logger.error html
       Rails.logger.error "> Exception was: #{ex.message}"
       
-      "внутреняя ошибка сервера"
+      "<p class='t-entry-exception'>внутреняя ошибка сервера</p>"
     end
   end
   
