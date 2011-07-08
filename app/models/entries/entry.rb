@@ -144,6 +144,8 @@ class Entry < ActiveRecord::Base
     User.increment_counter(:private_entries_count, entry.user_id) if entry.is_private?
     
     $redis.publish 'ping', entry.id
+    
+    true
   end
   
   after_save do |entry|
