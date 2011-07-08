@@ -204,8 +204,13 @@ class TlogController < ApplicationController
     end
 
     redirect_to url
-  end  
+  end
   
+  def foaf
+    response.headers['Content-Type'] = 'application/rdf+xml'
+    
+    render :layout => false
+  end  
   
   def robots
     expires_in 15.days, :public => true

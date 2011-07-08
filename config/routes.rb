@@ -14,6 +14,7 @@ tlog_settings = lambda { |tlog|
   tlog.connect 'tags/:action/:id', :controller => 'tags'
   
   tlog.robots 'robots.txt', :controller => 'tlog', :action => 'robots'
+  tlog.foaf 'foaf.rdf', :controller => 'tlog', :action => 'foaf'
   
   tlog.resources :activities, :controller => 'activities'
 

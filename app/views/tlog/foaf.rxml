@@ -1,0 +1,52 @@
+xml.instruct! :xml, :version => '1.0', :encoding => 'UTF-8'
+
+xml.tag! 'rdf:RDF',
+  'xml:lang' => 'ru',
+  'xmlns:rdf' => "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+  'xmlns:rdfs' => "http://www.w3.org/2000/01/rdf-schema#",
+  'xmlns:foaf' => "http://xmlns.com/foaf/0.1/",
+  'xmlns:ya' => "http://blogs.yandex.ru/schema/foaf/",
+  'xmlns:dc' => "http://purl.org/dc/elements/1.1/" do
+  xml.tag! 'foaf:Person' do
+    xml.tag! 'foaf:nick', current_site.url
+    xml.tag! 'foaf:name', current_site.username unless current_site.username.blank?
+    xml.tag! 'foaf:gender', current_site.gender('male', 'female')
+    xml.tag! 'ya:bio', current_site.tlog_settings.about unless current_site.tlog_settings.about.blank?
+    xml.tag!('foaf:weblog', 'rdf:resource' => user_url(current_site), 'ya:creationDate' => current_site.created_at.iso8601, 'dc:title' => current_site.tlog_settings.about)
+    xml.tag! 'ya:country', 'dc:title' => 'RU'
+    xml.tag!('foaf:img', 'rdf:resource' => current_service.url + image_path(current_site.avatar.public_filename)) if current_site.avatar
+    xml.tag! 'foaf:mbox_sha1sum', Digest::SHA1.hexdigest(current_site.email) unless current_site.email.blank?
+
+    xml.tag! 'ya:blogActivity' do
+      xml.tag! 'ya:Posts' do
+        xml.tag! 'ya:feed', 'rdf:resource' => user_url(current_site, tlog_feed_path(:action => 'rss')), 'dc:type' => 'application/rss+xml'
+        xml.tag! 'ya:posted', current_site.entries_count
+      end
+      
+    end
+
+    # xml.tag! 'ya:blogActivity' do
+    #   xml.tag! 'ya:Comments' do
+    #     xml.tag! 'ya:feed', 'dc:type' => 'application/rss+xml', 'rdf:resource' => user_url(current_site, tlog_feed_path(:action => 'comments'))
+    #     xml.tag! 'ya:posted', X
+    #     xml.tag! 'ya:received', X
+    #   end
+    # end
+    
+    current_site.public_friends.each do |user|
+      xml.tag! 'foaf:knows' do
+        xml.tag! 'foaf:Person' do
+          # personal stuff
+          xml.tag! 'foaf:nick', user.url
+          # xml.tag! 'foaf:member_name', user.username unless user.username.blank?
+          # xml.tag! 'foaf:tagLine', user.tlog_settings.about unelss user.tlog_settings.about.blank?
+          # xml.tag! 'foaf:image', current_service.url + image_path(user.avatar.public_filename) if user.avatar
+
+          # related links
+          xml.tag! 'rdfs:seeAlso', 'rdf:resource' => user_url(user, foaf_path)
+          xml.tag! 'foaf:weblog', 'rdf:resource' => user_url(user)
+        end
+      end
+    end
+  end
+end

@@ -1,17 +1,19 @@
 xml.instruct! :xml, :version => '1.0', :encoding => 'UTF-8'
 
-xml.rss :version => '2.0' do
+xml.rss :version => '2.0', 'xmlns:ya' => "http://blogs.yandex.ru/schema/rss", 'xmlns:wfw' => "http://wellformedweb.org/CommentAPI/" do
   xml.channel do
     xml.title { xml.cdata!(host_for_tlog(current_site) + (current_site.tlog_settings.title.blank? ? '' : (" - " + h(current_site.tlog_settings.title)))) }
     xml.link user_url(current_site)
-    xml.description { xml.cdata!(strip_tags(current_site.tlog_settings.about)) }
+    xml.description { xml.cdata!(strip_tags(current_site.tlog_settings.about.strip)) } unless current_site.tlog_settings.about.empty?
     xml.language 'ru-RU'
     xml.pubDate @entries.first.created_at.to_s(:rfc822) if @entries && @entries.first
     xml.generator "tlogs rss (#{current_service.url})"
     xml.ttl 30
+    # xml.tag!('wfw:commentRss', user_url(current_site, tlog_feed_path(:action => 'comments')))
+    xml.tag!('ya:more', user_url(current_site, tlog_feed_path(:action => 'rss', :page => @entries.next_page)))
     if current_site.avatar
       xml.image do
-        xml.url image_path(current_site.avatar.public_filename)
+        xml.url current_service.url + image_path(current_site.avatar.public_filename)
         xml.title { xml.cdata!(host_for_tlog(current_site) + (current_site.tlog_settings.title.blank? ? '' : (" - " + h(current_site.tlog_settings.title)))) }
         xml.link user_url(current_site)
       end
@@ -20,11 +22,13 @@ xml.rss :version => '2.0' do
     if @entries
       @entries.each do |entry|
         xml.item do        
-          xml.title { xml.cdata!(strip_tags(white_list_entry(entry.excerpt.to_s))) }
-          xml.link user_url(current_site, entry_path(entry))
+          xml.title { xml.cdata!(strip_tags(white_list_entry(entry.excerpt.to_s))) } unless white_list_entry(entry.excerpt.to_s).blank?
           xml.description { xml.cdata!(render(:partial => 'entries/entry_embed', :locals => { :entry => entry })) }
-          xml.guid user_url(current_site, entry_path(entry))
+          xml.author user_url(current_site)
+          xml.link user_url(current_site, entry_path(entry))
+          xml.guid user_url(current_site, entry_path(entry)), :isPermalink => 'true'
           xml.pubDate entry.created_at.to_s(:rfc822)
+          xml.comments user_url(current_site, entry_path(entry) + '#comments') if entry.comments_enabled?
         
           # <enclosure ...>. Не делаем для картинок, потому что они и так уже включены в код и
           #  некоторые рсс-читалки будут показывать картинку дважды
