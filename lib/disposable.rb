@@ -20,7 +20,12 @@ module Disposable
 
       false
     rescue Exception => ex
-      hoptoad_notify(ex)
+      HoptoadNotifier.notify(
+        :error_class    => ex.class.name,
+        :error_message  => "#{ex.class.name}: #{ex.message}",
+        :backtrace      => ex.backtrace,
+        :parameters     => { :email => email }
+      )
       
       false
     end
