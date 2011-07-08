@@ -19,18 +19,11 @@
 		p { font-family: 'Trebuchet MS', sans-serif; font-size: 12px; color: #666; }
 		a { color: #134ebd; }
 	</style>
+	
+	<%= render :partial => 'globals/gajs' %>
 	<script type='text/javascript'>
   	var _gaq = _gaq || [];
-    _gaq.push(['_setAccount', 'UA-1562460-1']);
-    _gaq.push(['_setDomainName', '.mmm-tasty.ru']);
-    _gaq.push(['_trackPageview']);
     _gaq.push(['_trackEvent', 'Error', '404', 'Page not found']);
-    
-    (function() {
-        var ga = document.createElement('script');     ga.type = 'text/javascript'; ga.async = true;
-        ga.src = ('https:'   == document.location.protocol ? 'https://ssl'   : 'http://www') + '.google-analytics.com/ga.js';
-        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-      })();
   </script>
 </head>
 
@@ -44,5 +37,7 @@
       <p><%= link_to 'вернуться на главную', current_service.url %></p>
     <% end %>
   </div>
+  
+  <%= render :partial => 'globals/counters' %>
 </body>
 </html>
