@@ -12,15 +12,18 @@ class SearchController < ApplicationController
       redirect_to user_url(User.find(params[:user_id]), search_path(:query => params[:query]))
       return
     end
+    
+    page = (params[:page] || 1).to_i rescue 1
+    page = 1 if page <= 0
 
     options = {
-        :page => params[:page],
-        :per_page => Entry::PAGE_SIZE,
-        :with => {},
-        :include => :author,
-        :field_weights => { :tags => 20, :data_part_1 => 10, :data_part_2 => 5 },
-        :order => :created_at,
-        :sort_mode => :desc
+        :page           => page,
+        :per_page       => Entry::PAGE_SIZE,
+        :with           => {},
+        :include        => :author,
+        :field_weights  => { :tags => 20, :data_part_1 => 10, :data_part_2 => 5 },
+        :order          => :created_at,
+        :sort_mode      => :desc
       }
 
     if current_site
