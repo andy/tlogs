@@ -136,13 +136,14 @@ class Entry < ActiveRecord::Base
     # уменьшаем счетчик скрытых записей, если эта запись - скрытая
     User.decrement_counter(:private_entries_count, entry.user_id) if entry.is_private?
 
-    entry.author.update_attributes(:entries_updated_at => Time.now)
-    
+    entry.author.update_attributes(:entries_updated_at => Time.now)    
   end
 
   after_create do |entry|
     # счетчик скрытых записей. нам так удобнее делать постраничную навигацию
     User.increment_counter(:private_entries_count, entry.user_id) if entry.is_private?
+    
+    $redis.publish 'ping', entry.id
   end
   
   after_save do |entry|
