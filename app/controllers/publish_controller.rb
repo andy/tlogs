@@ -165,9 +165,23 @@ class PublishController < ApplicationController
 
       render :action => 'edit'
     rescue ActiveRecord::RecordInvalid => e
+      HoptoadNotifier.notify(
+        :error_class    => ex.class.name,
+        :error_message  => "#{ex.class.name}: #{ex.message}",
+        :backtrace      => ex.backtrace,
+        :parameters     => params
+      )
+
       @attachment.valid? unless @attachment.nil? # force error checking
       render :action => 'edit'
-    rescue
+    rescue Exception => ex
+      HoptoadNotifier.notify(
+        :error_class    => ex.class.name,
+        :error_message  => "#{ex.class.name}: #{ex.message}",
+        :backtrace      => ex.backtrace,
+        :parameters     => params
+      )
+
       @attachment.valid? unless @attachment.nil?
       render :action => 'edit'
     end
