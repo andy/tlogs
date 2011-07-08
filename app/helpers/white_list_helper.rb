@@ -266,6 +266,8 @@ module WhiteListHelper
     valid_flash_params = %w(movie allowfullscreen allowscriptaccess wmode flashvars)
     valid_iframe_params = %w(title width height src frameborder allowfullscreen alt)
     
+    return html if html.blank?
+    
     html.gsub!('&amp;', '&')
     html.gsub!('amp;', '')
     
