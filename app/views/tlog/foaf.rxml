@@ -14,7 +14,7 @@ xml.tag! 'rdf:RDF',
     xml.tag! 'ya:bio', current_site.tlog_settings.about unless current_site.tlog_settings.about.blank?
     xml.tag!('foaf:weblog', 'rdf:resource' => user_url(current_site), 'ya:creationDate' => current_site.created_at.iso8601, 'dc:title' => current_site.tlog_settings.about)
     xml.tag! 'ya:country', 'dc:title' => 'RU'
-    xml.tag!('foaf:img', 'rdf:resource' => current_service.url + image_path(current_site.avatar.public_filename)) if current_site.avatar
+    xml.tag!('foaf:img', 'rdf:resource' => image_path(current_site.avatar.public_filename)) if current_site.avatar
     xml.tag! 'foaf:mbox_sha1sum', Digest::SHA1.hexdigest(current_site.email) unless current_site.email.blank?
 
     xml.tag! 'ya:blogActivity' do

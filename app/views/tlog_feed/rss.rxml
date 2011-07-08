@@ -13,7 +13,7 @@ xml.rss :version => '2.0', 'xmlns:ya' => "http://blogs.yandex.ru/schema/rss", 'x
     xml.tag!('ya:more', user_url(current_site, tlog_feed_path(:action => 'rss', :page => @entries.next_page)))
     if current_site.avatar
       xml.image do
-        xml.url current_service.url + image_path(current_site.avatar.public_filename)
+        xml.url image_path(current_site.avatar.public_filename)
         xml.title { xml.cdata!(host_for_tlog(current_site) + (current_site.tlog_settings.title.blank? ? '' : (" - " + h(current_site.tlog_settings.title)))) }
         xml.link user_url(current_site)
       end
