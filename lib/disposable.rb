@@ -19,7 +19,9 @@ module Disposable
       end
 
       false
-    rescue
+    rescue Exception => ex
+      hoptoad_notify(ex)
+      
       false
     end
   end
