@@ -4,7 +4,7 @@
 
 	Вы <%= current_user.subscribed_to?(user) ? 'подписаны' : 'не подписаны' %> на <%= user.gender('его', 'её') %> тлог.
 	<%= link_to_remote (current_user.subscribed_to?(user) ? 'Отписаться?' : 'Подписаться?'), 
-			:url => global_url(:action => :relationship_togglee, :user_id => user),
+			:url => global_url(:action => :relationship_toggle, :user_id => user),
 			:before => "$('spin_#{index}').show();", :complete => "$('spin_#{index}').hide();" %>
 </div>
 <% end %>
