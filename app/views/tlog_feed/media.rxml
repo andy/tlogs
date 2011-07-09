@@ -3,21 +3,35 @@ xml.instruct! :xml, :version => '1.0', :encoding => 'UTF-8'
 xml.rss :version => '2.0', 'xmlns:media' => 'http://search.yahoo.com/mrss', 'xmlns:atom' => 'http://www.w3.org/2005/Atom' do
   xml.channel do
     xml.atom :icon, (current_site && current_site.avatar) ? image_path(current_site.avatar.public_filename) : image_path('logo.png')
-    xml.atom :link, :rel => 'next', :href => url_for(:page => @page + 1, :only_path => false) 
-    xml.atom :link, :rel => 'previous', :href => url_for(:page => @page - 1, :only_path => false) if @page > 1
+    xml.atom :link, user_url(current_site)
+
+    xml.atom :title do |t|
+      t.cdata!(host_for_tlog(current_site) + (current_site.tlog_settings.title.blank? ? '' : (" - " + h(current_site.tlog_settings.title))))
+    end
+
+    xml.atom :description do |d|
+      d.cdata!(strip_tags(current_site.tlog_settings.about.strip))
+    end unless current_site.tlog_settings.about.blank?
+
+    xml.atom :link, :rel => 'next', :href => url_for(:page => @entries.next_page, :only_path => false) if @entries.next_page
+    xml.atom :link, :rel => 'previous', :href => url_for(:page => @entries.previous_page, :only_path => false) if @entries.previous_page
+
     @entries.each do |entry|      
       xml.item do        
         xml.link user_url(entry.author) + entry_path(entry)
         xml.title { xml.cdata!(strip_tags(white_list_entry(entry.excerpt.to_s))) }
         if !entry.attachments.empty?
           image = entry.attachments.first
-          xml.media :content, :url => image_path(image.public_filename)
+          xml.tag!('media:content', :url => image_path(image.public_filename), :fileSize => image.size, :width => image.width, :height => image.height, :lang => 'en', :medium => 'image', :type => image.content_type)
           thumb = image.thumbnails.select { |t| t.thumbnail == 'thumb' }.first
-          xml.media :thumbnail, :url => image_path((thumb || image).public_filename)
+          xml.tag!('media:thumbnail', :url => image_path((thumb || image).public_filename), :width => (thumb || image).width, :height => (thumb || image).height)          
         else
-          xml.media :thumbnail, :url => image_path(entry.data_part_1)
-          xml.media :content, :url => image_path(entry.data_part_1)
+          xml.tag!('media:content', :url => image_path(entry.data_part_1))
+          xml.tag!('media:thumbnail', :url => image_path(entry.data_part_1))
         end
+
+        xml.tag!('media:description', :type => 'html') { |d| d.cdata!(entry.data_part_2) } unless entry.data_part_2.blank?
+        xml.tag!('media:keywords') { |k| k.cdata!(entry.cached_tag_list) } unless entry.cached_tag_list.blank?
       end
     end
   end if @entries && @entries.to_a.size > 0
