@@ -60,7 +60,9 @@ class Entry
       'viewy.ru',
       'media.tumblr.com',
       'rghost.net',
-      'qip.ru/test'
+      'qip.ru/test',
+      'liveinternet.ru',
+      'diary.ru'
       ]
     
     bads.find { |bad| contents.include?(bad) } ? true : false    
