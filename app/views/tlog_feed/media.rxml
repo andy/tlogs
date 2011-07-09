@@ -24,14 +24,14 @@ xml.rss :version => '2.0', 'xmlns:media' => 'http://search.yahoo.com/mrss', 'xml
           image = entry.attachments.first
           xml.tag!('media:content', :url => image_path(image.public_filename), :fileSize => image.size, :width => image.width, :height => image.height, :lang => 'en', :medium => 'image', :type => image.content_type)
           thumb = image.thumbnails.select { |t| t.thumbnail == 'thumb' }.first
-          xml.tag!('media:thumbnail', :url => image_path((thumb || image).public_filename), :width => (thumb || image).width, :height => (thumb || image).height)          
+          xml.tag!('media:thumbnail', :url => image_path((thumb || image).public_filename), :width => (thumb || image).width, :height => (thumb || image).height)
         else
           xml.tag!('media:content', :url => image_path(entry.data_part_1))
           xml.tag!('media:thumbnail', :url => image_path(entry.data_part_1))
         end
 
         xml.tag!('media:description', :type => 'html') { |d| d.cdata!(entry.data_part_2) } unless entry.data_part_2.blank?
-        xml.tag!('media:keywords') { |k| k.cdata!(entry.cached_tag_list) } unless entry.cached_tag_list.blank?
+        xml.tag!('media:keywords', :scheme => user_url(current_site, tags_path)) { |k| k.cdata!(entry.cached_tag_list) } unless entry.cached_tag_list.blank?
       end
     end
   end if @entries && @entries.to_a.size > 0
