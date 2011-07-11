@@ -112,7 +112,7 @@ END
   end
   
   def resized_image_path(src, width)
-    return src if !current_user || current_user.id != 1
+    # return src if !current_user || current_user.id != 1
 
     url = URI.parse(src) rescue nil
 
