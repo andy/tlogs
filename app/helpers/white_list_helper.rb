@@ -352,6 +352,15 @@ module WhiteListHelper
     #   #   # image.swap('')
     #   # end
     # end if ss.any?
+    
+    # rewrite images for me
+    (doc/"//img").each do |img|
+      url = URI.parse(img.attributes['src'])
+      next if url.host.ends_with?('.mmm-tasty.ru') || url.host.ends_with?('.tlogs.ru')
+      
+      sig = Digest::SHA1.hexdigest("width:#{media_width} url:#{url.to_s}")[0..7]
+      img.attributes['src'] = "http://assets0.mmm-tasty.ru/#{media_width}/#{sig}/#{url.to_s}"
+    end if current_user && current_user.id == 1
 
     
     (doc/"//iframe").each do |iframe|
