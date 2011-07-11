@@ -26,7 +26,7 @@ xml.rss :version => '2.0', 'xmlns:ya' => "http://blogs.yandex.ru/schema/rss", 'x
           xml.description { xml.cdata!(render(:partial => 'entries/entry_embed', :locals => { :entry => entry })) }
           xml.author user_url(current_site)
           xml.link user_url(current_site, entry_path(entry))
-          xml.guid user_url(current_site, entry_path(entry)), :isPermalink => 'true'
+          xml.guid user_url(current_site, entry_path(entry)), :isPermaLink => 'true'
           xml.pubDate entry.created_at.to_s(:rfc822)
           xml.comments user_url(current_site, entry_path(entry) + '#comments') if entry.comments_enabled?
         
