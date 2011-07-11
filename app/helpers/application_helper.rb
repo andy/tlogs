@@ -113,11 +113,11 @@ END
   
   def resized_image_path(src, width)
     return src if !current_user || current_user.id != 1
-    
-    url = URI.parse(src)
+
+    url = URI.parse(src) rescue nil
 
     # skip already rewritten (should not happen though)
-    return src if url.host.nil? || url.host =~ /assets[0-3]\.(mmm-tasty\.ru|tlogs\.ru)\/\d{3}\//
+    return src if url.nil? || url.host.nil? || url.host =~ /assets[0-3]\.(mmm-tasty\.ru|tlogs\.ru)\/\d{3}\//
 
     sig   = Digest::SHA1.hexdigest("w:#{width}/u:#{url.to_s}/s:keepitreal")[0..7]
     path  = [width, sig, src].join('/')
