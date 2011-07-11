@@ -1,5 +1,5 @@
 <%
-  alt = entry.data_part_2.blank? ? nil : h(truncate(strip_tags(entry.data_part_2), 50)).gsub("\n", ' ')
+  alt = entry.data_part_2.blank? ? nil : truncate(strip_tags(entry.data_part_2), :length => 50).gsub(/(\r|\n)/, ' ').tr('"', "&quot;").tr('\'', "&quot;")
 %>
 <%# если картинка ссылкой на удаленный ресурс %>
 <% if entry.data_part_1 %>
