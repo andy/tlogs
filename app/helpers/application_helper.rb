@@ -111,6 +111,25 @@ END
     link_to_if condition, username, user_url(user), html_options
   end
   
+  def resized_image_path(src, width)
+    return src if !current_user || current_user.id != 1
+    
+    url = URI.parse(src)
+
+    # skip already rewritten (should not happen though)
+    return src if url.host.nil? || url.host =~ /assets[0-3]\.(mmm-tasty\.ru|tlogs\.ru)\/\d{3}\//
+
+    sig   = Digest::SHA1.hexdigest("w:#{width}/u:#{url.to_s}/s:keepitreal")[0..7]
+    path  = [width, sig, src].join('/')
+
+    # pick an asset
+    asset_av = [0, 1, 3]
+    asset_id = asset_av[sig.hash % 3]
+    asset = "http://assets#{asset_id}.mmm-tasty.ru"
+    
+    [asset, path].join('/')
+  end
+
   def mark(keyword)
     Entry.find_by_sql("/* #{keyword} */ SELECT id FROM entries WHERE id = 0")
   end
@@ -174,4 +193,5 @@ END
       end
     end
   end
+  
 end

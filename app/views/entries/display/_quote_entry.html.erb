@@ -1,3 +1,9 @@
+<% if embed %>
+  <h2><%= white_list_entry("&laquo;" + entry.data_part_1 + "&raquo;", :use_br => true) %></h2>
+  <% if entry.data_part_2 %>
+    <span><i>&mdash;&nbsp;<%= white_list_entry(entry.data_part_2, :use_br => true) %></i></span>
+  <% end %>
+<% else %>
 <div class='quote_entry'>
 	<span class='quote_entry_body'>
 		<span class='laquo'>&laquo;</span><%= white_list_entry entry.data_part_1, :use_br => true %><span class='raquo'>&raquo;</span>
@@ -8,3 +14,4 @@
 		</span>
 	<% end %>
 </div>
+<% end %>
