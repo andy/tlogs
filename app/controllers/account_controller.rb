@@ -121,11 +121,11 @@ class AccountController < ApplicationController
 
   # регистрация, для новичков
   def signup
-    @allow_by_remote_addr = false
+    # @allow_by_remote_addr = false
 
     # look up remote address
-    @ipinfo = Ipgeobase.lookup(request.remote_ip)
-    @allow_by_remote_addr = true if @ipinfo && %w(Пермь пермь Тверь тверь).include?(@ipinfo[:city])
+    # @ipinfo = Ipgeobase.lookup(request.remote_ip)
+    # @allow_by_remote_addr = true if @ipinfo && %w(Пермь пермь Тверь тверь).include?(@ipinfo[:city])
     
     if true # @allow_by_remote_addr || ([6,0].include?(Date.today.wday) && [22, 23, 24].include?(Time.now.hour)) || ([1,0].include?(Date.today.wday) && [0, 1, 2, 3, 4].include?(Time.now.hour))
       if request.post?
@@ -138,7 +138,7 @@ class AccountController < ApplicationController
           @user = User.new :email => email_or_openid, :password => params[:user][:password], :url => params[:user][:url], :openid => nil
         
           # проверяем на левые емейл адреса
-          @user.errors.add(:email, 'извините, но выбранный вами почтовый сервис находится в черном списке') if @user.email.any? && Disposable::is_disposable_email?(@user.email) 
+          # @user.errors.add(:email, 'извините, но выбранный вами почтовый сервис находится в черном списке') if @user.email.any? && Disposable::is_disposable_email?(@user.email) 
     
           @user.settings = {}
           @user.is_confirmed = false
