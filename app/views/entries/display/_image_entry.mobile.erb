@@ -1,6 +1,7 @@
 <%# если картинка ссылкой на удаленный ресурс %>
 <%-
-  options = { :title => '', :alt => '', :class => 't-entry-image-img' }
+  alt     = entry.data_part_2.blank? ? nil : h_attr(entry.data_part_2)
+  options = { :title => '', :alt => alt, :class => 't-entry-image-img' }
 -%>
 <div class='t-entry-image'>
   <% if entry.data_part_1 %>

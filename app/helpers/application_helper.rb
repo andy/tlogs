@@ -138,6 +138,12 @@ END
     render :partial => 'globals/pagination', :locals => options.merge(:pageable => pageable)
   end
   
+  # escape and truncate html attribute
+  # options are for truncate() call, e.g. :length
+  def h_attr(text, options = {})
+    truncate(strip_tags(text), { :length => 64 }.merge(options)).gsub(/(\r\n|\r|\n)/, ' ').tr('"', "&quot;").tr('\'', "&quot;")
+  end
+  
   def timeago(time, options = {})
     options[:class] ||= 'timeago'
     content_tag(:abbr, Russian::strftime(time, '%d %B %Y в %H:%M'), options.merge(:title => time.getutc.iso8601))

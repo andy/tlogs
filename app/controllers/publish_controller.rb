@@ -9,10 +9,14 @@ class PublishController < ApplicationController
   def preview
     render :nothing => true and return unless request.post?
 
+    @entry = nil
+
     if params[:entry][:id]
       @entry = Entry.find_by_id_and_user_id(params[:entry][:id], current_user.id)
-      @entry.has_attachment = !@entry.attachments.empty?
-    else
+      @entry.has_attachment = !@entry.attachments.empty? if @entry
+    end
+    
+    if @entry.nil?
       type = params[:entry][:type] rescue 'TextEntry'
       @entry = type.constantize.new
       @entry.author = current_user
@@ -165,12 +169,12 @@ class PublishController < ApplicationController
 
       render :action => 'edit'
     rescue ActiveRecord::RecordInvalid => ex
-      HoptoadNotifier.notify(
-        :error_class    => ex.class.name,
-        :error_message  => "#{ex.class.name}: #{ex.message}",
-        :backtrace      => ex.backtrace,
-        :parameters     => params
-      )
+      # HoptoadNotifier.notify(
+      #   :error_class    => ex.class.name,
+      #   :error_message  => "#{ex.class.name}: #{ex.message}",
+      #   :backtrace      => ex.backtrace,
+      #   :parameters     => params
+      # )
 
       @attachment.valid? unless @attachment.nil? # force error checking
       render :action => 'edit'

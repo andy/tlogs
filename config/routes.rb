@@ -54,7 +54,7 @@ ActionController::Routing::Routes.draw do |map|
   map.with_options :conditions => { :subdomain => /^(www|m|)$/, :domain => Regexp.new(Tlogs::Domains::CONFIGURATION.domains.join('|'))  } do |www|
     www.connect '', :controller => 'main', :action => 'index'
 
-    www.main_feed 'main/feed/live/:rating/:kind.:format', :controller => 'main_feed', :action => 'last', :rating => 'default', :kind => 'default', :format => 'xml', :requirements => { :rating => /[a-z]{3,20}/ }
+    www.main_feed 'main/feed/live/:rating/:kind.xml', :controller => 'main_feed', :action => 'last', :rating => 'default', :kind => 'default', :requirements => { :rating => /[a-z]{3,20}/ }
     www.connect 'main/feed/:action.xml', :controller => 'main_feed'
     www.last 'main/last/:rating/:kind', :controller => 'main', :action => 'last', :rating => 'default', :kind => 'default'
     www.anonymous 'main/anonymous/:action/:id', :controller => 'anonymous'

@@ -294,13 +294,13 @@ module WhiteListHelper
         # [andy] -> ссылка на пользователя
         new_text.gsub!(/(\[([a-z0-9_-]{2,20})\])/) do
           user = User.find_by_url($2)
-          user ? "<a href='#{user_url(user)}' class='entry_tlog_link'>#{user.url}</a>" : $1
+          user ? "<a href='#{user_url(user)}' class='t-entry-tlog'>#{user.url}</a>" : $1
         end
 
         # @andy -> ссылка на пользователя
         new_text.gsub!(/(\@([a-z0-9_-]{2,20}))/) do
           user = User.find_by_url($2)
-          user ? "<a href='#{user_url(user)}' class='entry_tlog_link'>@#{user.url}</a>" : $1
+          user ? "<a href='#{user_url(user)}' class='t-entry-tlog'>@#{user.url}</a>" : $1
         end
 
         text.swap(new_text) unless new_text.blank?        
@@ -382,7 +382,7 @@ module WhiteListHelper
         
         iframe.swap content_tag(:iframe, nil, attrs)
       else
-        iframe.swap("<p class='t-entry-warn'>Извините, но вставлять такой код запрещено.</p>")
+        iframe.swap("<div class='t-entry-warn'>Извините, но вставлять такой код запрещено.</div>")
       end
     end
     
@@ -458,15 +458,15 @@ module WhiteListHelper
           flash.swap("<p>#{text}</p>")
         end
       else
-        flash.swap("<p class='t-entry-warn'>Ошибка: неверные данные во вставляемом коде.</p>")
+        flash.swap("<div class='t-entry-warn'>Ошибка: неверные данные во вставляемом коде.</div>")
       end
     end
     
     # remove style attributes
     doc.search('[@style]').remove_attr('style')
-    
+
     html = auto_link(doc.to_html.gsub(/<p>\s*?<\/p>/mi, ''))
-  
+
     if link_target
       doc = Hpricot(html)
       (doc/"//a").each do |a|
