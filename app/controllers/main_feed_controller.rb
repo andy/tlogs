@@ -25,7 +25,16 @@ class MainFeedController < ApplicationController
   end
   
   def live
-    @entries = Entry.find :all, :conditions => 'entries.is_private = 0 AND entries.is_mainpageable = 1', :order => 'entries.id DESC', :include => [:author, :attachments], :limit => 15
+    sql_conditions = 'entries.is_mainpageable = 1'
+
+    if params[:entry_id]
+      entry_ids = Entry.find(:all, :select => 'entries.id', :conditions => [sql_conditions, " entries.id < #{params[:entry_id].to_i}"].join(' AND '), :order => 'entries.id DESC', :limit => Entry::PAGE_SIZE).map(&:id)
+      result = Entry.find_all_by_id(entry_ids, :include => [:author, :rating, :attachments]).sort_by { |entry| entry_ids.index(entry.id) }
+      
+      @entries = result
+    else
+      @entries = Entry.find :all, :conditions => sql_conditions, :order => 'entries.id DESC', :include => [:author, :attachments], :limit => 15
+    end
 
     response.headers['Content-Type'] = 'application/rss+xml'
     render :action => 'last'

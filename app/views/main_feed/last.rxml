@@ -8,6 +8,7 @@ xml.rss :version => '2.0', 'xmlns:ya' => "http://blogs.yandex.ru/schema/rss", 'x
     xml.language 'ru-RU'
     xml.pubDate @entries.first.created_at.to_s(:rfc822) if @entries.first
     xml.generator "tlogs rss (#{current_service.url})"
+    xml.tag!('ya:more', service_url(main_feed_path(:action => :live, :entry_id => @entries.last.id))) if params[:action] == 'live'
     xml.ttl 5
   
     @entries.each do |entry|
