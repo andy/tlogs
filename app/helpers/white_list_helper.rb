@@ -356,6 +356,9 @@ module WhiteListHelper
     # rewrite images for me
     (doc/"//img").each do |img|
       img.attributes['src'] = resized_image_path(img.attributes['src'], media_width)
+      
+      # remove buggy links
+      img.parent.swap(img.to_html) if img.parent && img.parent.name == 'a' && img.parent.attributes['href'] && img.parent.attributes['href'] =~ /(www\.radikal\.ru)/i
     end
 
     

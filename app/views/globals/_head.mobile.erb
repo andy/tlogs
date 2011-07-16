@@ -28,10 +28,12 @@
 
 <%= render :partial => 'globals/gajs' %>
 
+<link href="http://code.jquery.com/mobile/latest/jquery.mobile.min.css" rel="stylesheet" type="text/css" />
 <%= glued_stylesheet_link_tag 'application', 'mobile' %>
 <%= glued_stylesheet_link_tag('tlog', 'mobile') if current_site %>
 
 <%= glued_javascript_include_tag 'mobile' %>
+<script type='text/javascript' src='http://code.jquery.com/mobile/latest/jquery.mobile.min.js'></script>
 
 <title>Тейсти</title>
 
