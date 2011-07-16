@@ -7,7 +7,6 @@
 	</div>	
 	<%= render(:partial => 'globals/tastyradio') if params[:action] == 'live' || params[:action] == 'last' || (params[:controller] == 'main' && params[:action] == 'index') %>
 	<%= render(:partial => 'globals/dfp240x400') if params[:action] == 'news' || params[:action] == 'last' || params[:action] == 'live'  || params[:controller] == 'anonymous' %>
-	<%= render(:partial => 'globals/bookmate_botd') if params[:action] == 'news' || params[:action] == 'last' || params[:action] == 'live'  || params[:controller] == 'anonymous' %>
 
 <% end %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
