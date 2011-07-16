@@ -5,13 +5,17 @@
 
 /* entries */
 .t-entries {
-	font-size: 0.8em;
 	background-color: white;
+}
+
+.t-entries .t-entry {
+	padding-bottom: 20px;
 }
 
 /* entry styling */
 .t-entry {
-	padding-bottom: 20px;
+	font-size: 0.8em;
+	background-color: white;
 }
 
 .t-entry .t-entry-header {
@@ -153,7 +157,8 @@
 	border: 1px solid #aaa;
 }
 .t-comment .t-comment-body {
-	float: left;
+/*	float: left;*/
+	margin-left: 40px;
 	margin-bottom: 20px;
 }
 .t-comment .t-comment-meta {
@@ -168,5 +173,5 @@
 }
 .t-comment .t-comment-meta .t-comment-time {
 	color: #999;
-	font-weight: italic;
+/*	font-style: italic;*/
 }

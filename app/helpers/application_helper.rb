@@ -150,8 +150,8 @@ END
   end
   
   def say_time_in_words(time)
-    distance    = (time - Time.now).round
-    in_minutes  = (distance / 1.minute).round
+    distance    = (time - Time.now).round.abs
+    in_minutes  = (distance / 1.minute).round.abs
     
     if distance > 0
       # future
@@ -176,15 +176,14 @@ END
         end
       end
     else
-      distance = distance.abs
+      distance = distance
       # past
-      if distance <= 1.hour
-        # через час или через 30 минут
-        if distance < 5.minutes
-          "пару минут назад"
-        elsif distance <= 1.hour
-          "#{in_minutes} #{Russian::p(in_minutes, "минуту", "минуты", "минут")} назад"
-        end
+      # if distance <= 1.hour
+      # через час или через 30 минут
+      if distance < 5.minutes
+        "пару минут назад"
+      elsif distance <= 1.hour
+        "#{in_minutes} #{Russian::p(in_minutes, "минуту", "минуты", "минут")} назад"
       else
         # точное время
         if time.day == Time.now.day && distance < 1.day

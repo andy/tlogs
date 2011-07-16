@@ -3,10 +3,10 @@
 	show_comments ||= false unless local_assigns.has_key?(:show_comments) && show_comments
 -%>
 <div class='t-entry'>
-  <div class='t-entry-header'>
+  <!-- <div class='t-entry-header'>
     <%= image_tag 'noavatar.gif', :class => 'avatar t-entry-header-avatar', :size => '24x24' %>
     <span class='t-entry-header-author'>аноним</span>
-  </div>
+  </div> -->
 
   <% content_tag :div, :id => dom_id(entry) do %>
     <%= render :partial => 'entries/display/anonymous_entry', :locals => { :entry => entry, :show_datetime => show_datetime } %>
