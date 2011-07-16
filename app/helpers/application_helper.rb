@@ -112,7 +112,7 @@ END
   end
   
   def resized_image_path(src, width)
-    return src if !current_user || current_user.id != 1
+    return src if !current_service || !current_service.is_mobile?
 
     url = URI.parse(src) rescue nil
 
