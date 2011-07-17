@@ -99,6 +99,8 @@ ActiveRecord::Schema.define(:version => 20110523121915) do
   add_index "conversations", ["is_replied"], :name => "index_conversations_on_is_replied"
   add_index "conversations", ["is_viewed"], :name => "index_conversations_on_is_viewed"
   add_index "conversations", ["last_message_at"], :name => "index_conversations_on_last_message_at"
+  add_index "conversations", ["user_id", "is_replied"], :name => "index_conversations_on_user_id_and_is_replied"
+  add_index "conversations", ["user_id", "is_viewed"], :name => "index_conversations_on_user_id_and_is_viewed"
   add_index "conversations", ["user_id", "last_message_at"], :name => "index_conversations_on_user_id_and_last_message_at"
   add_index "conversations", ["user_id", "recipient_id"], :name => "index_conversations_on_user_id_and_recipient_id"
 
@@ -141,12 +143,15 @@ ActiveRecord::Schema.define(:version => 20110523121915) do
 
   add_index "entries", ["created_at"], :name => "index_entries_on_created_at"
   add_index "entries", ["is_disabled"], :name => "index_entries_on_is_disabled"
-  add_index "entries", ["is_mainpageable", "id"], :name => "index_entries_on_is_mainpageable_and_id"
+  add_index "entries", ["is_mainpageable", "created_at", "type"], :name => "index_entries_on_is_mainpageable_and_created_at_and_type"
   add_index "entries", ["is_mainpageable"], :name => "index_entries_on_is_mainpageable"
   add_index "entries", ["is_private"], :name => "index_entries_on_is_private"
   add_index "entries", ["is_voteable"], :name => "index_entries_on_is_voteable"
+  add_index "entries", ["type", "is_disabled"], :name => "index_entries_on_type_and_is_disabled"
   add_index "entries", ["type"], :name => "index_entries_on_type"
+  add_index "entries", ["updated_at"], :name => "index_entries_on_updated_at"
   add_index "entries", ["user_id", "is_private", "created_at"], :name => "index_entries_on_uid_pvt_cat"
+  add_index "entries", ["user_id", "is_private", "id"], :name => "index_entries_on_user_id_and_is_private_and_id"
   add_index "entries", ["user_id"], :name => "index_entries_on_user_id"
 
   create_table "entry_ratings", :force => true do |t|
@@ -162,7 +167,9 @@ ActiveRecord::Schema.define(:version => 20110523121915) do
 
   add_index "entry_ratings", ["entry_id"], :name => "index_entry_ratings_on_entry_id", :unique => true
   add_index "entry_ratings", ["entry_type"], :name => "index_entry_ratings_on_entry_type"
+  add_index "entry_ratings", ["is_everything", "entry_type"], :name => "index_entry_ratings_on_is_everything_and_entry_type"
   add_index "entry_ratings", ["is_everything"], :name => "index_entry_ratings_on_is_everything"
+  add_index "entry_ratings", ["is_good", "entry_type"], :name => "index_entry_ratings_on_is_good_and_entry_type"
   add_index "entry_ratings", ["is_good"], :name => "index_entry_ratings_on_is_good"
   add_index "entry_ratings", ["is_great", "entry_type"], :name => "index_entry_ratings_on_is_great_and_entry_type"
   add_index "entry_ratings", ["is_great"], :name => "index_entry_ratings_on_is_great"
@@ -272,15 +279,6 @@ ActiveRecord::Schema.define(:version => 20110523121915) do
   add_index "relationships", ["reader_id", "votes_value"], :name => "index_relationships_on_reader_id_and_votes_value"
   add_index "relationships", ["user_id", "reader_id", "position"], :name => "index_relationships_on_user_id_and_reader_id_and_position"
   add_index "relationships", ["user_id", "reader_id"], :name => "index_relationships_on_user_id_and_reader_id", :unique => true
-
-  create_table "sessions", :force => true do |t|
-    t.string   "session_id"
-    t.text     "data"
-    t.datetime "updated_at"
-  end
-
-  add_index "sessions", ["session_id"], :name => "index_sessions_on_session_id"
-  add_index "sessions", ["updated_at"], :name => "index_sessions_on_updated_at"
 
   create_table "sidebar_elements", :force => true do |t|
     t.integer "sidebar_section_id",               :null => false
@@ -408,6 +406,9 @@ ActiveRecord::Schema.define(:version => 20110523121915) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "transactions", ["state"], :name => "index_transactions_on_state"
+  add_index "transactions", ["user_id"], :name => "index_transactions_on_user_id"
 
   create_table "users", :force => true do |t|
     t.string   "email"
