@@ -2328,12 +2328,13 @@ a {
 	top:-3px;
 	left:-33px;
 }
-.post_body:hover div.service_comments,  .post_body:hover div.service_link, .post_body:hover div.service_edit,
-
-.hover div.service_comments,  .hover div.service_link, .hover div.service_edit
-{
+.post_body:hover div.service_comments, .post_body:hover div.service_link, .post_body:hover div.service_edit, .hover div.service_comments,  .hover div.service_link, .hover div.service_edit {
+	display:block;
+}
+.touch .post_body div.service_comments, .touch .post_body div.service_link, .touch .post_body div.service_edit {
 	display:block;
 } 
+
 div.service_link {
 	top:10px;
 }
@@ -2341,6 +2342,9 @@ div.service_edit {
 	top:35px;
 }
 div.post_comment:hover .comment_delete, div.post_comment:hover .img_reply  {
+	visibility:visible!important;
+}
+.touch div.post_comment .comment_delete, .touch div.post_comment .img_reply  {
 	visibility:visible!important;
 }
 div.about {
@@ -2419,7 +2423,7 @@ div.code * {
 	text-decoration:none;
 	margin:0 0 0 1px;
 } 
-.vote_up:hover, .vote_down:hover {
+.vote_up:hover, .vote_down:hover, .touch .vote_up, .touch .vote_down {
 	background:#e6e6e6;
 	color:black;
 }
@@ -2427,12 +2431,11 @@ div.code * {
 	background:#d6d6d6;
 	color:white;
 }
-
 .i_voted_this {
 	display:none!important;
 }
 
-.service_rating:hover .vote_up, .service_rating:hover .vote_down {
+.service_rating:hover .vote_up, .service_rating:hover .vote_down, .touch .service_rating .vote_up, .touch .service_rating .vote_down {
 	display:block;
 	text-decoration:none;
 }
