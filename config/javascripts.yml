@@ -18,6 +18,8 @@ application:
 - jquery.timeago
 - jquery.timeago.ru
 - jquery.popupWindow
+- jquery.placeholder.min
+- modernizr.min
 - slides.min.jquery
 - slides.configuration
 # flash: swfobject & swfupload

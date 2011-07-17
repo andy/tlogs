@@ -146,7 +146,9 @@ form.donation input.submit_donation { margin-top: 20px; margin-left: 380px; }
 .main_page .sidebar_holder #tastyradio p img { background-color: white; position: relative; top: 2px;}
 .main_page .sidebar_holder #tastyradio p img.popout { padding-left: 5px; }
 .main_page .sidebar_holder #tastyradio p img.play { padding-right: 5px; }
-
+/*.main_page .sidebar_holder #tastyradio .marquee { overflow-style: marquee-lin; marquee-style: alternate; marquee-play-count: infinite; marquee-speed: normal; width: 140px; position: relative; top: 2px; }
+.main_page .sidebar_holder #tastyradio .marquee { marquee-play-count: 0; }
+*/
 /* conversations & heart */
 #pref_friends_rel .pref_friends_control div.pref_friends_convos { font-size: 11px; margin: 0; padding: 0; position: absolute; top: -35px; }
 #pref_friends_rel .pref_friends_control div.pref_friends_convos a { font-size: 11px; text-decoration: underline!important; }

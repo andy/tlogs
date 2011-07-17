@@ -120,3 +120,4 @@ div.post_author {
 	left:120px!important;
 }
 
+*html img { -ms-interpolation-mode: bicubic; }

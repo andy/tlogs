@@ -20,7 +20,9 @@ module TastyradioData
         }
         
         result[:online] = xsl.split(',')[14] if xsl && xsl.split(',')[14]
-        result[:song]   = xsl.split(',')[16] if xsl && xsl.split(',')[16]
+        result[:song]   = xsl.split(',')[16].strip if xsl && xsl.split(',')[16]
+        
+        result[:song] = 'неизвестный трек' if result[:song] && result[:song].length < 3
 
         return result
       end

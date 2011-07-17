@@ -4,13 +4,15 @@
   show_track = false if track_info.nil?
 -%>
 <div class='section'>
-  <!-- <h2><span>Тейсти Радио</span></h2> -->
-  
   <div id='tastyradio'>
     <% if show_track %>
+      <div>
+        <div style='float: left; line-height: 1.2em; padding: 0 2px;' class='strong highlight'>сейчас</div>
+        <%= content_tag(:marquee, track_info[:song], :behavior => 'alternate', :scrollamount => '1', :style => 'width: 170px; background-color: white; position: relative; left: 2px; line-height: 1.2em;') %>
+      </div>
+    
       <p>
-        <%= content_tag :span, 'сейчас', :class => "strong highlight" %>
-        <%= content_tag :span, content_tag(:marquee, track_info[:song], :behavior => 'alternate', :scrollamount => '1', :style => 'width: 150px; position: relative; top: 2px') %>
+        
       </p>
     <% end %>
     <% RadioSchedule.onair.each do |schedule| %>

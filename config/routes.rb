@@ -50,8 +50,8 @@ ActionController::Routing::Routes.draw do |map|
 
   # это главный сайт, mmm-tasty.ru или www.mmm-tasty.ru
   # FIXME: TURN ME OFF!
-  # map.with_options :conditions => {  } do |www|
-  map.with_options :conditions => { :subdomain => /^(www|m|)$/, :domain => Regexp.new(Tlogs::Domains::CONFIGURATION.domains.join('|'))  } do |www|
+  map.with_options :conditions => {  } do |www|
+  # map.with_options :conditions => { :subdomain => /^(www|m|)$/, :domain => Regexp.new(Tlogs::Domains::CONFIGURATION.domains.join('|'))  } do |www|
     www.connect '', :controller => 'main', :action => 'index'
 
     www.main_feed_last 'main/feed/last/:rating/:kind.xml', :controller => 'main_feed', :action => 'last', :rating => 'default', :kind => 'default', :requirements => { :rating => /[a-z]{3,20}/ }

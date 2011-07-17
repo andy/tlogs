@@ -3,15 +3,15 @@ html {
 	height:100%;
 }
 body {
-    position:relative;
+	position:relative;
 	font-family: Georgia, serif;
-    background:#acacac;
-    background-attachment: fixed;
+	background:#acacac;
+	background-attachment: fixed;
 	font-size:100.01%;
 	height:100%;
 	margin:0;
 	padding:0;
-
+/*	-webkit-text-stroke: 0.001px transparent;*/
 }
 table {
 	border:0px; 
@@ -686,6 +686,9 @@ div.post_body h1 {
 }
 .post_text {
 	word-wrap: break-word; /* Только для динозавра IE */
+}
+.post_content img {
+	max-width: 100%;
 }
 span.post_text_h1 p {
 	line-height:1.2em!important;
