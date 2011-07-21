@@ -172,6 +172,6 @@ a#new_radio_schedule_showform { font-size: 12px; color: gray; }
 .radio_schedule_controls { position: relative; }
 .radio_schedule_controls .radio_schedule_delete { position: absolute; left: 460px; }
 
-.comments_warning { margin-bottom: 30px; font-size: 12px; color: red; }
+.comments_warning { margin-bottom: 30px; margin-left: -100px; padding-left: 30px; font-size: 12px; color: #ffaaaa; }
 .post_comment_ban { font-size: 10px; color: #ccc; }
 .post_comment_ban a { color: #ccc; text-decoration: none; }
