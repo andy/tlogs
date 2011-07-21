@@ -36,6 +36,17 @@ class SearchController < ApplicationController
     end
 
     @entries = Entry.search params[:query], options
+    
+    if !current_site
+      user_options = {
+        :page           => 1,
+        :per_page       => 15,
+        :field_weights  => { :url => 1, :username => 5 },
+        :order          => :entries_count,
+        :sort_mode      => :desc
+      }
+      @users = User.search params[:query], user_options
+    end
 
     # результаты отображаются внутри тлога если поиск выполнялся по индивидуальному тлогу
     render :layout => current_site ? 'tlog' : 'main'

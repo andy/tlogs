@@ -69,6 +69,18 @@ class User < ActiveRecord::Base
                   :entries_queue,
                   :ban
   
+	define_index do
+    indexes :url
+    indexes :username
+    
+    has :entries_count
+    has :created_at
+    has :updated_at
+    has :is_disabled
+    has :is_confirmed
+    
+    where 'users.is_disabled = 0 AND users.is_confirmed = 1'
+  end
 
 
   ## named_scopes

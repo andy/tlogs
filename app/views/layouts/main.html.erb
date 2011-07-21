@@ -1,5 +1,4 @@
 <% content_for :sidebar_right do %>
-  <!-- <h2><span>Поиск по тлогам</span></h2> -->
 	<div class='sidebar_search'>
 		<form method='get' action='<%= service_url(search_path) %>'>
 			<%= text_field_tag 'query', params[:query], :placeholder => 'Поиск по тлогам', :type => :search, :autosave => "com.tlogs", :results => 10 %>
@@ -7,6 +6,21 @@
 	</div>	
 	<%= render(:partial => 'globals/tastyradio') if params[:action] == 'live' || params[:action] == 'last' || (params[:controller] == 'main' && params[:action] == 'index') %>
 	<%= render(:partial => 'globals/dfp240x400') if params[:action] == 'news' || params[:action] == 'last' || params[:action] == 'live'  || params[:controller] == 'anonymous' %>
+	
+	<% if params[:controller] == 'search' && @users %>
+	  <h2><span>Пользователи</span></h2>
+
+  	<div class='users'>
+  		<% @users.each do |user| %>
+  			<div>
+  				<%= link_to_tlog user, :link => :avatar, :empty => :blank %>
+  				<p><%= link_to_tlog user %></p>
+  			</div>
+  		<% end %>	
+  		
+  		<%= content_tag(:p, "... и еще #{(@users.total_entries - @users.per_page).pluralize('пользователь', 'пользователя', 'пользователей', true)}") if @users.total_pages > 1 %>
+  	</div>	  
+	<% end %>
 
 <% end %>
 <!doctype html>

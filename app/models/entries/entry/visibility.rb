@@ -63,7 +63,8 @@ class Entry
       'qip.ru/test',
       'liveinternet.ru',
       'diary.ru',
-      'jokesland.net.ru'
+      'jokesland.net.ru',
+      'rg.ru/test'
       ]
     
     bads.find { |bad| contents.include?(bad) } ? true : false    

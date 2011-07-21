@@ -3255,7 +3255,9 @@ img.heart {
 }
 .users {
 	text-align:center;
-	
+}
+.sidebar_right .users {
+	width: 125px;
 }
 .users div {
 	padding-bottom:15px;
