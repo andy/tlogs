@@ -80,18 +80,15 @@ function run_entry_ratings_update( ) {
 /* показываем штуки которые имеет смысл показывать только в том случае, если у нас есть какой-то залогиненный пользователь */
 function enable_services_for_current_user( ) {
   /* все ссылки котоыре можно показывать текущему пользователю */
-  $$(".enable_for_current_user").each( function(element) { element.show(); });
+  jQuery(".enable_for_current_user").show();
 
   /* показываем все элементы для которых _текущий_ пользователь является владельцем */
-  $$(".enable_for_owner_" + current_user).each( function(element) { element.show(); });
+  jQuery(".enable_for_owner_" + current_user).show();
   /* в обратную сторону - прячем все */
-  $$(".disable_for_owner_" + current_user).each( function(element) { element.hide(); });
+  jQuery(".disable_for_owner_" + current_user).hide();
 
   /* прячем его собственные записи - все равно он за них не сможет голосовать */
-  $$(".service_rating_owner_" + current_user).each( function(holder) {
-    $$(".entry_voter", holder.id).each( function(element) { element.hide(); });
-  });
-
+  jQuery(".service_rating_owner_" + current_user + " .entry_voter").hide();
 }
 
 document.observe('dom:loaded', function( ) { 

@@ -44,6 +44,14 @@ class MainController < ApplicationController
     redirect_to service_url(last_path(:kind => kind, :rating => rating))
   end
   
+  def hot_redirect
+    kind = params[:kind]
+
+    kind = 'any' unless Entry::KINDS.include?(kind.to_sym)
+
+    redirect_to service_url(hot_path(:kind => kind))
+  end
+  
   def last
     # подгружаем
     kind = params[:kind] || 'default'
@@ -63,6 +71,19 @@ class MainController < ApplicationController
     total = Rails.cache.fetch("entry_ratings_count_#{kind}_#{rating}", :expires_in => 1.minute) { EntryRating.count :conditions => sql_conditions }
 
     @entry_ratings = EntryRating.find :all, :page => { :current => params[:page].to_i.reverse_page(total.to_pages), :size => Entry::PAGE_SIZE, :count => total }, :include => { :entry => [ :attachments, :author, :rating ] }, :order => 'entry_ratings.id DESC', :conditions => sql_conditions
+    
+    @comment_views = User::entries_with_views_for(@entry_ratings.map(&:entry_id), current_user)
+  end
+  
+  def hot
+    # подгружаем
+    @kind = params[:kind] || 'default'
+    
+    @kind = 'any' unless Entry::KINDS.include?(@kind.to_sym)
+
+    sql_conditions = Entry::KINDS[@kind.to_sym][:filter]
+
+    @entry_ratings = EntryRating.find :all, :page => { :current => params[:page], :size => Entry::PAGE_SIZE, :count => (Entry::PAGE_SIZE * 1024)}, :include => { :entry => [ :attachments, :author, :rating ] }, :order => 'entry_ratings.hotness DESC, entry_ratings.id DESC', :conditions => sql_conditions
     
     @comment_views = User::entries_with_views_for(@entry_ratings.map(&:entry_id), current_user)
   end

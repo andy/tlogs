@@ -13,9 +13,23 @@ class Entry
         # новая запись или пользователь поменял свое мнение?
         if user_vote.new_record? || (rating * user.vote_power) != user_vote.value
           # вычитаем старое значение если пользователь поменял свое мнение
-          entry_rating.value -= user_vote.value unless user_vote.new_record? 
+          if !user_vote.new_record?
+            entry_rating.value -= user_vote.value
+            Rails.logger.debug "should decrease ups by 1" if user_vote.value > 0
+            entry_rating.ups -= 1 if user_vote.value > 0
+            
+            Rails.logger.debug "should decrease downs by 1" if user_vote.value < 0
+            entry_rating.downs -= 1 if user_vote.value < 0
+          end
+          
           user_vote.value = rating * user.vote_power
           entry_rating.value += user_vote.value
+
+          Rails.logger.debug "should increase ups by 1" if user_vote.value > 0
+          entry_rating.ups += 1 if user_vote.value > 0
+
+          Rails.logger.debug "should increase downs by 1" if user_vote.value < 0
+          entry_rating.downs += 1 if user_vote.value < 0
 
           # сохраняем новое в базу
           user_vote.save && entry_rating.save

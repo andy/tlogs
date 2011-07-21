@@ -57,6 +57,7 @@ ActionController::Routing::Routes.draw do |map|
     www.main_feed_last 'main/feed/last/:rating/:kind.xml', :controller => 'main_feed', :action => 'last', :rating => 'default', :kind => 'default', :requirements => { :rating => /[a-z]{3,20}/ }
     www.main_feed 'main/feed/:action.xml', :controller => 'main_feed'
     www.last 'main/last/:rating/:kind', :controller => 'main', :action => 'last', :rating => 'default', :kind => 'default'
+    www.hot 'main/hot/:kind', :controller => 'main', :action => 'hot', :kind => 'default'
     www.anonymous 'main/anonymous/:action/:id', :controller => 'anonymous'
     www.connect 'main/:action/:page', :controller => 'main', :page => /\d+/
     www.main 'main/:action', :controller => 'main'

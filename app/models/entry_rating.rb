@@ -27,6 +27,8 @@
 class EntryRating < ActiveRecord::Base
   belongs_to :entry
   
+  DAY_LIMIT = 7000.0
+  
   RATINGS = {
     :great => { :select => 'Великолепное (+15 и круче)', :header => 'Самое прекрасное!!!@#$%!', :filter => 'entry_ratings.is_great = 1', :order => 1 },
     :good => { :select => 'Интересное (+5 и выше)', :header => 'Интересное на тейсти', :filter => 'entry_ratings.is_good = 1', :order => 2 },
@@ -40,6 +42,9 @@ class EntryRating < ActiveRecord::Base
   
   before_save :update_filter_value
   
+  before_save :update_hotness
+
+  
   protected
     def update_filter_value
       if self.entry.is_mainpageable?
@@ -52,4 +57,23 @@ class EntryRating < ActiveRecord::Base
       
       true
     end
+    
+    def update_hotness
+      require 'bigdecimal'
+
+      score = self.ups - self.downs
+      order = Math.log10([score.abs, 1].max)
+
+      if score > 0
+        sign = 1
+      elsif score < 0
+        sign = -1
+      else
+        sign = 0
+      end
+
+      self.hotness = BigDecimal.new((order + (sign * self.entry_id / DAY_LIMIT)).to_s).round(7).to_f
+      
+      true
+    end    
 end
