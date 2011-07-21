@@ -30,6 +30,7 @@ role :redis, 'f1.tlogs.ru'
 role :cache, 'f1.tlogs.ru', 'f2.tlogs.ru'
 role :sphinx, 'f1.tlogs.ru'
 role :resque, 'f1.tlogs.ru'
+role :tasks, 'f1.tlogs.ru'
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
 # =============================================================================
 # OPTIONAL VARIABLES
@@ -88,6 +89,7 @@ namespace :deploy do
       cron.app
       cron.sphinx
       cron.resque
+      cron.tasks
     end
     
     task :db, :roles => :db do
@@ -104,6 +106,10 @@ namespace :deploy do
 
     task :resque, :roles => :resque do
       run "cd #{deploy_to} && RAILS_ENV=production bin/whenever -f config/crontabs/resque.rb -i resque"
+    end
+    
+    task :tasks, :roles => :tasks do
+      run "cd #{deploy_to} && RAILS_ENV=production bin/whenever -f config/crontabs/redis.rb -i tasks"
     end
   end
   
