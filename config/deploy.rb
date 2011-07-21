@@ -89,7 +89,7 @@ namespace :deploy do
       cron.app
       cron.sphinx
       cron.resque
-      cron.tasks
+      cron.tasks_crontab
     end
     
     task :db, :roles => :db do
@@ -108,7 +108,7 @@ namespace :deploy do
       run "cd #{deploy_to} && RAILS_ENV=production bin/whenever -f config/crontabs/resque.rb -i resque"
     end
     
-    task :tasks, :roles => :tasks do
+    task :tasks_crontab, :roles => :tasks do
       run "cd #{deploy_to} && RAILS_ENV=production bin/whenever -f config/crontabs/redis.rb -i tasks"
     end
   end
