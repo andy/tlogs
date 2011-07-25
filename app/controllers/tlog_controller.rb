@@ -210,7 +210,16 @@ class TlogController < ApplicationController
     response.headers['Content-Type'] = 'application/rdf+xml'
     
     render :layout => false
-  end  
+  end
+  
+  def style
+    expires_in 1.year, :public => true    
+
+    response.headers['Content-Type'] = 'text/css'
+    
+    render :layout => false
+    
+  end
   
   def robots
     expires_in 15.days, :public => true

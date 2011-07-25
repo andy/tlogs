@@ -1,7 +1,6 @@
 tlog_settings = lambda { |tlog|
   tlog.tlog '', :action => 'index'
   tlog.page 'page/:page', :action => 'index', :page => /\d+/
-  tlog.style 'style/:revision', :action => 'style', :revision => nil, :requirements => { :revision => /\d+/ }
 
   tlog.publish 'publish/:action/:id', :controller => 'publish'
   tlog.settings_social 'settings/social/:action', :controller => 'settings/social'
@@ -12,7 +11,9 @@ tlog_settings = lambda { |tlog|
   tlog.connect 'search/:action', :controller => 'search'
   tlog.connect 'tag/*tags', :controller => 'tags', :action => 'view'
   tlog.connect 'tags/:action/:id', :controller => 'tags'
-  
+
+  # 'static' files
+  tlog.style 'style/:revision.css', :action => 'style', :revision => nil, :requirements => { :revision => /\d+/ }  
   tlog.robots 'robots.txt', :controller => 'tlog', :action => 'robots'
   tlog.foaf 'foaf.rdf', :controller => 'tlog', :action => 'foaf'
   
