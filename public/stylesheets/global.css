@@ -2328,7 +2328,7 @@ a {
 	top:-3px;
 	left:-33px;
 }
-.post_body:hover div.service_comments, .post_body:hover div.service_link, .post_body:hover div.service_edit, .hover div.service_comments,  .hover div.service_link, .hover div.service_edit {
+.post_body:hover div.service_comments, .post_body:hover div.service_link, .post_body:hover div.service_edit, .hover div.service_comments, .hover div.service_link, .hover div.service_edit {
 	display:block;
 }
 .touch .post_body div.service_comments, .touch .post_body div.service_link, .touch .post_body div.service_edit {

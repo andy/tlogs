@@ -79,16 +79,29 @@ function run_entry_ratings_update( ) {
 
 /* показываем штуки которые имеет смысл показывать только в том случае, если у нас есть какой-то залогиненный пользователь */
 function enable_services_for_current_user( ) {
-  /* все ссылки котоыре можно показывать текущему пользователю */
-  jQuery(".enable_for_current_user").show();
+	/* все ссылки котоыре можно показывать текущему пользователю */
+  $$(".enable_for_current_user").each( function(element) { element.show(); });
 
   /* показываем все элементы для которых _текущий_ пользователь является владельцем */
-  jQuery(".enable_for_owner_" + current_user).show();
+  $$(".enable_for_owner_" + current_user).each( function(element) { element.show(); });
   /* в обратную сторону - прячем все */
-  jQuery(".disable_for_owner_" + current_user).hide();
+  $$(".disable_for_owner_" + current_user).each( function(element) { element.hide(); });
 
   /* прячем его собственные записи - все равно он за них не сможет голосовать */
-  jQuery(".service_rating_owner_" + current_user + " .entry_voter").hide();
+  $$(".service_rating_owner_" + current_user).each( function(holder) {
+    $$(".entry_voter", holder.id).each( function(element) { element.hide(); });
+  });
+  
+  /* все ссылки котоыре можно показывать текущему пользователю */
+  // jQuery(".enable_for_current_user").show();
+
+  /* показываем все элементы для которых _текущий_ пользователь является владельцем */
+  // jQuery(".enable_for_owner_" + current_user).show();
+  /* в обратную сторону - прячем все */
+  // jQuery(".disable_for_owner_" + current_user).hide();
+
+  /* прячем его собственные записи - все равно он за них не сможет голосовать */
+  // jQuery(".service_rating_owner_" + current_user + " .entry_voter").hide();
 }
 
 document.observe('dom:loaded', function( ) { 
