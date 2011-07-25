@@ -81,6 +81,23 @@ class User < ActiveRecord::Base
     
     where 'users.is_disabled = 0 AND users.is_confirmed = 1'
   end
+  
+  has_attached_file :userpic,
+    :url    => '/assets/userpic/:sha1_partition/:id_:style.:extension',
+    :path   => ':rails_root/public:url',
+    :use_timestamp => false,
+    :styles => {
+      :large    => '800x800>',
+      :thumb128 => '128x128>',
+      :thumb64  => '64x64>',
+      :thumb32  => '32x32>',
+      :thumb16  => '16x16>',
+      :touch    => ['114x114#', :png]
+    },
+    :default_style => :thumb64
+  
+  # validates_attachment_size :userpic, :less_than => 5.megabytes
+  # validates_attachment_content_type :userpic, :content_type => ['image/jpeg', 'image/png', 'image/gif']
 
 
   ## named_scopes
@@ -101,11 +118,19 @@ class User < ActiveRecord::Base
 
   ## callbacks
   before_destroy { |user| user.disable! }
+
   after_create do |user|
+    # set female as default gender
+    user.gender = 'f'
+    
+    # allow being mainpageable
     user.is_mainpageable = true
-    user.tlog_settings = TlogSettings.create :user => user
+    
+    # initialize empty global & design settings
+    user.tlog_settings        = TlogSettings.create :user => user
     user.tlog_design_settings = TlogDesignSettings.create :user => user
-    # добавляем новости автоматически
+
+    # subscribe to 'news' user
     news = User.find_by_url('news')
     Relationship.create(:user => news, :reader => user, :position => 0, :last_viewed_entries_count => news.entries_count_for(user), :last_viewed_at => Time.now, :friendship_status => Relationship::DEFAULT) if news
   end

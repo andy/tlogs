@@ -25,6 +25,9 @@ gem 'thinking-sphinx', :require => 'thinking_sphinx'
 gem 'ts-datetime-delta', '>= 1.0.0', :require => 'thinking_sphinx/deltas/datetime_delta'
 gem 'mysql'
 
+gem 'paperclip', '= 2.3.9'
+gem 'paperclip-meta'
+
 gem 'newrelic_rpm'
 gem 'hoptoad_notifier'
 

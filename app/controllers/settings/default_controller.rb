@@ -33,7 +33,7 @@ class Settings::DefaultController < ApplicationController
 
     if request.post?
       # достаем настройки. здесь это будут username и gender
-      @user.gender = %w(m f).include?(params[:user][:gender]) ? params[:user][:gender] : 'm'
+      @user.gender = %w(m f).include?(params[:user][:gender]) ? params[:user][:gender] : 'f'
       @user.username = params[:user][:username]
       @user.save
 
@@ -41,15 +41,18 @@ class Settings::DefaultController < ApplicationController
       @tlog_settings.title = params[:tlog_settings][:title]
       @tlog_settings.save
 
-      if params[:avatar] && !params[:avatar][:uploaded_data].blank?
-        @avatar = Avatar.new params[:avatar]
-        @avatar.user = current_user
+      if params[:user][:userpic]
+        @user.userpic = params[:user][:userpic]
+        # destroy legacy avatar if any
         current_user.avatar.destroy if current_user.avatar
-        if @avatar.valid?
-          @avatar.save!
+
+        @user.valid?
+        if !@user.errors.on(:userpic)
+          @user.save!
         else
           flash[:bad] = 'Не удалось изменить ваш портрет — убедитесь что картинка, которую вы загружаете, имеет расширение .jpg, .png или .gif (если расширение правильное, то скорее всего картинка слишком большая — уменьшите ее и попробуйте снова)'
-          render
+
+          render and return
         end
       end
       
@@ -62,9 +65,18 @@ class Settings::DefaultController < ApplicationController
     end
   end
   
-  def deavatar
+  def deuserpic
     render :nothing => true and return unless request.delete?
+
+    # destroy legacy avatar
     current_user.avatar.destroy if current_user.avatar
+
+    # clear userpic paperclip way
+    if current_user.userpic?
+      current_user.userpic = nil
+      current_user.save!
+    end
+
     flash[:good] = 'Ваш аватар был удален'
     redirect_to :action => :user_common
   end

@@ -13,7 +13,7 @@ tlog_settings = lambda { |tlog|
   tlog.connect 'tags/:action/:id', :controller => 'tags'
 
   # 'static' files
-  tlog.style 'style/:revision.css', :action => 'style', :revision => nil, :requirements => { :revision => /\d+/ }  
+  tlog.style 'style/:revision.css', :action => 'style', :requirements => { :revision => /\d+/ }  
   tlog.robots 'robots.txt', :controller => 'tlog', :action => 'robots'
   tlog.foaf 'foaf.rdf', :controller => 'tlog', :action => 'foaf'
   

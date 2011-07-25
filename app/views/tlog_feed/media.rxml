@@ -2,7 +2,13 @@ xml.instruct! :xml, :version => '1.0', :encoding => 'UTF-8'
 
 xml.rss :version => '2.0', 'xmlns:media' => 'http://search.yahoo.com/mrss', 'xmlns:atom' => 'http://www.w3.org/2005/Atom' do
   xml.channel do
-    xml.atom :icon, (current_site && current_site.avatar) ? image_path(current_site.avatar.public_filename) : image_path('logo.png')
+    userpic_url = nil
+    if current_site
+      userpic_url   = current_site.userpic.url(:thumb64) if current_site.userpic?
+      userpic_url ||= current_site.avatar.public_filename if current_site.avatar
+    end
+    
+    xml.atom :icon, image_path(userpic_url) || image_path('logo.png')
     xml.atom :link, user_url(current_site)
 
     xml.atom :title do |t|

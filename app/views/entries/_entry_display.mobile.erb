@@ -4,7 +4,7 @@
 -%>
 <div class='t-entry'>
   <div class='t-entry-header'>
-    <%= avatar_tag(entry.author, :class => 't-entry-header-avatar', :blank => true, :height => 24, :width => 24) %>
+    <%= userpic_tag(entry.author, :class => 't-entry-header-avatar', :blank => true, :height => 24, :width => 24) %>
     <%= link_to entry.author.url, user_url(entry.author), :class => 't-entry-header-author' %>
   </div>
 

@@ -36,6 +36,11 @@ GEM
     mysql (2.8.1)
     newrelic_rpm (3.1.0)
     nokogiri (1.4.4)
+    paperclip (2.3.9)
+      activerecord (~> 2.3.0)
+      activesupport (~> 2.3.2)
+    paperclip-meta (0.2)
+      paperclip
     rack (1.1.2)
     rails (2.3.8)
       actionmailer (= 2.3.8)
@@ -98,6 +103,8 @@ DEPENDENCIES
   mysql
   newrelic_rpm
   nokogiri
+  paperclip (= 2.3.9)
+  paperclip-meta
   rails (= 2.3.8)
   rake
   redis (>= 2.0.0)

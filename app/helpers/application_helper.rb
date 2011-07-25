@@ -13,28 +13,27 @@ module ApplicationHelper
     end
   end
   
-  # avatar_tag
+  # avatar_tag (this is legacy, use userpic_tag)
   #   user
   #   options
   #     :blank
   #     :width
   #     :height
   def avatar_tag(user, options = {})
-    avatar    = user.avatar
     blank     = options[:blank] || false
 
     # backwards compatibility
     empty     = options[:empty] || false
     blank   ||= true if empty && empty.to_sym == :blank
 
-    # rescale image
-    width = avatar ? avatar.width : 64
-    height = avatar ? avatar.height : 64
+    avatar    = user.avatar
+    width     = avatar ? avatar.width : 64
+    height    = avatar ? avatar.height : 64
 
     if (options[:width] && options[:width] < width) || (options[:height] && options[:height] < height)
       w_ratio = (options[:width] && options[:width] > 0) ? options[:width].to_f / width.to_f : 1
       h_ratio = (options[:height] && options[:height] > 0) ? options[:height].to_f / height.to_f : 1
-      
+    
       ratio = [w_ratio, h_ratio].min
 
       width = ratio < 1 ? (width * ratio).to_i : width
@@ -44,11 +43,52 @@ module ApplicationHelper
     url = avatar ? image_path(avatar.public_filename) : (blank ? 'noavatar.gif' : nil)
 
     url ? image_tag(url,
-            :class => classes('avatar', [options[:class], options[:class]]),
-            :alt => user.url,
-            :width => width,
+            :class  => classes('avatar', [options[:class], options[:class]]),
+            :alt    => user.url,
+            :width  => width,
             :height => height
           ) : ''
+  end
+  
+  # new way to embed userpics (succeeds avatar_tag)
+  def userpic_tag(user, options = {})
+    # fallback to legacy code while we do not have all users migrated to the new rules
+    return avatar_tag(user, options) unless user.userpic?
+    
+    blank     = options[:blank] || false
+
+    # backwards compatibility
+    empty     = options[:empty] || false
+    blank   ||= true if empty && empty.to_sym == :blank
+    
+    style     = \
+      case options[:width] || 64
+        when 0..16 then :thumb16
+        when 16..32 then :thumb32
+        when 32..64 then :thumb64
+        when 64..128 then :thumb128
+        else :thumb64
+      end
+
+    width     = user.userpic.width(style)
+    height    = user.userpic.height(style)
+
+    if (options[:width] && options[:width] < width) || (options[:height] && options[:height] < height)
+      w_ratio = (options[:width] && options[:width] > 0) ? options[:width].to_f / width.to_f : 1
+      h_ratio = (options[:height] && options[:height] > 0) ? options[:height].to_f / height.to_f : 1
+
+      ratio = [w_ratio, h_ratio].min
+
+      width = ratio < 1 ? (width * ratio).to_i : width
+      height = ratio < 1 ? (height * ratio).to_i : height
+    end
+
+    image_tag(image_path(user.userpic.url(style)),
+        :class  => classes('avatar', [options[:class], options[:class]]),
+        :alt    => user.url,
+        :width  => width,
+        :height => height
+      )
   end
   
   def flash_div
@@ -98,7 +138,7 @@ END
 
     username = case options.delete(:link) || :url
                   when :avatar
-                    avatar_tag(user, options)
+                    userpic_tag(user, options)
                   when :username
                     CGI::escapeHTML(user.username)
                   else

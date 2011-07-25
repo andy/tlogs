@@ -17,7 +17,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td class='label'><label for='settings_gender_m'>Пол:</label></td>
+			<td class='label'><label for='settings_gender_f'>Пол:</label></td>
 			<td class='input'>
 				<%= radio_button :user, :gender, 'm', :class => 'radio' %><label for='user_gender_m' class='radio'>мужской</label>
 				<%= radio_button :user, :gender, 'f', :class => 'radio' %><label for='user_gender_f' class='radio'>женский</label>
@@ -27,14 +27,15 @@
 			</td>
 		</tr>
 		<tr>
-			<td class='label'><label for='avatar_uploaded_data'>Ваш портрет:</label></td>
+			<td class='label'><label for='user_userpic'>Ваш портрет:</label></td>
 			<td class='input'>
-				<% if current_user.avatar %>
-					<%= avatar_tag(current_user) %>
-					<%= link_to image_tag('delete.gif'), settings_url(:action => :deavatar), :title => 'удалить аватар', :method => :delete %>
+				<% if current_user.userpic? || current_user.avatar %>
+					<%= userpic_tag(current_user) %>
+					<%= link_to image_tag('delete.gif'), user_url(current_site, settings_path(:action => :deuserpic)), :title => 'удалить аватар', :method => :delete %>
 					<br/> <br/>
 				<% end %>
-				<%= file_field 'avatar', :uploaded_data %>
+
+				<%= file_field :user, :userpic %>
 			</td>
 		</tr>
 		<tr>

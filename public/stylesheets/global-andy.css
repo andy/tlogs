@@ -178,5 +178,10 @@ a#new_radio_schedule_showform { font-size: 12px; color: gray; }
 
 .user_rel .hover { visibility: hidden; }
 .user_rel:hover .hover { visibility: visible; }
-#design_css textarea { font-size: 12px; }
-input[type="checkbox"] { margin: 2px; }
+
+.t-entry-warn {
+	border: 1px solid #FBB;
+	background-color: #FEE;
+	padding: 3px 3px 3px 12px;
+	color: #544;
+}
