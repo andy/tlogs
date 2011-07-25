@@ -77,31 +77,30 @@ function run_entry_ratings_update( ) {
   });
 }
 
-/* показываем штуки которые имеет смысл показывать только в том случае, если у нас есть какой-то залогиненный пользователь */
+/*
+ * enable and disable links depending on which user is currently looking at
+ * the page
+ *
+ * purpose of that is to make pages as cacheable as possible and let js code
+ * do the dynamic tweaking and tuning
+ */
 function enable_services_for_current_user( ) {
-	/* все ссылки котоыре можно показывать текущему пользователю */
-  $$(".enable_for_current_user").each( function(element) { element.show(); });
+	/*
+	 * Note here: we can't really use .show() method here, as it will set default element
+	 * display setting, rather than let the browser decide
+	 */
 
-  /* показываем все элементы для которых _текущий_ пользователь является владельцем */
-  $$(".enable_for_owner_" + current_user).each( function(element) { element.show(); });
-  /* в обратную сторону - прячем все */
-  $$(".disable_for_owner_" + current_user).each( function(element) { element.hide(); });
+  /* all links that can be shown to logged in user */
+  jQuery(".enable_for_current_user").css('display', '');
 
-  /* прячем его собственные записи - все равно он за них не сможет голосовать */
-  $$(".service_rating_owner_" + current_user).each( function(holder) {
-    $$(".entry_voter", holder.id).each( function(element) { element.hide(); });
-  });
-  
-  /* все ссылки котоыре можно показывать текущему пользователю */
-  // jQuery(".enable_for_current_user").show();
+  /* enable elements that current user is owner of */
+  jQuery(".enable_for_owner_" + current_user).css('display', '');
 
-  /* показываем все элементы для которых _текущий_ пользователь является владельцем */
-  // jQuery(".enable_for_owner_" + current_user).show();
-  /* в обратную сторону - прячем все */
-  // jQuery(".disable_for_owner_" + current_user).hide();
+  /* disable elements that must be disabled for this current user */
+  jQuery(".disable_for_owner_" + current_user).hide();
 
-  /* прячем его собственные записи - все равно он за них не сможет голосовать */
-  // jQuery(".service_rating_owner_" + current_user + " .entry_voter").hide();
+  /* disable voting for his entries (he wont be able to do that, anyway) */
+  jQuery(".service_rating_owner_" + current_user + " .entry_voter").hide();
 }
 
 document.observe('dom:loaded', function( ) { 
