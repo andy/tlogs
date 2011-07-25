@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110523121915) do
+ActiveRecord::Schema.define(:version => 20110721210036) do
 
   create_table "attachments", :force => true do |t|
     t.integer "entry_id",     :default => 0,  :null => false
@@ -163,10 +163,14 @@ ActiveRecord::Schema.define(:version => 20110523121915) do
     t.boolean  "is_great",                   :default => false,       :null => false
     t.boolean  "is_good",                    :default => false,       :null => false
     t.boolean  "is_everything",              :default => false,       :null => false
+    t.integer  "ups",                        :default => 0,           :null => false
+    t.integer  "downs",                      :default => 0,           :null => false
+    t.float    "hotness",                    :default => 0.0,         :null => false
   end
 
   add_index "entry_ratings", ["entry_id"], :name => "index_entry_ratings_on_entry_id", :unique => true
   add_index "entry_ratings", ["entry_type"], :name => "index_entry_ratings_on_entry_type"
+  add_index "entry_ratings", ["hotness"], :name => "index_entry_ratings_on_hotness"
   add_index "entry_ratings", ["is_everything", "entry_type"], :name => "index_entry_ratings_on_is_everything_and_entry_type"
   add_index "entry_ratings", ["is_everything"], :name => "index_entry_ratings_on_is_everything"
   add_index "entry_ratings", ["is_good", "entry_type"], :name => "index_entry_ratings_on_is_good_and_entry_type"
