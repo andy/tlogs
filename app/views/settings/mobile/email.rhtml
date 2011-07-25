@@ -3,6 +3,8 @@
 	Почтовый тлоггинг
 <% end %>
 
+<p class='red'><em>Не работает.</em> К сожалению, эта функция временно недоступна.</p>
+
 <p>Ваш персональный емейл для добавления записей по почте:</p>
 
 <p><span id='private_email'><%= @private_email %></span> <span class='renew'>(<%= link_to_remote 'обновить', :url => user_url(current_user, settings_mobile_path(:action => :email)), :method => :post %>)</span></p>

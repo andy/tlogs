@@ -376,6 +376,7 @@ div.pref_png {
 		}
 		#pref_table td {
 			white-space:nowrap;
+			padding: 1px;
 		}
 		img.home {
 			position:relative;
@@ -2546,13 +2547,13 @@ text-decoration:none;
 	left:520px;
 	width:auto;
 	width:180px;
-	top:-20px;
+	top:-40px;
 }
 .sidebar_settings ul {
 	list-style:none;
 }
 .sidebar_settings ul span.tlog_destroy {
-	color: #ba9898;
+	color: #aaa;
 	font-size: 80%;
 }
 .sidebar_settings ul#f_level li a, .sidebar_settings ul#f_level li {
@@ -2812,7 +2813,7 @@ div.post_author:hover a.heart_red {
 }
 
 #friends_table ul li {
-	white-space:nowrap;
+/*	white-space:nowrap;*/
 	padding:0;
 	margin:0;
 }
