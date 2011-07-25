@@ -27,7 +27,7 @@
 class EntryRating < ActiveRecord::Base
   belongs_to :entry
   
-  DAY_LIMIT = 7000.0
+  DAY_LIMIT = 2000.0
   
   RATINGS = {
     :great => { :select => 'Великолепное (+15 и круче)', :header => 'Самое прекрасное!!!@#$%!', :filter => 'entry_ratings.is_great = 1', :order => 1 },
