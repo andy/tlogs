@@ -185,3 +185,10 @@ a#new_radio_schedule_showform { font-size: 12px; color: gray; }
 	padding: 3px 3px 3px 12px;
 	color: #544;
 }
+
+.light-red {
+	color: #A44;
+}
+.light-red a {
+	color: #A44;
+}

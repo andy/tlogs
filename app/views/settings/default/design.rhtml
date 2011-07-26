@@ -77,6 +77,10 @@
 	<table class='date_style'>
 	  <tr>
 	    <td></td>
+	    <td><p class='red'>Эта функция будет доступна вам после того как вы <%= link_to 'перезальете', user_url(current_site, settings_path(:action => :user_common)) %> свой юзерпик.</p></td>
+	  </tr>
+	  <tr>
+	    <td></td>
 	    <td>
 	      <label>
 	        <%= radio_button :design, :large_userpic, 'false' %> использовать маленький юзерпик
