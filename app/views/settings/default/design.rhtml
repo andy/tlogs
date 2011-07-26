@@ -75,10 +75,12 @@
 	
 	<h2>Размер юзерпика в боковой панели</h2>
 	<table class='date_style'>
-	  <tr>
-	    <td></td>
-	    <td><p class='red'>Эта функция будет доступна вам после того как вы <%= link_to 'перезальете', user_url(current_site, settings_path(:action => :user_common)) %> свой юзерпик.</p></td>
-	  </tr>
+	  <% unless current_site.userpic? %>
+  	  <tr>
+  	    <td></td>
+  	    <td><p class='red'>Эта функция будет доступна вам после того как вы <%= link_to 'перезальете', user_url(current_site, settings_path(:action => :user_common)) %> свой юзерпик.</p></td>
+  	  </tr>
+  	<% end %>
 	  <tr>
 	    <td></td>
 	    <td>
