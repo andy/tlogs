@@ -16,7 +16,7 @@
 	<div class='section'>
 		<h2><span><%= link_to image_tag('reload.gif'), service_url(main_path(:action => :random)), :title => 'другой день, другой пользователь', :class => 'reload' %>&nbsp;День из жизни <%= link_to_tlog(@user) %></span></h2>
 		<% if @user.avatar %>
-			<div class='avatar_holder'><%= link_to_tlog @user, :link => :avatar %></div>
+			<div class='avatar_holder'><%= link_to_tlog @user, :link => :userpic %></div>
 		<% end %>
 
 		<p class='brief'>

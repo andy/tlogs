@@ -137,7 +137,7 @@ END
     html_options ||= {}
 
     username = case options.delete(:link) || :url
-                  when :avatar
+                  when :userpic
                     userpic_tag(user, options)
                   when :username
                     CGI::escapeHTML(user.username)

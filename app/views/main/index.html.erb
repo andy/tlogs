@@ -15,7 +15,7 @@
 	<div class='users'>
 		<% User.popular(9).each do |user| %>
 			<div>
-				<%= link_to_tlog user, :link => :avatar, :empty => :blank %>
+				<%= link_to_tlog user, :link => :userpic, :empty => :blank %>
 				<p><%= link_to_tlog user %></p>
 			</div>
 		<% end %>	
