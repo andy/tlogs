@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110721210036) do
+ActiveRecord::Schema.define(:version => 20110726084138) do
 
   create_table "attachments", :force => true do |t|
     t.integer "entry_id",     :default => 0,  :null => false
@@ -155,17 +155,17 @@ ActiveRecord::Schema.define(:version => 20110721210036) do
   add_index "entries", ["user_id"], :name => "index_entries_on_user_id"
 
   create_table "entry_ratings", :force => true do |t|
-    t.integer  "entry_id",                   :default => 0,           :null => false
-    t.string   "entry_type",    :limit => 0, :default => "TextEntry", :null => false
-    t.datetime "created_at",                                          :null => false
-    t.integer  "user_id",                    :default => 0,           :null => false
-    t.integer  "value",                      :default => 0,           :null => false
-    t.boolean  "is_great",                   :default => false,       :null => false
-    t.boolean  "is_good",                    :default => false,       :null => false
-    t.boolean  "is_everything",              :default => false,       :null => false
-    t.integer  "ups",                        :default => 0,           :null => false
-    t.integer  "downs",                      :default => 0,           :null => false
-    t.float    "hotness",                    :default => 0.0,         :null => false
+    t.integer  "entry_id",                                                   :default => 0,           :null => false
+    t.string   "entry_type",    :limit => 0,                                 :default => "TextEntry", :null => false
+    t.datetime "created_at",                                                                          :null => false
+    t.integer  "user_id",                                                    :default => 0,           :null => false
+    t.integer  "value",                                                      :default => 0,           :null => false
+    t.boolean  "is_great",                                                   :default => false,       :null => false
+    t.boolean  "is_good",                                                    :default => false,       :null => false
+    t.boolean  "is_everything",                                              :default => false,       :null => false
+    t.integer  "ups",                                                        :default => 0,           :null => false
+    t.integer  "downs",                                                      :default => 0,           :null => false
+    t.decimal  "hotness",                    :precision => 32, :scale => 12, :default => 0.0,         :null => false
   end
 
   add_index "entry_ratings", ["entry_id"], :name => "index_entry_ratings_on_entry_id", :unique => true
@@ -375,6 +375,7 @@ ActiveRecord::Schema.define(:version => 20110721210036) do
     t.boolean  "color_tlog_bg_is_transparent",                 :default => false, :null => false
     t.boolean  "color_sidebar_bg_is_transparent",              :default => false, :null => false
     t.boolean  "color_voter_bg_is_transparent",                :default => false, :null => false
+    t.boolean  "large_userpic",                                :default => false, :null => false
   end
 
   add_index "tlog_design_settings", ["user_id"], :name => "index_tlog_design_settings_on_user_id", :unique => true
@@ -440,6 +441,9 @@ ActiveRecord::Schema.define(:version => 20110721210036) do
     t.integer  "conversations_count",                   :default => 0,     :null => false
     t.datetime "disabled_at"
     t.datetime "ban_ac_till"
+    t.string   "userpic_file_name"
+    t.datetime "userpic_updated_at"
+    t.text     "userpic_meta"
   end
 
   add_index "users", ["domain"], :name => "index_users_on_domain"
