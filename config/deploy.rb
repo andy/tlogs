@@ -109,7 +109,7 @@ namespace :deploy do
     end
     
     task :tasks_crontab, :roles => :tasks do
-      run "cd #{deploy_to} && RAILS_ENV=production bin/whenever -f config/crontabs/redis.rb -i tasks"
+      run "cd #{deploy_to} && RAILS_ENV=production bin/whenever -f config/crontabs/tasks.rb -i tasks"
     end
   end
   
