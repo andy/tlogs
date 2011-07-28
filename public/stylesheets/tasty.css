@@ -688,7 +688,7 @@ div.post_body h1 {
 .post_text {
 	word-wrap: break-word; /* Только для динозавра IE */
 }
-.post_content img {
+.post_content img, .post_comment_text img {
 	max-width: 100%;
 }
 span.post_text_h1 p {
