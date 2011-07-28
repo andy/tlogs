@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/">
+  <ShortName>Тейсти</ShortName>
+  <Description>Поиск по тлогам</Description>
+  <Image width="16" height="16" type="image/x-icon">http://www.mmm-tasty.ru/favicon.ico</Image>
+  <Contact>feedback@mmm-tasty.ru</Contact>
+  <InputEncoding>UTF-8</InputEncoding>
+  <OutputEncoding>UTF-8</OutputEncoding>
+  <Url type="text/html" template="http://www.mmm-tasty.ru/search?query={searchTerms}&amp;utm_source=os&amp;utm_medium=os&amp;utm_campaign=global" />
+  <SyndicationRight>open</SyndicationRight>
+  <AdultContent>false</AdultContent>
+</OpenSearchDescription>

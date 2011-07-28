@@ -428,7 +428,7 @@ module WhiteListHelper
 
 
       # параметры по-умолчанию для флеша
-      embed_params = {'allowfullscreen' => 'false', 'allowscriptaccess' => 'never'}
+      embed_params = {'allowfullscreen' => 'false', 'allowscriptaccess' => 'never', 'wmode' => 'opaque'}
 
       # processing params
       (flash/"//param").each do |param|
@@ -453,7 +453,7 @@ module WhiteListHelper
           width = media_width
         end
 
-        text = "<object width='#{width}' height='#{height}'>#{embed_params.map{|name, value| "<param name='#{name}' value='#{value}' >"}.join}<embed src='#{src}' type='application/x-shockwave-flash' #{embed_params.except('movie').map{|name, value| "#{name}='#{value}'"}.join(" ")} width='#{width}' height='#{height}'></object>"
+        text = "<object width='#{width}' height='#{height}' classid='clsid:d27cdb6e-ae6d-11cf-96b8-444553540000' codebase='http://fpdownload.adobe.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,0,0'>#{embed_params.map{|name, value| "<param name='#{name}' value='#{value}' >"}.join}<embed pluginspage='http://www.adobe.com/shockwave/download/index.cgi?P1_Prod_Version=ShockwaveFlash' src='#{src}' type='application/x-shockwave-flash' #{embed_params.except('movie').map{|name, value| "#{name}='#{value}'"}.join(" ")} width='#{width}' height='#{height}'></object>"
 
         if flash.css_path.include?(" p ") || flash.css_path.include?("p:")
           flash.swap(text)
