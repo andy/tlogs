@@ -19,6 +19,8 @@
 <meta http-equiv="imagetoolbar" content="no">
 <meta name="generator" content="<%= current_service.url %>">
 
+<!--[if lte IE 6]><%= javascript_include_tag 'ie-warning' %><script>window.onload=function(){e("/images/ie-warning/")}</script><![endif]-->
+
 <script type='text/javascript'>
   var current_user = <%= current_user ? current_user.id : 0 %>;
   <% if current_user %>

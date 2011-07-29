@@ -33,6 +33,7 @@
 	<%= render :partial => 'globals/dfp_head' %>
 </head>
 <body class="main_page">
+  <div>
 	<div class="logo">
 		<%= link_to_if (params[:controller] != 'main' || params[:action] != 'index'), image_tag(current_service.logo, :alt => current_service.name, :class => 'logo_img'), service_url('/'), :class => 'logo_link' %>
 	</div>	
@@ -106,5 +107,6 @@
 	<% if RAILS_ENV == 'production' && false %>
   	<script type="text/javascript" language="JavaScript" src="http://reformal.ru/tab.js?title=mmm+tasty&domain=tlogs&color=8f8f8f&align=left&charset=utf-8&ltitle=&lfont=&lsize=&waction=0&regime=0"></script>
 	<% end %>
+	</div>
 </body>
 </html>
