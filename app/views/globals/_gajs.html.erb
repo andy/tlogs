@@ -5,4 +5,5 @@
   // _gaq.push(['_setCustomVar', 1, 'Viewport', 'Desktop', 1]);
   _gaq.push(['_setCustomVar', 2, 'User Type', <%= current_user ? '"Logged in"' : '"Anonymous"' %>, 1]);
   _gaq.push(['_trackPageview']);
+  _gaq.push(['_trackPageLoadTime']);
 </script>
