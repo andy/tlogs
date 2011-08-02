@@ -37,7 +37,11 @@
 
 <%= tasty_include_stylesheets :application unless disable_css %>
 <%= tasty_include_stylesheets :tlog if current_site && %w(tlog conversations faves tags).include?(params[:controller]) %>
-<%= tasty_include_javascripts :modernizr, :application unless disable_js %>
+<% unless disable_js %>
+  <%= tasty_include_javascripts :modernizr, :application %>
+  <!--[if (gte IE 6)&(lte IE 8)]><%= tasty_include_javascripts :selectivizr %><![endif]-->
+<% end %>
+
 
 <%= application_title %>
 

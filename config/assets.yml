@@ -10,6 +10,9 @@ javascripts:
   modernizr:
     - app/assets/javascripts/html5/modernizr.min.js
 
+  selectivizr:
+    - app/assets/javascripts/html5/selectivizr.min.js
+
   application:
     # prototype setup and plugins
     - app/assets/javascripts/prototype/prototype.1.7.0.0.js

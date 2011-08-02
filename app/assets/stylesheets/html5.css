@@ -79,7 +79,8 @@ pre, code, kbd, samp { font-family: monospace, sans-serif; }
 html { overflow-y: scroll; }
 
 /* Accessible focus treatment: people.opera.com/patrickl/experiments/keyboard/test */
-a:hover, a:active { outline: none; }
+a:hover, a:active, a:focus { outline: none; }
+.ie7 a, .ie7 img { outline: none; }
 
 ul, ol { margin: 0; }
 ol { list-style-type: decimal; }

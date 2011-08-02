@@ -82,7 +82,7 @@ end
 ActionController::Routing::Routes.draw do |map|
   map.vote 'vote/:entry_id/:action', :controller => 'vote'
   map.global_fave 'global/fave/:id', :controller => 'faves', :action => 'create'
-  map.global 'global/:action', :controller => 'global'
+  map.global 'global/:action.:format', :controller => 'global'
   
   # Assets packages, used only in development
   if Rails.env.development?

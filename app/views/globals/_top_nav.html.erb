@@ -8,8 +8,10 @@
 				<tr>
 					<td id='pref_home'><%= link_to image_tag("live.gif", :title => 'В моё', :class => 'home', :size => '17x14'), service_url(main_path(:action => :my)), :title => 'В моё', :onclick => 'ga_event("Userbar", "Live", current_user ? _user.url : "anonymous")' %></td>
 					<td id='pref_fav'>
-						<%= link_to_function (image_tag('heart_sel.gif', :title => 'Друзья', :class => 'heart', :size => '9x8', :id => 'pref_fav_local_heart_sel') + image_tag('heart.gif', :class => 'heart', :size => '9x8', :id => 'pref_fav_local_heart', :style => 'display: none')), 'new Effect.toggle("pref_friends_rel", "appear", { duration: 0.3 }); ga_event("Userbar", "Heart", current_user ? _user.url : "anonymous"); $("pref_fav_local_heart", "pref_fav_local_heart_sel").invoke("toggle"); return false;', :id => 'pref_fav_local', :style => 'display: none' %>
-						<%= link_to_remote image_tag("heart.gif", :title => 'Друзья', :class => 'heart', :size => '9x8'), { :url => global_url(:action => 'pref_friends'), :success => '$("pref_fav_remote", "pref_fav_local").invoke("toggle");', :after => 'ga_event("Userbar", "Heart", current_user ? _user.url : "anonymous"); return false;'}, :id => 'pref_fav_remote' %>
+					  <%= link_to image_tag('heart.gif', :title => 'Друзья', :class => 'heart', :size => '9x8', 'data-active' => image_path('heart_sel.gif'), 'data-inactive' => image_path('heart.gif')), '#', :id => 'invoke-pref-fav', 'data-url' => global_url(:action => 'pref_friends', :format => :js) %>
+					  
+						<%#= link_to_function (image_tag('heart_sel.gif', :title => 'Друзья', :class => 'heart', :size => '9x8', :id => 'pref_fav_local_heart_sel') + image_tag('heart.gif', :class => 'heart', :size => '9x8', :id => 'pref_fav_local_heart', :style => 'display: none')), 'new Effect.toggle("pref_friends_rel", "appear", { duration: 0.3 }); ga_event("Userbar", "Heart", current_user ? _user.url : "anonymous"); $("pref_fav_local_heart", "pref_fav_local_heart_sel").invoke("toggle"); return false;', :id => 'pref_fav_local', :style => 'display: none' %>
+						<%#= link_to_remote image_tag("heart.gif", :title => 'Друзья', :class => 'heart', :size => '9x8'), { :url => global_url(:action => 'pref_friends'), :success => '$("pref_fav_remote", "pref_fav_local").invoke("toggle");', :after => 'ga_event("Userbar", "Heart", current_user ? _user.url : "anonymous"); return false;'}, :id => 'pref_fav_remote' %>
 					</td>
 					<td id='pref_add'><%= link_to image_tag("add_post.png", :size => '22x23', :class => 'img_new_post', :title => 'Добавить пост'), user_url(current_user, publish_path), :title => 'Сделать новую запись', :onclick => 'ga_event("Userbar", "Publish", current_user ? _user.url : "anonymous");' %></td>
 					<td id='pref_user'><%= link_to_tlog(current_user, :title => 'Ваш тлог', :class => 'username', :onclick => 'ga_event("Userbar", "Home", current_user ? _user.url : "anonymous");') %></td>
@@ -31,6 +33,14 @@
 		</div>
 	<% end %>
  </div>
- <% if current_user %><div id='pref_friends_holder' style='display: none'></div><% end %>
+  <% if current_user %>
+    <div id='pref_friends_holder' style='display: none'>
+      <div class='rel' id='pref_friends_rel'><div id='pref_friends'><div id='pref_friends_i'>
+        <div class='pref_friends_control'>
+      		<%= link_to '&nbsp; настроить', user_url(current_user, settings_social_path), :class => 'pref_ctl_settings', :title => 'тонкие настройки списка друзей' %>
+      	</div>
+      </div></div></div>
+    </div>
+  <% end %>
 </div>
 <!-- /top_nav -->

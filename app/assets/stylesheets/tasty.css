@@ -159,9 +159,6 @@ div.post_name a {
 .tlog .sidebar_holder {
 	top:5px;
 }
-/*html .tlog .sidebar {
-	left:-616px;
-}*/
 .show_sidebar {
 	position:absolute;
 	left:713px;
@@ -363,51 +360,52 @@ div.pref {
 div.pref_png {
 	background:url("/images/pref_bg.png") no-repeat top left; 
 }
-		#pref_table {
-			position:relative;
-			top:3px;
-			padding: 1px;
-		}
-		#pref_table td {
-			white-space:nowrap;
-			padding: 1px 2px;
-		}
-		img.home {
-			position:relative;
-			bottom:-1px;
-			margin:0 6px;
-		}
-		#pref_fav a {
-			position:relative;
-			bottom:2px;
-			margin:0pt 14px 0pt 0px
-		}
-		#pref_fav a:hover {
-		}
+#pref_table {
+	position:relative;
+	top:3px;
+	padding: 1px;
+}
+#pref_table td {
+	white-space:nowrap;
+	padding: 1px 2px;
+}
+img.home {
+	position:relative;
+	bottom:-1px;
+	margin:0 6px;
+}
+#pref_fav a {
+	position:relative;
+	bottom:2px;
+	margin:0pt 14px 0pt 0px;
+	left: 4px;
+}
+#pref_fav a:hover {
+}
 
-		#pref_add {
-			margin:0 2px 0 2px;
-		}
-		#pref_pref a {
-			position:relative;
-			bottom:-2px	
-		}
-		#pref_exit a {
-			position:relative;
-			right:0;
-			bottom:1px
-		}
-		#pref_user a {
-			font-size:12px;
-			color:white!important;
-			position:relative;
-			padding:0 5px;
-			bottom:1px;
-			text-decoration:none;
-		}
-		#pref_user a:hover {
-			background:transparent;
-		}
+#pref_add {
+	margin:0 2px 0 2px;
+}
+#pref_pref a {
+	position:relative;
+	bottom:-2px	
+}
+#pref_exit a {
+	position:relative;
+	right:0;
+	bottom:1px
+}
+#pref_user a {
+	font-size:12px;
+	color:white!important;
+	position:relative;
+	padding:0 5px;
+	bottom:1px;
+	text-decoration:none;
+}
+#pref_user a:hover {
+	background:transparent;
+}
 a.username {
 	/*font-family:Trebuchet MS, Arial!important;*/
 	font-size:12px!important;
@@ -1045,8 +1043,18 @@ div.top_comments_text {
 
 #comment_submit_button {
 	font-style:normal;
+	vertical-align: baseline;
 }
-
+#generate_preview {
+	vertical-align: baseline;  
+}
+/*.ie7 #generate_preview {
+  padding: 2px 0;
+}
+*/
+#submit_button {
+  vertical-align: baseline;
+}
 #top_comment_number {
 	color:#aaa;
 }
@@ -1125,7 +1133,7 @@ div.post_comment_avatar {
 #comment_comment_error_content {
 	position:relative;
 	top:-1px;
-	font-size:110px;
+	font-size:110%;
 	height:130px;
 }
 
@@ -1355,6 +1363,10 @@ input.button, .comment_send {
 	font-size:0.92em;
 	cursor:pointer;cursor:hand;
 }
+/*.ie7 input.button, .ie7 .comment_send {
+  padding: 2px 0;
+}
+*/
 input.dangerous {
 	border: 3px double #997d7d!important;
 	border-top-color: #e1b7b8!important;
@@ -1364,7 +1376,7 @@ input.dangerous {
 }
 #post_comment_preview .button {
 	height:25px;
-	vertical-align: middle;
+  vertical-align: baseline;
 	margin-left: 2px;
 	margin-right: 2px;
 }
@@ -2026,6 +2038,7 @@ body.main_page {
 	-moz-border-radius: 5px;
 	-o-border-radius: 5px;
 	border-radius: 5px;
+	behavior: url(/images/htc/PIE.htc);
 	min-height:732px;
 }
 *html .main_page .rounded_main_center {
@@ -2644,10 +2657,6 @@ text-decoration:none;
 	top:-13px;
 	width:220px;
 }
-*html #pref_friends {
-	background:#777;
-	
-}
 #pref_friends_i {
 	max-height:480px;
 	overflow:auto;
@@ -3223,7 +3232,9 @@ img.heart {
 	color:#fff;
 	-webkit-border-radius: 1px;
 	-moz-border-radius: 1px;
+	-o-border-radius: 1px;
 	border-radius: 1px;
+	behavior: url(/images/htc/PIE.htc);
 }
 .top_menu ul li a.selected {
 /*	-webkit-box-shadow: rgba(0, 0, 0, 0.199219) 0px 1px 1px;*/
@@ -3645,14 +3656,8 @@ td.about p{
   border: 0;
   margin: 0;
 }
-
-.ie8 #pref_fav a {
-  left: 4px;
-}
-
 .ie7 #pref_fav a {
   bottom: 3px;
-  left: 4px;
 }
 .ie7 #pref_home a {
   bottom: 0px;
@@ -3662,7 +3667,6 @@ td.about p{
   bottom: 0px;
   top: 2px;
 }
-
 .ie7 ul#f_level {
   padding-left: 19px;
 }
@@ -3676,6 +3680,16 @@ td.about p{
 }
 .ie7 .comment_cloud a span {
   top: 2px;
+}
+.ie7 #pref_friends {
+  top: -10px;
+}
+.ie7 .pref_friends_user .new_entry {
+  vertical-align: middle;
+}
+.ie7 input {
+  overflow: visible;
+  padding: 0 4px;
 }
 .settings form #choise_2 input#attachment_uploaded_data {
   width: 290px !important;

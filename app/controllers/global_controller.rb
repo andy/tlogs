@@ -52,6 +52,19 @@ class GlobalController < ApplicationController
   # show a friends sidebar that drop's down from the heart
   def pref_friends
     render :nothing => true and return unless request.post?
+
+    @friends = []
+
+    current_user.all_friends.each do |user|
+      user_js = { :url => user.url, :fs => user.friendship_status, :href => user_url(user), :count => nil }
+      
+      lve = user.last_viewed_entries_count.to_i
+      uec = user.entries_count_for(current_user)
+      user_js[:count] = (uec - lve).abs if lve != uec
+      @friends << user_js
+    end
+    
+    render :json => @friends.to_json
   end
   
   def not_found

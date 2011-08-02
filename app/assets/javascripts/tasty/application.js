@@ -157,24 +157,78 @@ function do_not_reply_to_comment(id) {
 }
 
 /* ie hover fix */
-function makeHover(classList) {
-  classList.each(function(item) {
-    if ($$('.' + item).length) {
-      $$('.' + item).each(function(node) {
-        node.onmouseover=function() { this.className+=" hover"; }
-        node.onmouseout=function() { this.className=this.className.replace (" hover", ""); }
-      });
-    }
-  });
-}
-
-if(/MSIE/.test(navigator.userAgent) && !window.opera) {
-  document.observe('dom:loaded', function() {
-    var classes = new Array('post_body');
-    makeHover(classes);
-  });
-}
+// function makeHover(classList) {
+//   classList.each(function(item) {
+//     if ($$('.' + item).length) {
+//       $$('.' + item).each(function(node) {
+//         node.onmouseover=function() { this.className+=" hover"; }
+//         node.onmouseout=function() { this.className=this.className.replace (" hover", ""); }
+//       });
+//     }
+//   });
+// }
+// 
+// if(jQuery.browser.msie && jQuery.browser.version ) {
+//   document.observe('dom:loaded', function() {
+//     var classes = new Array('post_body');
+//     makeHover(classes);
+//   });
+// }
 
 jQuery(document).ready(function() {
 	jQuery('a.fancybox').removeClass('fancybox').fancybox({ centerOnScroll: false, hideOnContentClick: true, showNavArrows: false, enableKeyboardNav: false, autoScale: false });
+	
+	jQuery('a, button').focus(function(){ this.blur();} );
+
+	jQuery('#pref_friends_holder .pref_friends_user').live('click', function() {
+	  ga_event('Userbar', 'Heart', jQuery(this).find('a').val());
+	  return true;
+	});
+
+	jQuery('#invoke-pref-fav').click(function() {
+    if(jQuery(this).data('fetched')) {
+      var img = jQuery(this).find('img');
+      if(jQuery('#pref_friends_holder').is(':visible')) {
+        jQuery('#pref_friends_holder').hide();
+        img.attr('src', img.data('inactive'));
+      } else {
+        jQuery('#pref_friends_holder').show();
+        img.attr('src', img.data('active'));        
+      }        
+    } else {
+      if(jQuery(this).data('fetching')) {
+        // prevent double clicks
+      } else {
+        jQuery(this).data('fetching', true);
+        jQuery.ajax({
+          url: jQuery(this).data('url'),
+          success: function(content) {
+            jQuery(content).each(function() {
+              tmpl = '<div class="pref_friends_user pref_friendship_status_' + this['fs'] + '">'
+              tmpl += '<a href="' + this['href'] + '" class="pref_link_tlog">' + this['url'] + '</a>'
+              tmpl += '&nbsp;<span class="pref_new_entry" title="количество новых записей">'
+              if(this['count'] > 0) {
+                tmpl += '+' + this['count']
+              }
+              tmpl += '</span></div>'
+
+              jQuery('.pref_friends_control').before(tmpl);
+            });
+            jQuery('#invoke-pref-fav').data('fetched', true);
+
+            var img = jQuery('#invoke-pref-fav img')
+            img.attr('src', img.data('active'));
+
+            jQuery('#pref_friends_holder').show();
+          },
+          dataType: 'json',
+          type: 'post',
+          data: { authenticity_token: window._token }
+        });
+        
+      }
+    }
+
+    return false;
+	});
 });

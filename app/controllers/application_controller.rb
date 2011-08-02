@@ -104,6 +104,9 @@ class ApplicationController < ActionController::Base
         return true
       end
       
+      Rails.logger.debug "user not logged in"
+      pp session
+      
       flash[:notice] = 'Вам необходимо зайти чтобы выполнить запрос'
       if request.get?
         session[:r] = "#{request.protocol}#{request.host_with_port}#{request.request_uri}"
