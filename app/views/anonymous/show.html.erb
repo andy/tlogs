@@ -16,8 +16,8 @@
   		<% if current_user && current_user.id != @entry.user_id %>
   			<div class='rel'>
   				<div class='subscribe_controls'>
-  					<%= link_to_remote image_tag('letter.gif', :size => '17x15'), { :url => service_url(anonymous_path(:action => 'subscribe', :id => @entry)) }, :id => 'subscribe_link', :style => "display: #{!@entry.subscriber_ids.include?(current_user.id) ? 'block' : 'none'}", :title => 'подписаться на новые комментарии' %>
-  					<%= link_to_remote image_tag('unletter.gif', :size => '17x15'), { :url => service_url(anonymous_path(:action => 'unsubscribe', :id => @entry)) }, :id => 'unsubscribe_link', :style => "display: #{@entry.subscriber_ids.include?(current_user.id) ? 'block' : 'none'}", :title => 'отписаться от комментариев' %>
+  					<%= link_to_remote image_tag('letter.gif', :size => '17x15', :title => 'подписаться на комментарии'), { :url => service_url(anonymous_path(:action => 'subscribe', :id => @entry)) }, :id => 'subscribe_link', :style => "display: #{!@entry.subscriber_ids.include?(current_user.id) ? 'block' : 'none'}", :title => 'подписаться на новые комментарии' %>
+  					<%= link_to_remote image_tag('unletter.gif', :size => '17x15', :title => 'отписаться от комментариев'), { :url => service_url(anonymous_path(:action => 'unsubscribe', :id => @entry)) }, :id => 'unsubscribe_link', :style => "display: #{@entry.subscriber_ids.include?(current_user.id) ? 'block' : 'none'}", :title => 'отписаться от комментариев' %>
   				</div>
   			</div>
   		<% elsif current_user && current_user.id == @entry.user_id %>

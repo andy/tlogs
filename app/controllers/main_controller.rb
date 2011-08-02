@@ -83,7 +83,7 @@ class MainController < ApplicationController
 
     sql_conditions = Entry::KINDS[@kind.to_sym][:filter]
 
-    @entry_ratings = EntryRating.find :all, :page => { :current => params[:page], :size => Entry::PAGE_SIZE, :count => (Entry::PAGE_SIZE * 1024)}, :include => { :entry => [ :attachments, :author, :rating ] }, :order => 'entry_ratings.hotness DESC, entry_ratings.id DESC', :conditions => sql_conditions
+    @entry_ratings = EntryRating.paginate :all, :page => params[:page], :per_page => Entry::PAGE_SIZE, :include => { :entry => [ :attachments, :author, :rating ] }, :order => 'entry_ratings.hotness DESC, entry_ratings.id DESC', :conditions => sql_conditions
     
     @comment_views = User::entries_with_views_for(@entry_ratings.map(&:entry_id), current_user)
   end

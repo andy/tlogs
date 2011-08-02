@@ -2029,6 +2029,8 @@ body.main_page {
 	padding:40px 0;
 }
 .main_page .rounded_main_center {
+	min-height:732px;
+
 	-webkit-box-shadow: rgba(0, 0, 0, 0.199219) 0px 2px 2px;
 	-moz-box-shadow: rgba(0, 0, 0, 0.199219) 0px 2px 2px;
 	-o-box-shadow: rgba(0, 0, 0, 0.199219) 0px 2px 2px;
@@ -2039,7 +2041,9 @@ body.main_page {
 	-o-border-radius: 5px;
 	border-radius: 5px;
 	behavior: url(/images/htc/PIE.htc);
-	min-height:732px;
+}
+.ie7 .main_page .rounded_main_center, .ie8 .main_page .rounded_main_center {
+	box-shadow: 0;
 }
 *html .main_page .rounded_main_center {
 	height:732px;
