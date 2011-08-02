@@ -70,7 +70,7 @@ class MainController < ApplicationController
     # высчитываем общее число записей и запоминаем в кеше
     total = Rails.cache.fetch("entry_ratings_count_#{kind}_#{rating}", :expires_in => 1.minute) { EntryRating.count :conditions => sql_conditions }
 
-    @entry_ratings = EntryRating.find :all, :page => { :current => params[:page].to_i.reverse_page(total.to_pages), :size => Entry::PAGE_SIZE, :count => total }, :include => { :entry => [ :attachments, :author, :rating ] }, :order => 'entry_ratings.id DESC', :conditions => sql_conditions
+    @entry_ratings = EntryRating.paginate :all, :page => params[:page].to_i.reverse_page(total.to_pages), :per_page => Entry::PAGE_SIZE, :include => { :entry => [ :attachments, :author, :rating ] }, :order => 'entry_ratings.id DESC', :conditions => sql_conditions
     
     @comment_views = User::entries_with_views_for(@entry_ratings.map(&:entry_id), current_user)
   end
@@ -191,12 +191,6 @@ class MainController < ApplicationController
     @users = User.paginate(:page => params[:page], :per_page => 6, :include => [:avatar, :tlog_settings], :order => 'users.id DESC', :conditions => 'users.is_confirmed = 1 AND users.entries_count > 0')
     @title = 'все пользователи тейсти'
     render :action => 'users'
-  end
-  
-  def cssfags
-    @page = params[:page].to_i rescue '0'
-
-    @designs = TlogDesignSettings.paginate(:page => params[:page], :per_page => 10, :include => [:user], :order => 'updated_at DESC')
   end
   
   def random

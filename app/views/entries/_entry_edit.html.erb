@@ -43,7 +43,7 @@
 			</div>
 		<% end %>
 		
-		<%= submit_to_remote "button", "Предпросмотр", :url => { :action => :preview }, :before => 'remote_request_started("generate_preview", "Подготавливаем ...");', :loaded => 'remote_request_finished("generate_preview", "Предпросмотр");', :html => { :id => 'generate_preview', :class => 'button' } %>&nbsp;
+		<%= submit_to_remote "button", "Предпросмотр", :url => user_url(current_site, url_for(:action => :preview)), :before => 'remote_request_started("generate_preview", "Подготавливаем ...");', :loaded => 'remote_request_finished("generate_preview", "Предпросмотр");', :html => { :id => 'generate_preview', :class => 'button' } %>&nbsp;
 		<%= submit_tag 'Сохранить', :class => 'button', :id => 'submit_button' %>
 		<div class='form_submit_return'>
 			или

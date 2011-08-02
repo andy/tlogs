@@ -128,6 +128,10 @@ END
     "#{@audio_player_id}"
   end
   
+  def application_title
+    content_tag(:title, [h(current_site ? h(current_site.url) : current_service.name), strip_tags(@title)].reject(&:blank?).join(' – ')) if @title
+  end
+  
   def link_to_tlog(user, options = {}, html_options = nil)
     link_to_tlog_if(true, user, options, html_options)
   end

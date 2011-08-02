@@ -10,14 +10,19 @@ module Tlogs
       end
     
       def options_for(name, request)
-        name = name.dup.gsub(/^www\./, '') if name.starts_with?('www.')
+        name = name[4..-1] if name.starts_with?('www.')
         domain = nil
 
-        name.split('.').size.times do |length|
-          domain = name.split('.', length).last          
-          break if @domains.has_key?(domain)
+        # in case of ip address
+        if name =~ /\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}/
+          domain = name if @domains.has_key?(name)
+        else
+          name.split('.').size.times do |length|
+            domain = name.split('.', length).last          
+            break if @domains.has_key?(domain)
           
-          domain = nil
+            domain = nil
+          end
         end
 
         domain = @domains.keys.first if domain.nil?

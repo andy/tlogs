@@ -106,6 +106,7 @@ function enable_services_for_current_user( ) {
 document.observe('dom:loaded', function( ) { 
   run_comments_views_update();
   run_entry_ratings_update();
+	jQuery('input, textarea').placeholder();
   if(current_user)
     enable_services_for_current_user();
 });

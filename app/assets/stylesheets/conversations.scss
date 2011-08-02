@@ -3,10 +3,45 @@
  */
 
 /* new messages look */
-.convos div.message_sender { left: -235px; padding-bottom:5px; position:absolute; width:200px; text-align:right; }
-.convos div.message_sender a { font-size: 0.75em; background: #404040; color: white!important; width:auto!important; margin:0 0 0 0; padding:0 5px; display:inline; font-family: 'Georgia', 'Times New Roman', 'Courier New'; font-weight:bold; font-style:italic; }
-.convos div.message_sender abbr.timeago { font-size: 0.75em; background: #404040; color: white!important; width: auto!important; margin: 0 0 0 0; padding: 0 5px; display: inline; font-family: 'Georgia', 'Times New Roman', 'Courier New'; }
+.convos {
+  abbr {
+    border-bottom-style: none;
+  }
 
+  div.message_sender {
+    left: -235px;
+    padding-bottom: 5px;
+    position: absolute;
+    width: 200px;
+    text-align: right;
+    a {
+      background: #404040;
+      color: white!important;
+      width: auto!important;
+      margin: 0 0 0 0;
+      padding: 0 5px;
+      display: inline;
+      font: {
+        size: 0.75em;
+        family: 'Georgia', 'Times New Roman', 'Courier New';
+        weight: bold;
+        style: italic;
+      }
+    }
+    abbr.timeago {
+      background: #404040;
+      color: white!important;
+      width: auto!important;
+      margin: 0 0 0 0;
+      padding: 0 5px;
+      display: inline;
+      font: {
+        family: 'Georgia', 'Times New Roman', 'Courier New';
+        size: 0.75em;
+      }
+    }
+  }
+}
 
 /* conversations */
 .convos .conversations .conversation { margin: 0 4px 0px 4px; padding: 10px 31px 0px 31px; }
@@ -43,30 +78,63 @@
 .convos .centered .linkback { text-align: center; margin-top: 40px; }
 
 /* new message */
-.convos #new_message { width: 450px; padding: 10px 31px 30px 31px; margin: 4px; }
-.convos #new_message #verifying { position: absolute; left: -25px; top: 4px;}
-.convos #new_message .message_submit .submit_button { float: right; }
-.convos #new_message .message_recipient_block { margin-bottom: 20px; }
-.convos #new_message .message_recipient .subtext { font-size: 11px; font-family: Georgia;}
-.convos #new_message .message_recipient .subtext .neutral { color: #888888; }
-.convos #new_message .message_recipient .subtext .success { color: #5e8865; }
-.convos #new_message .message_recipient .subtext .success a { color: #5e8865!important; }
-.convos #new_message .message_recipient .subtext .failure { color: #883d3d; }
-.convos #new_message .message_submit span { font-size: 11px; color: #888888; }
-.convos #new_message #submitting { position: absolute; top: 2px; left: -25px; }
-.convos #new_message label { font-size: 11px; font-family: Georgia; padding-left: 2px; margin-bottom: 5px; display: block;}
+.convos #new_message {
+  width: 450px;
+  padding: 10px 31px 30px 31px;
+  margin: 4px;
+
+  #verifying { position: absolute; left: -25px; top: 4px; }
+  
+  .message_submit {
+    .submit_button { float: right; }
+    span { font-size: 11px; color: #888888; }
+  }
+  
+  .message_recipient_block { margin-bottom: 20px; }
+  .message_recipient .subtext {
+    font-size: 11px; font-family: Georgia;
+
+    .success {
+      color: #5e8865;
+      a { color: #5e8865!important; }
+    }
+    .neutral { color: #888888; }
+    .failure { color: #883d3d; }
+  }
+
+  #submitting { position: absolute; top: 2px; left: -25px; }
+  label { font-size: 11px; font-family: Georgia; padding-left: 2px; margin-bottom: 5px; display: block;}
+}
 
 /* pagination */
 .convos .conversations .entry_pagination, .convos .messages .entry_pagination { padding: 10px 49px 20px 50px; }
 
 /* header */
-.convos .header { padding: 0px 0px 0px 31px; margin: 0px 0px 30px 4px; }
-.convos .header .return { position: absolute; top: -25px; left: -13px;}
-.convos .header .return a { text-decoration: none; color: #808080; font-size: 0.75em; }
-.convos .header h3 { padding: 0px; margin: 0px; }
-.convos .header h3 .highlight { color: black; padding: 0 4px; }
+.convos .header {
+  padding: 0px 0px 0px 31px;
+  margin: 0px 0px 30px 4px;
+  
+  .return {
+    position: absolute; top: -25px; left: -13px;
+    a { text-decoration: none; color: #808080; font-size: 0.75em; }
+  }
+  h3 {
+    padding: 0px; margin: 0px;
+    .highlight { color: black; padding: 0 4px; }
+  }
+}
 
 /* convos sidebar */
 div#sidebar_conversations ul { list-style-type: none; padding: 0px; margin: 0px;}
 div#sidebar_conversations_help ul { list-style-type: none; padding: 0px; margin: 0px;}
 div#sidebar_conversations_help ul li { margin-bottom: 1em; }
+div#sidebar_conversations_search_content input {
+  font-family: Tahoma, Arial, courier;
+  color: black;
+}
+
+.ie7 {
+  .convos div.message_sender a {
+    margin-right: -2px;
+  }
+}

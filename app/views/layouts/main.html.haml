@@ -1,0 +1,84 @@
+- content_for :sidebar_right do
+  .sidebar_search
+    %form{ :method => 'get', :action => service_url(search_path) }
+      = text_field_tag 'query', params[:query], :placeholder => 'Поиск по тлогам', :type => :search, :autosave => "com.tlogs", :results => 10
+
+  = render(:partial => 'globals/tastyradio') if params[:action] == 'live' || params[:action] == 'last' || (params[:controller] == 'main' && params[:action] == 'index')
+  = render(:partial => 'globals/dfp240x400') if params[:action] == 'news' || params[:action] == 'last' || params[:action] == 'live'  || params[:controller] == 'anonymous'
+
+  - if params[:controller] == 'search' && @users
+    %h2
+      %span Пользователи
+
+    .users
+      - @users.each do |user|
+        %div
+          = link_to_tlog(user, :link => :userpic, :empty => :blank)
+          %p= link_to_tlog(user)
+      
+      = content_tag(:p, "... и еще #{(@users.total_entries - @users.per_page).pluralize('пользователь', 'пользователя', 'пользователей', true)}") if @users.total_pages > 1
+
+!!! 5
+<!--[if lt IE 7 ]> <html class="no-js ie6" lang="ru"> <![endif]-->
+<!--[if IE 7 ]>    <html class="no-js ie7" lang="ru"> <![endif]-->
+<!--[if IE 8 ]>    <html class="no-js ie8" lang="ru"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--> <html class="no-js" lang="ru"> <!--<![endif]-->
+%head
+  = render :partial => 'globals/head'
+  = render :partial => 'globals/dfp_head'
+
+%body.main_page
+  .logo
+    = link_to_if (params[:controller] != 'main' || params[:action] != 'index'), image_tag(current_service.logo, :alt => current_service.name, :class => 'logo_img'), service_url('/'), :class => 'logo_link'
+
+  .register_enter
+    .top_hello
+      - if current_user
+        Будьте собой,
+        = link_to_tlog(current_user, :link => :username)
+        !
+      - else
+        Хватит быть никем,
+        = link_to 'зарегистрируйтесь', service_url(login_path)
+        \.
+
+    .top_menu
+      %ul
+        - news = User.find_by_url 'news'
+        - news_count = news.new_entries_count_for(current_user)
+        = menu_item 'О проекте', :about, %w(main/about main/users main/new_users)
+        = menu_item "Новости#{"<sup>+#{news_count}</sup>" unless news_count.zero?}", :news if !current_user || !news_count.zero? || params[:action] == 'news'
+        -# menu_item 'Люди', :new_users, %w(main/users main/new_users)
+        = menu_item 'Лучшее', :last
+        = menu_item 'Анонимки', :anonymous, %w(anonymous/*)
+        = menu_item "Моё", :my, %w(main/my main/last_personalized) if current_user
+        = menu_item 'Прямой эфир', :live
+        = menu_item "День из жизни", :random
+
+  #wrapper
+    - sidebar_left = capture do
+      = yield :sidebar_left
+    - unless sidebar_left.blank?
+      .sidebar_holder
+        %div{ :class => ['sidebar', @sidebar_left_short && 'sidebar_left_short']}
+          .personal.round
+            .content
+              = sidebar_left
+
+    - sidebar_right = capture do
+      = yield :sidebar_right
+    - unless sidebar_right.blank?
+      .sidebar_holder
+        .sidebar.sidebar_right
+          .personal.round
+            .content
+              = sidebar_right
+
+    .main_rounded_holder
+      .rounded_main_center
+        = yield
+  
+  = render :partial => 'globals/foot'
+
+  = render :partial => 'globals/top_nav'  
+</html>

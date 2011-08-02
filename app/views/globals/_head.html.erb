@@ -1,10 +1,10 @@
 <%-
   disable_css ||= false unless local_assigns.has_key?(:disable_css) && disable_css
-  enable_mobile ||= false unless local_assigns.has_key?(:enable_mobile) && enable_mobile
+  disable_js ||= false unless local_assigns.has_key?(:disable_js) && disable_js
 -%>
 <meta name="robots" content="index,follow">
 <meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
 <%= tag :link, :rel => 'search', :href => service_url('/opensearch.xml'), :title => 'Тейсти', :type => 'application/opensearchdescription+xml' %>
 <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
 
@@ -23,28 +23,22 @@
 
 <script type='text/javascript'>
   var current_user = <%= current_user ? current_user.id : 0 %>;
-  <% if current_user %>
+  <%- if current_user -%>
   var _user = <%= {
         :id   => current_user.id,
         :url  => current_user.url
         # :sid  => cookies[ActionController::Base.session_options[:key]]
       }.to_json %>;
-  <% end %>
-  
-  /* validations */
+  <%- end -%>
   window._token = "<%= form_authenticity_token %>";
 </script>
 
 <%= render :partial => 'globals/gajs' %>
 
-<% if !disable_css %>
-<%= glued_stylesheet_link_tag 'application' %>
-<!--[if IE]> <%= glued_stylesheet_link_tag 'application', 'ie' %> <![endif]-->
-<%= glued_stylesheet_link_tag 'tlog' if current_site %>
-<% end %>
+<%= tasty_include_stylesheets :application unless disable_css %>
+<%= tasty_include_stylesheets :tlog if current_site && %w(tlog conversations faves tags).include?(params[:controller]) %>
+<%= tasty_include_javascripts :modernizr, :application unless disable_js %>
 
-<%= glued_javascript_include_tag 'application' %>
-
-<%= content_tag(:title, [h(current_site ? h(current_site.url) : current_service.name), strip_tags(@title)].reject(&:blank?).join(' – ')) if @title %>
+<%= application_title %>
 
 <%= yield :head %>

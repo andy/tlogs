@@ -15,7 +15,7 @@ div#y-panel_h.hd { font-size: 12px; background-color: #3c3c3c; background-image:
 
 
 /* settings/social */
-a.rss { padding-right: 18px; background:url('../images/feed-icon-14x14.png') no-repeat scroll 100% 50%; }
+a.rss { padding-right: 18px; background:url(/images/feed-icon-14x14.png) no-repeat scroll 100% 50%; }
 
 /* comments formatting */
 div.comment_text p { margin-bottom: 1em; }
@@ -52,39 +52,41 @@ div.quote_entry span.quote_entry_source p { display: inline; font-style: italic;
 
 /* news message notify */
 .main_page .top_menu li a sup {
-  color: rgb(255, 4, 18);
-  font-style: italic;
-  font-size: 10px;
+  color: #ff0412;
+  font: {
+    style: italic;
+    size: 10px;
+  }
   padding-left: 3px;
 }
 
 /* disabled buttons */
 input.disabled, input.disabled:active {
-	color: #ccc!important;
-	border: 3px double #ccc!important;
-	border-top-color: #ddd!important;
-	border-left-color: #ddd!important;
-	cursor: default;
+  color: #ccc !important;
+  border: 3px double #ccc !important;
+  border-top-color: #ddd !important;
+  border-left-color: #ddd !important;
+  cursor: default;
 }
 
 .anon_warning {
-	color: #E69B96;
-	font-size: 11px;
-	width: 500px;
-	margin-bottom: 20px;
+  color: #E69B96;
+  font-size: 11px;
+  width: 500px;
+  margin-bottom: 20px;
 }
 
 .limit_exceeded {
-/*	text-align: center;*/
-	width: 60%;
-	margin: 40px auto;
+/*  text-align: center;*/
+  width: 60%;
+  margin: 40px auto;
 }
 .limit_exceeded h2 {
-	font-size: 120%;
-	margin-bottom: 1em;
+  font-size: 120%;
+  margin-bottom: 1em;
 }
 .limit_exceeded p {
-	margin-bottom: 1em;
+  margin-bottom: 1em;
 }
 
 
@@ -93,26 +95,26 @@ input.disabled, input.disabled:active {
 .sidebar_books h2 img { vertical-align: middle;}
 .sidebar_books span { background-color: white; }
 .sidebar_books .sidebar_book {
-	margin-bottom: 25px;
+  margin-bottom: 25px;
 }
 .sidebar_books .sidebar_book img {
-	-webkit-box-shadow: 3px 3px 15px rgba(0,0,0,0.3);
-	-moz-box-shadow: 3px 3px 15px rgba(0,0,0,0.3);
-	-o-box-shadow: 3px 3px 15px rgba(0,0,0,0.3);	
-	box-shadow: 3px 3px 15px rgba(0,0,0,0.3);
-	margin-bottom: 5px;
-	width: 100px;
+  -webkit-box-shadow: 3px 3px 15px rgba(0,0,0,0.3);
+  -moz-box-shadow: 3px 3px 15px rgba(0,0,0,0.3);
+  -o-box-shadow: 3px 3px 15px rgba(0,0,0,0.3);  
+  box-shadow: 3px 3px 15px rgba(0,0,0,0.3);
+  margin-bottom: 5px;
+  width: 100px;
 }
 .sidebar_books .sidebar_book h3 a, .sidebar_books .sidebar_book h4 a {
-	background-color: white;
+  background-color: white;
 }
 .sidebar_books .sidebar_book h4, .sidebar_books .sidebar_book h3 {
-	margin: 0 !important;
-	padding: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
 }
 .sidebar_books .sidebar_book h4 {
-	font-weight: normal;
-	font-size: 11px;
+  font-weight: normal;
+  font-size: 11px;
 }
 
 /* donations */
@@ -180,15 +182,86 @@ a#new_radio_schedule_showform { font-size: 12px; color: gray; }
 .user_rel:hover .hover { visibility: visible; }
 
 .t-entry-warn {
-	border: 1px solid #FBB;
-	background-color: #FEE;
-	padding: 3px 3px 3px 12px;
-	color: #544;
+  border: 1px solid #FBB;
+  background-color: #FEE;
+  padding: 3px 3px 3px 12px;
+  color: #544;
 }
 
 .light-red {
-	color: #A44;
+  color: #A44;
 }
 .light-red a {
-	color: #A44;
+  color: #A44;
+}
+
+/* legacy stuff */
+form.small {
+  table td {
+    padding: 4px;
+  }
+  input, #design_css textarea {
+    font-family: 'Lucida Grande', 'Myriad Pro', 'Tahoma', arial;
+    font-size: 11px;    
+  }
+}
+
+div.settings {
+  #sidebar_is_open_td {
+    label {
+      line-height: normal;
+    }
+    input#sidebar_is_open {
+      margin: 3px 2px;
+      font-size: 11px;
+    }
+  }
+  #sidebar_hide_show_menu {
+    .sidebar_hide_show_menu_item {
+      margin-top: 5px;
+      input {
+        margin: 3px 2px;
+        font-size: 11px;
+      }
+      label {
+        line-height: normal;
+      }
+    }
+  }
+  #sidebar_sections {
+    margin-left: 40px;
+    ul {
+      margin-left: 40px;
+    }
+  }
+  input, textarea {
+    font-family: 'Lucida Grande', 'Myriad Pro', 'Tahoma', arial;
+    font-size: 11px;
+  }
+}
+
+#post_comment_form {
+  input.button, input.comment_send {
+    font-size: 13px;
+    margin-left: 2px;
+    margin-right: 2px;
+    font-family: Tahoma, Arial, courier;
+  }
+  input.comment_send {
+    margin-top: 20px;
+  }
+}
+
+em { font-style: italic; }
+
+#entry_edit_form {
+  input, textarea {
+    font-family: 'Lucida Grande', 'Myriad Pro', 'Tahoma', arial;
+  }
+}
+
+input.placeholder, textarea.placeholder {
+  color: #ccc;
+  font-family: 'Lucida Grande', 'Myriad Pro', 'Tahoma', arial;
+  line-height: normal;
 }

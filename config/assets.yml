@@ -1,0 +1,91 @@
+# embed_assets: datauri
+# package_assets: always
+# package_path: packages
+# javascript_compressor: uglifier
+compressor_options:
+  mangle: true
+  
+
+javascripts:
+  modernizr:
+    - app/assets/javascripts/html5/modernizr.min.js
+
+  application:
+    # prototype setup and plugins
+    - app/assets/javascripts/prototype/prototype.1.7.0.0.js
+    - app/assets/javascripts/prototype/effects.min.js
+    - app/assets/javascripts/prototype/dragdrop.min.js
+    # jquery setup & plugins
+    - app/assets/javascripts/jquery/jquery-1.5.1.min.js
+    - app/assets/javascripts/jquery/jquery.noconflict.js
+    - app/assets/javascripts/jquery/jquery.hotkeys.js
+    - app/assets/javascripts/jquery/jquery.autoresize.min.js
+    - app/assets/javascripts/jquery/jquery.infinitescroll.min.js
+    # - app/assets/javascripts/jquery/jquery.easing-1.3.pack.js
+    - app/assets/javascripts/jquery/jquery.fancybox-1.3.4.pack.js
+    - app/assets/javascripts/jquery/jquery.timeago.js
+    - app/assets/javascripts/jquery/jquery.timeago.ru.js
+    - app/assets/javascripts/jquery/jquery.popupWindow.js
+    - app/assets/javascripts/jquery/jquery.placeholder.min.js    
+    # - app/assets/javascripts/slides/slides.min.jquery.js
+    # - app/assets/javascripts/slides/slides.configuration.js
+    # flash: swfobject & swfupload
+    - app/assets/javascripts/swf/swfobject.min.js
+    - app/assets/javascripts/swf/swfupload.min.js
+    # - app/assets/javascripts/swf/swfupload.cookies.min.js
+    - app/assets/javascripts/swf/swfupload.speed.min.js
+    # application code
+    - app/assets/javascripts/tasty/hotkeys.js
+    - app/assets/javascripts/tasty/uploader.js
+    - app/assets/javascripts/tasty/button.js
+    - app/assets/javascripts/tasty/autoresize.js
+    - app/assets/javascripts/tasty/audio-player.min.js
+    - app/assets/javascripts/tasty/fixpng.js
+    - app/assets/javascripts/tasty/toggle-flash.js
+    - app/assets/javascripts/tasty/error-messages-on.js
+    - app/assets/javascripts/tasty/openid.js
+    - app/assets/javascripts/tasty/google-analytics.js
+    - app/assets/javascripts/tasty/blink.js
+    - app/assets/javascripts/tasty/application.js
+    - app/assets/javascripts/tasty/application.coffee
+
+  mobile:
+    - app/assets/javascripts/jquery/jquery-1.6.1.min.js
+    - app/assets/javascripts/mobile.js
+    # - jquery.mobile-1.0b1.min should be included directly to have proper inclusion order
+    - app/assets/javascripts/jquery/jquery.timeago.js
+    - app/assets/javascripts/jquery/jquery.timeago.ru.js
+    - app/assets/javascripts/tasty/google-analytics.js
+
+  tastyradio:
+    - app/assets/javascripts/jquery/jquery-1.6.1.min.js
+    - app/assets/javascripts/soundmanager/soundmanager2.js
+    - app/assets/javascripts/soundmanager/egych-player.js
+  
+stylesheets:
+  application:
+    - app/assets/stylesheets/html5.css
+    - app/assets/stylesheets/tasty.css
+    - app/assets/stylesheets/global-andy.scss
+    - app/assets/stylesheets/conversations.scss
+    - app/assets/stylesheets/jquery.fancybox-1.3.4.css
+    - app/assets/stylesheets/jquery.slides.css
+    - app/assets/stylesheets/html5closing.css
+
+  ie:
+    - app/assets/stylesheets/ie.css
+
+  tlog:
+    - app/assets/stylesheets/tlog.css
+
+  mobile:
+    - app/assets/stylesheets/mobile-styling.css
+
+  tastyradio:
+    - app/assets/stylesheets/html5.css
+    - app/assets/stylesheets/tastyradio.scss
+    - app/assets/stylesheets/html5closing.css
+
+  light:
+    - app/assets/stylesheets/light.css
+    

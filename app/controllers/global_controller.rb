@@ -4,8 +4,7 @@ class GlobalController < ApplicationController
   protect_from_forgery :only => [:entry_metadata, :relationship, :relationship_destroy, :relationship_toggle, :pref_friends]
 
   # before_filter :verify_authenticity_token, :only => [:entry_metadata, :relationship, :relationship_destroy, :relationship_toggle, :pref_friends]
-
-
+  
   def entry_metadata
     render :nothing => true and return unless request.post?
 

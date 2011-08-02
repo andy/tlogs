@@ -8,7 +8,7 @@ class ApplicationController < ActionController::Base
                             'webos|amoi|novarra|cdm|alcatel|pocket|ipad|iphone|mobileexplorer|' +
                             'mobile'
   
-  helper :white_list, :url, :asset_gluer
+  helper :white_list, :url, :assets
 
   # MAIN FILTERS
   attr_accessor   :current_site
@@ -26,43 +26,10 @@ class ApplicationController < ActionController::Base
   helper_method   :is_mobile_device?
 
   before_filter :preload_current_service
-  before_filter :remove_old_cookies
   before_filter :preload_current_site # loads @current_site
   before_filter :preload_current_user # loads @current_user
   
-  protected
-    def remove_old_cookies
-      if cookies[:tsig]
-        cookies.delete :tsig
-        cookies.delete :tsig, :domain => current_service.cookie_domain
-      end
-      
-      if cookies[:login_field_value]
-        cookies.delete :login_field_value
-        cookies.delete :login_field_value, :domain => current_service.cookie_domain
-      end
-      
-      if cookies[:tlogs]
-        cookies.delete :tlogs
-        cookies.delete :tlogs, :domain => current_service.cookie_domain
-      end
-      
-      if cookies['tlogs-100']
-        cookies.delete 'tlogs-100'
-        cookies.delete 'tlogs-100', :domain => current_service.cookie_domain
-      end
-      
-      if cookies['tlogs-112']
-        cookies.delete 'tlogs-112'
-        cookies.delete 'tlogs-112', :domain => current_service.cookie_domain
-      end
-      
-      if cookies['session']
-        cookies.delete :session
-        cookies.delete :session, :domain => current_service.cookie_domain
-      end
-    end
-  
+  protected  
     def preload_current_service
       @current_service = Tlogs::Domains::CONFIGURATION.options_for(request.host || 'localhost', request)
       Rails.logger.debug "current service is #{@current_service.domain}, subdomain #{request.subdomains.first.to_s}, domain #{request.domain}"
@@ -88,12 +55,15 @@ class ApplicationController < ActionController::Base
         # перенаправляем на сайт сервиса, если адрес запрещенный
         redirect_to "#{request.protocol}www.mmm-tasty.ru#{request.port == 80 ? '' : ":#{request.port}"}" and return false if User::RESERVED.include?(url) && url != 'www'
       elsif Tlogs::Domains::CONFIGURATION.domains.include?(request.host)
+        Rails.logger.debug "request domain okay #{request.host}"
+
         url = params[:current_site] if request.path.starts_with?('/users/')
         
         # перенаправляем на сайт сервиса, если адрес запрещенный
         redirect_to "#{request.protocol}#{request.host_with_port}" and return false if User::RESERVED.include?(url)
       end
       
+      Rails.logger.debug "request url set to #{url}, subdomain #{request.subdomains.join('.')}, domain #{request.domain}"      
       
       @current_site = User.find_by_url(url, :include => [:tlog_settings, :avatar]) unless url.blank?
       

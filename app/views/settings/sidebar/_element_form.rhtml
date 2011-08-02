@@ -16,7 +16,7 @@ section = element.section
 			<% end %>
 			<%= text_field :element, :content, :id => element.new_record? ? section.dom_id(:sidebar_link_element) : element.dom_id(:sidebar_link_element), :class => 'element_content', :value => element.new_record? ? nil : element.content %>
 			<%= submit_to_remote nil, '+', :url => user_url(current_site, settings_sidebar_path(:action => element.new_record? ? 'element' : 'element_update')) %>
-			<%= tasty_error_message_on :element, :content, :id => element.new_record? ? section.dom_id(:sidebar_link_element) : element.dom_id(:sidebar_link_element) %>
+			<%= tasty_error_message_on :element, :content, :id => element.new_record? ? section.dom_id(:sidebar_link_element) : element.dom_id(:sidebar_link_element) %>			
 		</form>
 	</div>
 <% end %>
@@ -37,3 +37,10 @@ section = element.section
 		</form>
 	</div>
 <% end %>
+
+<script type='text/javascript'>
+  jQuery('.<%= section.dom_id(:new_form) %> form').submit(function() {
+    jQuery(this).find('input[type="button"]').click();
+    return false;
+  });
+</script>

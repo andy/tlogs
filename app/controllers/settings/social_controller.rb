@@ -9,15 +9,7 @@ class Settings::SocialController < ApplicationController
   layout "settings"
   
   def index
-    @light = false
     @new_user = User.new
-  end
-  
-  def light
-    @light = true
-    @disable_css = true
-    @new_user = User.new
-    render :layout => false
   end
   
   def delete

@@ -1,7 +1,7 @@
 /* CSS */
-html {
-	height:100%;
-}
+
+html { height: 100%; }
+html, body { height: 100%; }
 
 body {
 	position:relative;
@@ -9,7 +9,6 @@ body {
 	background:#acacac;
 	background-attachment: fixed;
 	font-size:100.01%;
-	height:100%;
 	margin:0;
 	padding:0;
 /*	-webkit-text-stroke: 0.001px transparent;*/
@@ -71,13 +70,15 @@ textarea {
 
 #wrapper {
 	text-align: left;
-	margin:0 auto;
-	border:0;
+	margin: 0 auto;
+	border: 0;
 	
 }
 
-.l_2 #wrapper, .settings #weapper {
-	margin:auto;
+.l_2 #wrapper, .settings #wrapper {
+	width: 580px;
+	border: none;
+	padding-top: 40px;
 }
 
 /*.layout_1 {
@@ -101,14 +102,8 @@ body.body_layout_main div#wrapper {
 }
 
 .l_2 {
-	background:url(/images/bg_octo.gif) ;
+	background:url(/images/bg_octo.gif);
 	text-align:center;
-	padding-top:30px;
-}
-.settings #wrapper, .l_2 #wrapper {
-	width: 580px;
-	border:none;
-	margin:0 auto!important;
 }
 #header {
 	margin:0;
@@ -265,17 +260,17 @@ div.avatar_holder {
 #footer a {
 	color:white;
 }
- .main_page #footer, .tlog #footer {
-	text-align:center;
-	width:600px;
-	margin:0 auto;
+.main_page #footer, .tlog #footer {
+  text-align:center;
+  width:600px;
+  margin:0 auto;
 }
 #footer a, #footer p {
  	display:inline;
 	color:#404040;
 	background:white;
 	padding:0;
- }
+}
 .main_page #footer a:hover, {
 	background:orange;
 }
@@ -304,27 +299,25 @@ div.tlog {
 	bottom:0;
 	/*font-size:87%;*/
 }
-*html div.tlog {
-	height:100%;
+/*.ie8 div.tlog {
+  height:100%;
 }
+*/
 div.l_2 {
-	background:url("/images/bg_octo.gif");
-	min-height:100%;
-	position:relative;
-	bottom:0;
-	text-align:center;
-	padding-top:30px;
+	background: url("/images/bg_octo.gif");
+	min-height: 100%;
+	position: relative;
+	bottom: 0;
+	text-align: center;
 }
-*html div.l_2 {
-	height:100%;
-}
+
 div.settings {
 	background:url("/images/bg_light.gif");
 	min-height:100%;
 	bottom:0;
 	text-align:center!important;
 	margin:0 auto!important;
-	padding-top:30px;
+/*  padding-top:30px;*/
 }
 div#fixedbox_r_t {
 	right:0;
@@ -335,7 +328,7 @@ div#fixedbox_r_t {
 	display:inline;
 	/*background:red;*/
 }
-*html div#fixedbox_r_t {
+.ie6 div#fixedbox_r_t {
 	position:absolute;
 }
 
@@ -371,13 +364,13 @@ div.pref_png {
 	background:url("/images/pref_bg.png") no-repeat top left; 
 }
 		#pref_table {
-			p osition:relative;
-			t op:3px;
-			border-collapse:separate;
+			position:relative;
+			top:3px;
+			padding: 1px;
 		}
 		#pref_table td {
 			white-space:nowrap;
-			padding: 1px;
+			padding: 1px 2px;
 		}
 		img.home {
 			position:relative;
@@ -804,7 +797,7 @@ div.rounded_center {
 .settings .layout_2 div.rounded_center {
 	min-height:340px;
 }
-.settings *html .layout_2 div.rounded_center {
+.ie6 .settings .layout_2 div.rounded_center {
 	height:340px;
 }
 div.content_layout_2 p {
@@ -817,7 +810,7 @@ div.service_layout_2 {
 div.layout_2 span.header {
 	margin:0;
 	font-size:200%;
-	font-family:Lucida Grande,Myriad Pro,Tahoma,arial;
+	font-family: 'Lucida Grande', 'Myriad Pro', 'Tahoma', arial;
 	letter-spacing:-1px;
 	display:block;
 	clear:both;
@@ -825,6 +818,7 @@ div.layout_2 span.header {
 	top:-9px;
 	color:#404040;
 }
+
 .layout_2 {
 	font-family: Tahoma, Arial, sans serif;
 }
@@ -902,6 +896,8 @@ form.small .input input, form.small .input textarea {
 	padding:2px 3px;
 	position:relative;
 	margin-top:-3px;
+  font-family: 'Lucida Grande', 'Myriad Pro', 'Tahoma', arial;
+  font-size: 11px;
 }
 form.small td.label {
 	width:25%;
@@ -920,6 +916,8 @@ form.small .radio {
 	width:10px!important;
 	position:relative!important;
 	bottom:-3px;
+	margin-left: 2px;
+	margin-right: 2px;
 }
 
 form.small .radio input {
@@ -959,6 +957,7 @@ form.big label input {
 	padding:3px;
 	display:block;
 	width:480px;
+	font-family: 'Lucida Grande', 'Myriad Pro', 'Tahoma', arial;
 }
 form.big div.at {
 	position:absolute;
@@ -981,7 +980,7 @@ label input.at_input_anonymous {
 label input.at_input {
 	width:360px!important;
 	text-align:right;
-	padding-right:130px!important;
+	padding-right:123px!important;
 }
 form.small .button, form.big .button {
 	margin-top:20px;
@@ -1365,6 +1364,9 @@ input.dangerous {
 }
 #post_comment_preview .button {
 	height:25px;
+	vertical-align: middle;
+	margin-left: 2px;
+	margin-right: 2px;
 }
 input.button:active, .comment_send:active {
 	border: 3px double #CCC!important;
@@ -1699,7 +1701,7 @@ div#howto div.rel img {
 	padding:0 7px;
 }*/
 
- #tlog_menu_url {
+#tlog_menu_url {
 	display:inline;
 	font-size:1.6em;
 	color:#404040;
@@ -1948,9 +1950,7 @@ div.main_page {
 
 .l_2 h2, .settings h2 {
 	font-size:1.5em;
-
 	padding:0;
-	
 }
 
 div.live a, div.popular a {
@@ -2477,6 +2477,7 @@ div.code * {
 }
 .filter select {
 	width:150px;
+	font-size: 12px;  
 }
 
 .filter .button_1 {
@@ -2552,11 +2553,16 @@ text-decoration:none;
 }
 .sidebar_settings ul {
 	list-style:none;
+  padding-left: 40px;
 }
 .sidebar_settings ul span.tlog_destroy {
 	color: #aaa;
 	font-size: 80%;
 }
+.sidebar_settings #f_level {
+  margin: 1em 0;
+}
+
 .sidebar_settings ul#f_level li a, .sidebar_settings ul#f_level li {
 	color:#404040;
 	text-decoration:none;
@@ -2597,9 +2603,11 @@ text-decoration:none;
 } 
 .section-name {
 	display:inline;
+	padding-right: 3px;
 }
 .sidebar-element-name {
 	display:inline;
+	padding-right: 3px;
 }
 .section-h2 {
 	padding-bottom:15px;
@@ -2625,7 +2633,7 @@ text-decoration:none;
 
 #pref_friends {
 	background:url(/images/bg_friends.png) no-repeat bottom left;
-	left:42px!important;
+	left:35px!important;
 	list-style-image:none;
 	list-style-position:outside;
 	list-style-type:none;
@@ -2633,7 +2641,7 @@ text-decoration:none;
 	padding:7px 0pt 29px;
 	position:absolute!important;
 	text-align:left;
-	top:-17px;
+	top:-13px;
 	width:220px;
 }
 *html #pref_friends {
@@ -2825,6 +2833,8 @@ div.post_author:hover a.heart_red {
 
 #tlog_func {
 	list-style:none;
+	margin: 1em 0;
+	padding-left: 40px;
 }
 
 .short {
@@ -3132,6 +3142,7 @@ img.heart {
 	margin-left:-95px;
 	padding-top:12px;
 	text-align:center;
+	line-height: normal;
 }
 .message_created_at {
 	font-size:70%;
@@ -3514,10 +3525,13 @@ span.month, span.year {
 	height:20px!important;
 	padding:3px;
 	border:1px solid black;
+	line-height: 20px;
+	text-align: center;
 }
 #design_colors input.checkbox {
 	width:auto;
 	height:auto;
+	border: 0;
 } 
 .date_style td {
 	font-size:72%;
@@ -3579,8 +3593,8 @@ img.private_message {
 	font-style:italic;
 	display:none;
 }
-.main_quotes .quote_entry_body {
-	font-style:;
+.main_quotes .quote_entry_body p, .main_quotes .quote_entry_source p {
+	display: inline;
 }
 .main_quotes div.quote_entry span.quote_entry_body {
 	text-indent:-19px;
@@ -3630,4 +3644,49 @@ td.about p{
   padding: 0;
   border: 0;
   margin: 0;
+}
+
+.ie8 #pref_fav a {
+  left: 4px;
+}
+
+.ie7 #pref_fav a {
+  bottom: 3px;
+  left: 4px;
+}
+.ie7 #pref_home a {
+  bottom: 0px;
+  top: 3px;
+}
+.ie7 #pref_user a {
+  bottom: 0px;
+  top: 2px;
+}
+
+.ie7 ul#f_level {
+  padding-left: 19px;
+}
+.ie7 ul#f_level li a, .ie7 ul#f_level li a.selected {
+  padding-left: 21px;
+  margin: 0;
+}
+.ie7 ul#f_level ul li a, .ie7 ul#f_level ul li a.selected {
+  padding-left: 21px;
+  margin: 0;
+}
+.ie7 .comment_cloud a span {
+  top: 2px;
+}
+.settings form #choise_2 input#attachment_uploaded_data {
+  width: 290px !important;
+  font-size: 80%;
+  padding: 2px 3px;
+  height: 21px;
+  margin-top: -3px;
+}
+
+#entry_edit_form input#attachment_uploaded_data {
+  width: 510px !important;
+  height: 33px;
+  margin-top: 0px;
 }

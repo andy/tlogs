@@ -8,27 +8,25 @@
 </head>
 <body class='yui-skin-sam'>
 	<div class='settings'>
-	<div id="wrapper" class="layout_2">
-		<div class="rounded_top iePNG">&nbsp;</div>
-		<div class="rounded_center">
-			<div class='sidebar_holder'>
-				<div class='rel'>
-					<div class='sidebar_settings'>
-						<%= render :partial => 'settings/menu' %>
-					</div>
-				</div>
-			</div>
-			<div class="content_layout_2">
-				<div class="padd_left">
-					<span class="header"><%= yield :header %></span>
-					<%= flash_div %>
-					<%= yield %>
-				</div>
-			</div>
-		</div>
-		<div class="rounded_bottom iePNG">&nbsp;</div>
-	</div>
-	<%= render :partial => 'globals/foot' %>
+  	<div id="wrapper" class="layout_2">
+  		<div class="rounded_center">
+  			<div class='sidebar_holder'>
+  				<div class='rel'>
+  					<div class='sidebar_settings'>
+  						<%= render :partial => 'settings/menu' %>
+  					</div>
+  				</div>
+  			</div>
+  			<div class="content_layout_2">
+  				<div class="padd_left">
+  					<span class="header"><%= yield :header %></span>
+  					<%= flash_div %>
+  					<%= yield %>
+  				</div>
+  			</div>
+  		</div>
+  	</div>
+  	<%= render :partial => 'globals/foot' %>
 	</div>
 	<%= render :partial => 'globals/top_nav' %>
 	<%= yield :body %>

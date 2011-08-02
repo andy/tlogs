@@ -3,22 +3,13 @@
 	<%= image_tag('ctulhu.gif', :size => '18x22') %> Друзья
 <% end %>
 
-<% if @light %>
-	<%= link_to "&#x2190; вернуться назад", :action => :index %><br><br>	
-<% end %>
-
 <p class='settings_warning'>
 	На этой странице работает <span class='highlight'>drag &amp; drop</span>!
 	<span class='ctulhu_note'>Используйте значок <%= image_tag 'ctulhu.gif' %> для перетаскивания друзей.</span>
-	<% unless @light %>
-	Если у Вас тормозит перетаскивание используйте <%= link_to "легкую версию этой страницы", :action => :light %>
-	<% end %>
-	
-	<%= "<br><br>" if @light %>
 </p>
 
 <p class='settings_warning'>
-  Кстати, читать записи друзей можно <%= link_to 'прямо с сайта', service_url(main_path(:action => 'last_personalized')) %>, либо через <%= link_to 'RSS', user_url(current_site, tlog_feed_protected_path(:key => current_user.last_personalized_key, :action => :last_personalized)), :title => 'подписаться через RSS', :class => 'rss' %>
+  Кстати, читать записи друзей можно <%= link_to 'прямо с сайта', service_url(main_path(:action => 'my')) %>, либо через <%= link_to 'RSS', user_url(current_site, tlog_feed_protected_path(:key => current_user.last_personalized_key, :action => :last_personalized)), :title => 'подписаться через RSS', :class => 'rss' %>
 </p>
 <table id='friends_table'>
 	<tr>
@@ -48,13 +39,13 @@
 	</tr>
 </table>
 
-<% form_remote_tag :url => url_for(:action => 'add') do %>
+<% form_remote_tag :url => user_url(current_site, url_for(:action => 'add')) do %>
 	<div class='social_manipulator'>
 		Добавить <input id='new_user_url' type='text' name='url' value='' /> в <%= select_tag 'friendship_status', options_for_select({ 'публичные' => 2, 'общие' => 1 }, 2) %> <input type='submit' value='+' class='button' />
 	</div>
 	<%= tasty_error_message_on :new_user, :url %>
 <% end %>
 
-<%= sortable_element('public_friends', :overlap => 'vertical', :handle => 'ctulhu', :dropOnEmpty => true, :constraint => '', :containment => ['public_friends', 'friends', 'guessed'], :url => { :action => 'sort' }) %>
-<%= sortable_element('friends', :overlap => 'vertical', :handle => 'ctulhu', :dropOnEmpty => true, :constraint => '', :containment => ['public_friends', 'friends', 'guessed'], :url => { :action => 'sort' }) %>
-<%= sortable_element('guessed', :overlap => 'vertical', :handle => 'ctulhu', :dropOnEmpty => true, :constraint => '', :containment => ['public_friends', 'friends', 'guessed'], :url => { :action => 'sort' }) %>
+<%= sortable_element('public_friends', :overlap => 'vertical', :handle => 'ctulhu', :dropOnEmpty => true, :constraint => '', :containment => ['public_friends', 'friends', 'guessed'], :url => user_url(current_site, url_for(:action => 'sort'))) %>
+<%= sortable_element('friends', :overlap => 'vertical', :handle => 'ctulhu', :dropOnEmpty => true, :constraint => '', :containment => ['public_friends', 'friends', 'guessed'], :url => user_url(current_site, url_for(:action => 'sort'))) %>
+<%= sortable_element('guessed', :overlap => 'vertical', :handle => 'ctulhu', :dropOnEmpty => true, :constraint => '', :containment => ['public_friends', 'friends', 'guessed'], :url => user_url(current_site, url_for(:action => 'sort'))) %>

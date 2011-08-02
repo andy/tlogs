@@ -4,11 +4,11 @@ source "http://gemcutter.org"
 
 gem 'mime-types'
 gem 'rake'
+gem 'rdoc'
 gem 'unicorn'
 gem 'system_timer'
-gem 'RubyInline', :require => 'inline'
-gem 'rails', '2.3.8'
-# gem 'image_science', '>= 1.1.3'
+# gem 'RubyInline', :require => 'inline'
+gem 'rails', '2.3.12'
 gem 'mini_magick'
 gem 'will_paginate', '>= 2.2.2'
 gem 'coderay'
@@ -27,6 +27,13 @@ gem 'mysql'
 
 gem 'paperclip', '= 2.3.9'
 gem 'paperclip-meta'
+
+gem 'therubyracer'
+
+gem 'sass'
+gem 'haml'
+gem 'compass'
+gem 'uglifier'
 
 gem 'newrelic_rpm'
 gem 'hoptoad_notifier'

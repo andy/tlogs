@@ -24,7 +24,7 @@ class AnonymousController < ApplicationController
 
     @page = params[:page].to_i.reverse_page(total.to_pages)
     
-    @entry_ids = Entry.find :all, :select => 'entries.id', :conditions => sql_conditions, :page => { :current => @page, :size => Entry::PAGE_SIZE, :count => total }, :order => 'entries.id DESC'
+    @entry_ids = Entry.paginate :all, :select => 'entries.id', :conditions => sql_conditions, :page => @page, :per_page => Entry::PAGE_SIZE, :order => 'entries.id DESC'
     @entries = Entry.find_all_by_id @entry_ids.map(&:id), :order => 'entries.id DESC'
     
     @comment_views = User::entries_with_views_for(@entries.map(&:id), current_user)

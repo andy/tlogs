@@ -1,0 +1,28 @@
+%footer
+  #footer
+    %p
+      &copy; 2007–#{Date.today.year}, 
+      - if current_site
+        = link_to_tlog(current_site)
+        (#{link_to 'rss', user_path(current_site, tlog_feed_path(:action => 'rss'))}) @
+
+      #{link_to current_service.domain, service_url},
+      = link_to 'о проекте', service_url(main_path(:action => 'about'))
+      = link_to 'новости', service_url(main_path(:action => 'news'))
+
+      - if false
+        %span.footer-social
+          %a{ :href => "http://www.twitter.com/mmm_tasty", :title => 'Подпишитесь на наши новости в Facebook'}
+            %img{ :src => "http://twitter-badges.s3.amazonaws.com/t_mini-b.png", :alt => "Подпишитесь на наши новости в Twitter", :class => 'f_twitter'}
+
+          %a{ :href => 'http://www.facebook.com/mmm_tasty', :title => 'Подпишитесь на наши новости в Facebook'}
+            = image_tag 'tasty_facebook.png', :alt => 'Подпишитесь на наши новости в Facebook', :class => 'f_facebook'
+
+          %a{ :href => 'http://vkontakte.ru/club20765600', :title => 'Подпишитесь на наши новости во Вконтакте'}
+            = image_tag 'tasty_vkontakte.png', :alt => 'Подпишитесь на наши новости во Вконтакте', :class => 'f_vkontakte'
+
+      %br
+
+      = mail_to "feedback@#{current_service.domain}", nil, :encode => 'javascript'
+
+= render :partial => 'globals/counters' if Rails.env.production?

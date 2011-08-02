@@ -223,3 +223,5 @@ function egychStart() {
 		});
 	});	
 }
+
+jQuery(document).ready(function() { egychStart(); });

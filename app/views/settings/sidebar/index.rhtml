@@ -17,36 +17,27 @@
 </div>
 
 <h2>Основные разделы</h2>
-<table class='form'>
-	<tr>
-		<td class='label'></td>
-		<td class='input' id='sidebar_hide_tags_td'>
-			<%= sidebar_check_box :hide_tags %>
-			<label for='sidebar_hide_tags'>показывать <strong>Теги</strong></label>
-		</td>
-	</tr>
-	<tr>
-		<td class='label'></td>
-		<td class='input' id='sidebar_hide_search_td'>
-			<%= sidebar_check_box :hide_search %>
-			<label for='sidebar_hide_search'>показывать <strong>Поиск</strong></label>
-		</td>
-	</tr>
-	<tr>
-		<td class='label'></td>
-		<td class='input' id='sidebar_hide_calendar_td'>
-			<%= sidebar_check_box :hide_calendar %>
-			<label for='sidebar_hide_calendar'>показывать <strong>Календарь</strong></label>
-		</td>
-	</tr>
-	<tr>
-		<td class='label'></td>
-		<td class='input' id='sidebar_hide_messages_td'>
-			<%= sidebar_check_box :hide_messages %>
-			<label for='sidebar_hide_messages'>показывать <strong>Сообщения</strong></label>
-		</td>
-	</tr>
-</table>
+<div id='sidebar_hide_show_menu'>
+  <div class='sidebar_hide_show_menu_item' id='sidebar_hide_tags_td'>
+		<%= sidebar_check_box :hide_tags %>
+		<label for='sidebar_hide_tags'>показывать <strong>Теги</strong></label>
+	</div>
+
+  <div class='sidebar_hide_show_menu_item' id='sidebar_hide_search_td'>
+		<%= sidebar_check_box :hide_search %>
+		<label for='sidebar_hide_search'>показывать <strong>Поиск</strong></label>
+	</div>
+
+  <div class='sidebar_hide_show_menu_item' id='sidebar_hide_calendar_td'>
+		<%= sidebar_check_box :hide_calendar %>
+		<label for='sidebar_hide_calendar'>показывать <strong>Календарь</strong></label>
+  </div>
+  
+  <div class='sidebar_hide_show_menu_item' id='sidebar_hide_messages_td'>
+		<%= sidebar_check_box :hide_messages %>
+		<label for='sidebar_hide_messages'>показывать <strong>Сообщения</strong></label>
+  </div>
+</div>
 
 <h2>Дополнительные разделы</h2>
 <ul id='sidebar_sections'>

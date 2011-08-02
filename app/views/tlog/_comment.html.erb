@@ -33,6 +33,6 @@
 		<div class='post_comment_text'>
 			<%= comment.fetch_cached_or_run_block { |text| white_list_comment text } %>
 		</div>
-		<%= render :partial => 'ban_controls', :locals => { :comment => comment } if current_user && current_user.is_moderator? && @entry.is_anonymous? %>
+		<%= render :partial => 'globals/ban_controls', :locals => { :comment => comment } if current_user && current_user.is_moderator? && @entry.is_anonymous? %>
 	</div>
 </div>

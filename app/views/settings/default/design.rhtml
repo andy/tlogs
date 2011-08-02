@@ -1,14 +1,10 @@
 <% @title = 'настройки внешнего вида тлога' %>
 <% content_for :head do %>
   <!-- http://developer.yahoo.com/yui/articles/hosting/ -->
-  <!-- css --> 
-  <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.5.2/build/colorpicker/assets/skins/sam/colorpicker.css"> 
-  <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.5.2/build/container/assets/skins/sam/container.css"> 
-  <!-- js --> 
-  <script type="text/javascript" src="http://yui.yahooapis.com/2.5.2/build/utilities/utilities.js"></script> 
-  <script type="text/javascript" src="http://yui.yahooapis.com/2.5.2/build/slider/slider-min.js"></script> 
-  <script type="text/javascript" src="http://yui.yahooapis.com/2.5.2/build/colorpicker/colorpicker-min.js"></script> 
-  <script type="text/javascript" src="http://yui.yahooapis.com/2.5.2/build/container/container-min.js"></script>
+  <!-- Combo-handled YUI CSS files: -->
+  <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?2.9.0/build/assets/skins/sam/skin.css">
+  <!-- Combo-handled YUI JS files: -->
+  <script type="text/javascript" src="http://yui.yahooapis.com/combo?2.9.0/build/utilities/utilities.js&2.9.0/build/slider/slider-min.js&2.9.0/build/colorpicker/colorpicker-min.js&2.9.0/build/container/container-min.js"></script>
 <% end %>
 <% content_for :header do %>
 	оформление тлога
@@ -27,7 +23,7 @@
 				</div>
 			</td>
 		</tr>
-		<tr id='choise_2' style='display: none'>
+		<tr id='choise_2' style='display: none;'>
 			<td class='label'><label for='attachment_uploaded_data'>Файл:</label></td>
 			<td class='input'>
 				<%= file_field 'attachment', :uploaded_data %>
@@ -40,7 +36,7 @@
 		<tr>
 			<td class='label'></td>
 			<td class='input'>
-				<%= check_box 'design', 'background_fixed' %><label for='design_background_fixed' id='design_background_fixed_label'>зафиксировать</label>
+				<%= check_box 'design', 'background_fixed' %><label for='design_background_fixed' id='design_background_fixed_label'>зафиксировать <abbr title='поставьте галочку, чтобы фон не двигался при прокрутке старницы'>?</abbr></label>
 			</td>
 		</tr>
 	</table>
@@ -48,7 +44,6 @@
 	<h2>Расположение и оформление дат</h2>
 	<table class='date_style'>
 		<tr>
-			<td></td>
 			<td>
 				<label>
 					<%= radio_button :design, :date_style, 'inside' %> внутри, по-умолчанию
@@ -56,7 +51,6 @@
 			</td>
 		</tr>
 		<tr>
-			<td></td>
 			<td>
 				<label>
 					<%= radio_button :design, :date_style, 'huge' %> большая, сбоку
@@ -64,7 +58,6 @@
 			</td>
 		</tr>
 		<tr>
-			<td></td>
 			<td>
 				<label>
 					<%= radio_button :design, :date_style, 'outside' %> маленькая, сбоку
@@ -77,12 +70,10 @@
 	<table class='date_style'>
 	  <% unless current_site.userpic? %>
   	  <tr>
-  	    <td></td>
   	    <td><p class='red'>Эта функция будет доступна вам после того как вы <%= link_to 'перезальете', user_url(current_site, settings_path(:action => :user_common)) %> свой юзерпик.</p></td>
   	  </tr>
   	<% end %>
 	  <tr>
-	    <td></td>
 	    <td>
 	      <label>
 	        <%= radio_button :design, :large_userpic, 'false' %> использовать маленький юзерпик
@@ -90,7 +81,6 @@
 	    </td>
 	  </tr>
 	  <tr>
-	    <td></td>
 	    <td>
 	      <label>
 	        <%= radio_button :design, :large_userpic, 'true' %> использовать большой юзерпик
@@ -103,7 +93,7 @@
 	<table id='design_colors' class='form'>
 		<tr>
 			<th colspan='2'></th>
-			<th class='transparent' title='включает прозрачность, и цвет не будет учитываться'>Выкл</th>
+			<th class='transparent'>Выкл<abbr title='сделает этот блок прозрачным'>?</abbr></th>
 			<th colspan='2'></th>
 		</tr>
 		<tr>
@@ -123,7 +113,7 @@
 		<tr>
 			<td class='label design_color_sidebar_bg_label'>фон боковой панели<br><span class='input_note'>и даты, когда она сбоку</span></td>
 			<td><%= text_field 'design', 'color_sidebar_bg', :class => 'tlog_color_picker', :autocomplete => 'off' %></td>
-			<td><%= check_box 'design', 'color_sidebar_bg_is_transparent', :class => 'checkbox', :disabledonclick => 'design_check_box(this, "design_color_sidebar_bg");' %></td>
+			<td><%= check_box 'design', 'color_sidebar_bg_is_transparent', :class => 'checkbox' %></td>
 			<td class='label border'>текст боковой панели</td>
 			<td><%= text_field 'design', 'color_sidebar_text', :class => 'tlog_color_picker', :autocomplete => 'off' %></td>
 		</tr>
@@ -219,31 +209,47 @@
 <% end %>
 
 <script type='text/javascript'>
-function design_check_box(element, field) {
-  var field = $(field);
+  function design_check_box(obj) {
+    var is_checked  = obj.checked;
+    var parent      = jQuery('#' + obj.id.replace('_is_transparent', ''));
 
-  if(element.checked) {
-    field.disabled = true;
-    field.style.color = '#999';
-    field.style.backgroundColor = '#333'
-    $$('.' + field.id + '_label').each(function(e) {
-      e.style.color = '#999';
-    });
-  } else {
-    field.disabled = false;
-    field.style.color = '';
-    $$('.' + field.id + '_label').each(function(e) {
-      e.style.color = '';
-    });    
+    if(is_checked) {
+      parent.attr('disabled', 'disabled').css({visibility: 'hidden'});
+      jQuery('.' + parent.attr('id') + '_label').css({color: '#999'});
+    } else {
+      parent.removeAttr('disabled').css({visibility: 'visible'});
+      jQuery('.' + parent.attr('id') + '_label').css({color: ''});
+    }
   }
-}
+
+  jQuery('#design_colors input.checkbox').change(function() { design_check_box(this); });  
+  jQuery('#design_colors input:checkbox:checked').each(function() { design_check_box(this); });
+  
+// function design_check_box(element, field) {
+//   var field = $(field);
+// 
+//   if(element.checked) {
+//     field.disabled = true;
+//     field.style.color = '#999';
+//     field.style.backgroundColor = '#333'
+//     $$('.' + field.id + '_label').each(function(e) {
+//       e.style.color = '#999';
+//     });
+//   } else {
+//     field.disabled = false;
+//     field.style.color = '';
+//     $$('.' + field.id + '_label').each(function(e) {
+//       e.style.color = '';
+//     });    
+//   }
+// }
 
 
 var TlogColorPicker = Class.create({
   initialize: function(elements) {
     this.yuc = YAHOO.util.Color;
     this.repositionable = true;
-    
+
     this.panel = new YAHOO.widget.Panel('y-panel', {
       width: '400px',
       visible: false,
@@ -255,7 +261,7 @@ var TlogColorPicker = Class.create({
       keylisteners: YAHOO.util.KeyListener(document.body, [YAHOO.util.KeyListener.KEY.ESC, YAHOO.util.KeyListener.KEY.ENTER], this.onKeyPress.bind(this)),
       effect: { effect: YAHOO.widget.ContainerEffect.FADE, duration: 0.3 }
     });
-    
+
     this.panel.renderEvent.subscribe(function() {
       if(!this.picker) { 
         this.picker = new YAHOO.widget.ColorPicker('y-picker', {
@@ -274,18 +280,21 @@ var TlogColorPicker = Class.create({
           },
           showhexsummary: false,
           showhexcontrols: true,
+          showhsvcontrols: false,
+          showwebsafe: false,
           container: this.panel
         });
       }
     });
     this.panel.dragEvent.subscribe(this.onDrag.bind(this));
     this.panel.render(document.body);
-    
+
     // install our handlers
-    self = this;
+    var this__ = this;
+
     elements.each(function(element) {
-      element.observe('click', self.onClick.bindAsEventListener(self));
-      self.colorize(element, element.value);
+      element.observe('click', this__.onClick.bindAsEventListener(this__));
+      this__.colorize(element, element.value);
     });
     
     // handle panel events

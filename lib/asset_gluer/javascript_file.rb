@@ -1,12 +1,36 @@
 module AssetGluer
   class JavascriptFile < AssetFile
-
     def self.dir
-      ActionView::Helpers::AssetTagHelper::JAVASCRIPTS_DIR rescue "#{AssetGluer.asset_dir}/javascripts"
+      File.join(AssetGluer.asset_dir, 'javascripts')
     end
 
     def process
-      File.open(@absolute_path).read
+      contents = File.read(@absolute_path)
+
+      contents = process_with_coffee(contents) if @absolute_path.ends_with?('.coffee')
+      
+      contents
     end
+    
+    def self.process(contents)
+      # uglifier requires special care, disabled
+      # contents = self.process_with_uglifier(contents) if Rails.env.production?
+      
+      contents
+    end
+
+    def self.process_with_uglifier(contents)
+      Uglifier.compile contents, TASTY_ASSETS[:compressor_options].symbolize_keys!
+    end
+    
+    protected
+      def process_with_coffee(contents)
+        IO.popen 'coffee -sc', 'r+' do |io|
+          io.write(contents)
+          io.close_write
+          io.read
+        end
+      end
+      
   end
 end
