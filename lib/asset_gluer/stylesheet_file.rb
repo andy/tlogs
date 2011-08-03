@@ -38,6 +38,8 @@ module AssetGluer
     
     protected
       def filter_with_sass(contents, options = {})
+        require 'sass'
+
         default_sass_options = {
           :syntax       => File.extname(@absolute_path)[1..-1].to_sym,
           :style        => Rails.env.production? ? :compressed : :expanded,

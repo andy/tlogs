@@ -5,7 +5,7 @@ source "http://gemcutter.org"
 gem 'mime-types'
 gem 'rake'
 gem 'rdoc'
-gem 'unicorn'
+gem 'unicorn', :require => false
 gem 'system_timer'
 # gem 'RubyInline', :require => 'inline'
 gem 'rails', '2.3.12'
@@ -15,7 +15,7 @@ gem 'coderay'
 gem 'ruby-openid', :require => 'openid'
 gem 'memcache-client', :require => 'memcache'
 gem 'hpricot'
-gem 'nokogiri'
+# gem 'nokogiri'
 gem 'russian'
 gem 'hiredis', '~> 0.3.0'
 gem 'redis', '>= 2.0.0'
@@ -28,12 +28,12 @@ gem 'mysql'
 gem 'paperclip', '= 2.3.9'
 gem 'paperclip-meta'
 
-gem 'therubyracer'
+gem 'therubyracer', :require => false
 
-gem 'sass'
+gem 'sass', :require => false
 gem 'haml'
-gem 'compass'
-gem 'uglifier'
+gem 'compass', :require => false
+gem 'uglifier', :require => false
 
 gem 'newrelic_rpm'
 gem 'hoptoad_notifier'
