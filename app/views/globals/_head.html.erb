@@ -35,13 +35,17 @@
 
 <%= render :partial => 'globals/gajs' %>
 
-<%= tasty_include_stylesheets :application unless disable_css %>
-<%= tasty_include_stylesheets :tlog if current_site && %w(tlog conversations faves tags).include?(params[:controller]) %>
-<% unless disable_js %>
+<%- unless disable_css -%>
+  <%= tasty_include_stylesheets :application %>
+  <%- if current_site && %w(tlog conversations faves tags search).include?(params[:controller]) -%>
+    <%= tasty_include_stylesheets :tlog %>
+    <%= tag :link, :rel => 'stylesheet', :type => 'text/css', :href => user_url(current_site, style_path(:revision => current_site.tlog_settings.css_revision)) if current_site.tlog_settings %>	
+<%-   end
+    end
+    unless disable_js -%>
   <%= tasty_include_javascripts :modernizr, :application %>
   <!--[if (gte IE 6)&(lte IE 8)]><%= tasty_include_javascripts :selectivizr %><![endif]-->
-<% end %>
-
+<%- end -%>
 
 <%= application_title %>
 

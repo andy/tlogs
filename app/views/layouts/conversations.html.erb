@@ -5,7 +5,6 @@
 <!--[if (gte IE 9)|!(IE)]><!--> <html class="no-js" lang="ru"> <!--<![endif]-->
 <head>
 	<%= render :partial => 'globals/head' %>
-	<%= tag :link, :rel => 'stylesheet', :type => 'text/css', :href => user_url(current_site, style_path(:revision => current_site.tlog_settings.css_revision)) if current_site.tlog_settings %>
 </head>
 <body id='the_tlog_body' class="<%= classes(['is-owner', is_owner?], ['logged-in', current_user]) %>">
 	<div class='tlog'>
