@@ -35,7 +35,7 @@ javascripts:
     - app/assets/javascripts/jquery/jquery.noconflict.js
     - app/assets/javascripts/jquery/jquery.hotkeys.js
     - app/assets/javascripts/jquery/jquery.autoresize.min.js
-    - app/assets/javascripts/jquery/jquery.infinitescroll.min.js
+    - app/assets/javascripts/jquery/jquery.infinitescroll.js
     # - app/assets/javascripts/jquery/jquery.easing-1.3.pack.js
     - app/assets/javascripts/jquery/jquery.fancybox-1.3.4.pack.js
     - app/assets/javascripts/jquery/jquery.timeago.js

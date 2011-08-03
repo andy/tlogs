@@ -176,7 +176,7 @@ class MainController < ApplicationController
       @page = params[:page].to_i rescue 1
       @page = 1 if @page <= 0
       # еще мы тут обманываем с количеством страниц... потому что считать тяжело
-      @entry_ids = Entry.find :all, :select => 'entries.id', :conditions => "entries.user_id IN (#{friend_ids.join(',')}) AND entries.is_private = 0", :order => 'entries.id DESC', :page => { :current => @page, :size => 15, :count => ((@page * 15) + 1) }
+      @entry_ids = Entry.paginate :all, :select => 'entries.id', :conditions => "entries.user_id IN (#{friend_ids.join(',')}) AND entries.is_private = 0", :order => 'entries.id DESC', :page => @page, :per_page => 15
       @entries = Entry.find_all_by_id @entry_ids.map(&:id), :include => [:rating, :attachments, :author], :order => 'entries.id DESC'
     end
     expires_in 5.minutes

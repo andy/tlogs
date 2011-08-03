@@ -4,6 +4,7 @@ class TlogController < ApplicationController
   before_filter :current_user_eq_current_site, :only => [:destroy, :private, :anonymous]
 
   before_filter :check_if_can_be_viewed, :only => [:index, :day]
+
   # protect_from_forgery :only => [:relationship, :tags, :metadata, :subscribe, :unsubscribe]
 
   caches_action :style
