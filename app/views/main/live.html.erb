@@ -2,7 +2,7 @@
 <% content_for :head do %>
   <%= auto_discovery_link_tag(:rss, service_url(main_feed_path(:action => :live))) %>
 <% end %>
-<div class='onair'>
+<div class='onair' id='onair_entries_<%= @entries.first.id %>'>
   <div class='entry_pg'>
 	  <%= paginate @entries, { :css_class => 'top_nav_paginator', :url_options => { :tag => params[:tag] } } if @page && @page > 1 %>
 	</div>

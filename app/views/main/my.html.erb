@@ -1,5 +1,5 @@
 <% @title = 'моё' %>
-<div class='onair'>
+<div class='onair' id='onair_my_<%= @entries.total_entries.zero? ? 0 : @entries.first.id %>'>
 	<%= paginate @entries, :css_class => 'top_nav_paginator' if @page > 1 %>
 
 	<% @entries.each do |entry| %>
