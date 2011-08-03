@@ -60,7 +60,18 @@ if show_datetime -%>
 		<% if entry.is_voteable? && entry.rating %>
 			<div class='rel'>
 				<div class='service_rating service_rating_owner_<%= entry.user_id %>' id='service_rating_for_entry_<%= entry.id %>'>
-					<%= render :partial => 'entries/rating', :locals => { :entry => entry } %>
+					<%#= render :partial => 'entries/rating', :locals => { :entry => entry } %>
+					<!-- rating template inlined -->
+					<div class='entry_voter entry_voter_up enable_for_current_user' style='display: none;'>
+          	<div class='rel'><%= link_to_remote '&uarr;', { :url => vote_url(:entry_id => entry.id, :action => 'up'), :after => 'ga_event("Vote", "Up", current_user ? _user.url : "anonymous", 1); return false;' }, :class => "vote_up", :title => 'проголосовать за' %></div>
+          </div>
+
+          <span class='entry_rating' id='entry_rating_<%= entry.id %>'><%= entry.rating.value %></span>
+
+          <div class='entry_voter entry_voter_down enable_for_current_user' style='display: none;'>
+          	<%= link_to_remote '&darr;', { :url => vote_url(:entry_id => entry.id, :action => 'down'), :after => 'ga_event("Vote", "Down", current_user ? _user.url : "anonymous", -1); return false;' }, :class => "vote_down", :title => 'проголосовать против' %>
+          </div>
+          <!-- end -->
 				</div>
 			</div>
 		<% end %>
