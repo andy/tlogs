@@ -1,7 +1,6 @@
 <% @title = "Переписка между вами и #{h @conversation.recipient.url}" %>
 
 <% content_tag :div, :class => 'messages' do %>
-
   <div class='header'>
     <div class='rel'>
       <div class='return'><%= link_to '&larr; все переписки', user_url(current_site, conversations_path) %></div>

@@ -19,7 +19,8 @@ namespace :assets do
   desc "Скопировать склеенные файлы в рабочие директории"
   task :install do
     # system "cd #{Rails.root}/public && rm -f stylesheets/cache/*.css javascripts/cache/*.js"
-    system "cd #{Rails.root}/public/stylesheets && cp -vf cache-tmp/* cache/"
-    system "cd #{Rails.root}/public/javascripts && cp -vf cache-tmp/* cache/"
+    system "cd #{Rails.root} && mkdir -p public/stylesheets/cache public/javascripts/cache"
+    system "cd #{Rails.root}/public && cp -vf stylesheets/cache-tmp/*.css stylesheets/cache/"
+    system "cd #{Rails.root}/public && cp -vf javascripts/cache-tmp/*.js javascripts/cache/"
   end
 end

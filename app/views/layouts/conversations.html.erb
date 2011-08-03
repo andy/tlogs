@@ -17,9 +17,7 @@
 							<%= link_to_tlog_if(params[:action] != 'index' || params[:controller] != 'tlog' || (@page && @page != 1), current_site) %>
 						</span>
 					</div>
-					<% unless current_site.tlog_settings.title.blank? %>
-						<span id='tlog_menu_title'><%= h(current_site.tlog_settings.title) %></span>
-					<% end %>
+					<%= content_tag(:span, h(current_site.tlog_settings.title), :id => 'tlog_menu_title') unless current_site.tlog_settings.title.blank? %>
 				</span>
 			</div>
 

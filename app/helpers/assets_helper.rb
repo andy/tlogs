@@ -6,8 +6,6 @@ module AssetsHelper
   end
   
   def tasty_include_stylesheet(name, options = {})
-    # package = TASTY_ASSETS[:stylesheets][name]
-    
     if Rails.env.development?
       tag :link,
         :href => service_url(
@@ -20,7 +18,7 @@ module AssetsHelper
         :type => 'text/css',
         :media => 'all'
     else
-      stylesheet_link_tag(name, :cache => "cached_#{name}" ) rescue nil
+      stylesheet_link_tag(name, :cache => "cache/#{name}" ) rescue nil
     end
   end
 
@@ -30,12 +28,10 @@ module AssetsHelper
   end
   
   def tasty_include_package(name, options = {})
-    # package = TASTY_ASSETS[:javascripts][name]
-
     if Rails.env.development?
       content_tag :script, '', :type => 'text/javascript', :src => service_url(js_packages_path(:name => name))
     else
-      javascript_include_tag(name, :cache => "cached_#{name}" ) rescue nil
+      javascript_include_tag(name, :cache => "cache/#{name}" ) rescue nil
     end
   end
 end

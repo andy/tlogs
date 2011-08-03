@@ -196,9 +196,7 @@ namespace :deploy do
 
     desc "Deploy glued styles"
     task :deploy, :roles => :app do
-      run "cd #{deploy_to} && rm -f public/stylesheets/cache/*.css public/javascripts/cache/*.js"
-      run "cp #{deploy_to}/public/stylesheets/cache-tmp/* #{deploy_to}/public/stylesheets/cache/"
-      run "cp #{deploy_to}/public/javascripts/cache-tmp/* #{deploy_to}/public/javascripts/cache/"
+      run "cd #{deploy_to} && RAILS_ENV=production bin/rake assets:install"
     end
   end  
   

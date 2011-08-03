@@ -85,7 +85,7 @@ class Message < ActiveRecord::Base
       convo.is_replied = true
       
       # mark as viewed if you just have replied
-      convo.is_viewed = false
+      # convo.is_viewed = false
       
       # update timestamp only on first message, other replies should keep things AS IS
       convo.last_message_at = self.created_at if convo.last_message_at.nil?

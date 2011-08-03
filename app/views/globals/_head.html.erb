@@ -19,7 +19,7 @@
 <meta http-equiv="imagetoolbar" content="no">
 <meta name="generator" content="<%= current_service.url %>">
 
-<!--[if lte IE 6]><%= javascript_include_tag 'ie-warning' %><script>window.onload=function(){e("/images/ie-warning/")}</script><![endif]-->
+<!--[if lte IE 6]><%= tasty_include_javascripts :iewarn %><script>window.onload=function(){e("/images/ie-warning/")}</script><![endif]-->
 
 <script type='text/javascript'>
   var current_user = <%= current_user ? current_user.id : 0 %>;

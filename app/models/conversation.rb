@@ -45,7 +45,7 @@ class Conversation < ActiveRecord::Base
 
   # shadow conversation — opposite conversation by other party
   def shadow
-    Conversation.find_by_user_id_and_recipient_id(self.recipient_id, self.recipient_id)
+    Conversation.find_by_user_id_and_recipient_id(self.recipient_id, self.user_id)
   end
   
   def to_param
