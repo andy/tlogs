@@ -2040,7 +2040,7 @@ body.main_page {
 	-moz-border-radius: 5px;
 	-o-border-radius: 5px;
 	border-radius: 5px;
-	behavior: url(/images/htc/PIE.htc);
+  behavior: url(/images/htc/PIE.htc);
 }
 .ie7 .main_page .rounded_main_center, .ie8 .main_page .rounded_main_center {
 	box-shadow: 0;
@@ -3238,7 +3238,7 @@ img.heart {
 	-moz-border-radius: 1px;
 	-o-border-radius: 1px;
 	border-radius: 1px;
-	behavior: url(/images/htc/PIE.htc);
+  behavior: url(/images/htc/PIE.htc);
 }
 .top_menu ul li a.selected {
 /*	-webkit-box-shadow: rgba(0, 0, 0, 0.199219) 0px 1px 1px;*/

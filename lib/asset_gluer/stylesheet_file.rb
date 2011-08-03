@@ -82,7 +82,12 @@ module AssetGluer
         else
           stat = ""
         end
-        "#{AssetGluer.assets_host(url)}#{stat}#{image}"
+        # for .htc files, do not rewrite urls, as they can only be served from the same domain as content
+        if image.ends_with?('.htc')
+          "#{stat}#{image}"
+        else
+          "#{AssetGluer.assets_host(url)}#{stat}#{image}"
+        end
       end
     
   end
