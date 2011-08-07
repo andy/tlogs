@@ -25,7 +25,7 @@ module AssetGluer
     
     protected
       def process_with_coffee(contents)
-        IO.popen 'coffee -sc', 'r+' do |io|
+        IO.popen 'coffee -bsc', 'r+' do |io|
           io.write(contents)
           io.close_write
           io.read

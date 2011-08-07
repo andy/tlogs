@@ -31,9 +31,7 @@ class FavesController < ApplicationController
       fave.save rescue nil
     end
     
-    render :update do |page|
-      page.visual_effect :highlight, entry.dom_id(:fave)
-    end
+    render :json => true  
   end
   
   def destroy
