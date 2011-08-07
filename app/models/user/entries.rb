@@ -81,7 +81,7 @@ class User
         pager.replace(result)
       end
       
-      pager.total_entries = Entry.count(find_options) unless pager.total_entries
+      pager.total_entries = entries.count(find_options) unless pager.total_entries
     end
   end
 
