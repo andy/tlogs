@@ -24,7 +24,7 @@
 			<%= render :partial => 'entries/entry_display', :locals => { :entry => entry_rating.entry, :show_comments_bubble => true, :show_username => true } %>
 		<% end %>
 
-		<%= paginate @entry_ratings, :reverse => true, :url_options => { :kind => @filter.kind, :rating => @filter.rating } %>	
+		<%= paginate @entry_ratings, :url_options => { :kind => @filter.kind, :rating => @filter.rating } %>	
 	</div>
 	
 	<script type='text/javascript'>

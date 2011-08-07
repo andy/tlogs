@@ -68,9 +68,9 @@ class MainController < ApplicationController
     sql_conditions = "#{EntryRating::RATINGS[@filter.rating.to_sym][:filter]} AND #{Entry::KINDS[@filter.kind.to_sym][:filter]}"
     
     # высчитываем общее число записей и запоминаем в кеше
-    total = Rails.cache.fetch("entry_ratings_count_#{kind}_#{rating}", :expires_in => 1.minute) { EntryRating.count :conditions => sql_conditions }
+    # total = Rails.cache.fetch("entry_ratings_count_#{kind}_#{rating}", :expires_in => 1.minute) { EntryRating.count :conditions => sql_conditions }
 
-    @entry_ratings = EntryRating.paginate :all, :page => params[:page].to_i.reverse_page(total.to_pages), :per_page => Entry::PAGE_SIZE, :include => { :entry => [ :attachments, :author, :rating ] }, :order => 'entry_ratings.id DESC', :conditions => sql_conditions
+    @entry_ratings = EntryRating.paginate :all, :page => params[:page], :per_page => Entry::PAGE_SIZE, :include => { :entry => [ :attachments, :author, :rating ] }, :order => 'entry_ratings.id DESC', :conditions => sql_conditions
     
     @comment_views = User::entries_with_views_for(@entry_ratings.map(&:entry_id), current_user)
   end
