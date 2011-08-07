@@ -4,80 +4,60 @@
 	show_username ||= false unless local_assigns.has_key?(:show_username) && show_username
 	show_tags ||= false unless local_assigns.has_key?(:show_tags) && !show_tags
 	comment_views ||= false unless local_assigns.has_key?(:comment_views) && comment_views
-	embed_tags ||= false unless local_assigns.has_key?(:embed_tags) && embed_tags
 	embed ||= false unless local_assigns.has_key?(:embed) && embed
 	mini ||= false unless local_assigns.has_key?(:mini) && mini
 	index ||= -1 unless local_assigns.has_key?(:index) && index
-	
-if show_datetime -%>
-	<div class="rel">
-		<div class="service_date"<%= " title='#{entry.created_at.distance_between_in_words(Time.now, ' назад')}'" if params[:action] == 'day' %>>
-			<%- if entry.created_at.today? -%>
-				<span class="blue">
-					<span>Сегодня<span class='bg_text_comma'>,</span></span>
-				</span>
-			<%- end -%>
-			<span class="bg_text_date"><span><%= entry.created_at.day %></span></span>
-			<span class="blue"><span><%= entry.created_at.month.to_rmonth %><%- if entry.created_at.same_day?(Time.now.yesterday) -%>,<%- end -%></span></span>
-			
-			<%- if entry.created_at.same_day?(Time.now.yesterday) -%>
-				<span class="blue"><span>вчера</span></span>
-			<%- end -%>
-		</div>
-	</div>
-<% end -%>
+-%>
+<%= render :partial => 'entries/entry_datetime', :locals => { :entry => entry } if show_datetime %>
 <a name='<%= dom_id(entry) %>'></a>
-<div class="post_body <%= "post_#{entry.class.to_s.underscore}" %><%= " post_is_private" if entry.is_private? %><%= " post_#{index}" if index >= 0 %>" id="<%= dom_id(entry) %>">
-	<% if show_tags -%>
-		<div class='entry_metadata_holder display_block enable_for_owner_<%= entry.user_id %>'>
-			<%= link_to_remote('+', { :update => "emd_#{entry.id}", :url => user_url(current_site, metadata_entry_path(entry)).downcase, :method => :get, :success => "$('#{dom_id(entry)}').addClassName('post_metadata_open'); hide_flash(); new Effect.Appear('emd_#{entry.id}', { duration: 0.3 }); $('emdl_#{entry.id}').hide(); $('emdl_#{entry.id}_closer').show().innerHTML='&ndash;';" }, :id => "emdl_#{entry.id}", :class => 'entry_metadata_link', :title => 'информация о записи') unless embed_tags %>
-			<%= link_to_function '+', "if($('emd_#{entry.id}').visible()) { new Effect.Fade('emd_#{entry.id}', {duration: 0.1, afterFinish: function() { $('#{dom_id(entry)}').removeClassName('post_metadata_open'); show_flash(); } }); this.innerHTML='+'; } else { $('#{dom_id(entry)}').addClassName('post_metadata_open'); hide_flash(); new Effect.Appear('emd_#{entry.id}', { duration: 0.3 }); this.innerHTML='&ndash;'}", :id => "emdl_#{entry.id}_closer", :style => embed_tags ? nil : 'display: none', :class => 'entry_metadata_link', :title => 'закрыть окошко с информацией' %>
-			<div class='rel'>
-				<div class='entry_metadata' id='emd_<%= entry.id %>' style="display: none">
-					<%= render :partial => 'tlog/metadata', :locals => { :entry => entry } if embed_tags %>
-				</div>
-			</div>
-		</div>
-	<% end -%>
-	<% if show_username -%>
-		<div class='rel'>
-			<div class='post_author'>
-				<%= link_to entry.author.url, user_url(entry.author) %>
-			</div>
-		</div>
-	<% end -%>
-	
-	<%- if show_comments_bubble -%>
-		<%- if entry.comments_enabled? || entry.comments_count > 0 -%>
-			<div class='service_comments<%= ' has_comments' unless entry.comments_count.zero? %>'>
-				<div class="comment_cloud iePNG<%= ' has_comments' unless entry.comments_count.zero? %>"><a href="<%= user_url(entry.author, entry_path(entry)) + '#new' %>" title='комментарии'><span id='entry_comments_count_<%= entry.id %>'><%= comment_views ? updated_comments_count(entry, comment_views) : entry.comments_count %></span></a></div>
-			</div>
-		<%- else -%>
-			<div class='service_link'><a href="<%= user_path(entry.author, entry_path(entry)) %>" title='постоянная ссылка на эту запись'>link</a></div>
-		<%- end -%>
-	<%- end -%>
-	<% unless params[:controller] == 'publish' || !entry.id %>
-		<% if entry.is_voteable? && entry.rating %>
-			<div class='rel'>
-				<div class='service_rating service_rating_owner_<%= entry.user_id %>' id='service_rating_for_entry_<%= entry.id %>'>
-					<%= render :partial => 'entries/rating', :locals => { :entry => entry } %>
-				</div>
-			</div>
-		<% end %>
-		<% if entry.is_private? %>
-			<div class='rel'>
-				<div class='private_entry'><%= image_tag 'key.png', :title => 'закрытая запись, видная только вам' %></div>
-			</div>
-		<% end %>
-		<div class='service_edit enable_for_owner_<%= entry.user_id %>' style='display: none;'><%= link_to "edit", user_url(entry.author, publish_path(:action => entry.class.to_s.underscore.split('_').first, :id => entry, :back => 'to_entry_page')), :rel => 'nofollow', :title => 'редактировать эту запись' %></div>
-		<% if params[:controller] == 'faves' && current_user && current_site.id == current_user.id %>
-			<div class='service_edit'><%= link_to_remote image_tag('delete.gif'), { :url => user_url(current_site, fave_path(entry.id)).downcase, :method => :delete }, :id => entry.dom_id(:defave), :title => 'удалить из избранного', :rel => 'nofollow' %></div>
-		<% else %>
-			<div class='service_edit enable_for_current_user disable_for_owner_<%= entry.user_id %>' style='display: none'>
-			  <%= content_tag :a, 'fave!', :href => '#', 'data-entry-id' => entry.id, :id => entry.dom_id(:fave), :title => 'добавить в избранное', :class => 't-act-fave' %></div>
-		<% end %>
-	<% end %>
-	<div class='post_content'>
-		<%= render :partial => 'entries/display/' + entry.class.to_s.underscore, :locals => { :entry => entry, :mini => mini, :embed => embed } %>	
-	</div>
-</div>
+<div class="post_body <%= "post_#{entry.class.to_s.underscore}" %><%= " post_is_private" if entry.is_private? %><%= " post_#{index}" if index >= 0 %>" id="<%= dom_id(entry) %>"><%
+
+  # tag-link
+  if show_tags
+	  %><div class='entry_metadata_holder display_block enable_for_owner_<%= entry.user_id %>'><%= link_to '+', '#', 'data-entry-id' => entry.id, 'data-url' => user_url(current_site, metadata_entry_path(entry)).downcase, :class => 't-act-meta entry_metadata_link', :title => 'информация о записи' %><div class='rel'><div class='entry_metadata' id='emd_<%= entry.id %>' style="display: none"></div></div></div><%-
+  end
+  
+  # username link
+  if show_username
+    %><div class='rel'><div class='post_author'><%= link_to entry.author.url, user_url(entry.author) %></div></div><%
+  end
+  
+  # comments bubble
+	if show_comments_bubble
+	  
+	  # has comments
+		if entry.comments_enabled? || entry.comments_count > 0
+	    -%><div class='service_comments<%= ' has_comments' unless entry.comments_count.zero? %>'><div class="comment_cloud iePNG<%= ' has_comments' unless entry.comments_count.zero? %>"><a href="<%= user_url(entry.author, entry_path(entry)) + '#new' %>" title='комментарии'><span id='entry_comments_count_<%= entry.id %>'><%= comment_views ? updated_comments_count(entry, comment_views) : entry.comments_count %></span></a></div></div><%-
+	    
+	  # no comments
+		else
+    		-%><div class='service_link'><a href="<%= user_path(entry.author, entry_path(entry)) %>" title='постоянная ссылка на эту запись'>link</a></div><%-
+    end
+  end
+  
+  # not in publishing controller (e.g. not preview mode)
+  unless params[:controller] == 'publish' || !entry.id
+
+    # rating & votability
+		if entry.is_voteable? && entry.rating
+  		  -%><div class='rel'><div class='service_rating service_rating_owner_<%= entry.user_id %>' id='service_rating_for_entry_<%= entry.id %>'><%= render :partial => 'entries/rating', :locals => { :entry => entry } %></div></div><%-
+		end
+
+
+		if entry.is_private?
+  		  -%><div class='rel'><div class='private_entry'><%= image_tag 'key.png', :title => 'закрытая запись, видная только вам' %></div></div><%-
+		end
+		
+		# edit link
+		%><div class='service_edit enable_for_owner_<%= entry.user_id %>' style='display: none;'><%= link_to "edit", user_url(entry.author, publish_path(:action => entry.class.to_s.underscore.split('_').first, :id => entry, :back => 'to_entry_page')), :rel => 'nofollow', :title => 'редактировать эту запись' %></div><%
+
+    # remove from faves
+  	if params[:controller] == 'faves' && current_user && current_site.id == current_user.id
+  		%><div class='service_edit'><%= link_to_remote image_tag('delete.gif'), { :url => user_url(current_site, fave_path(entry.id)).downcase, :method => :delete }, :id => entry.dom_id(:defave), :title => 'удалить из избранного', :rel => 'nofollow' %></div><%-
+		else
+  	  -%><div class='service_edit enable_for_current_user disable_for_owner_<%= entry.user_id %>' style='display: none'><%= content_tag :a, 'fave!', :href => '#', 'data-entry-id' => entry.id, :id => entry.dom_id(:fave), :title => 'добавить в избранное', :class => 't-act-fave' %></div><%-
+	  end
+  end
+  
+  # main entry contents
+  -%><div class='post_content'><%= render :partial => 'entries/display/' + entry.class.to_s.underscore, :locals => { :entry => entry, :mini => mini, :embed => embed } %></div></div>

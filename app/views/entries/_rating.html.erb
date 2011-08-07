@@ -1,9 +1,1 @@
-<div class='entry_voter entry_voter_up enable_for_current_user' style='display: none;'>
-	<div class='rel'><%= content_tag(:a, '&uarr;', :href => '#', 'data-vote-id' => entry.id, 'data-vote-action' => 'up', :class => 'vote_up t-act-vote', :title => 'проголосовать за') %></div>
-</div>
-
-<span class='entry_rating' id='entry_rating_<%= entry.id %>'><%= entry.rating.value %></span>
-
-<div class='entry_voter entry_voter_down enable_for_current_user' style='display: none;'>
-  <%= content_tag(:a, '&darr;', :href => '#', 'data-vote-id' => entry.id, 'data-vote-action' => 'down', :class => 'vote_down t-act-vote', :title => 'проголосовать против') %>
-</div>
+<div class='entry_voter entry_voter_up enable_for_current_user' style='display: none;'><div class='rel'><%= content_tag(:a, '&uarr;', :href => '#', 'data-vote-id' => entry.id, 'data-vote-action' => 'up', :class => 'vote_up t-act-vote', :title => 'проголосовать за') %></div></div><span class='entry_rating' id='entry_rating_<%= entry.id %>'><%= entry.rating.value %></span><div class='entry_voter entry_voter_down enable_for_current_user' style='display: none;'><%= content_tag(:a, '&darr;', :href => '#', 'data-vote-id' => entry.id, 'data-vote-action' => 'down', :class => 'vote_down t-act-vote', :title => 'проголосовать против') %></div>
