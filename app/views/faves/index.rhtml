@@ -1,4 +1,4 @@
-<% @title = "#{current_site.gender('его', 'её')} избранное#{", страница #{params[:page].to_i}" if @page > 1}" %>
+<% @title = "#{current_site.gender('его', 'её')} избранное#{", страница #{params[:page].to_i}" if @faves.current_page > 1}" %>
 
 <% if current_site.faves.size.zero? %>
 	<div class='filter'>
@@ -8,14 +8,14 @@
 	<div class='filter'>
 		<p><%= current_site.gender('Его', 'Её') %> <span class='highlight large'>избранное</span></p>
 	</div>
-	<%= paginate @faves, :reverse => true if @page > 1 %>
+	<%= paginate @faves if @faves.current_page > 1 %>
 
 	<% @faves.each do |fave| %>
 		<% next if fave.entry.nil? %>
 		<%= render :partial => 'entries/entry_display', :locals => { :entry => fave.entry, :show_comments_bubble => true, :show_username => true } %>
 	<% end %>
 
-	<%= paginate @faves, :reverse => true %>
+	<%= paginate @faves %>
 <% end %>
 
 <div class='return_from_permalink'>
