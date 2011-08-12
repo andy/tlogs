@@ -1,4 +1,4 @@
 %div{:data => {:role => 'navbar'}}
   %ul
-	  %li= link_to('ранее', user_url(current_site, prev_day_path(:year => @time.year, :month => @time.month, :day => @time.mday)), :class => 'entry_paginate_prev', 'data-icon' => 'arrow-l', 'data-iconpos' => 'top', 'data-direction' => 'reverse')
+    %li= link_to('ранее', user_url(current_site, prev_day_path(:year => @time.year, :month => @time.month, :day => @time.mday)), :class => 'entry_paginate_prev', 'data-icon' => 'arrow-l', 'data-iconpos' => 'top', 'data-direction' => 'reverse')
     %li= link_to('позже', user_url(current_site, next_day_path(:year => @time.year, :month => @time.month, :day => @time.mday)), :class => 'entry_paginate_next', 'data-icon' => 'arrow-r', 'data-iconpos' => 'top')
