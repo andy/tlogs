@@ -20,11 +20,10 @@ class AnonymousController < ApplicationController
     sql_conditions = 'type="AnonymousEntry" AND is_disabled = 0'
     
     # кешируем общее число записей, потому что иначе :page обертка будет вызывать счетчик на каждый показ
-    total = Rails.cache.fetch('entry_count_anonymous', :expires_in => 10.minutes) { Entry.count :conditions => sql_conditions }
+    # total = Rails.cache.fetch('entry_count_anonymous', :expires_in => 10.minutes) { Entry.count :conditions => sql_conditions }
 
-    @page = params[:page].to_i.reverse_page(total.to_pages)
-    
-    @entry_ids = Entry.paginate :all, :select => 'entries.id', :conditions => sql_conditions, :page => @page, :per_page => Entry::PAGE_SIZE, :order => 'entries.id DESC'
+    @entry_ids = Entry.paginate :all, :select => 'entries.id', :conditions => sql_conditions, :page => params[:page], :per_page => Entry::PAGE_SIZE, :order => 'entries.id DESC'
+
     @entries = Entry.find_all_by_id @entry_ids.map(&:id), :order => 'entries.id DESC'
     
     @comment_views = User::entries_with_views_for(@entries.map(&:id), current_user)

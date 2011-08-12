@@ -31,7 +31,7 @@ javascripts:
     - app/assets/javascripts/prototype/effects.min.js
     - app/assets/javascripts/prototype/dragdrop.min.js
     # jquery setup & plugins
-    - app/assets/javascripts/jquery/jquery-1.6.1.min.js
+    - app/assets/javascripts/jquery/jquery-1.6.2.min.js
     - app/assets/javascripts/jquery/jquery.noconflict.js
     - app/assets/javascripts/jquery/jquery.hotkeys.js
     - app/assets/javascripts/jquery/jquery.autoresize.min.js
@@ -65,15 +65,15 @@ javascripts:
     - app/assets/javascripts/tasty/application.coffee
 
   mobile:
-    - app/assets/javascripts/jquery/jquery-1.6.1.min.js
-    - app/assets/javascripts/mobile.js
-    - app/assets/javascripts/jquery/jquery.mobile-1.0b1.min.js
+    - app/assets/javascripts/jquery/jquery-1.6.2.min.js
+    - app/assets/javascripts/mobile.coffee
+    - app/assets/javascripts/jquery/jquery.mobile-1.0b2.min.js
     - app/assets/javascripts/jquery/jquery.timeago.js
     - app/assets/javascripts/jquery/jquery.timeago.ru.js
     - app/assets/javascripts/tasty/google-analytics.js
 
   tastyradio:
-    - app/assets/javascripts/jquery/jquery-1.6.1.min.js
+    - app/assets/javascripts/jquery/jquery-1.6.2.min.js
     - app/assets/javascripts/soundmanager/soundmanager2.js
     - app/assets/javascripts/soundmanager/egych-player.js
   
@@ -92,7 +92,7 @@ stylesheets:
 
   mobile:
     - app/assets/stylesheets/html5.css
-    - app/assets/stylesheets/jquery.mobile-1.0b1.min.css
+    - app/assets/stylesheets/jquery.mobile-1.0b2.min.css
     - app/assets/stylesheets/mobile-styling.scss
 
   tastyradio:

@@ -1,6 +1,8 @@
 class ApplicationController < ActionController::Base
   filter_parameter_logging :password
 
+  rescue_from ActionController::UnknownAction, :with => :render_action_not_found
+
   MOBILE_USER_AGENTS =  'palm|blackberry|nokia|phone|midp|mobi|symbian|chtml|ericsson|minimo|' +
                             'audiovox|motorola|samsung|telit|upg1|windows ce|ucweb|astel|plucker|' +
                             'x320|x240|j2me|sgh|portable|sprint|docomo|kddi|softbank|android|mmp|' +
@@ -181,6 +183,10 @@ class ApplicationController < ActionController::Base
       return true if current_user && current_site && current_user.id == current_site.id
       
       render(:text => 'permission denied', :status => 403) and return false
+    end
+    
+    def render_action_not_found
+      render_tasty_404('Такого адреса не существует')
     end
 
     def render_tasty_404(text, options = {})

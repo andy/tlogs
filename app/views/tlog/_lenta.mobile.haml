@@ -1,0 +1,37 @@
+%div{:data => {:role => 'content', :theme => 'd'}}
+  - reverse = true unless local_assigns.has_key?(:reverse)
+  - if @entries.size > 0
+    - if is_owner? && current_site.tlog_settings.past_disabled? && @page && @page > 1
+      %div{:data => {:role => 'header'}}
+        %h2 эта страница видна только вам
+
+    .t-entries
+      - previous_date = nil
+      - @entries.each_with_index do |entry, index|
+        = render :partial => 'entries/entry_display', :locals => { :entry => entry, :show_comments_bubble => true, :show_datetime => (previous_date.nil? || previous_date != entry.created_at.to_date), :index => index, :show_tags => is_owner? }
+        - previous_date = entry.created_at.to_date
+
+  - else
+    .help_intro
+      - if params[:action] == 'day'
+        - if @past_disabled
+          %h2 Пользователь предпочел скрыть свои старые записи
+        - else
+          %h2 За этот день записей не найдено
+      - elsif is_owner?
+        %h2 Здравствуйте, #{h(current_site.url)}!
+        %p В вашем тлоге пусто.
+      - else
+        - if @past_disabled
+          %p Пользователь предпочел скрыть свои старые записи
+        - else
+          %p Тут, пока, пусто.
+
+%div{:data => {:role => 'footer', :theme => 'a'}}
+  - if @entries.size > 0
+    -# показываем навигационные элементы если прошлое не выключено или если это владелец тлога
+    - if is_owner? || !current_site.tlog_settings.past_disabled?
+      - if params[:action] == 'day' || current_site.tlog_settings.is_daylog? && params[:action] == 'index'
+        = render :partial => 'globals/day_pagination', :locals => { :entries => @entries }
+      - else
+        = paginate @entries, :reverse => reverse

@@ -1,0 +1,14 @@
+- prev_entry = nil
+%div{:data => {:role => 'header'}}
+  = link_to 'На главную', service_url('/'), 'data-icon' => 'arrow-l', 'data-transition' => 'slide', 'data-direction' => 'reverse', 'data-iconpos' => 'notext'
+  %h1 Лучшее
+  = link_to 'Обновить', '', 'data-icon' => 'refresh', 'data-iconpos' => 'notext', 'data-refresh-url' => service_url(anonymous_path)
+
+%div{:data => {:role => 'content', :theme => 'd'}}
+  .t-entries
+    - @entries.each_with_index do |entry, index|
+      = render :partial => 'entries/anonymous_entry_display', :locals => { :entry => entry, :show_datetime => !(prev_entry.created_at.same_day?(entry.created_at) rescue false), :show_comments => true }
+      - prev_entry = entry
+
+%div{:data => {:role => 'footer'}}
+  = paginate @entry_ids

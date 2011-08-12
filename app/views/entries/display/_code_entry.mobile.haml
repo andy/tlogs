@@ -1,0 +1,3 @@
+.t-entry-code
+  = content_tag :h2, strip_tags(entry.data_part_2), :class => 't-entry-code-header' if entry.data_part_2
+  = CodeRay.scan(entry.data_part_1, :ruby).div(:tab_width => 2).sub(/^<div class="CodeRay">/, "<div class='t-entry-code-body' id='t-entry-code-div-#{entry.id}'>")

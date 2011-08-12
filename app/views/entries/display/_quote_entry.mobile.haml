@@ -1,0 +1,7 @@
+.t-entry-quote
+  %span.t-entry-quote-body
+    %span.t-entry-quote-laquo= '&laquo;'
+    = white_list_entry entry.data_part_1, :media_width => 285, :use_br => true
+    %span.t-entry-quote-raquo= '&raquo;'
+
+  = content_tag :span, '&mdash;&nbsp;' + white_list_entry(entry.data_part_2, :media_width => 285, :use_br => true), :class => 't-entry-quote-source' if entry.data_part_2

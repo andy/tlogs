@@ -1,0 +1,26 @@
+!!! 5
+%html
+  %head
+    = render :partial => 'globals/head'
+    :javascript
+      var _gaq = _gaq || [];
+      _gaq.push(['_trackEvent', 'Error', '404', 'Tlog not found']);
+  
+  %body{:lang => 'ru'}
+    %div{:data => {:role => 'page'}}
+      %div{:data => {:role => 'header'}}
+        = link_to 'На главную', service_url, 'data-icon' => 'arrow-l', 'data-transition' => 'slide', 'data-direction' => 'reverse', 'data-iconpos' => 'notext', 'data-rel' => 'back'
+        %h1 404
+
+      %div{:data => {:role => 'content', :theme => 'd'}}
+        %h1 Упс! Такого тлога не существует
+        %p он или никогда не существовал, или переехал на новый адрес
+        %p
+          = link_to 'вернуться на главную', service_url
+          или 
+          - if current_user
+            = link_to 'вернуться в свой тлог', user_url(current_user)
+          - else
+            = link_to 'зарегистрировать этот адрес', service_url(signup_path)
+
+    = render :partial => 'globals/counters' if Rails.env.production?

@@ -1,0 +1,19 @@
+%div{:data => {:role => 'content', :theme => 'd'}}
+  .t-entries
+    = render :partial => 'entries/entry_display', :locals => { :entry => @entry, :show_datetime => true, :hide_comments => true }
+  
+  .t-entry-comments
+    %h4
+      - if @entry.comments.size == 0
+        Комментариев еще нет
+      - else
+        Комментарии (<span id='t-entry-comments-count'>#{@entry.comments.size}</span>):
+
+    = render :partial => 'tlog/comment', :collection => Comment.find(:all, :conditions => ['comments.entry_id = ?', @entry.id], :include => { :user => :avatar }, :order => 'comments.id').reject { |c| c.user.nil? } if @entry.comments.size
+
+    =# render :partial => 'comment_form' %>
+
+%div{:data => {:role => 'footer'}}
+  %div{:data => {:role => 'navbar'}}
+    %ul
+      %li= link_to "перейти в #{current_site.gender("его", "её")} тлог", tlog_url_for_entry(@entry), 'data-icon' => 'arrow-l', 'data-iconpos' => 'top', 'data-direction' => 'reverse'

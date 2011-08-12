@@ -1,0 +1,19 @@
+!!! 5
+%html
+  %head
+    = render :partial => 'globals/head'
+    :javascript
+      var _gaq = _gaq || [];
+      _gaq.push(['_trackEvent', 'Error', '404', 'Page not found']);
+
+  %body{:lang => 'ru'}
+    %div{:data => {:role => 'page'}}
+      %div{:data => {:role => 'header'}}
+        = link_to 'На главную', service_url, 'data-icon' => 'arrow-l', 'data-transition' => 'slide', 'data-direction' => 'reverse', 'data-iconpos' => 'notext', 'data-rel' => 'back'
+        %h1 404
+        
+      %div{:data => {:role => 'content', :theme => 'd'}}
+        %h1 Упс! Вы попали на несуществующую страницу
+        %p= link_to 'Вернуться на главную', service_url
+
+    = render :partial => 'globals/counters' if Rails.env.production?

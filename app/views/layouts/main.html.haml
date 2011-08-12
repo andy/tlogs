@@ -29,7 +29,7 @@
 
 %body.main_page
   .logo
-    = link_to_if((params[:controller] != 'main' || params[:action] != 'index'), image_tag(current_service.logo, :alt => current_service.name, :class => 'logo_img'), service_url('/'), :class => 'logo_link')
+    = link_to_if((params[:controller] != 'main' || params[:action] != 'index'), image_tag(current_service.logo(:white), :alt => current_service.name, :class => 'logo_img'), service_url('/'), :class => 'logo_link')
 
   .register_enter
     .top_hello

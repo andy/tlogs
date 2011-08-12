@@ -1924,7 +1924,7 @@ div.main_page {
 }
 
 * html div.main_page {
-	background:url("/images/becool.gif");
+	background:url("/images/bg_bg_orange.gif");
 	height:100%;
 }
 
@@ -1981,8 +1981,7 @@ div.popular a {
 }
 
 .register_enter, .register_enter a {
-	color:white!important;
-/*	color:black!important;*/
+	color: white;
 }
 .live a:hover, .popular a:hover {
 	background:#eef9ff;
@@ -1990,7 +1989,7 @@ div.popular a {
 
 
 body.main_page {
-	background:url("/images/becool.gif") fixed;
+	background:url("/images/bg_bg_orange.gif") fixed;
 }
 
 .main_rounded_holder {
@@ -2036,10 +2035,12 @@ body.main_page {
 	-o-box-shadow: rgba(0, 0, 0, 0.199219) 0px 2px 2px;
 	box-shadow: rgba(0, 0, 0, 0.199219) 0px 2px 2px;
 
-	-webkit-border-radius: 5px;
-	-moz-border-radius: 5px;
-	-o-border-radius: 5px;
-	border-radius: 5px;
+/*
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -o-border-radius: 5px;
+  border-radius: 5px;
+*/
   behavior: url(/images/htc/PIE.htc);
 }
 .ie7 .main_page .rounded_main_center, .ie8 .main_page .rounded_main_center {
@@ -2123,15 +2124,21 @@ p.main_info a {
 	/*font-style:italic;
 	font-weight:bold;*/
 }
+.register_enter .top_menu ul a {
+  color:#404040;
+}
+.register_enter .top_menu ul a.selected {
+  color:#fff;
+}
 .register_enter a {
 	background:white;
-	color:#404040!important;
+	color:#404040;
 	padding:2px 5px;
 	text-decoration:none;
 }
 .register_enter a.selected {
 	background:#404040;
-	color:#fff!important;
+	color:#fff;
 	text-decoration:none;
 }
 .register_enter a:hover {
@@ -3234,11 +3241,13 @@ img.heart {
 }
 .top_menu ul li a {
 	color:#fff;
-	-webkit-border-radius: 1px;
-	-moz-border-radius: 1px;
-	-o-border-radius: 1px;
-	border-radius: 1px;
+/*
+  -webkit-border-radius: 1px;
+  -moz-border-radius: 1px;
+  -o-border-radius: 1px;
+  border-radius: 1px;
   behavior: url(/images/htc/PIE.htc);
+*/
 }
 .top_menu ul li a.selected {
 /*	-webkit-box-shadow: rgba(0, 0, 0, 0.199219) 0px 1px 1px;*/
@@ -3255,18 +3264,19 @@ img.heart {
 .pref_new_entry {
 	color:#9BD890;	
 }
-.top_hello {
+.register_enter .top_hello {
 	font-size:74%;
 	font-weight:normal;
-	color: #404040;
+/*  color: #404040;*/
+  color:white;
 }
-.top_hello a {
+.register_enter .top_hello a {
 	border:none!important;
 	background:none;
-	color:#404040!important;
+/*  color:#404040!important;*/
 	padding: 0;
 	text-decoration: underline;
-/*	color:white!important;*/
+  color:white;
 }
 .tl {
 	/*width:246px;

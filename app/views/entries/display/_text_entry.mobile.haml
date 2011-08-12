@@ -1,0 +1,4 @@
+.t-entry-text
+  = content_tag(:h2, strip_tags(entry.data_part_2), :class => 't-entry-text-header') if entry.data_part_2
+  .t-entry-text-body
+    = white_list_entry(entry.data_part_1, :media_width => 285)

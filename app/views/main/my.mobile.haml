@@ -1,0 +1,12 @@
+%div{:data => {:role => 'header'}}
+  = link_to 'На главную', service_url('/'), 'data-icon' => 'arrow-l', 'data-transition' => 'slide', 'data-direction' => 'reverse', 'data-iconpos' => 'notext'
+  %h1 Моё
+  = link_to 'Обновить', '', 'data-icon' => 'refresh', 'data-iconpos' => 'notext', 'data-refresh-url' => service_url(main_path(:action => :my))
+
+%div{:data => {:role => 'content', :theme => 'd'}}
+  .t-entries
+    - @entries.each do |entry|
+      = render :partial => 'entries/entry_display', :locals => { :entry => entry }
+
+%div{:data => {:role => 'footer'}}
+  = paginate @entries

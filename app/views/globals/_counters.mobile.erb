@@ -4,5 +4,7 @@
     ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
     var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
   })();
-
+  $('[data-role=page]').live('pageshow', function (event, ui) {
+    try { _gaq.push(['_trackPageview']); } catch(err) {}
+  });
 </script>

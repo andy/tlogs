@@ -1,0 +1,14 @@
+%div{:data => {:role => 'header'}}
+  = link_to 'На главную', service_url('/'), 'data-icon' => 'arrow-l', 'data-transition' => 'slide', 'data-direction' => 'reverse', 'data-iconpos' => 'notext'
+  %h1 Прямой эфир
+  = link_to 'Обновить', '', 'data-icon' => 'refresh', 'data-iconpos' => 'notext', 'data-refresh-url' => service_url(main_path(:action => :live))
+
+%div{:data => {:role => 'content', :theme => 'd'}}
+  .t-entries
+    - @entries.each do |entry|
+      = render :partial => 'entries/entry_display', :locals => { :entry => entry }
+
+%div{:data => {:role => 'footer'}}
+  %div{:data => {:role => 'navbar'}}
+    %ul
+      %li= link_to 'далее', { :action => :live, :page => nil, :entry_id => @entries.last.id },  'data-icon' => 'arrow-r', 'data-iconpos' => 'top'

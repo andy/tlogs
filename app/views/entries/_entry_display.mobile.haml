@@ -1,0 +1,15 @@
+- show_datetime ||= false unless local_assigns.has_key?(:show_datetime) && show_datetime
+- hide_comments ||= false unless local_assigns.has_key?(:hide_comments) && hide_comments
+.t-entry
+  .t-entry-header
+    = userpic_tag(entry.author, :class => 't-entry-header-avatar', :blank => true, :height => 24, :width => 24)
+    = link_to entry.author.url, user_url(entry.author), :class => 't-entry-header-author'
+
+  - content_tag :div, :id => dom_id(entry) do
+    = render :partial => 'entries/display/' + entry.class.to_s.underscore, :locals => { :entry => entry }
+
+  .t-entry-footer
+    .t-entry-footer-ctl
+      = content_tag :span, entry.rating.value > 0 ? "+#{entry.rating.value}" : entry.rating.value, :class => 't-entry-rating' if entry.is_voteable?
+      = link_to entry.comments_count.zero? ? 'комментариев нет' : entry.comments_count.pluralize('комментарий', 'комментария', 'комментариев', true), user_url(entry.author, entry_path(entry)) unless hide_comments
+      =# link_to 'fave', '#'

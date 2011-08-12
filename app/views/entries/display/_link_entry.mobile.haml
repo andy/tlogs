@@ -1,0 +1,4 @@
+- link_text = entry.data_part_2.blank? ? (h(truncate(entry.data_part_1, :length => 30))) : h(entry.data_part_2)
+.t-entry-link
+  = link_to link_text, h(entry.data_part_1), :target => '_blank', :rel => 'nofollow', :class => 't-entry-link-href'
+  = content_tag :div, white_list_entry(entry.data_part_3, :media_width => 285), :class => 't-entry-link-comment' if entry.data_part_3
