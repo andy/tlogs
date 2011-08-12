@@ -38,11 +38,11 @@ Tasty =
         jQuery(this).css 'text-decoration': 'none'
 
     click: (event) ->
-      jQuery('body').scrollTop(0)
+      jQuery(window).scrollTop(0)
     
     onscroll: (event) ->
       shortcut  = jQuery('#t-act-shortcut')
-      offset    = jQuery('body').scrollTop()
+      offset    = jQuery(window).scrollTop()
       if offset > 1024
         shortcut.fadeIn(100) unless shortcut.is(':visible')          
       else
