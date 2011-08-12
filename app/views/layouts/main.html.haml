@@ -29,7 +29,7 @@
 
 %body.main_page
   .logo
-    = link_to_if((params[:controller] != 'main' || params[:action] != 'index'), image_tag(current_service.logo(:white), :alt => current_service.name, :class => 'logo_img'), service_url('/'), :class => 'logo_link')
+    = link_to_if((params[:controller] != 'main' || params[:action] != 'index'), image_tag(current_service.logo(:white), :alt => current_service.name, :class => 'logo_img'), service_url, :class => 'logo_link')
 
   .register_enter
     .top_hello
@@ -83,7 +83,7 @@
   = render :partial => 'globals/top_nav'
   
   - if params[:controller] == 'anonymous' || (params[:controller] == 'main' && %w(last my last_personalized live random).include?(params[:action]))
-    #t-act-shortcut &uarr; наверх
+    #t-act-shortcut &uarr; Наверх
   
   = render :partial => 'globals/reformal' if Rails.env.production?
 </html>

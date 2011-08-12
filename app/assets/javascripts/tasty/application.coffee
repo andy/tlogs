@@ -13,18 +13,29 @@ Tasty =
         .hover(Tasty.shortcut.in, Tasty.shortcut.out)
       jQuery(window).scroll Tasty.shortcut.onscroll
       
-      width   = jQuery('#wrapper').offset()?.left || 40
-      height  = jQuery(window).height() || 400
-
-      jQuery('#t-act-shortcut').css { width, height }
+      width     = jQuery('.sidebar:first').offset()?.left
+      w_width   = jQuery('#wrapper').offset()?.left
+      width     = w_width if width > w_width
+      width     -= 20
+      
+      if width > 50
+        jQuery('#t-act-shortcut').css { width, height: jQuery(window).height() }
+      else
+        jQuery('#t-act-shortcut').addClass 'thincut'
       
       Tasty.shortcut.onscroll()
 
     in: (event) ->
-      jQuery('#t-act-shortcut').css 'text-decoration': 'underline'
+      if jQuery(this).hasClass('thincut')
+        jQuery(this).css 'background-color': '#404040', 'color': 'white'
+      else
+        jQuery(this).css 'text-decoration': 'underline'      
     
     out: (event) ->
-      jQuery('#t-act-shortcut').css 'text-decoration': 'none'
+      if jQuery(this).hasClass('thincut')
+        jQuery(this).css 'background-color': 'white', 'color': '#404040'
+      else
+        jQuery(this).css 'text-decoration': 'none'
 
     click: (event) ->
       jQuery('body').scrollTop(0)

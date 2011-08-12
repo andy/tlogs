@@ -269,18 +269,27 @@ input.placeholder, textarea.placeholder {
 #t-act-shortcut {
   position: fixed;
   color: white;
-  font-family: "Lucida Grande", "Myriad Pro", "Tahoma", arial;
-  font-size: 12px;
+  font-family: Georgia, serif;
+  font-size: 14px;
   // text-shadow: #666 1px 1px 2px;
   left: 0;
   top: 0;
   margin: 0px;
   padding: 10px;
-  width: 200px;
   vertical-align: middle;
-  height: 2em;
   cursor: pointer;
   cursor: hand;
   z-index: 100;
   display: none;
+  
+  &.thincut {
+    background-color: white;
+    color: #404040;
+    font-size: 14px;
+    line-height: 17px;
+    padding: 2px 5px;
+    text-align: center;
+    top: 2px;
+    left: 2px;    
+  }
 }
