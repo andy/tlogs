@@ -1,7 +1,7 @@
 <% @title = 'анонимки' %>
 
 <div class='onair'>
-	<%= paginate @entry_ids if @page > 1 %>
+	<%= paginate @entry_ids if @entry_ids.current_page > 1 %>
 
   <% prev_entry = nil %>
 	<% @entries.each_with_index do |entry, index| %>
