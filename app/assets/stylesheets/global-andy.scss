@@ -279,7 +279,7 @@ input.placeholder, textarea.placeholder {
   vertical-align: middle;
   cursor: pointer;
   cursor: hand;
-  z-index: 100;
+  z-index: 3;
   display: none;
   
   &.thincut {
