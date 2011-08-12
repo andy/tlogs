@@ -80,7 +80,10 @@
   
   = render :partial => 'globals/foot'
 
-  = render :partial => 'globals/top_nav'  
+  = render :partial => 'globals/top_nav'
+  
+  - if params[:controller] == 'anonymous' || (params[:controller] == 'main' && %w(last my last_personalized live random).include?(params[:action]))
+    #t-act-shortcut &uarr; наверх
   
   = render :partial => 'globals/reformal' if Rails.env.production?
 </html>
