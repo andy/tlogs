@@ -1,8 +1,7 @@
 <%-
-	inline_tags ||= false unless local_assigns.has_key?(:inline_tags) && inline_tags
+  inline_tags ||= false unless local_assigns.has_key?(:inline_tags) && inline_tags
 	inline_friends ||= false unless local_assigns.has_key?(:inline_friends) && inline_friends
 -%>
-<!-- tlog/_sidebar -->
 <div class="sidebar_section" id='sidebar_avatar'>
 	<div class='sidebar_section_content' id='sidebar_avatar_content'>
 	  <% if current_site.userpic? %>
@@ -95,21 +94,17 @@
 				<%= render :partial => 'globals/calendar', :locals => { :calendar => current_site.calendar(@time), :time => (@time || Time.now) } %>
 			</div>
 		</div>
-	<% end %>
-<% end %>
+	<% end
+end
 
-<% if current_site.public_friends.size > 0 %>
-	<div class='sidebar_section' id='sidebar_public_friends'>
-		<%= link_to_function 'Друзья', "sidebar_toggle('public_friends')", :class => 'sidebar_toggle', :id => 'sidebar_public_friends_link' %>
-		<div class='sidebar_section_content' id='sidebar_public_friends_content'<%= ' style="display: none"' if !is_robot? && !inline_friends %>>
-			<% current_site.public_friends.each do |user| %>
-				<%= link_to_tlog(user, nil, :title => user.title, :rel => 'friend') %>
-			<% end %>
-		</div>
-	</div>
-<% end %>
+if current_site.public_friends.size > 0
+  %><div class='sidebar_section' id='sidebar_public_friends'><%= link_to_function 'Друзья', "sidebar_toggle('public_friends')", :class => 'sidebar_toggle', :id => 'sidebar_public_friends_link' %><div class='sidebar_section_content' id='sidebar_public_friends_content'<%= ' style="display: none"' if !is_robot? && !inline_friends %>><% 
+  current_site.public_friends.each do |user| %><%=
+    link_to_tlog(user, nil, :title => user.title, :rel => 'friend') %><% 
+  end %></div></div><%
+end
 
-<% unless current_site.tlog_settings.sidebar_hide_messages? %>
+unless current_site.tlog_settings.sidebar_hide_messages? %>
 	<div class='sidebar_section' id='sidebar_messages'>
 		<%= link_to_function 'Сообщения', "sidebar_toggle('messages')", :class => 'sidebar_toggle', :id => 'sidebar_messages_link' %>
 		<div class='sidebar_section_content' id='sidebar_messages_content' style='display: none'>
@@ -199,4 +194,3 @@
 <div class='sidebar_section' id='sidebar_hide_holder'>
 	<%= link_to_function '&#x2190; спрятать', 'new Effect.Move("tlog_sidebar", { x: -216, duration: 0.3, afterFinish: function() { $("show_sidebar").show(); $("tlog_sidebar_content").hide(); new Effect.Move("show_sidebar", { x: 25, duration: 0.2 }) } });', :id => 'sidebar_hide' %>
 </div>
-<!-- /tlog/_sidebar -->

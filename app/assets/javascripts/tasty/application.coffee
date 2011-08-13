@@ -3,8 +3,22 @@ Tasty =
     jQuery('a.t-act-vote').live "click", Tasty.vote
     jQuery('a.t-act-fave').live "click", Tasty.fave
     jQuery('a.t-act-meta').live "click", Tasty.meta.click
+    jQuery('a#t-act-fastforward').live "click", Tasty.fastforward
     Tasty.shortcut.ready() if jQuery('#t-act-shortcut')
     true
+
+  fastforward: (event) ->
+    jQuery.ajax
+      url: jQuery(this).data 'url'
+      dataType: 'json'
+      data:
+        authenticity_token:
+          window._token
+      type: 'get'
+      success: (data) =>
+        window.location.href = data.href if data.href
+        
+    false      
 
   shortcut:
     ready: ->
