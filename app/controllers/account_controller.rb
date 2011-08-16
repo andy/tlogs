@@ -116,7 +116,7 @@ class AccountController < ApplicationController
   def logout
     cookies.delete :t, :domain => current_service.cookie_domain
     reset_session
-    redirect_to service_url(main_path)
+    redirect_to service_url
   end
 
   # регистрация, для новичков
@@ -196,15 +196,18 @@ class AccountController < ApplicationController
         flash[:good] = 'Вы авторизовались на сайте'
         login_user user, :remember => openid
       else
-        session[:openid] = openid
-        @user = User.new :openid => openid, :url => session[:user_url], :email => nil, :password => nil
-        @user.is_confirmed = true
-        if @user.save
-          flash[:good] = 'Поздравляем, вы зарегистрировались!'
-          login_user @user, :remember => openid
-        else
-          render :action => 'signup'
-        end
+        flash[:bad] = 'Извините, но регистрация через openid временно отключена.'
+        render :action => 'signup'
+        
+        # session[:openid] = openid
+        # @user = User.new :openid => openid, :url => session[:user_url], :email => nil, :password => nil
+        # @user.is_confirmed = true
+        # if @user.save
+        #   flash[:good] = 'Поздравляем, вы зарегистрировались!'
+        #   login_user @user, :remember => openid
+        # else
+        #   render :action => 'signup'
+        # end
       end
       return
 
