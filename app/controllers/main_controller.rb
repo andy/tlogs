@@ -199,15 +199,15 @@ class MainController < ApplicationController
     if params[:entry_id]
       entry = Entry.find_by_id(params[:entry_id])
       
-      redirect_to(service_url(main_path)) and return if entry.nil? || entry.is_disabled? || entry.is_private? || entry.author.is_disabled?
+      redirect_to(service_url) and return if entry.nil? || entry.is_disabled? || entry.is_private? || entry.author.is_disabled?
       
-      redirect_to(service_url(main_path)) and return if %w(fr me).include?(entry.author.tlog_settings.privacy)
+      redirect_to(service_url) and return if %w(fr me).include?(entry.author.tlog_settings.privacy)
       
-      redirect_to(service_url(main_path)) and return if entry.author.tlog_settings.privacy == 'rr' && !current_user
+      redirect_to(service_url) and return if entry.author.tlog_settings.privacy == 'rr' && !current_user
       
     # elsif current_user
     #   entry = current_user.entries.last
-    #   redirect_to(service_url(main_path)) and return if entry.nil?
+    #   redirect_to(service_url) and return if entry.nil?
     else
       max_id = Entry.maximum(:id)
       unless entry
@@ -235,9 +235,9 @@ class MainController < ApplicationController
       @comment_views = User::entries_with_views_for(@entries.map(&:id), current_user)
       @calendar = @user.calendar(@time)
       
-      @others = User.find_by_sql("SELECT u.id, u.url, e.id AS day_first_entry_id, count(*) AS day_entries_count FROM users AS u LEFT JOIN entries AS e ON u.id = e.user_id WHERE e.created_at > '#{@time.midnight.to_s(:db)}' AND e.created_at < '#{@time.tomorrow.midnight.to_s(:db)}' AND u.is_confirmed = 1 AND u.is_disabled = 0 AND u.entries_count > 1 GROUP BY e.user_id")
+      # @others = User.find_by_sql("SELECT u.id, u.url, e.id AS day_first_entry_id, count(*) AS day_entries_count FROM users AS u LEFT JOIN entries AS e ON u.id = e.user_id WHERE e.created_at > '#{@time.midnight.to_s(:db)}' AND e.created_at < '#{@time.tomorrow.midnight.to_s(:db)}' AND u.is_confirmed = 1 AND u.is_disabled = 0 AND u.entries_count > 1 GROUP BY e.user_id")
     else  
-      redirect_to service_url(main_path)
+      redirect_to service_url
     end
   end
   

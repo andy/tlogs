@@ -15,7 +15,17 @@
 <% content_for :sidebar_left do %>
 	<div class='section'>
 		<h2><span><%= link_to image_tag('reload.gif'), service_url(main_path(:action => :random)), :title => 'другой день, другой пользователь', :class => 'reload' %>&nbsp;День из жизни <%= link_to_tlog(@user) %></span></h2>
-		<% if @user.avatar %>
+		
+		<div class='avatar_holder'>
+  	  <% if @user.userpic? %>
+  	    <% style = @user.tlog_design_settings.large_userpic? ? :thumb128 : :thumb64 %>
+  	    <%= link_to image_tag(@user.userpic.url(style), :size => @user.userpic.image_size(style), :alt => @user.url, :title => @user.url, :class => 'avatar'), image_path(@user.userpic.url(:large)), :class => 'fancybox', :rel => 'follow', :title => @user.url %>
+  	  <% else %>
+  			<%= userpic_tag(@user) %>
+    	<% end %>
+    </div>
+
+		<% if false && @user.avatar %>
 			<div class='avatar_holder'><%= link_to_tlog @user, :link => :userpic %></div>
 		<% end %>
 
@@ -52,10 +62,10 @@
 		<%= render :partial => 'globals/calendar', :locals => { :calendar => @calendar, :time => @time } %>
 	</div>
 
-	<div class='section sidebar_others'>
-		<h2><span>этот день у других...</span></h2>
-		<% @others.each do |user| %>
-			<%= link_to h(user.url), { :entry_id => user.day_first_entry_id }, :class => (@user.id == user.id) ? 'highlight' : nil %>
-		<% end %>
-	</div>
+  <!-- <div class='section sidebar_others'>
+    <h2><span>этот день у других...</span></h2>
+    <%# @others.each do |user| %>
+      <%#= link_to h(user.url), { :entry_id => user.day_first_entry_id }, :class => (@user.id == user.id) ? 'highlight' : nil %>
+    <%# end %>
+  </div> -->
 <% end %>

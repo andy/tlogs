@@ -222,6 +222,10 @@ div.post_name a {
 .content a {
 	color:#404040;
 }
+.sidebar .content h2 a {
+  color:white;
+  text-decoration: none;
+}
 .sidebar_right .content {
 	padding-left: 58px;
 	padding-top: 5px;
