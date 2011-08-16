@@ -81,7 +81,7 @@ class User
     reject = []
     
     # premium users are unlimited
-    return allow if self.is_premium?
+    # return allow if self.is_premium?
 
     entries = self.entries.find(:all, :select => 'entries.id, entries.is_voteable, entries.is_mainpageable', :conditions => 'entries.is_mainpageable = 1 AND entries.created_at > DATE_SUB(NOW(), INTERVAL 24 HOUR)')
     
@@ -136,7 +136,7 @@ class User
           reason.expires_at = self.created_at + 6.months
         end
 
-    end unless self.is_premium?
+    end # unless self.is_premium?
     
     reason
   end
@@ -156,6 +156,10 @@ class User
   # показывать ли пользователю бета-функции
   def in_beta?
     !!self.relationship_with(User.find_by_url('beta'))
+  end
+  
+  def is_premium?
+    self.premium_till && self.premium_till > Time.now
   end
 
   ## private methods  
