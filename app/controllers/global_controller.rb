@@ -8,15 +8,20 @@ class GlobalController < ApplicationController
   def fast_forward
     @goto = nil
 
-    current_user.all_friends.each do |user|
-      user_js = { :url => user.url, :fs => user.friendship_status, :href => user_url(user), :count => nil }
-      
+    current_user.all_friends.each do |user|      
       lve = user.last_viewed_entries_count.to_i
       uec = user.entries_count_for(current_user)
       next if lve == uec
+      
+      # you can be subscribed, but not allowed to view this person entries
+      next unless user.can_be_viewed_by?(current_user)
 
-      user_js[:count] = (uec - lve).abs
-      @goto = user_js
+      @goto = {
+          :url    => user.url,
+          :fs     => user.friendship_status,
+          :href   => user_url(user),
+          :count  => (uec - lve).abs
+        }
       break
     end
 

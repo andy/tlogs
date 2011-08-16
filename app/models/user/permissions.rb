@@ -153,6 +153,10 @@ class User
     1
   end
 
+  # показывать ли пользователю бета-функции
+  def in_beta?
+    !!self.relationship_with(User.find_by_url('beta'))
+  end
 
   ## private methods  
   

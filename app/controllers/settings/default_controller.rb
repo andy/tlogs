@@ -236,7 +236,7 @@ class Settings::DefaultController < ApplicationController
       cookies.delete :l, :domain => request.domain
       reset_session
       
-      redirect_to service_url(main_path)      
+      redirect_to service_url      
     end
   end
 end

@@ -22,6 +22,7 @@ class ApplicationController < ActionController::Base
   attr_accessor   :current_service
   helper_method   :current_service
   
+  helper_method   :in_beta?
   helper_method   :is_admin?
   helper_method   :is_moderator?
   helper_method   :is_robot?
@@ -31,7 +32,11 @@ class ApplicationController < ActionController::Base
   before_filter :preload_current_site # loads @current_site
   before_filter :preload_current_user # loads @current_user
   
-  protected  
+  protected
+    def in_beta?
+      Rails.env.production? ? (current_user && current_user.in_beta?) : true
+    end
+  
     def preload_current_service
       @current_service = Tlogs::Domains::CONFIGURATION.options_for(request.host || 'localhost', request)
       Rails.logger.debug "current service is #{@current_service.domain}, subdomain #{request.subdomains.first.to_s}, domain #{request.domain}"

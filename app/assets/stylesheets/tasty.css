@@ -387,6 +387,11 @@ img.home {
 #pref_fav a:hover {
 }
 
+#pref_ff a {
+  padding-right: 4px;
+  top: 1px;
+}
+
 #pref_add {
 	margin:0 2px 0 2px;
 }
@@ -1575,9 +1580,10 @@ div#entry_helper ul {
 	list-style:none;
 	font-size:90%;
 }
-.iePNG, img {
-	filter:expression(fixPNG(this));
+/*.iePNG, img {
+  filter:expression(fixPNG(this));
 }
+*/
 .iePNG input, .iePNG a  {
 	position:relative;
 }

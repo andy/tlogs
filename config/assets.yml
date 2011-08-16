@@ -55,7 +55,7 @@ javascripts:
     - app/assets/javascripts/tasty/button.js
     - app/assets/javascripts/tasty/autoresize.js
     - app/assets/javascripts/tasty/audio-player.min.js
-    - app/assets/javascripts/tasty/fixpng.js
+    # - app/assets/javascripts/tasty/fixpng.js
     - app/assets/javascripts/tasty/toggle-flash.js
     - app/assets/javascripts/tasty/error-messages-on.js
     - app/assets/javascripts/tasty/openid.js
