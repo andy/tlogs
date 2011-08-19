@@ -1,4 +1,4 @@
-<%
+<%-
   total_pages = pageable.page_count if pageable.respond_to?(:page_count)
   total_pages ||= pageable.total_pages if pageable.respond_to?(:total_pages)
   total_pages ||= 0
@@ -18,7 +18,7 @@
   url_options ||= {}  
 
   if total_pages > 1
-%><div class='entry_pagination<%= " #{css_class}" unless css_class.blank? %>'><%=
+-%><div class='entry_pagination<%= " #{css_class}" unless css_class.blank? %>'><%=
 
     if next_page
       url = url_for({ :controller => params[:controller], :action => params[:action], :page => reverse ? (total_pages - next_page + 1) : next_page, :only_path => true }.update(url_options))
@@ -34,5 +34,5 @@
 				link_to 'позже &#x2192;', current_site ? user_url(current_site, url) : service_url(url), :class => 'entry_paginate_next'
 			end
 		end
-	%></div><%
-  end %>
+	%></div><%-
+  end -%>
