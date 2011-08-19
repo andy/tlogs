@@ -23,15 +23,12 @@ module TastyradioData
 
         offset = (status.length / 6) - 1
         if offset >= 0
-          pp offset
           data = status[(offset*6)...((offset + 1) * 6)]
-          pp data
           result[:online] = data[3]
           result[:song]   = data[5].strip.gsub(/^\-\s+/, '').gsub(/\s+\-$/, '')
         
           result[:song] = 'неизвестный трек' if result[:song] && result[:song] == '-'
         end
-
         
         return result
       end
