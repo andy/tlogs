@@ -1,6 +1,4 @@
 source "http://rubygems.org"
-source "http://gems.rubyforge.org"
-source "http://gemcutter.org"
 
 gem 'mime-types'
 gem 'rake'
@@ -8,7 +6,7 @@ gem 'rdoc'
 gem 'unicorn', :require => false
 gem 'system_timer'
 # gem 'RubyInline', :require => 'inline'
-gem 'rails', '2.3.12'
+gem 'rails', '2.3.14'
 gem 'mini_magick'
 gem 'will_paginate', '>= 2.2.2'
 gem 'coderay'
