@@ -15,12 +15,27 @@
 <link rel="apple-touch-startup-image" href="/apple-startup.png">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 
+<% if not current_site %>
+<!-- ms ie9 navigation -->
+<meta name="application-name" content="Тейсти"> 
+<meta name="msapplication-tooltip" content="Тейсти"> 
+<meta name="msapplication-starturl" content="<%= current_service.url %>">
+<%- [
+    { :name => 'прямой эфир', :uri => service_url(main_path(:action => :live)) },
+    { :name => 'лучшее',      :uri => service_url(main_path(:action => :last)) },
+    { :name => 'анонимки',    :uri => service_url(anonymous_path) },
+    { :name => 'моё',         :uri => service_url(main_path(:action => :my)) },
+  ].each do |meta| -%><%= tag :meta, :name => 'msapplication-task', :content => "name=#{meta[:name]};action-uri=#{meta[:uri]};icon-uri=#{current_service.url}/favicon.ico" %><%- end -%>
+<% end %>
+
+<!-- shortcut icon and other meta -->
 <link rel="shortcut icon" href="/favicon.ico">
 <meta http-equiv="imagetoolbar" content="no">
 <meta name="generator" content="<%= current_service.url %>">
 
 <!--[if lte IE 6]><%= tasty_include_javascripts :iewarn %><script>window.onload=function(){e("/images/ie-warning/")}</script><![endif]-->
 
+<!-- tasty js-api settings -->
 <script type='text/javascript'>
   var current_user = <%= current_user ? current_user.id : 0 %>;
   <%- if current_user -%>
@@ -33,6 +48,7 @@
   window._token = "<%= form_authenticity_token %>";  
 </script>
 
+<!-- google analytics code -->
 <%= render :partial => 'globals/gajs' %>
 
 <%- unless disable_css -%>
