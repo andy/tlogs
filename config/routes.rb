@@ -75,8 +75,6 @@ www_settings = lambda do |www|
 
   www.bookmarklet 'bookmarklet/:action', :controller => 'bookmarklet'
 
-  # www.love 'all_we_need_is_love/:action', :controller => 'love'
-  
   www.resources :feedbacks, :controller => 'feedbacks', :member => { :publish => :post, :discard => :post }
 
   www.emailer 'emailer/:method_name/:action', :controller => 'emailer', :defaults => { :action => 'index' } if Rails.env.development?
