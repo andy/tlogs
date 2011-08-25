@@ -8,4 +8,11 @@
   _gaq.push(['_setCustomVar', 4, 'Premium', <%= is_premium? ? '"true"' : '"false"' %>, 1]);
   _gaq.push(['_trackPageview']);
   _gaq.push(['_trackPageLoadTime']);
+
+  window._ya_params = <%= {
+    :anonymous  => !current_user,
+    :service    => current_service.domain,
+    :premium    => is_premium?,
+    :gender     => current_user ? current_user.gender('male', 'female') : 'unknown'
+  }.to_json %>;
 </script>

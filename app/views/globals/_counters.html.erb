@@ -7,25 +7,17 @@
 
 <!-- Yandex.Metrika counter -->
 <div style="display:none;"><script type="text/javascript">
-(function(w, c) {
-    (w[c] = w[c] || []).push(function() {
-        try {
-            w.yaCounter5021200 = new Ya.Metrika(5021200);
-             yaCounter5021200.clickmap(true);
-             yaCounter5021200.trackLinks(true);
-
-        } catch(e) { }
-    });
-})(window, 'yandex_metrika_callbacks');
+(function(w, c) { (w[c] = w[c] || []).push(function() { try { w.yaCounter5021200 = new Ya.Metrika({id:5021200, clickmap:true, trackLinks:true, trackHash:true,<%= is_private? ? ' ut:"noindex",' : '' %> params:window._ya_params||{}});} catch(e) { }});
+})(window, "yandex_metrika_callbacks");
 </script></div>
 <script src="//mc.yandex.ru/metrika/watch.js" type="text/javascript" defer="defer"></script>
-<noscript><div><img src="//mc.yandex.ru/watch/5021200" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<noscript><div><img src="//mc.yandex.ru/watch/5021200<%= is_private? ? '?ut=noindex' : '' %>" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
 <!-- /Yandex.Metrika counter -->
 
 <% unless is_private? %>
 <!--LiveInternet counter--><script type="text/javascript">new Image().src = "//counter.yadro.ru/hit?r" + escape(document.referrer) + ((typeof(screen)=="undefined")?"" : ";s"+screen.width+"*"+screen.height+"*" + (screen.colorDepth?screen.colorDepth:screen.pixelDepth)) + ";u"+escape(document.URL) + ";h"+escape(document.title.substring(0,80)) + ";" +Math.random();</script><!--/LiveInternet-->
-<!--Openstat-->
 
+<!--Openstat-->
 <span id="openstat2200098"></span>
 <script type="text/javascript">
 var openstat = { counter: 2200098, next: openstat };
