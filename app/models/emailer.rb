@@ -82,7 +82,7 @@ class Emailer < ActionMailer::Base
       # global settings
       @sent_on    = Time.now
       @headers    = {}
-      @subject    = options[:subj]
+      @subject    = options[:subj].gsub("\r", '').gsub("\n", " ")
       @recipients = options[:email].blank? ? options[:user].email : options[:email]
       @from       = options[:from]
 
