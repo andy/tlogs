@@ -45,7 +45,7 @@ class SongEntry < Entry
   def attachment_class; AudioAttachment; end
   
   def excerpt
-    self.data_part_2.to_s.truncate(150).to_s
+    self.data_part_2.to_s.truncate(150).to_s.gsub("\r", '').gsub("\n", ' ')
   end
 
   before_validation :make_a_link_from_data_part_1_if_present

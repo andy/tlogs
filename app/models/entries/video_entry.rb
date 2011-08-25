@@ -46,7 +46,7 @@ class VideoEntry < Entry
   before_validation :make_a_link_from_data_part_1_if_present
   
   def excerpt
-    self.data_part_2.to_s.truncate(150).to_s
+    self.data_part_2.to_s.truncate(150).to_s.gsub("\r", '').gsub("\n", ' ')
   end
   
   def self.new_from_bm(params)

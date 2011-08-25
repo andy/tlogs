@@ -39,7 +39,7 @@ class ImageEntry < Entry
   before_validation :make_a_link_from_data_part_1_if_present
   def excerpt
     if self.data_part_2.to_s.length > 0
-      self.data_part_2.to_s.truncate(150).to_s
+      self.data_part_2.to_s.truncate(150).to_s.gsub("\r", '').gsub("\n", ' ')
     else
       'Картинка'
     end

@@ -45,9 +45,9 @@ class TextEntry < Entry
   def entry_russian_dict; { :who => 'ммм... пост', :whom => 'ммм... пост' } end
   def excerpt
     if self.data_part_2.to_s.length > 0 
-      self.data_part_2.to_s.truncate(150).to_s
+      self.data_part_2.to_s.truncate(150).to_s.gsub("\r", '').gsub("\n", ' ')
     else
-      self.data_part_1.to_s.truncate(150).to_s
+      self.data_part_1.to_s.truncate(150).to_s.gsub("\r", '').gsub("\n", ' ')
     end
   end
   def self.new_from_bm(params)
