@@ -9,14 +9,15 @@ class User
     
   # лишь хорошие друзья
   {
-    :public_friends => { :filter => '= 2', :order => 'r.position' },
-    :friends => { :filter => '= 1', :order => 'r.position' },
-    :guessed_friends => { :filter => '= 0 AND r.read_count > 4', :order => 'r.read_count DESC' },
-    :all_friends => { :filter => '> 0', :order => 'r.friendship_status DESC, r.position' },
-    :everybody => { :filter => nil, :order => nil }
+    :public_friends   => { :filter => '= 2', :order => 'r.position' },
+    :friends          => { :filter => '= 1', :order => 'r.position' },
+    :guessed_friends  => { :filter => '= 0 AND r.read_count > 4', :order => 'r.read_count DESC' },
+    :all_friends      => { :filter => '> 0', :order => 'r.friendship_status DESC, r.position' },
+    :blacklist        => { :filter => '= -2', :order => 'r.position' },
+    :everybody        => { :filter => nil, :order => nil }
   }.each do |name, params|
-    param_filter = params[:filter] ? " AND r.friendship_status #{params[:filter]}" : ''
-    param_order = params[:order] ? " ORDER BY #{params[:order]}" : ''
+    param_filter    = params[:filter] ? " AND r.friendship_status #{params[:filter]}" : ''
+    param_order     = params[:order] ? " ORDER BY #{params[:order]}" : ''
 
     has_many name.to_sym, :class_name => 'User', :finder_sql => "SELECT #{USER_AND_RELATIONSHIP_COLUMNS} FROM relationships AS r LEFT JOIN users AS u ON u.id = r.user_id WHERE r.reader_id = \#{id} #{param_filter} #{param_order}"
     # e.g. public_friend_r (- relationship model)
@@ -40,7 +41,7 @@ class User
   def reads(user)
     return if self.id == user.id
 
-    relationship = relationship_with(user, true)        
+    relationship = relationship_with(user, false)        
     do_save = relationship.new_record?
     relationship.friendship_status = Relationship::GUESSED if relationship.new_record?
 
@@ -88,7 +89,7 @@ class User
   # Подписан ли на ленту пользоваетля user? Возвращает true / false
   def subscribed_to?(user)
     return false unless user
-    (relationship = relationship_with(user)) && relationship.friendship_status >= Relationship::DEFAULT
+    (relationship = relationship_with(user)) && relationship.positive?
   end
 
   # Пользователь user комментирует записи другого пользователя
@@ -98,6 +99,70 @@ class User
     relationship.increment(:comment_count)
     relationship.last_comment_at = Time.now
     relationship.save!
+  end
+  
+  #
+  # current_site.mark_as_viewed_by! current_user
+  #
+  def mark_as_viewed_by!(user, entry = nil)
+    # user?
+    return if user.nil?
+
+    # is_owner?
+    return if user.id == self.id
+    
+    Rails.logger.debug "** mark_as_viewed_by #{self.url} by #{user.url}, entry #{entry.try(:id) || 'nil'}"
+    
+    # get relationship between the two
+    Relationship.transaction do
+      relationship = user.relationship_with(self, true)
+      relationship.friendship_status = Relationship::GUESSED if relationship.new_record?
+      
+      Rails.logger.debug "** mark_as_viewed_by relationship #{relationship.try(:id) || 'nil'}, #{relationship.new_record? ? 'new' : 'existing'}"
+      
+      # positive relationship is one when user is explicitly or implicitly following another
+      if relationship.positive?
+        actual_entries_count = self.entries_count_for(user)
+        viewed_entries_count = relationship.last_viewed_entries_count
+        
+        Rails.logger.debug "** mark_as_viewed_by aec #{actual_entries_count} vec #{viewed_entries_count}"
+      
+        if actual_entries_count != viewed_entries_count
+          # if user is looking at specific entry, act a bit differently:
+          if entry
+            # stamp with current visit time / counters if this is first visit to the tlog
+            if relationship.last_viewed_at.nil?
+              Rails.logger.debug "** mark_as_viewed_by stamp to #{actual_entries_count}"
+              relationship.stamp actual_entries_count
+
+            # otherwise act as if only one record has been viewed out of all unviewed
+            elsif entry.created_at > relationship.last_viewed_at && actual_entries_count > viewed_entries_count
+              Rails.logger.debug "** mark_as_viewed_by increment (soft)"
+              
+              relationship.increment :last_viewed_entries_count
+            end
+        
+          # if we are looking at tlog as a whole, without any specific entry, then just
+          # update the timestamps and counters  
+          else
+            Rails.logger.debug "** mark_as_viewed_by stamp to #{actual_entries_count}"
+            relationship.stamp actual_entries_count
+          end        
+        else
+          Rails.logger.debug "** mark_as_viewed_by counters unchanged"
+        end
+    
+      # negative relationship is when user is explicitly or implicitly ignoring another user
+      else
+        Rails.logger.debug "** mark_as_viewed_by negative, ignored"
+    
+      end # if/else relationship.positive?
+      
+      Rails.logger.debug "** mark_as_viewed_by save!"
+      relationship.save!
+    end # Relationship.transaction
+    
+    Rails.logger.debug "** mark_as_viewed_by done"
   end
   
   # this removes all people that are subscribed to my tlog

@@ -13,6 +13,9 @@ class ApplicationController < ActionController::Base
   helper :white_list, :url, :assets
 
   # MAIN FILTERS
+  attr_accessor   :is_private
+  helper_method   :is_private?
+
   attr_accessor   :current_site
   helper_method   :current_site
 
@@ -23,23 +26,37 @@ class ApplicationController < ActionController::Base
   helper_method   :current_service
   
   helper_method   :in_beta?
+  helper_method   :is_premium?
   helper_method   :is_admin?
   helper_method   :is_moderator?
   helper_method   :is_robot?
+  helper_method   :is_owner?
   helper_method   :is_mobile_device?
 
+  before_filter :preload_is_private
   before_filter :preload_current_service
   before_filter :preload_current_site # loads @current_site
   before_filter :preload_current_user # loads @current_user
   
   protected
     def in_beta?
-      Rails.env.production? ? (current_user && current_user.in_beta?) : true
+      @in_beta ||= Rails.env.production? ? (current_user && current_user.in_beta?) : true
+    end
+    
+    def is_premium?
+      current_user && current_user.is_premium?
+    end
+    
+    def preload_is_private
+      Rails.logger.debug "* preload: set is private to 'false'"
+
+      @is_private = false
     end
   
     def preload_current_service
       @current_service = Tlogs::Domains::CONFIGURATION.options_for(request.host || 'localhost', request)
-      Rails.logger.debug "current service is #{@current_service.domain}, subdomain #{request.subdomains.first.to_s}, domain #{request.domain}"
+
+      Rails.logger.debug "* preload: current_service is #{@current_service.domain || 'nil'}, subdomain is #{request.subdomains.first.to_s || 'nil'}, domain set to #{request.domain || 'nil'}"
       
       set_mobile_format if @current_service.is_mobile?
     end
@@ -62,7 +79,7 @@ class ApplicationController < ActionController::Base
         # перенаправляем на сайт сервиса, если адрес запрещенный
         redirect_to "#{request.protocol}www.mmm-tasty.ru#{request.port == 80 ? '' : ":#{request.port}"}" and return false if User::RESERVED.include?(url) && url != 'www'
       elsif Tlogs::Domains::CONFIGURATION.domains.include?(request.host)
-        Rails.logger.debug "request domain okay #{request.host}"
+        Rails.logger.debug "* preload: current_site host is #{request.host}"
 
         url = params[:current_site] if request.path.starts_with?('/users/')
         
@@ -70,7 +87,7 @@ class ApplicationController < ActionController::Base
         redirect_to "#{request.protocol}#{request.host_with_port}" and return false if User::RESERVED.include?(url)
       end
       
-      Rails.logger.debug "request url set to #{url}, subdomain #{request.subdomains.join('.')}, domain #{request.domain}"      
+      Rails.logger.debug "* preload: current_site url is #{url || 'nil'}, subdomain is #{request.subdomains.join('.') || 'nil'}, domain #{request.domain || 'none'}"
       
       @current_site = User.find_by_url(url, :include => [:tlog_settings, :avatar]) unless url.blank?
       
@@ -81,11 +98,11 @@ class ApplicationController < ActionController::Base
       return true if @current_user
 
       # from session
-      @current_user = User.active.find_by_id(session[:u]) if session[:u]
+      @current_user = User.active.find_by_id(session[:u], :include => [:tlog_settings]) if session[:u]
 
       unless cookies[:t].blank?
         id, sig = cookies[:t].unpack('m').first.unpack('LZ*')
-        user = User.active.find_by_id(id)
+        user = User.active.find_by_id(id, :include => [:tlog_settings])
         if user && user.signature == sig
           session[:u] = user.id
           @current_user = user
@@ -94,14 +111,11 @@ class ApplicationController < ActionController::Base
 
       true
     end
-    
 
     # Является ли текущий пользователь владельцем сайта
     def is_owner?
-      return true if current_user && current_site && current_user.id == current_site.id
-      false
+      current_user && current_site && current_user.id == current_site.id
     end
-    helper_method :is_owner?
 
     # Фильтр который требует чтобы пользователь был авторизован прежде чем
     #  мог получить доступ к указанной странице
@@ -124,6 +138,7 @@ class ApplicationController < ActionController::Base
     
     def require_current_site
       return true if current_site && current_site.is_a?(User)
+
       render :template => 'global/tlog_not_found', :layout => false, :status => 404
       false
     end
@@ -132,9 +147,14 @@ class ApplicationController < ActionController::Base
       current_user && current_user.is_admin?
     end
     
+    def is_private?
+      @is_private
+    end
+    
     def require_admin
       return false unless require_current_user
-      return true if current_user.is_admin?
+      
+      @is_private = true and return true if current_user.is_admin?
       
       render :text => 'pemission denied', :status => 403
       return false
@@ -156,7 +176,7 @@ class ApplicationController < ActionController::Base
     end
     
     def require_moderator
-      return true if require_current_user && current_user.is_moderator?
+      @is_private = true and return true if require_current_user && current_user.is_moderator?
       
       render :text => 'pemission denied', :status => 403
       return false
@@ -184,8 +204,8 @@ class ApplicationController < ActionController::Base
       true
     end
 
-    def current_user_eq_current_site
-      return true if current_user && current_site && current_user.id == current_site.id
+    def require_owner
+      @is_private = true and return true if is_owner?
       
       render(:text => 'permission denied', :status => 403) and return false
     end

@@ -295,3 +295,13 @@ input.placeholder, textarea.placeholder {
     left: 2px;    
   }
 }
+
+.settings .t-controller-settings-premium {
+  .header {
+    sup {
+      font-size: 12px;
+      color: green;
+      vertical-align: super;
+    }
+  }  
+}

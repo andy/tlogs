@@ -64,7 +64,12 @@ class Entry
       'liveinternet.ru',
       'diary.ru',
       'jokesland.net.ru',
-      'rg.ru/test'
+      'rg.ru/test',
+      'rutvit.ru',
+      'godudu.com',
+      'jujuju.ru',
+      'blogspot.com',
+      'liveinternet.ru'
       ]
     
     bads.find { |bad| contents.include?(bad) } ? true : false    

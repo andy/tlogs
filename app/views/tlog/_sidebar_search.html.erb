@@ -1,0 +1,3 @@
+<div class='sidebar_section' id='sidebar_search'><%=
+  link_to_function 'Поиск', "sidebar_toggle('search')", :title => "в #{current_site.gender("его", "её")} тлоге", :class => "sidebar_toggle#{' highlight' if params[:query]}", :id => 'sidebar_search_link'
+  %><div class='sidebar_section_content' id='sidebar_search_content' <%= " style='display: none'" unless params[:query] %>><form method='get' action='<%= user_url(current_site, search_path) %>'><%= text_field_tag 'query', params[:query], :autosave => "com.tlogs", :results => 10, :id => nil, :class => 'sidebar_search_input' %></form></div></div>

@@ -193,6 +193,14 @@ END
     content_tag(:abbr, Russian::strftime(time, '%d %B %Y в %H:%M'), options.merge(:title => time.getutc.iso8601))
   end
   
+  def current_controller_class
+    't-controller-' + params[:controller].gsub('/', '-')
+  end
+  
+  def current_action_class
+    't-action-' + params[:action]
+  end
+  
   def say_time_in_words(time)
     distance    = (time - Time.now).round
     in_minutes  = (distance / 1.minute).round.abs

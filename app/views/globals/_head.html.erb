@@ -31,7 +31,7 @@
 <!-- shortcut icon and other meta -->
 <link rel="shortcut icon" href="/favicon.ico">
 <meta http-equiv="imagetoolbar" content="no">
-<meta name="generator" content="<%= current_service.url %>">
+<meta name="generator" content="<%= current_service.domain %>">
 
 <!--[if lte IE 6]><%= tasty_include_javascripts :iewarn %><script>window.onload=function(){e("/images/ie-warning/")}</script><![endif]-->
 
@@ -40,11 +40,13 @@
   var current_user = <%= current_user ? current_user.id : 0 %>;
   <%- if current_user -%>
   var _user = <%= {
-        :id   => current_user.id,
-        :url  => current_user.url
+        :id       => current_user.id,
+        :url      => current_user.url,
+        :premium  => current_user.is_premium?
         # :sid  => cookies[ActionController::Base.session_options[:key]]
       }.to_json %>;
   <%- end -%>
+  window._is_private = <%= is_private?.to_json %>;
   window._token = "<%= form_authenticity_token %>";  
 </script>
 

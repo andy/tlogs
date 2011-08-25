@@ -3,7 +3,7 @@
 
   <% if is_owner? && current_site.tlog_settings.past_disabled? && @page && @page > 1 %>
     <div class='filter'>
-      <p>эта страница видна только вам (<%= link_to 'настроить', settings_path %>)</p>
+      <p>эта страница видна только вам (<%= link_to 'настроить', user_url(current_site, settings_path) %>)</p>
     </div>
   <% end %>
 
@@ -15,7 +15,7 @@
 
   <%# показываем навигационные элементы если прошлое не выключено или если это владелец тлога %>
   <% if is_owner? || !current_site.tlog_settings.past_disabled? %>
-  	<% if params[:action] == 'day' || current_site.tlog_settings.is_daylog? && params[:action] == 'index' %>
+  	<% if params[:action] == 'daylog' || current_site.tlog_settings.is_daylog? && params[:action] == 'index' %>
   		<%= render :partial => 'globals/day_pagination', :locals => { :entries => @entries }  %>
   	<% else %>
   		<%= paginate @entries, :reverse => reverse %>
@@ -23,7 +23,7 @@
   <% end %>
 	
 <% else %>
-	<% if params[:action] == 'day' %>
+	<% if params[:action] == 'daylog' %>
 		<div class='help_intro'>
 		  <% if @past_disabled %>
 		    <h2>Пользователь предпочел скрыть свои старые записи</h2>

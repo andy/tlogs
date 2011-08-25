@@ -1,5 +1,5 @@
 class Settings::DefaultController < ApplicationController
-  before_filter :require_current_user, :current_user_eq_current_site
+  before_filter :require_current_user, :require_owner
   before_filter :require_confirmed_current_user
 
   protect_from_forgery
@@ -19,7 +19,7 @@ class Settings::DefaultController < ApplicationController
 
       if @tlog_settings.save
         flash[:good] = 'Настройки сохранены'
-        redirect_to :action => 'index'
+        redirect_to user_url(current_user, settings_path)
       else
         flash[:bad] = 'Произошла какая-то ошибка и ваши настройки не удалось сохранить'
       end

@@ -292,13 +292,13 @@ module WhiteListHelper
         new_text = auto_link(text.to_html)
 
         # [andy] -> ссылка на пользователя
-        new_text.gsub!(/(\[([a-z0-9_-]{2,20})\])/) do
+        new_text.gsub!(/(\[([a-z0-9_-]{2,20})\])/i) do
           user = User.find_by_url($2)
           user ? "<a href='#{user_url(user)}' class='t-entry-tlog'>#{user.url}</a>" : $1
         end
 
         # @andy -> ссылка на пользователя
-        new_text.gsub!(/(\@([a-z0-9_-]{2,20}))/) do
+        new_text.gsub!(/(\@([a-z0-9_-]{2,20}))/i) do
           user = User.find_by_url($2)
           user ? "<a href='#{user_url(user)}' class='t-entry-tlog'>@#{user.url}</a>" : $1
         end

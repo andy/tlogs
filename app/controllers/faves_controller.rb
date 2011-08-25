@@ -3,6 +3,8 @@ class FavesController < ApplicationController
   before_filter :require_confirmed_current_site, :except => [:create, :destroy]
   before_filter :require_current_user, :only => [:create, :destroy]
 
+  before_filter :check_if_can_be_viewed
+
   protect_from_forgery
 
   layout 'tlog'
@@ -44,4 +46,10 @@ class FavesController < ApplicationController
       page.visual_effect :fade, entry.dom_id
     end
   end
+  
+  protected
+    def check_if_can_be_viewed
+      render :template => 'tlog/hidden' and return false unless current_site.can_be_viewed_by?(current_user)
+    end
+    
 end

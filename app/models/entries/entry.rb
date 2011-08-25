@@ -192,6 +192,20 @@ class Entry < ActiveRecord::Base
     user && user.id == self.user_id
   end  
   
+  def can_be_viewed_by?(user)
+    # you can always view your own tlog
+    return true if user && user.id == self.user_id
+    
+    # skip if current user is blacklisted
+    return false if user && author.is_blacklisted_for?(user)
+    
+    # as a rule of thumb all mainpageable entries can be viewed by everyone
+    return true if self.is_mainpageable?
+
+    # delegate next stuff to the author vs. user relationship
+    self.author.can_be_viewed_by?(user)
+  end
+  
   # русское написание
   def to_russian(key=:who)
     entry_russian_dict[key]

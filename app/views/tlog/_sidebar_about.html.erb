@@ -1,0 +1,13 @@
+<div class='sidebar_section' id='sidebar_about'>
+	<%= link_to_function "О #{current_site.gender('нём', 'ней')}", "sidebar_toggle('about')", :class => 'sidebar_toggle', :id => 'sidebar_about_link' %>
+	<div class='sidebar_section_content' id='sidebar_about_content' style='display: <%= is_robot? ? 'block' : 'none' %>'>
+			<%= white_list_entry(current_site.tlog_settings.about) unless current_site.tlog_settings.about.blank? %>
+			
+			<% unless current_site.faves.size.zero? %>
+				<div id='about_submenu'>
+				  <%= link_to "избранное", user_path(current_site, faves_path) %>
+				  <%= content_tag :span, current_site.faves.size.pluralize('штука', 'штуки', 'штук', true) %>
+				</div>
+			<% end %>
+	</div>
+</div>

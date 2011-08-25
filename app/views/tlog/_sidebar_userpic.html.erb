@@ -1,0 +1,18 @@
+<div class="sidebar_section" id='sidebar_avatar'>
+	<div class='sidebar_section_content' id='sidebar_avatar_content'>
+	  <% if current_site.userpic? %>
+	    <% style = current_site.tlog_design_settings.large_userpic? ? :thumb128 : :thumb64 %>
+	    <%= link_to image_tag(current_site.userpic.url(style), :size => current_site.userpic.image_size(style), :alt => current_site.url, :title => current_site.url, :class => 'avatar'), image_path(current_site.userpic.url(:large)), :class => 'fancybox', :rel => 'follow', :title => current_site.url %>
+	  <% else %>
+			<%= userpic_tag(current_site) %>
+  	<% end %>
+		
+		<% if current_user && !is_owner? %>
+			<%# код из _relationship.rhtml, один в один %>
+			<%- relationship = current_user.relationship_with(current_site, true) -%>
+			<div id='sidebar_relationship'<%= ' class="subscribed"' if relationship.friendship_status >= Relationship::DEFAULT %>>
+				<%= link_to_remote relationship.say_it(current_site, current_user), :url => user_url(current_site, relationship_entries_path).downcase -%>
+			</div>
+		<% end %>
+	</div>
+</div>

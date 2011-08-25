@@ -6,6 +6,7 @@ tlog_settings = lambda do |tlog|
   tlog.settings_social 'settings/social/:action', :controller => 'settings/social'
   tlog.settings_sidebar 'settings/sidebar/:action/:id', :controller => 'settings/sidebar'
   tlog.settings_mobile 'settings/mobile/:action/:id', :controller => 'settings/mobile'
+  tlog.settings_premium 'settings/premium/:action', :controller => 'settings/premium'
   tlog.settings 'settings/:action', :controller => 'settings/default'
   tlog.admin 'admin/:action', :controller => 'admin'
   tlog.connect 'search/:action', :controller => 'search'
@@ -17,9 +18,7 @@ tlog_settings = lambda do |tlog|
   tlog.robots 'robots.txt', :controller => 'tlog', :action => 'robots'
   tlog.foaf 'foaf.rdf', :controller => 'tlog', :action => 'foaf'
   
-  # tlog.resources :activities, :controller => 'activities'
-
-  tlog.day ':year/:month/:day', :controller => 'tlog', :action => 'day', :requirements => { :year => /\d{4}/, :month => /\d{1,2}/, :day => /\d{1,2}/ }
+  tlog.day ':year/:month/:day', :controller => 'tlog', :action => 'daylog', :requirements => { :year => /\d{4}/, :month => /\d{1,2}/, :day => /\d{1,2}/ }
 
   tlog.next_day ':year/:month/:day/next', :controller => 'tlog', :action => 'next_day', :requirements => { :year => /\d{4}/, :month => /\d{1,2}/, :day => /\d{1,2}/ }
   tlog.prev_day ':year/:month/:day/prev', :controller => 'tlog', :action => 'prev_day', :requirements => { :year => /\d{4}/, :month => /\d{1,2}/, :day => /\d{1,2}/ }
@@ -48,12 +47,16 @@ www_settings = lambda do |www|
 
   www.main_feed_last 'main/feed/last/:rating/:kind.xml', :controller => 'main_feed', :action => 'last', :rating => 'default', :kind => 'default', :requirements => { :rating => /[a-z]{3,20}/ }
   www.main_feed 'main/feed/:action.xml', :controller => 'main_feed'
+  www.last_day 'main/last/:year/:month/:day/:rating/:kind', :controller => 'main', :action => 'last', :rating => 'default', :kind => 'default', :requirements => { :year => /\d{4}/, :month => /\d{1,2}/, :day => /\d{1,2}/ }
   www.last 'main/last/:rating/:kind', :controller => 'main', :action => 'last', :rating => 'default', :kind => 'default'
   www.hot 'main/hot/:kind', :controller => 'main', :action => 'hot', :kind => 'default'
   www.anonymous 'main/anonymous/:action/:id', :controller => 'anonymous'
   www.connect 'main/:action/:page', :controller => 'main', :page => /\d+/
   www.main 'main/:action', :controller => 'main'
   www.robots 'robots.txt', :controller => 'main', :action => 'robots'
+
+  # billing processing
+  www.billing 'billing/:action', :controller => 'billing'
 
   # account routes, jf helper methods
   www.login 'account/login', :controller => 'account', :action => 'login'
@@ -72,7 +75,7 @@ www_settings = lambda do |www|
 
   www.bookmarklet 'bookmarklet/:action', :controller => 'bookmarklet'
 
-  www.love 'all_we_need_is_love/:action', :controller => 'love'
+  # www.love 'all_we_need_is_love/:action', :controller => 'love'
   
   www.resources :feedbacks, :controller => 'feedbacks', :member => { :publish => :post, :discard => :post }
 

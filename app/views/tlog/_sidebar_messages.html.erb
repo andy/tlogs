@@ -1,0 +1,37 @@
+<div class='sidebar_section' id='sidebar_messages'>
+	<%= link_to_function 'Сообщения', "sidebar_toggle('messages')", :class => 'sidebar_toggle', :id => 'sidebar_messages_link' %>
+	<div class='sidebar_section_content' id='sidebar_messages_content' style='display: none'>
+	  <ul>
+	  <%
+	    # cases:
+	    # - anonymous
+	    # - owner
+	    # - had conversations
+	    # - no conversations
+	  
+	    if not current_user %>
+	    <li><p>Отправлять сообщения могут только авторизованные пользователи.</p></li>
+	  <% elsif is_owner?
+	    unviewed_count = current_site.conversations.unviewed.count
+	    if unviewed_count > 0
+	    %>
+		    <li><p>У вас <%= link_to "#{unviewed_count.pluralize('непрочтенная переписка', 'непрочтенных переписки', 'непрочтенных переписок', true)}", user_url(current_site, unviewed_conversations_path) %>.</p></li>
+		  <% else %>
+		    <li><p>У вас нет непрочтенных сообщений.</p></li>
+		  <% end %>
+	    <li><p><%= link_to 'Все ваши переписки &rarr;', user_url(current_site, conversations_path) %></p></li>
+	  <% else %>
+	    <%
+	      convo = current_user.conversations.with(current_site).first
+	      if convo
+	    %>
+	      <li><p>Между вами <%= link_to "#{convo.messages_count.pluralize('сообщение', 'сообщения', 'сообщений', true)}", user_url(current_user, conversation_path(convo)) %>.</p></li>
+	      <li><p><%= link_to "Напишите #{current_site.gender('ему', 'ей')}", user_url(current_user, named_new_conversation_path(:url => current_site.url)) %>.</p></li>
+	    <% else %>
+	      <li><p>Между вами не было переписки.</p></li>
+	      <li><p><%= link_to "Напишите #{current_site.gender('ему', 'ей')}", user_url(current_user, named_new_conversation_path(:url => current_site.url)) %>!</p></li>
+	    <% end %>
+	  <% end %>
+	  </ul>
+	</div>
+</div>

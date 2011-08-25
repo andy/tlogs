@@ -1,18 +1,13 @@
-<!doctype html>
+!!! 5
 <!--[if lt IE 7 ]> <html class="no-js ie6" lang="ru"> <![endif]-->
 <!--[if IE 7 ]>    <html class="no-js ie7" lang="ru"> <![endif]-->
 <!--[if IE 8 ]>    <html class="no-js ie8" lang="ru"> <![endif]-->
 <!--[if (gte IE 9)|!(IE)]><!--> <html class="no-js" lang="ru"> <!--<![endif]-->
-<head>
-	<%= render :partial => 'globals/head' %>
-</head>
-<body class="main_page">
-	<div class='main_page'>
-		<div class="main_rounded_holder">
-			<div class="rounded_main_center iePNG">
-				<%= yield %>
-			</div>
-		</div>
-	</div>
-</body>
+%head
+  = render :partial => 'globals/head'
+
+%body
+  = yield
+  = render :partial => 'globals/counters' if Rails.env.production?
+
 </html>

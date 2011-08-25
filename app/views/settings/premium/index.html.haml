@@ -1,0 +1,24 @@
+- @title = "премиум возможности, #{current_user.username}"
+- content_for :header do
+  Тейсти-премиум
+  %sup.premium
+    %span{:title => current_user.premium_till.strftime("%d %h %Y")}
+      = current_user.premium_days_left.pluralize('день', 'дня', 'дней', true)
+
+%p
+  %b Черный список.
+  Эта опция доступна вам в разделе
+  = link_to 'друзья &rarr;', user_url(current_site, settings_path(:action => :social))
+
+%p
+  %b Никаких ограничений
+  теперь действительно нет.
+
+%p
+  %b Свой фон на главной
+  можно поставить из предложенных ниже вариантов, либо загрузить свой
+  
+%p
+  %b Для переключения между несколькими аккаунтами
+  нужно выполнить соотвествующие настройки в
+  = link_to 'этом разделе &rarr;', user_url(current_site, settings_premium_path(:action => :accounts))

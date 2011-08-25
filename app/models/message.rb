@@ -26,6 +26,7 @@ class Message < ActiveRecord::Base
   validates_presence_of :recipient
   validates_presence_of :user
   validates_length_of :body, :in => 2..4086, :allow_nil => false, :allow_blank => false, :too_short => 'уж напишите что-нибудь, пожалуйста', :too_long => 'слишком длинное сообщение получилось, не можем отправить'
+  validate :must_not_be_blacklisted
 
   ## attributes
   attr_accessor :recipient_url
@@ -149,4 +150,9 @@ class Message < ActiveRecord::Base
   def async_deliver!(current_service)
     Resque.enqueue(MessageDeliverJob, self.id, current_service.domain) if self.should_be_delivered?
   end
+  
+  protected
+    def must_not_be_blacklisted
+      errors.add :body, 'Вы не можете отправлять этому пользователю сообщение' if self.user.is_blacklisted_for?(self.recipient) || self.recipient.is_blacklisted_for?(self.user)
+    end
 end

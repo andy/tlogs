@@ -1,0 +1,4 @@
+---
+billing:
+  smsonline:
+    key: xxx        # your sms online key

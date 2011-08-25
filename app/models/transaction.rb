@@ -14,6 +14,8 @@ class Transaction < ActiveRecord::Base
   ## associations
   belongs_to :user
   
+  has_many   :bulk_transactions
+  
   ## named scopes
   named_scope :pending, :conditions => { :state => 'pending' }
   named_scope :success, :conditions => { :state => 'success' }

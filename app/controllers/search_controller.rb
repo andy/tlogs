@@ -1,6 +1,8 @@
 class SearchController < ApplicationController
   skip_before_filter :require_confirmation_on_current_user
   
+  before_filter :check_if_can_be_viewed
+  
   helper :main
   layout 'main'
 
@@ -51,4 +53,9 @@ class SearchController < ApplicationController
     # результаты отображаются внутри тлога если поиск выполнялся по индивидуальному тлогу
     render :layout => current_site ? 'tlog' : 'main'
   end
+  
+  protected
+    def check_if_can_be_viewed
+      render :template => 'tlog/hidden', :layout => 'tlog' and return false if current_site && !current_site.can_be_viewed_by?(current_user)
+    end
 end

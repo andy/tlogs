@@ -7,7 +7,7 @@ xml.rss :version => '2.0', 'xmlns:ya' => "http://blogs.yandex.ru/schema/rss", 'x
     xml.description { xml.cdata!(strip_tags(current_site.tlog_settings.about.strip)) } unless current_site.tlog_settings.about.blank?
     xml.language 'ru-RU'
     xml.pubDate @entries.first.created_at.to_s(:rfc822) if @entries && @entries.first
-    xml.generator "tlogs rss (#{current_service.url})"
+    xml.generator current_service.domain
     xml.ttl 30
     # xml.tag!('wfw:commentRss', user_url(current_site, tlog_feed_path(:action => 'comments')))
     xml.tag!('ya:more', user_url(current_site, tlog_feed_path(:action => 'rss', :page => @entries.next_page)))

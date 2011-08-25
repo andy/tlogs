@@ -4,8 +4,37 @@ Tasty =
     jQuery('a.t-act-fave').live "click", Tasty.fave
     jQuery('a.t-act-meta').live "click", Tasty.meta.click
     jQuery('a#t-act-fastforward').live "click", Tasty.fastforward
+    jQuery('.t-controller-settings-social a.t-act-social-delete').live "click", Tasty.social.del
+    jQuery('.t-controller-settings-social a.t-act-social-edit').live "click", Tasty.social.edit
     Tasty.shortcut.ready() if jQuery('#t-act-shortcut')
     true
+
+  social:
+    del: (event) ->
+      jQuery.ajax
+        url: jQuery(this).data 'url'
+        dataType: 'json'
+        data:
+          authenticity_token:
+            window._token
+        type: 'post'
+        success: (data) =>
+      
+      new Effect.Highlight "relationship_#{jQuery(this).data('rel-id')}", { duration: 0.3 }
+      new Effect.Fade "relationship_#{jQuery(this).data('rel-id')}", { duration: 0.3 }
+
+      false
+    
+    edit: (event) ->
+      jQuery.ajax
+        url: jQuery(this).data 'url'
+        dataType: 'script'
+        data:
+          authenticity_token:
+            window._token
+        type: 'get'
+
+      false
 
   fastforward: (event) ->
     jQuery.ajax

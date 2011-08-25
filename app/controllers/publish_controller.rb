@@ -1,5 +1,5 @@
 class PublishController < ApplicationController
-  before_filter :require_current_user, :current_user_eq_current_site, :filter_entry
+  before_filter :require_current_user, :require_owner, :filter_entry
   
   # protect_from_forgery :except => [:index]
 
@@ -185,6 +185,8 @@ class PublishController < ApplicationController
         :backtrace      => ex.backtrace,
         :parameters     => params
       )
+      
+      raise ex if Rails.env.development?
 
       @attachment.valid? unless @attachment.nil?
       render :action => 'edit'
@@ -193,7 +195,7 @@ class PublishController < ApplicationController
     # проверяем что entry.type имеет допустимое значение
     def filter_entry
       return true unless params[:entry] && params[:entry][:type]
-      return true if %w( TextEntry LinkEntry QuoteEntry ImageEntry SongEntry VideoEntry ConvoEntry CodeEntry AnonymousEntry).include?(params[:entry][:type])
+      return true if %w(TextEntry LinkEntry QuoteEntry ImageEntry SongEntry VideoEntry ConvoEntry CodeEntry AnonymousEntry).include?(params[:entry][:type])
       render :text => 'oops, bad entry type', :status => 403
       false
     end
