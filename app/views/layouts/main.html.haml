@@ -51,8 +51,7 @@
         - news = User.find_by_url 'news'
         - news_count = news.new_entries_count_for(current_user)
         = menu_item 'О проекте', :about, %w(main/about main/users main/new_users)
-        = menu_item "Новости#{"<sup>+#{news_count}</sup>" unless news_count.zero?}", :news if !current_user || !news_count.zero? || params[:action] == 'news'
-        -# menu_item 'Люди', :new_users, %w(main/users main/new_users)
+        = menu_item "Новости#{"<sup>+#{news_count}</sup>" unless news_count.zero?}", :news
         = menu_item 'Лучшее', :last
         = menu_item 'Анонимки', :anonymous, %w(anonymous/*)
         = menu_item "Моё", :my, %w(main/my main/last_personalized) if current_user
