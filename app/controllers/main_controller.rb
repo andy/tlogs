@@ -1,7 +1,6 @@
 class MainController < ApplicationController
   skip_before_filter :require_confirmation_on_current_user
   
-  before_filter :require_admin, :only => [:cssfags]
 
   def index
   end
@@ -12,18 +11,9 @@ class MainController < ApplicationController
   def news
     news = User.find_by_url('news')
     
-    # обновляем статистику для текущего пользователя
-    if current_user && news.entries_count > 0 && !is_owner?
-      rel = current_user.reads(news)
-      # обновляем количество просмотренных записей, если оно изменилось
-      if news.entries_count_for(current_user) != rel.last_viewed_entries_count
-        rel.last_viewed_at = Time.now
-        rel.last_viewed_entries_count = news.entries_count_for(current_user)
-        rel.save!
-      end
-    end
+    news.mark_as_viewed_by!(current_user)
     
-    total_pages = news.entries_count_for(news).to_pages
+    total_pages = news.entries_count_for(current_user).to_pages
     @page = params[:page].to_i.reverse_page( total_pages ) rescue 1
     @entries = news.recent_entries({ :page => @page })
   end
