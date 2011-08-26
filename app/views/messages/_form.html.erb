@@ -20,7 +20,7 @@
   <%= tag :input, :name => 'disable_flash', :type => 'hidden', :value => '1' %>
   <%= tag :input, :name => 'last_message_id', :type => 'hidden', :id => 'last_message_id', :value => @messages.first.id %>
 
-  <%= f.text_area :body, :style => 'width: 450px; height: 6em; font-size: 12px;', :class => 'resizable', :tabindex => '1' %>
+  <%= f.text_area :body, :style => 'width: 450px; height: 6em; font-size: 14px;', :class => 'resizable', :tabindex => '1' %>
   <%= tasty_error_message_on :message, :body %>
   
   <div class='message_submit'>
