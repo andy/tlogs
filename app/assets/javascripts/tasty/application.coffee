@@ -1,5 +1,6 @@
 Tasty =
   ready: ->
+    Tasty.fancybox.ready()
     jQuery('a.t-act-vote').live "click", Tasty.vote
     jQuery('a.t-act-fave').live "click", Tasty.fave
     jQuery('a.t-act-meta').live "click", Tasty.meta.click
@@ -8,6 +9,34 @@ Tasty =
     jQuery('.t-controller-settings-social a.t-act-social-edit').live "click", Tasty.social.edit
     Tasty.shortcut.ready() if jQuery('#t-act-shortcut')
     true
+
+  fancybox:
+    ready: (options = Tasty.fancybox.options) ->
+      jQuery('a.fancybox').removeClass('fancybox').fancybox(options)
+    
+    options:
+      centerOnScroll: false
+      hideOnContentClick: true
+      showNavArrows: false
+      enableKeyboardNav: false
+      autoScale: false
+      onStart: ->
+        Tasty.flash.hide()
+        true
+      onClosed: ->
+        Tasty.flash.show()
+        true
+
+  flash:
+    hide: ->
+      Tasty.flash.toggle 'hidden'
+      
+    show: ->
+      Tasty.flash.toggle 'visible'
+        
+    toggle: (visibility) ->
+      for tag in ['embed', 'object', 'iframe']
+        jQuery("#{tag}:visible").css { visibility }
 
   social:
     del: (event) ->
@@ -143,11 +172,12 @@ Tasty =
       meta = jQuery "#emd_#{entry_id}"
       if meta.is(':visible')
         meta.hide(100).parent('.post_body').removeClass('post_metadata_open').find('.t-act-meta').html('&ndash;')
-        show_flash
+        Tasty.flash.show()
       else
         meta.show(100).parent('.post_body').addClass('post_metadata_open').find('.t-act-meta').html('+')
-        hide_flash      
+        Tasty.flash.hide()
 
+      true
 
 jQuery ($) ->
   Tasty.ready()
