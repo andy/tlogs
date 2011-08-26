@@ -1,0 +1,8 @@
+<%-
+  url_options ||= {}
+  opts          = { :controller => params[:controller],
+                    :action     => params[:action],
+                    :page       => page,
+                    :only_path  => true
+                  }.update(url_options)
+-%><div class='entry_pagination'><%= link_to('&#x2190; ранее', current_site ? user_url(current_site, url_for(opts)) : service_url(url_for(opts)), :class => 'entry_paginate_prev') %></div>

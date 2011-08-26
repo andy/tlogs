@@ -10,7 +10,7 @@
 -%>
 <%= render :partial => 'entries/entry_datetime', :locals => { :entry => entry } if show_datetime %>
 <a name='<%= dom_id(entry) %>'></a>
-<div class="post_body <%= "post_#{entry.class.to_s.underscore}" %><%= " post_is_private" if entry.is_private? %><%= " post_#{index}" if index >= 0 %>" id="<%= dom_id(entry) %>"><%
+<div class="post_body <%= "post_#{entry.class.to_s.underscore}" %><%= " post_is_private" if entry.is_private? %><%= " post_#{index}" if index >= 0 %>" data-entry-id="<%= entry.id %>" id="<%= dom_id(entry) %>"><%
 
   # tag-link
   if show_tags

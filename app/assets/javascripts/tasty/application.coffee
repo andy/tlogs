@@ -1,6 +1,7 @@
 Tasty =
   ready: ->
     Tasty.fancybox.ready()
+    
     jQuery('a.t-act-vote').live "click", Tasty.vote
     jQuery('a.t-act-fave').live "click", Tasty.fave
     jQuery('a.t-act-meta').live "click", Tasty.meta.click
@@ -8,11 +9,46 @@ Tasty =
     jQuery('.t-controller-settings-social a.t-act-social-delete').live "click", Tasty.social.del
     jQuery('.t-controller-settings-social a.t-act-social-edit').live "click", Tasty.social.edit
     Tasty.shortcut.ready() if jQuery('#t-act-shortcut')
+    Tasty.iscroll.ready() if jQuery('.t-iscrollable')
     true
+
+  iscroll:
+    ready: (options = Tasty.iscroll.options) ->
+      # set .next to what it should be
+      Tasty.iscroll.next = jQuery('.t-iscrollable').data('iscroll-next')
+      jQuery.extend(options, { pathParse: Tasty.iscroll.parse }) if Tasty.iscroll.next
+      
+      # load the stuff
+      jQuery('.t-iscrollable').infinitescroll(options, Tasty.iscroll.handler)
+    
+    handler: (items) ->
+      Tasty.iscroll.next = jQuery(items[items.length - 1]).data('entry-id')
+      
+      enable_services_for_current_user() if current_user
+        
+      Tasty.fancybox.scoped(items)
+    
+    next: null
+
+    options:
+      infid: 1
+      navSelector: '.entry_pagination'
+      nextSelector: 'div.entry_pagination a.entry_paginate_prev'
+      itemSelector: 'div.post_body'
+      loadingImg: 'http://assets0.mmm-tasty.ru/images/blank.gif'
+      loadingText: '<em>Загружаем ...</em>'
+      donetext: '<em>К сожалению, на этом все.</em>'
+
+    parse: (path, iteration) ->
+      path.match(/^(.*?)(\d+)$/)[1] + Tasty.iscroll.next
+
 
   fancybox:
     ready: (options = Tasty.fancybox.options) ->
-      jQuery('a.fancybox').removeClass('fancybox').fancybox(options)
+      Tasty.fancybox.scoped(document, options)
+    
+    scoped: (scope, options = Tasty.fancybox.options) ->
+      jQuery(scope).find('a.fancybox').removeClass('fancybox').fancybox(options)
     
     options:
       centerOnScroll: false

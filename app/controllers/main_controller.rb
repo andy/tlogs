@@ -86,73 +86,32 @@ class MainController < ApplicationController
   end
   
   def live
-    sql_conditions = 'entries.is_mainpageable = 1'
-    
-    if params[:tag]
-      total = Entry::PAGE_SIZE * 1000
+    @title     = 'прямой эфир как он есть'
 
-      @page = params[:page].to_i rescue 1
-      @page = 1 if @page.zero?
+    entry_id   = params[:page].to_i if params[:page]
+    entry_id ||= Entry.mainpageable.last.id + 1
 
-      # grab id-s only, this is an mysql optimization
-      @entries = WillPaginate::Collection.create(@page, Entry::PAGE_SIZE, total) do |pager|
-        result = Entry.paginate_by_category(params[:tag], { :total => total, :page => pager.current_page }, { :is_mainpageable => true })
-      
-        pager.replace(result.to_a)
-      
-        pager.total_entries = total unless pager.total_entries
-      end
-    elsif params[:entry_id]
-      entry_ids = Entry.find(:all, :select => 'entries.id', :conditions => [sql_conditions, " entries.id < #{params[:entry_id].to_i}"].join(' AND '), :order => 'entries.id DESC', :limit => Entry::PAGE_SIZE).map(&:id)
-      result = Entry.find_all_by_id(entry_ids, :include => [:author, :rating, :attachments]).sort_by { |entry| entry_ids.index(entry.id) }
-      
-      @entries = result
-    else
-      # # кешируем общее число записей, потому что иначе :page обертка будет вызывать счетчик на каждый показ
-      # total = Rails.cache.fetch('entry_count_public', :expires_in => 1.minute) { Entry.count :conditions => sql_conditions, :joins => 'USE INDEX (index_entries_on_is_mainpageable)' }
-      total = Entry::PAGE_SIZE * 1000
+    entry_ids = Entry.mainpageable.find(:all, :select => 'entries.id', :conditions => "entries.id < #{entry_id}", :order => 'entries.id DESC', :limit => Entry::PAGE_SIZE).map(&:id)
+    @entries = Entry.find_all_by_id(entry_ids, :include => [:author, :rating, :attachments]).sort_by { |entry| entry_ids.index(entry.id) }
 
-      @page = params[:page].to_i rescue 1  ##.reverse_page(total.to_pages)
-      @page = 1 if @page.zero?
-
-      # grab id-s only, this is an mysql optimization
-      @entries = WillPaginate::Collection.create(@page, Entry::PAGE_SIZE, total) do |pager|
-        entry_ids = Entry.find(:all, :select => 'entries.id', :joins => 'USE INDEX (index_entries_on_is_mainpageable)', :conditions => sql_conditions, :order => 'entries.id DESC', :limit => pager.per_page, :offset => pager.offset).map(&:id)
-        result = Entry.find_all_by_id(entry_ids, :include => [:author, :rating, :attachments]).sort_by { |entry| entry_ids.index(entry.id) }
-      
-        pager.replace(result.to_a)
-      
-        pager.total_entries = Entry.count(:conditions => sql_conditions) unless pager.total_entries
-      end
-    end
-    
     @comment_views = User::entries_with_views_for(@entries.map(&:id), current_user)
   end
   
-  def tagged
-    options = {}
-
-    # @tags_global_count = current_site ? (Entry.count_tagged_with(@tags) - total) : 0
-
-    render :layout => 'tlog' if current_site
-  end  
-  
   
   def fl
-    redirect_to(service_url(login_path)) and return unless current_user
-
-    
+    redirect_to(service_url(login_path)) and return unless current_user    
   end
 
   
   def my
+    @title = 'моё'
+
     redirect_to(service_url(login_path)) and return unless current_user
     
     @page = params[:page].to_i
     @page = 1 if @page <= 0
 
     @entries = WillPaginate::Collection.create(@page, Entry::PAGE_SIZE, current_user.my_entries_queue_length) do |pager|
-      Rails.logger.debug "Offset #{pager.offset}, per page #{pager.per_page}"
       entry_ids = current_user.my_entries_queue(pager.offset, pager.per_page)
       result = Entry.find_all_by_id(entry_ids, :include => [:author, :rating, :attachments]).sort_by { |entry| entry_ids.index(entry.id) }
       
@@ -173,7 +132,7 @@ class MainController < ApplicationController
       @page = params[:page].to_i rescue 1
       @page = 1 if @page <= 0
       # еще мы тут обманываем с количеством страниц... потому что считать тяжело
-      @entry_ids = Entry.paginate :all, :select => 'entries.id', :conditions => "entries.user_id IN (#{friend_ids.join(',')}) AND entries.is_private = 0", :order => 'entries.id DESC', :page => @page, :per_page => 15
+      @entry_ids = Entry.paginate :all, :select => 'entries.id', :conditions => "entries.user_id IN (#{friend_ids.join(',')}) AND entries.is_private = 0", :order => 'entries.id DESC', :page => @page, :per_page => Entry::PAGE_SIZE
       @entries = Entry.find_all_by_id @entry_ids.map(&:id), :include => [:rating, :attachments, :author], :order => 'entries.id DESC'
     end
     expires_in 5.minutes

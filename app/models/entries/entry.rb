@@ -119,6 +119,7 @@ class Entry < ActiveRecord::Base
   named_scope :for_view, :include => [:author, :attachments, :rating], :order => 'entries.id DESC'
   named_scope :private, :conditions => 'entries.is_private = 1 AND entries.type != "AnonymousEntry"'
   named_scope :for_user, lambda { |u| { :conditions => "user_id = #{u.id}" } }
+  named_scope :mainpageable, :conditions => 'entries.is_mainpageable = 1'
 
   ## validations
 	validates_presence_of :author

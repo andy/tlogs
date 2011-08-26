@@ -182,6 +182,10 @@ END
     render :partial => 'globals/pagination', :locals => options.merge(:pageable => pageable)
   end
   
+  def infinite_paginate(page, options = {})
+    render :partial => 'globals/infinite_pagination', :locals => options.merge(:page => page) if page
+  end
+  
   # escape and truncate html attribute
   # options are for truncate() call, e.g. :length
   def h_attr(text, options = {})

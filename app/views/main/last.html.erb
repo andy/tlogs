@@ -36,7 +36,7 @@
 		По вашему запросу не было найдено ни одной записи.
 	</p>
 <% else %>
-	<div class='onair'>
+	<div class='onair t-iscrollable'>
 		<% @entry_ratings.each do |entry_rating| %>
 			<%= render :partial => 'entries/entry_display', :locals => { :entry => entry_rating.entry, :show_comments_bubble => true, :show_username => true } %>
 		<% end %>
