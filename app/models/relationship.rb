@@ -1,18 +1,18 @@
 # == Schema Information
-# Schema version: 20110223155201
+# Schema version: 20110816190509
 #
 # Table name: relationships
 #
 #  id                        :integer(4)      not null, primary key
-#  user_id                   :integer(4)      default(0), not null
-#  reader_id                 :integer(4)      default(0), not null
-#  position                  :integer(4)
+#  user_id                   :integer(4)      default(0), not null, indexed => [reader_id], indexed => [reader_id, position], indexed => [reader_id, position]
+#  reader_id                 :integer(4)      default(0), not null, indexed => [user_id], indexed => [user_id, position], indexed => [user_id, position], indexed => [votes_value], indexed => [friendship_status]
+#  position                  :integer(4)      indexed => [user_id, reader_id], indexed => [reader_id, user_id]
 #  read_count                :integer(4)      default(0), not null
 #  last_read_at              :datetime
 #  comment_count             :integer(4)      default(0), not null
 #  last_comment_at           :datetime
-#  friendship_status         :integer(4)      default(0), not null
-#  votes_value               :integer(4)      default(0), not null
+#  friendship_status         :integer(4)      default(0), not null, indexed => [reader_id]
+#  votes_value               :integer(4)      default(0), not null, indexed => [reader_id]
 #  last_viewed_at            :datetime
 #  last_viewed_entries_count :integer(4)      default(0), not null
 #  title                     :string(128)

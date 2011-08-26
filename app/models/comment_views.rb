@@ -1,11 +1,11 @@
 # == Schema Information
-# Schema version: 20110223155201
+# Schema version: 20110816190509
 #
 # Table name: comment_views
 #
 #  id                  :integer(4)      not null, primary key
-#  entry_id            :integer(4)      default(0), not null
-#  user_id             :integer(4)      default(0), not null
+#  entry_id            :integer(4)      default(0), not null, indexed => [user_id]
+#  user_id             :integer(4)      default(0), not null, indexed => [entry_id]
 #  last_comment_viewed :integer(4)      default(0), not null
 #
 # Indexes

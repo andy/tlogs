@@ -11,6 +11,7 @@ Rails::Initializer.run do |config|
 
   config.autoload_paths += %W( 
     #{RAILS_ROOT}/app/models/entries
+    #{RAILS_ROOT}/app/models/billing
     #{RAILS_ROOT}/app/jobs
     #{RAILS_ROOT}/lib/asset_gluer
   )

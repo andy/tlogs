@@ -1,25 +1,30 @@
 # == Schema Information
-# Schema version: 20110223155201
+# Schema version: 20110816190509
 #
 # Table name: conversations
 #
 #  id                   :integer(4)      not null, primary key
-#  user_id              :integer(4)      not null
-#  recipient_id         :integer(4)      not null
+#  user_id              :integer(4)      not null, indexed => [recipient_id], indexed => [last_message_at]
+#  recipient_id         :integer(4)      not null, indexed => [user_id]
 #  messages_count       :integer(4)      default(0), not null
 #  send_notifications   :boolean(1)      default(TRUE), not null
-#  is_replied           :boolean(1)      default(FALSE), not null
-#  is_viewed            :boolean(1)      default(FALSE), not null
+#  is_replied           :boolean(1)      default(FALSE), not null, indexed
+#  is_viewed            :boolean(1)      default(FALSE), not null, indexed
 #  last_message_id      :integer(4)
 #  last_message_user_id :integer(4)
-#  last_message_at      :datetime
+#  last_message_at      :datetime        indexed => [user_id], indexed
 #  created_at           :datetime
 #  updated_at           :datetime
+#  is_disabled          :boolean(1)      default(FALSE), not null, indexed
 #
 # Indexes
 #
 #  index_conversations_on_user_id_and_recipient_id     (user_id,recipient_id)
 #  index_conversations_on_user_id_and_last_message_at  (user_id,last_message_at)
+#  index_conversations_on_is_disabled                  (is_disabled)
+#  index_conversations_on_last_message_at              (last_message_at)
+#  index_conversations_on_is_viewed                    (is_viewed)
+#  index_conversations_on_is_replied                   (is_replied)
 #
 
 class Conversation < ActiveRecord::Base

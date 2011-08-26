@@ -305,3 +305,16 @@ input.placeholder, textarea.placeholder {
     }
   }  
 }
+
+.t-avatar-badge-pro {
+  display: inline;
+  background-color: #6666EE;
+  color: white;
+  padding: 1px 3px;
+  font-size: 10px;
+  vertical-align: top;
+
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+}

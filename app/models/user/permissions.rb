@@ -182,6 +182,10 @@ class User
   def premium_days_left
     is_premium? ? ((self.premium_till - Time.now) / 1.day).floor : 0
   end
+  
+  def premium_strftime
+    self.premium_till.yesterday.strftime '%d %h %Y'
+  end
 
   ## private methods  
   

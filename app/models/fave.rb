@@ -1,13 +1,13 @@
 # == Schema Information
-# Schema version: 20110223155201
+# Schema version: 20110816190509
 #
 # Table name: faves
 #
 #  id            :integer(4)      not null, primary key
-#  user_id       :integer(4)      not null
-#  entry_id      :integer(4)      not null
-#  entry_type    :string(0)       default("TextEntry"), not null
-#  entry_user_id :integer(4)      not null
+#  user_id       :integer(4)      not null, indexed => [entry_id], indexed => [entry_user_id], indexed => [entry_type]
+#  entry_id      :integer(4)      not null, indexed => [user_id], indexed
+#  entry_type    :string(0)       default("TextEntry"), not null, indexed => [user_id]
+#  entry_user_id :integer(4)      not null, indexed => [user_id]
 #  created_at    :datetime
 #
 # Indexes

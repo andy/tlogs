@@ -1,3 +1,17 @@
+# == Schema Information
+# Schema version: 20110816190509
+#
+# Table name: radio_schedules
+#
+#  id         :integer(4)      not null, primary key
+#  user_id    :integer(4)      not null
+#  body       :string(255)     not null
+#  air_at     :datetime        not null
+#  end_at     :datetime        not null
+#  created_at :datetime
+#  updated_at :datetime
+#
+
 class RadioSchedule < ActiveRecord::Base
   belongs_to :user
   

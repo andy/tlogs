@@ -1,14 +1,14 @@
 # == Schema Information
-# Schema version: 20110223155201
+# Schema version: 20110816190509
 #
 # Table name: tlog_backgrounds
 #
 #  id                      :integer(4)      not null, primary key
-#  tlog_design_settings_id :integer(4)
+#  tlog_design_settings_id :integer(4)      indexed
 #  content_type            :string(255)
 #  filename                :string(255)
 #  size                    :integer(4)
-#  parent_id               :integer(4)
+#  parent_id               :integer(4)      indexed
 #  thumbnail               :string(255)
 #  width                   :integer(4)
 #  height                  :integer(4)

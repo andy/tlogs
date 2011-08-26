@@ -48,30 +48,26 @@ class BillingController < ApplicationController
 
     render :text => "utf=неверный адрес запроса" and return unless Rails.env.development? || %w(83.137.50.31 85.192.45.22 194.67.81.38 95.163.74.6).include?(request.remote_ip)
 
-    Transaction.transaction do
-      supported_options = %w(pref cn op sn phone tid txt test repeat opn mpref cost zcost rate pay zpay md5)
-      options           = params.slice(*supported_options)
-
+    Invoice.transaction do
       # create bulk transaction data, e.g. log everything
-      bt = BulkTransaction.create :service => 'smsonline', :remote_ip => request.remote_ip, :metadata => options
+      @invoice = SmsonlineInvoice.new :remote_ip => request.remote_ip,
+                                       :metadata => params.slice(*SmsonlineInvoice::METADATA_KEYS),
+                                       :state    => 'successful'
     
-      # check wether transaction is valid or not
-      render :text => "utf=внутренняя ошибка" and return unless bt.valid?
-    
-      # try to restore original transaction this sms was about
-      user = User.find_by_id(options[:txt])
+      if @invoice.valid?
+        @invoice.save!
+        
+        # reload, so we would have .user refreshed with new premium_strftime option
+        @invoice.reload
 
-      # if there is no such transaction — ignore this
-      render :text => "utf=неправильный код" and return if user.nil?
-      
-      txn = Transaction.create :user => user, :amount => bt.txn_amount, :state => 'success', :service => bt.service
-      txn.bulk_transactions << bt
-      
-      # update premium expiration date and give 8 hour buffer
-      user.premium_till = ((user.premium_till || Time.now) + 29.days).end_of_day + 8.hours
-      user.save!
+        @invoice.deliver!(current_service)
 
-      render :text => "utf=Премиум-доступ продлен до #{user.premium_till.yesterday.strftime '%d %h %Y'}. Mmm-tasty.ru, т. 424-00-12"
+        render :text => "utf=Премиум-доступ продлен до #{@invoice.user.premium_strftime}. Mmm-tasty.ru, т. 424-00-12"
+      else
+        Rails.logger.debug "* billing: failed with #{@invoice.errors.full_messages.join(', ')}"
+
+        render :text => "utf=внутренняя ошибка"
+      end
     end
   end
 end

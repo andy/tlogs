@@ -1,10 +1,10 @@
 # == Schema Information
-# Schema version: 20110223155201
+# Schema version: 20110816190509
 #
 # Table name: messages
 #
 #  id              :integer(4)      not null, primary key
-#  user_id         :integer(4)      default(0), not null
+#  user_id         :integer(4)      default(0), not null, indexed
 #  body            :text            default(""), not null
 #  created_at      :datetime        not null
 #  updated_at      :datetime

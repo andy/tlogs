@@ -1,16 +1,16 @@
 # == Schema Information
-# Schema version: 20110223155201
+# Schema version: 20110816190509
 #
 # Table name: attachments
 #
 #  id           :integer(4)      not null, primary key
-#  entry_id     :integer(4)      default(0), not null
+#  entry_id     :integer(4)      default(0), not null, indexed
 #  content_type :string(255)
 #  filename     :string(255)     default(""), not null
 #  size         :integer(4)      default(0), not null
 #  type         :string(255)
 #  metadata     :string(255)
-#  parent_id    :integer(4)
+#  parent_id    :integer(4)      indexed
 #  thumbnail    :string(255)
 #  width        :integer(4)
 #  height       :integer(4)

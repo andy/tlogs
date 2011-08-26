@@ -1,10 +1,10 @@
 # == Schema Information
-# Schema version: 20110223155201
+# Schema version: 20110816190509
 #
 # Table name: sidebar_elements
 #
 #  id                 :integer(4)      not null, primary key
-#  sidebar_section_id :integer(4)      not null
+#  sidebar_section_id :integer(4)      not null, indexed
 #  type               :string(25)
 #  content            :text            default(""), not null
 #  position           :integer(4)

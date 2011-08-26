@@ -1,12 +1,12 @@
 # == Schema Information
-# Schema version: 20110223155201
+# Schema version: 20110816190509
 #
 # Table name: sidebar_sections
 #
 #  id       :integer(4)      not null, primary key
-#  user_id  :integer(4)      not null
+#  user_id  :integer(4)      not null, indexed => [position]
 #  name     :string(255)     not null
-#  position :integer(4)
+#  position :integer(4)      indexed => [user_id]
 #  is_open  :boolean(1)      default(FALSE), not null
 #
 # Indexes
