@@ -44,7 +44,8 @@
 			</div>
 		</div>
 		<%= render :partial => 'globals/foot' %>
-	</div>	
+	</div>
 	<%= render :partial => 'globals/top_nav' %>
+	<%= content_tag :div, '&uarr; Наверх', :id => 't-act-shortcut' if @enable_shortcut %>
 </body>
 </html>

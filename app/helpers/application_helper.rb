@@ -42,7 +42,7 @@ module ApplicationHelper
 
     url = avatar ? image_path(avatar.public_filename) : (blank ? 'noavatar.gif' : nil)
 
-    url ? content_tag(:div, 'pro', :class => 't-avatar-badge-pro') + image_tag(url,
+    url ? image_tag(url,
             :class  => classes('avatar', [options[:class], options[:class]]),
             :alt    => user.url,
             :width  => width,
@@ -83,7 +83,8 @@ module ApplicationHelper
       height = ratio < 1 ? (height * ratio).to_i : height
     end
 
-    content_tag(:div, 'pro', :class => 't-avatar-badge-pro') + image_tag(image_path(user.userpic.url(style)),
+    # content_tag(:div, 'pro', :class => 't-avatar-badge-pro') + 
+    image_tag(image_path(user.userpic.url(style)),
         :class  => classes('avatar', [options[:class], options[:class]]),
         :alt    => user.url,
         :width  => width,

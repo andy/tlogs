@@ -1,10 +1,6 @@
 <% @title = current_site.tlog_settings.title %>
 <% content_for :head do %>
-	<!-- content_for :head -->
-	<%= auto_discovery_link_tag(:rss, user_url(current_site, tlog_feed_path(:action => :rss))) %>
-	<%= auto_discovery_link_tag(:rss, user_url(current_site, tlog_feed_path(:action => :photos)), { :title => 'только фотографии' }) %>
-	<%= tag :link, :rel => 'meta', :type => 'application/rdf+xml', :title => 'FOAF', :href => user_url(current_site, foaf_path) %>
-	<!-- /content_for :head -->
+  <%= render :partial => 'tlog/head' %>
 <% end %>
 
 <%= render :partial => 'lenta' %>

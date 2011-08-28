@@ -16,7 +16,7 @@ javascripts:
   selectivizr:
     - app/assets/javascripts/html5/selectivizr.min.js
 
-  publish:
+  wymeditor:
     - app/assets/javascripts/wymeditor/jquery.wymeditor.js
     - app/assets/javascripts/wymeditor/en.js
     - app/assets/javascripts/wymeditor/ru.js
@@ -24,12 +24,20 @@ javascripts:
     - app/assets/javascripts/wymeditor/plugins/embed/jquery.wymeditor.embed.js
     - app/assets/javascripts/wymeditor/plugins/resizable/jquery.wymeditor.resizable.js
     - app/assets/javascripts/wymeditor/application.js
+  
+  extended:
+    - app/assets/javascripts/prototype/dragdrop.min.js
+    # flash: swfobject & swfupload
+    - app/assets/javascripts/swf/swfobject.min.js
+    - app/assets/javascripts/swf/swfupload.min.js
+    # - app/assets/javascripts/swf/swfupload.cookies.min.js
+    - app/assets/javascripts/swf/swfupload.speed.min.js
+    - app/assets/javascripts/tasty/uploader.js
 
   application:
     # prototype setup and plugins
     - app/assets/javascripts/prototype/prototype.1.7.0.0.js
     - app/assets/javascripts/prototype/effects.min.js
-    - app/assets/javascripts/prototype/dragdrop.min.js
     # jquery setup & plugins
     - app/assets/javascripts/jquery/jquery-1.6.2.min.js
     - app/assets/javascripts/jquery/jquery.noconflict.js
@@ -44,14 +52,8 @@ javascripts:
     - app/assets/javascripts/jquery/jquery.placeholder.min.js    
     # - app/assets/javascripts/slides/slides.min.jquery.js
     # - app/assets/javascripts/slides/slides.configuration.js
-    # flash: swfobject & swfupload
-    - app/assets/javascripts/swf/swfobject.min.js
-    - app/assets/javascripts/swf/swfupload.min.js
-    # - app/assets/javascripts/swf/swfupload.cookies.min.js
-    - app/assets/javascripts/swf/swfupload.speed.min.js
     # application code
     - app/assets/javascripts/tasty/hotkeys.js
-    - app/assets/javascripts/tasty/uploader.js
     - app/assets/javascripts/tasty/button.js
     - app/assets/javascripts/tasty/autoresize.js
     - app/assets/javascripts/tasty/audio-player.min.js

@@ -2,6 +2,8 @@ class FavesController < ApplicationController
   before_filter :require_current_site, :except => [:create]
   before_filter :require_confirmed_current_site, :except => [:create, :destroy]
   before_filter :require_current_user, :only => [:create, :destroy]
+  
+  before_filter :enable_shortcut, :only => [:index]
 
   before_filter :check_if_can_be_viewed
 

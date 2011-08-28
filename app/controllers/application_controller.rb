@@ -203,6 +203,10 @@ class ApplicationController < ActionController::Base
       
       true
     end
+    
+    def enable_shortcut
+      @enable_shortcut = true
+    end
 
     def require_owner
       @is_private = true and return true if is_owner?

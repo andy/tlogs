@@ -1,24 +1,5 @@
 - content_for :sidebar_right do
-  .sidebar_search
-    %form{ :method => 'get', :action => service_url(search_path) }
-      = text_field_tag 'query', params[:query], :placeholder => 'Поиск по тлогам', :type => :search, :autosave => "com.tlogs", :results => 10
-
-  = render(:partial => 'globals/tastyradio') if params[:action] == 'live' || params[:action] == 'last' || (params[:controller] == 'main' && params[:action] == 'index')
-  = yield :sidebar_right_calendar
-  = render(:partial => 'globals/dfp240x400') if params[:action] == 'news' || params[:action] == 'last' || params[:action] == 'live'  || params[:controller] == 'anonymous'
-
-  - if params[:controller] == 'search' && @users
-    %h2
-      %span Пользователи
-
-    .users
-      - @users.each do |user|
-        %div
-          = link_to_tlog(user, :link => :userpic, :empty => :blank)
-          %p= link_to_tlog(user)
-      
-      = content_tag(:p, "... и еще #{(@users.total_entries - @users.per_page).pluralize('пользователь', 'пользователя', 'пользователей', true)}") if @users.total_pages > 1
-
+  = render :partial => 'layouts/main_sidebar_right'
 !!! 5
 <!--[if lt IE 7 ]> <html class="no-js ie6" lang="ru"> <![endif]-->
 <!--[if IE 7 ]>    <html class="no-js ie7" lang="ru"> <![endif]-->
@@ -85,7 +66,7 @@
 
   = render :partial => 'globals/top_nav'
   
-  - if params[:controller] == 'anonymous' || (params[:controller] == 'main' && %w(last my last_personalized live random).include?(params[:action]))
+  - if @enable_shortcut
     #t-act-shortcut &uarr; Наверх
   
   = render :partial => 'globals/reformal' if Rails.env.production?

@@ -125,6 +125,8 @@ Tasty =
       w_width   = jQuery('#wrapper').offset()?.left
       width     = w_width if width > w_width
       width     -= 20
+      # disable shortcut for blackman
+      width     = 10 if current_user && current_user == 46
       
       if width > 50
         jQuery('#t-act-shortcut').css { width, height: jQuery(window).height() }

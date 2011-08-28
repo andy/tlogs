@@ -1,6 +1,8 @@
 class MainController < ApplicationController
   skip_before_filter :require_confirmation_on_current_user
   
+  before_filter :enable_shortcut, :only => [:news, :hot, :last, :hot, :live, :my, :last_personalized, :random]
+  
 
   def index
   end

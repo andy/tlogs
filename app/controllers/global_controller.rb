@@ -1,7 +1,7 @@
 class GlobalController < ApplicationController
-  before_filter :require_current_user, :only => [:fast_forward, :relationship, :relationship_destroy, :relationship_toggle, :pref_friends]
+  before_filter :require_current_user, :only => [:switch, :fast_forward, :relationship, :relationship_destroy, :relationship_toggle, :pref_friends]
   
-  protect_from_forgery :only => [:fast_forward, :entry_metadata, :relationship, :relationship_destroy, :relationship_toggle, :pref_friends]
+  protect_from_forgery :only => [:switch, :fast_forward, :entry_metadata, :relationship, :relationship_destroy, :relationship_toggle, :pref_friends]
 
   # before_filter :verify_authenticity_token, :only => [:entry_metadata, :relationship, :relationship_destroy, :relationship_toggle, :pref_friends]
   
@@ -26,6 +26,10 @@ class GlobalController < ApplicationController
     end
 
     render :json => @goto
+  end
+  
+  def switch
+    
   end
   
   
