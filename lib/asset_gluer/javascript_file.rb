@@ -25,10 +25,12 @@ module AssetGluer
     
     protected
       def process_with_coffee(contents)
-        IO.popen 'coffee -bsc', 'r+' do |io|
-          io.write(contents)
-          io.close_write
-          io.read
+        Rails.cache.fetch "gluer:js:coffee:#{Digest::SHA1.hexdigest(contents)}", :expires_in => 1.day do
+          IO.popen 'coffee -bsc', 'r+' do |io|
+            io.write(contents)
+            io.close_write
+            io.read
+          end
         end
       end
       

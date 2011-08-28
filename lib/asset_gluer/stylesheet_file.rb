@@ -38,16 +38,18 @@ module AssetGluer
     
     protected
       def filter_with_sass(contents, options = {})
-        require 'sass'
+        Rails.cache.fetch "gluer:css:sass:#{Digest::SHA1.hexdigest(contents)}", :expires_in => 1.day do
+          require 'sass'
 
-        default_sass_options = {
-          :syntax       => File.extname(@absolute_path)[1..-1].to_sym,
-          :style        => Rails.env.production? ? :compressed : :expanded,
-          :line_numbers => Rails.env.development? 
-        }
-        engine = Sass::Engine.new(contents, default_sass_options.merge(options))
+          default_sass_options = {
+            :syntax       => File.extname(@absolute_path)[1..-1].to_sym,
+            :style        => Rails.env.production? ? :compressed : :expanded,
+            :line_numbers => Rails.env.development? 
+          }
+          engine = Sass::Engine.new(contents, default_sass_options.merge(options))
         
-        engine.render
+          engine.render
+        end
       end
 
       def filter_images(contents)
