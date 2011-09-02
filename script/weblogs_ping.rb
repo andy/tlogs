@@ -40,7 +40,7 @@ $redis.subscribe(:ping) do |on|
 
     server = XMLRPC::Client.new2('http://ping.blogs.yandex.ru/RPC2')
     begin
-      result = server.call('weblogUpdates.ping', desc, "http://#{user.url}.mmm-tasty.ru/")
+      result = server.call('weblogUpdates.ping', desc, "http://#{user.url}.mmm-tasty.ru/feed/rss.xml")
     rescue Exception => ex
       puts "- ping failed: #{ex.class.name}: #{ex.message}"
       next
