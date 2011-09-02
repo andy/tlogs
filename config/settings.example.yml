@@ -2,3 +2,7 @@
 billing:
   smsonline:
     key: xxx        # your sms online key
+
+  qiwi:
+    login: 1234
+    password: qwerty

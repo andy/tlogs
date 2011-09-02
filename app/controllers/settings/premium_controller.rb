@@ -15,6 +15,7 @@ class Settings::PremiumController < ApplicationController
   end
   
   def history
+    @invoices = current_site.invoices.paginate :page => params[:page], :per_page => 15, :order => 'created_at DESC'
   end
   
   def choose

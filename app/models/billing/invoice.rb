@@ -30,16 +30,19 @@ class Invoice < ActiveRecord::Base
   
   
   ## named scopes
-  named_scope     :failed,
-                  :conditions => { :state => 'failed' }
+  named_scope     :pending,
+                  :conditions => { :state => 'pending' }
 
   named_scope     :successful,
                   :conditions => { :state => 'successful' }
 
+  named_scope     :failed,
+                  :conditions => { :state => 'failed' }
+
   
   ## validations
   validates_inclusion_of  :state,
-                          :in => %w(failed successful)
+                          :in => %w(pending successful failed)
 
   validates_presence_of   :user
 
@@ -59,6 +62,14 @@ class Invoice < ActiveRecord::Base
   ## public methods
   def is_successful?
     state == 'successful'
+  end
+  
+  def success!
+    update_attribute :state, 'successful'
+  end
+  
+  def fail!
+    update_attribute :state, 'failed'
   end
 
   def is_failed?

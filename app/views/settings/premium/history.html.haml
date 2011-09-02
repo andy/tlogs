@@ -1,0 +1,16 @@
+- @title = "история платежей"
+- content_for :header do
+  История платежей
+
+%p
+  - if is_premium?
+    Ваш текущий аккаунт оплачен до #{current_site.premium_strftime}.
+  - else
+    Ваш текущий аккаунт не оплачен.
+
+- @invoices.each do |invoice|
+  %p
+    %b= invoice.id + invoice.user_id
+    = invoice.summary
+
+= paginate @invoices

@@ -2,7 +2,8 @@
 <ul id='f_level'>
 	<%= menu_item 'Тип тлога', :index, %w(settings/default/index) %>
 	<% menu_item 'Премиум', :premium, %w(settings/premium/index settings/premium/about settings/premium/history) do %>
-	  <%= menu_item 'история', user_url(current_user, settings_premium_path(:action => :history)) %>
+	  <%= menu_item 'общие', user_url(current_user, settings_premium_path), %w(settings/premium/index) if is_premium? %>
+	  <%= menu_item 'история', user_url(current_user, settings_premium_path(:action => :history)) if current_site.invoices.count.nonzero? %>
 	<% end %>
 	<% menu_item 'Пользователь', :user_common, %w(settings/default/user_common settings/default/password settings/default/email) do %>
 		<%= menu_item 'общие', :user_common %>

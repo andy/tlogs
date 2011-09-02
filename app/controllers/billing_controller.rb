@@ -70,4 +70,56 @@ class BillingController < ApplicationController
       end
     end
   end
+  
+  # POST /billing/qiwi/update_bill
+  def qiwi_update_bill
+    code    = QiwiInvoice::SUCCESS
+    
+    login   = params["Envelope"]["Body"]["updateBill"]["login"]
+    pass    = params["Envelope"]["Body"]["updateBill"]["password"]
+    txn     = params["Envelope"]["Body"]["updateBill"]["txn"]
+    status  = params["Envelope"]["Body"]["updateBill"]["status"].to_i
+    
+    @invoice = QiwiInvoice.pending.find_by_id(txn)
+
+    # check wether this even exists
+    qiwi_soap_reply(QiwiInvoice::ERR_NOT_FOUND) and return if @invoice.nil?
+
+    # check credentials
+    qiwi_soap_reply(QiwiInvoice::ERR_AUTH) and return unless @invoice.login == login
+    qiwi_soap_reply(QiwiInvoice::ERR_AUTH) and return unless @invoice.secured_password == pass
+    
+    case status
+      when 50..59
+        # do nothing, payment in process
+      when 60
+        # paid by customer, check with remote server if that is true
+        qiwi_soap_reply(QiwiInvoice::ERR_BUSY) and return unless @invoice.check_bill
+
+        # mark as paid and proceed
+        @invoice.success!
+          
+        @invoice.deliver!(current_service)
+      when 100..200
+        # payment failed
+        @invoice.metadata[:status] = status
+
+        @invoice.failed!
+    end
+  end
+  
+  protected
+    def qiwi_soap_reply(code)
+      answer = <<-EOF
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+  <soap:Body>
+    <ns2:updateBillResponse xmlns:ns2="http://server.ishop.mw.ru/">
+      <updateBillResult>#{code.to_s}</updateBillResult>
+    </ns2:updateBillResponse>
+  </soap:Body>
+</soap:Envelope>
+EOF
+    
+      render :xml => answer, :status => 200
+    end
 end

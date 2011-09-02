@@ -22,6 +22,7 @@ GEM
       chunky_png (~> 1.2)
       fssm (>= 0.2.7)
       sass (~> 3.1)
+    crack (0.1.8)
     execjs (1.2.4)
       multi_json (~> 1.0)
     fssm (0.2.7)
@@ -70,6 +71,9 @@ GEM
     ruby-openid (2.1.8)
     russian (0.2.7)
     sass (3.1.7)
+    savon (0.7.9)
+      builder (>= 2.1.2)
+      crack (>= 0.1.4)
     sinatra (1.2.6)
       rack (~> 1.1)
       tilt (>= 1.2.2, < 2.0)
@@ -126,6 +130,7 @@ DEPENDENCIES
   ruby-openid
   russian
   sass
+  savon (= 0.7.9)
   system_timer
   therubyracer
   thinking-sphinx

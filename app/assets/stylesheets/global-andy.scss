@@ -303,7 +303,19 @@ input.placeholder, textarea.placeholder {
       color: green;
       vertical-align: super;
     }
-  }  
+  }
+  .premium-features {
+    p {
+      font-size: 80%;
+      padding: 4px 0;
+      width: 201px;
+      height: 130px;
+      display: block;
+      float: left;
+      margin-right: 47px;
+      margin-bottom: 15px;
+    }    
+  }
 }
 
 .t-avatar-badge-pro {

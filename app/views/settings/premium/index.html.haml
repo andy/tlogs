@@ -2,7 +2,7 @@
 - content_for :header do
   Тейсти-премиум
   %sup.premium
-    %span{:title => current_user.premium_till.strftime("%d %h %Y")}
+    %span{:title => current_user.premium_strftime}
       = current_user.premium_days_left.pluralize('день', 'дня', 'дней', true)
 
 %p

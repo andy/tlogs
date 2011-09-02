@@ -12,6 +12,8 @@ module AssetGluer
 
   class AssetFile
     def initialize(path)
+      Rails.logger.debug "* processing path: #{path}"
+
       @absolute_path = File.join(Rails.root, path)
       # @absolute_path.gsub!(/\/cache/, "") if RAILS_ENV == "development" && ActionController::Base.perform_caching
       @base_path = File.dirname(@absolute_path)
