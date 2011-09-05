@@ -7,7 +7,7 @@ class Settings::PremiumController < ApplicationController
   helper :settings
   layout "settings"
 
-  def index
+  def index    
     render :action => is_premium? ? :index : :about
   end
   
@@ -19,6 +19,42 @@ class Settings::PremiumController < ApplicationController
   end
   
   def choose
+    @countries    = SmsonlineInvoice.countries_for_select
+    @qiwi_options = QiwiInvoice.options
+
+    # preferences
+    @pref_method  = current_site.invoices.successful.last.pref_key
+    @pref_sms     = SmsonlineInvoice.for_user(current_site).successful.last.try(:pref_options)
+    @pref_qiwi    = QiwiInvoice.for_user(current_site).successful.last.try(:pref_options)
+
     render :layout => false
+  end
+  
+  def sms_update
+    last_id   = params[:last_id].to_s || 0
+    @invoices = SmsonlineInvoice.for_user(current_site).successful.all(:conditions => "invoices.id > #{last_id}")
+    
+    render :json => @invoices.map { |i| { :id => i.id, :summary => i.summary } }
+  end
+  
+  def qiwi_init_bill
+    render :nothing => true and return false unless request.post?
+   
+    phone   = params[:phone].gsub(/[^0-9]/, '')[0..10]
+    user    = current_site
+    option  = QiwiInvoice.options_for(params[:option])
+    
+    @invoice = QiwiInvoice.create!(:user      => user,
+                                   :state     => 'pending',
+                                   :amount    => option.amount,
+                                   :revenue   => option.amount,
+                                   :days      => option.days,
+                                   :metadata  => HashWithIndifferentAccess.new(:option => option.name,
+                                                                              :protocol => 'html',
+                                                                              :phone => phone
+                                                                             )
+                                  )
+    
+    render :json => @invoice.to_json
   end
 end

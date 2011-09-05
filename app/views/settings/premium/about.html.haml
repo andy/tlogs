@@ -34,4 +34,15 @@
   За все хорошее в этом мире нужно платить. Даже если вы не будете пользоваться ни одим из перечисленных сервисов, ваша подписка позволит нам посвятить еще больше времени на совершенствование сайта и расширение его возможностей.
 
 %center
-  = link_to 'Оплатить', user_url(current_site, settings_premium_path(:action => 'choose')), :class => 'fancybox'
+  = link_to 'Оплатить', user_url(current_site, settings_premium_path(:action => 'choose')), :id => 'fancybox_payment_choose'
+  
+  :javascript
+    jQuery('#fancybox_payment_choose').fancybox({
+      titleShow: false,
+      centerOnScroll: true,
+      autoDimensions : false,
+      hideOnOverlayClick : true,
+      hideOnContentClick: false,
+      width: 650,
+      height: 400
+    });

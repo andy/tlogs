@@ -30,6 +30,9 @@ class Invoice < ActiveRecord::Base
   
   
   ## named scopes
+  named_scope     :for_user,
+                  lambda { |user| { :conditions => "user_id = #{user.id}" } }
+
   named_scope     :pending,
                   :conditions => { :state => 'pending' }
 
@@ -86,6 +89,14 @@ class Invoice < ActiveRecord::Base
 
   def extra_summary
     ''
+  end
+  
+  def pref_key
+    nil
+  end
+  
+  def pref_options
+    nil
   end
   
   ## protected methods

@@ -1,8 +1,14 @@
 ---
 billing:
   smsonline:
-    key: xxx        # your sms online key
-
+    login: user
+    password: password
+    prices: tmp/smsonline.xml                 # this is used by script/fetch_smsonline_prices script
+    numbers:                                  # array of allowed sms numbers
+      - 1212
+      - 2420
+      - 8404
+    key: xxx                                  # your sms online sign key (used for signing API requests)
   qiwi:
-    login: 1234
-    password: qwerty
+    login: 123456
+    password: password

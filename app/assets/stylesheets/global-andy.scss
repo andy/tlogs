@@ -306,14 +306,14 @@ input.placeholder, textarea.placeholder {
   }
   .premium-features {
     p {
-      font-size: 80%;
-      padding: 4px 0;
-      width: 201px;
-      height: 130px;
-      display: block;
-      float: left;
-      margin-right: 47px;
-      margin-bottom: 15px;
+//      font-size: 80%;
+//      padding: 4px 0;
+//      width: 201px;
+//      height: 130px;
+//      display: block;
+//      float: left;
+//      margin-right: 47px;
+//      margin-bottom: 15px;
     }    
   }
 }
@@ -329,4 +329,84 @@ input.placeholder, textarea.placeholder {
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
   border-radius: 3px;
+}
+
+.t-premium-payment {
+  margin: 20px;
+  
+  #t-premium-payment-method {
+    margin: 10px 0;
+    padding-bottom: 10px;
+    border-bottom: 1px dashed #ccc;
+    .method {
+      margin: 2px 0;
+      font-size: 12px;
+    }
+  }
+  
+  #t-premium-payment-qiwi {
+    #qiwi-choose {
+      #phone-demo {
+        margin-top: 3px;
+        font-size: 11px;
+        color: gray;
+      }
+      #phone-hint {
+        font-size: 11px;
+        color: red;
+        padding-left: 4px;
+      }
+      table tr td {
+        padding: 4px;
+      }
+      .button {
+        margin: 0;
+      }
+      .details {
+        margin-top: 10px;
+        padding: 4px;
+        font-size: 11px;
+        background-color: #eee;
+      }
+    }
+  }
+
+  #t-premium-payment-sms {
+    .operators {
+      display: inline;
+
+      .numbers {
+        display: inline;
+
+        .details {
+          margin-top: 10px;
+          .info {
+            font-size: 18px;
+            text-align: center;
+            padding: 10px;
+            border: 1px dashed #eee;
+            span {
+              background-color: #ccc;
+              padding: 0 2px;
+              font-weight: bold;
+            }            
+          }
+          .meta {
+            background-color: #eee;
+            padding: 4px;
+            margin-top: 10px;
+            p.rates {
+              font-size: 11px;
+            }
+            p.mts_info {
+              padding-top: 10px;
+              font-size: 11px;
+              font-style: italic;
+            }
+            
+          }
+        }
+      }
+    }
+  }
 }
