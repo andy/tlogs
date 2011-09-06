@@ -139,9 +139,11 @@ class QiwiInvoice < Invoice
   end
 
   def summary
+    "Платеж через QIWI кошелек на сумму #{self.amount.pluralize('рубль', 'рубля', 'рублей', true)}"
   end
   
   def extra_summary
+    "Сервис продлен на #{self.days.pluralize('день', 'дня', 'дней', true)}"
   end
   
   def pref_key
