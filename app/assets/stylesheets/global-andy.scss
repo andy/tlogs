@@ -296,6 +296,12 @@ input.placeholder, textarea.placeholder {
   }
 }
 
+.settings .t-controller-settings-default {
+  #privacy-note {
+    color: red;
+  }
+}
+
 .settings .t-controller-settings-premium {
   .header {
     sup {

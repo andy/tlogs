@@ -29,8 +29,15 @@
 	  <tr>
 	    <td class='label'><label>Кто может видеть ваш тлог?</label></td>
 	    <td class='input'>
-	      <%= select :tlog_settings, :privacy, TlogSettings::DEFAULT_PRIVACY_FOR_SELECT %>
-	      <div class='input_note'>Учтите, что если вы ограничиваете доступ к тлогу, то некоторые записи все равно могут быть доступны обычным пользователям. Это касается любых публичных записей: с голосованием, или попадающих в прямой эфир. При этом базовая информация о вас всегда остается доступной и полностью скрыть ее пока нельзя.</div>
+	      <%= select :tlog_settings, :privacy, TlogSettings::DEFAULT_PRIVACY_FOR_SELECT, {}, :id => 'privacy' %>
+	      <div class='input_note'>
+	        <% unless is_premium? %>
+  	        <span id='privacy-note'>
+  	          <b>Полностью скрывать свой тлог могут только премиум-пользователи, <%= link_to 'подробнее ...', user_url(current_site, settings_premium_path) %></b>
+  	        </span>
+  	      <% end %>
+	        <span>Учтите, что если вы ограничиваете доступ к тлогу, то некоторые записи все равно могут быть доступны обычным пользователям. Это касается любых публичных записей: с голосованием, или попадающих в прямой эфир. При этом <b>базовая информация</b> о вас всегда <b>остается доступной</b> и полностью скрыть ее пока нельзя.</span>
+	      </div>
 	    </td>
 	  </tr>
 	</table>
@@ -67,3 +74,17 @@
 		<input type='submit' value='Сохранить' class='button' />
 	</div>
 </form>
+
+<script type='text/javascript'>
+  jQuery('#privacy').change(function() {
+    if(jQuery(this).val() == 'me') {
+      jQuery('#privacy-note').show(300);
+    } else {
+      jQuery('#privacy-note').hide(300);
+    }
+  });
+  
+  if(jQuery('#privacy').val() != 'me') {
+    jQuery('#privacy-note').hide()
+  }
+</script>

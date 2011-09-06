@@ -20,9 +20,14 @@ class Settings::PremiumController < ApplicationController
     if request.post?
       @user = User.authenticate(params[:email], params[:password])
       
-      if @user
+      if @user && !@user.is_openid?
         current_site.link_with(@user)
         
+        # Emailer.deliver_link_notification(current_serivce, current_site, @user)
+        #
+        # Emailer.deliver_link_notification(current_serivce, @user, current_site)
+        #
+
         render :json => true
       else
         render :json => false

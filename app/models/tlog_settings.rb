@@ -46,16 +46,20 @@ class TlogSettings < ActiveRecord::Base
   validates_inclusion_of :default_visibility, :in => %(public private mainpageable voteable), :on => :save
 
   validates_inclusion_of :privacy, :in => %(open rr fr me), :on => :save
+
   
   has_attached_file :main_background,
     :url            => '/assets/main/:sha1_partition/:id_:style.:extension',
     :path           => ':rails_root/public:url',
     :use_timestamp  => false,
     :styles         => { :square => '40x40#' }
-
   
   def default_visibility
     read_attribute(:default_visibility) || 'mainpageable'
+  end
+  
+  before_save do |record|
+    record.privacy = 'fr' if record.privacy == 'me' && !record.user.is_premium?
   end
   
   # обновляем счетчик последнего обновления, чтобы сбросить кеш для страниц.

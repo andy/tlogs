@@ -7,6 +7,14 @@ class Emailer < ActionMailer::Base
                 :from => '"Ммм... тейсти" <noreply+signup@mmm-tasty.ru>',
                 :user => user
   end
+  
+  def link_notification(current_service, user, link)
+    setup     current_service,
+                :subj => 'ммм... ваш аккаунт привязан к другому',
+                :from => '"Mmm... noreply <noreply@mmm-tasty.ru"',
+                :reply_to => '"Mmm... premium" <premium@mmm-tasty.ru>',
+                :body => { :user => user, :link => link }                
+  end
 
   def confirm(current_service, user, email)
     setup     current_service,

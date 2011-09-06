@@ -172,8 +172,8 @@ class SmsonlineInvoice < Invoice
     end
     
     def export_attributes
-      self.days      = SmsonlineInvoice::DURATION
-      self.user      = User.active.find_by_id self.metadata[:txt]
+      self.days      = SmsonlineInvoice::DURATION      
+      self.user      = User.active.find_by_id(self.metadata[:txt][1..-1].to_i) if self.metadata[:txt] && self.metadata[:txt].to_i > 0
       self.amount    = self.metadata[:cost].to_f || 0
       self.revenue   = self.metadata[:pay].to_f || 0
     end
