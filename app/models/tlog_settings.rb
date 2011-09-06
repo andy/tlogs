@@ -40,6 +40,13 @@ class TlogSettings < ActiveRecord::Base
       ['вообще никто, только я!', 'me']
     ]
   
+  BACKGROUNDS = [
+    '1.gif',
+    '2.gif',
+    '3.gif',
+    '4.gif'
+  ]
+  
   belongs_to :user
   
   validates_presence_of :user_id
@@ -54,10 +61,6 @@ class TlogSettings < ActiveRecord::Base
     :use_timestamp  => false,
     :styles         => { :square => '40x40#' }
   
-  def default_visibility
-    read_attribute(:default_visibility) || 'mainpageable'
-  end
-  
   before_save do |record|
     record.privacy = 'fr' if record.privacy == 'me' && !record.user.is_premium?
   end
@@ -68,4 +71,35 @@ class TlogSettings < ActiveRecord::Base
   after_save do |record|
     record.user.update_attributes(:entries_updated_at => Time.now) unless (record.changes.keys - ['updated_at']).blank?
   end
+
+  def backgrounds_for_select
+    backgrounds = []
+
+    BACKGROUNDS.each do |img|
+      ext     = File.extname(img)
+      preview = File.basename(img, ext) + '_preview' + File.extname(img)
+      backgrounds << OpenStruct.new(:name     => img,
+                                    :preview  => File.join('backgrounds', preview),
+                                    :path     => File.join(Rails.root, 'public', 'images/backgrounds', img),
+                                    :selected => false
+                                    )
+    end
+    
+    if self.main_background?
+      if backgrounds.map(&:name).include?(self.main_background_file_name)
+        backgrounds.find { |b| b.name == self.main_background_file_name }.selected = true
+      else
+        backgrounds << OpenStruct.new(:name     => self.main_background_file_name,
+                                      :preview  => self.main_background.url(:square),
+                                      :path     => self.main_background.path,
+                                      :selected => true)
+      end
+    end
+    
+    backgrounds
+  end
+  
+  def default_visibility
+    read_attribute(:default_visibility) || 'mainpageable'
+  end  
 end

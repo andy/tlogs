@@ -7,10 +7,12 @@ class Settings::PremiumController < ApplicationController
   helper :settings
   layout "settings"
 
+
   def index
-    @accounts = User.find(current_site.linked_with)
+    @backgrounds  = current_site.tlog_settings.backgrounds_for_select
+    @accounts     = User.find(current_site.linked_with)
     
-    render :action => is_premium? ? :index : :about
+    render :action => :about
   end
   
   def about
@@ -32,6 +34,26 @@ class Settings::PremiumController < ApplicationController
       else
         render :json => false
       end
+    else
+      render :layout => false
+    end
+  end
+  
+  def background
+    if request.post?
+      ts = current_site.tlog_settings
+      if params[:image]
+        ts.main_background = params[:image]
+        ts.save!
+      
+        flash[:good] = 'Фоновая картинка изменена!'
+        redirect_to user_url(current_site, settings_premium_path)
+      elsif params[:name]
+        ts.main_background = File.open(ts.backgrounds_for_select.find { |b| b.name == params[:name] }.path)
+        ts.save!
+        
+        render :json => true
+      end      
     else
       render :layout => false
     end

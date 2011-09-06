@@ -63,10 +63,12 @@ class BillingController < ApplicationController
         @invoice.deliver!(current_service)
 
         render :text => "utf=Премиум-доступ продлен до #{@invoice.user.premium_strftime}. Mmm-tasty.ru, т. 424-00-12"
+      elsif @invoice.errors.on(:user)
+        render :text => "utf=Ошибка, пользователь не найден."
       else
         Rails.logger.debug "* billing: failed with #{@invoice.errors.full_messages.join(', ')}"
 
-        render :text => "utf=внутренняя ошибка"
+        render :text => "utf=Ошибка! Обратитесь, пожалуйста, в службу поддержки premium@mmm-tasty.ru."
       end
     end
   end

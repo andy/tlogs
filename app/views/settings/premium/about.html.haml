@@ -20,6 +20,11 @@
   %p
     %b Свой фон на главной.
     Поменяйте фон на главной странице на свой, либо выберите один из нашей скромной коллекции.
+    .backgrounds
+      - @backgrounds.each do |b|
+        = link_to image_tag(b.preview, :class => classes(['selected', b.selected])), '#', 'data-url' => user_url(current_site, settings_premium_path(:action => :background)), 'data-name' => b.name, :class => classes(['t-act-background-change', !b.selected])
+    
+      = link_to '+ добавить', user_url(current_site, settings_premium_path(:action => 'background')), :id => 'fancybox_link_background'
 
   %p
     %b Только для себя.
@@ -32,7 +37,7 @@
       - @accounts.each do |user|
         .account{:id => "t-accounts-link-#{user.id}"}
           %span= h(user.url)
-          = link_to_remote image_tag('delete.gif'), :url => user_url(current_site, settings_premium_path(:action => 'unlink', :id => user.id)), :html => { :class => 'hover' }
+          = link_to_remote image_tag('delete.gif'), :url => user_url(current_site, settings_premium_path(:action => 'unlink', :id => user.id)), :confirm => 'Отключить пользователя от вашего аккаунта?', :html => { :class => 'hover' }
 
       = link_to '+ добавить', user_url(current_site, settings_premium_path(:action => 'link')), :id => 'fancybox_link_account'
     
@@ -45,14 +50,45 @@
   = link_to 'Оплатить', user_url(current_site, settings_premium_path(:action => 'choose')), :id => 'fancybox_payment_choose'
   
   :javascript
+    var t_bg_clicked = null;
+    
+    jQuery('.premium-features .backgrounds .t-act-background-change').live('click', function() {
+      jQuery.fancybox.showActivity();
+      t_bg_clicked = jQuery(this);
+      
+      jQuery.ajax({
+        url: jQuery(this).data('url'),
+        type: 'post',
+        dataType: 'json',
+        data: {
+          authenticity_token: window._token,
+          name: jQuery(this).data('name')
+        },
+        complete: function() { jQuery.fancybox.hideActivity(); },
+        success: function(data) {
+          if(data === true) {
+            jQuery('.backgrounds').find('img.selected').removeClass('selected').parent().addClass('t-act-background-change');
+            t_bg_clicked.removeClass('t-act-background-change').find('img').addClass('selected');
+          }
+        }
+      });
+      return false;
+    });
+    
+    jQuery('#fancybox_link_background').fancybox({
+      titleShow: false,
+      centerOnScroll: true,
+      autoDimensions : true,
+      hideOnOverlayClick : true,
+      hideOnContentClick: false
+    });
+    
     jQuery('#fancybox_link_account').fancybox({
       titleShow: false,
       centerOnScroll: true,
       autoDimensions : true,
       hideOnOverlayClick : true,
       hideOnContentClick: false
-      // width: 570,
-      // height: 380      
     });
   
     jQuery('#fancybox_payment_choose').fancybox({

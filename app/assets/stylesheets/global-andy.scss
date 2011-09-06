@@ -311,20 +311,32 @@ input.placeholder, textarea.placeholder {
     }
   }
   .premium-features {
+    .backgrounds {
+      img {
+        border: 2px solid #eee;
+      }
+      img.selected {
+        border: 2px solid #666;
+      }
+      img:hover {
+        border: 2px solid #999;
+      }
+    }
+
     .accounts {
       font-size: 12px;
-    }
-    .account {
-      display: inline;
-      
-    }
-    
-    .account .hover {
-      visibility: hidden;
-    }
-    .account:hover .hover {
-      visibility: visible;
-    }
+
+      .account {
+        display: inline;
+      }
+
+      .account .hover {
+        visibility: hidden;
+      }
+      .account:hover .hover {
+        visibility: visible;
+      }
+    }    
     
     p {
 //      font-size: 80%;
@@ -350,6 +362,45 @@ input.placeholder, textarea.placeholder {
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
   border-radius: 3px;
+}
+
+.t-premium-background {
+  padding: 40px;
+
+  h2 {
+    margin: 0;
+    padding: 0;
+    font-family: Myriad Pro, Tahoma, arial;
+    line-height: 1.2em;
+    color: #404040;
+    font-size: 22px;
+    margin-bottom: 15px;
+  }
+  
+  label {
+    display: block;
+    font-size: 16px;
+    line-height: 19px;
+    padding: 0;
+    margin: 0;
+    color: #444444;
+    cursor: pointer;
+    margin-bottom: 15px;
+    
+    input {
+//      background: #DAFFDA;
+      padding: 3px;
+//      width: 480px;
+      display: block;
+//      border: 1px solid #333;
+//      font-size: 27px;
+//      font-family: 'Lucida Grande', 'Myriad Pro', 'Tahoma', arial;
+    }
+  }
+  input.button {
+    margin-top: 20px;
+  }
+  
 }
 
 .t-premium-link {

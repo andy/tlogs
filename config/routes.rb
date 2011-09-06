@@ -92,20 +92,20 @@ ActionController::Routing::Routes.draw do |map|
     map.js_packages 'packages/js/:name.js', :controller => 'packages', :action => 'js'
   end
 
-  if Rails.env.production?
+  # if Rails.env.production?
     map.with_options :conditions => { :subdomain => /^(www|m|)$/, :domain => Regexp.new(Tlogs::Domains::CONFIGURATION.domains.join('|').gsub('.', '\.')) }, &www_settings
 
     map.with_options :controller => 'tlog', :conditions => { :subdomain => /^(www|m|)$/, :domain => Regexp.new(Tlogs::Domains::CONFIGURATION.domains.join('|').gsub('.', '\.')) }, :path_prefix => 'users/:current_site', :name_prefix => 'current_site_', &tlog_settings
   
     # это домены пользователей: andy.mmm-tasty.ru, genue.mmm-tasty.ru и так далее
     map.with_options :controller => 'tlog', &tlog_settings
-  else
-    map.with_options :controller => 'main', &www_settings
-
-    map.with_options :controller => 'tlog', &tlog_settings
-
-    map.with_options :controller => 'tlog', :path_prefix => 'users/:current_site', :name_prefix => 'current_site_', &tlog_settings
-  end
+  # else
+  #   map.with_options :controller => 'main', &www_settings
+  # 
+  #   map.with_options :controller => 'tlog', &tlog_settings
+  # 
+  #   map.with_options :controller => 'tlog', :path_prefix => 'users/:current_site', :name_prefix => 'current_site_', &tlog_settings
+  # end
 
   map.catch_all "*anything", :controller => 'global', :action => 'not_found'
 end
