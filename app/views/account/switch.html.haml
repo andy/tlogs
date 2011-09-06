@@ -1,0 +1,25 @@
+!!! 5
+%html
+  %head
+  
+  %body
+    .t-premium-switch
+      - if current_user.can_switch?
+        %h2 Переключиться в другой аккаунт
+        %form{:method => 'POST', :action => service_url(account_path(:action => 'switch'))}
+          - @accounts.each do |user|
+            %label
+              %input{:type => 'radio', :name => 'id', :value => user.id}
+              = userpic_tag(user)
+              = user.url
+    
+          %input{:type => 'submit', :value => 'Переключиться'}
+          или
+          = link_to_remote 'Выйти', :url => service_url(logout_path), :method => :delete, :with => "'p=' + window._is_private", :html => { :title => 'Выйти', :confirm => 'Вы действительно хотите выйти?', :onclick => 'ga_event("Userbar", "Logout", current_user ? _user.url : "anonymous");' }
+    
+      - else
+        .disabled
+          Извините, но вам недоступна эта опция.
+      
+  
+  

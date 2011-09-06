@@ -28,6 +28,14 @@
   %p
     %b Несколько аккаунтов.
     Если вы ведете несколько тлогов одновременно, то переключаться между ними будет проще простого.
+    .accounts
+      - @accounts.each do |user|
+        .account{:id => "t-accounts-link-#{user.id}"}
+          %span= h(user.url)
+          = link_to_remote image_tag('delete.gif'), :url => user_url(current_site, settings_premium_path(:action => 'unlink', :id => user.id)), :html => { :class => 'hover' }
+
+      = link_to '+ добавить', user_url(current_site, settings_premium_path(:action => 'link')), :id => 'fancybox_link_account'
+    
 
 %h2 Почему это все платно?
 %p
@@ -37,6 +45,16 @@
   = link_to 'Оплатить', user_url(current_site, settings_premium_path(:action => 'choose')), :id => 'fancybox_payment_choose'
   
   :javascript
+    jQuery('#fancybox_link_account').fancybox({
+      titleShow: false,
+      centerOnScroll: true,
+      autoDimensions : true,
+      hideOnOverlayClick : true,
+      hideOnContentClick: false
+      // width: 570,
+      // height: 380      
+    });
+  
     jQuery('#fancybox_payment_choose').fancybox({
       titleShow: false,
       centerOnScroll: true,

@@ -1,6 +1,7 @@
 Tasty =
   ready: ->
     Tasty.fancybox.ready()
+    jQuery('a.fancypopup').fancybox(Tasty.fancybox.popup_options)
     
     jQuery('a.t-act-vote').live "click", Tasty.vote
     jQuery('a.t-act-fave').live "click", Tasty.fave
@@ -10,6 +11,7 @@ Tasty =
     jQuery('.t-controller-settings-social a.t-act-social-edit').live "click", Tasty.social.edit
     Tasty.shortcut.ready() if jQuery('#t-act-shortcut')
     Tasty.iscroll.ready() if jQuery('.t-iscrollable')
+
     true
 
   iscroll:
@@ -50,6 +52,21 @@ Tasty =
     scoped: (scope, options = Tasty.fancybox.options) ->
       jQuery(scope).find('a.fancybox').removeClass('fancybox').fancybox(options)
     
+    popup_options:
+      width: 650
+      height: 400
+      titleShow: false
+      centerOnScroll: true
+      autoDimensions: false
+      hideOnOverlayClick : true
+      hideOnContentClick: false
+      onStart: ->
+        Tasty.flash.hide()
+        true
+      onClosed: ->
+        Tasty.flash.show()
+        true      
+      
     options:
       centerOnScroll: false
       hideOnContentClick: true

@@ -1,0 +1,52 @@
+!!! 5
+%html
+  %head
+    :javascript
+      jQuery('.t-premium-link .error').click(function() {
+        jQuery(this).hide(300);
+      })
+      jQuery('.t-premium-link form').submit(function() {
+        jQuery(this).find('input.button').attr('disabled', 'disabled');
+        jQuery.fancybox.showActivity();
+        jQuery('.t-premium-link error').hide();
+        jQuery.ajax({
+          url: jQuery(this).attr('action'),
+          data: {
+            authenticity_token: window._token,
+            email: jQuery(this).find("input[name='email']").val(),
+            password: jQuery(this).find("input[name='password']").val()
+          },
+          dataType: 'json',
+          type: 'post',
+          complete: function() {
+            jQuery('.t-premium-link input.button').removeAttr('disabled');
+            jQuery.fancybox.hideActivity();
+          },
+          success: function(data) {
+            if(data === true) {
+              window.location.reload();
+            } else {
+              jQuery('.t-premium-link .error').show(100);
+            }
+          }
+        });
+        return false;
+      });
+
+  %body
+    .t-premium-link
+      %h2 Подключение аккаунта
+      
+      .error
+        Извините, неправильно указан e-mail или пароль.
+      
+      %form{:method => 'POST', :action => user_url(current_site, settings_premium_path(:action => :link))}
+        %label
+          e-mail (<em>openid не поддерживается</em>):
+          %input{:type => 'text', :name => 'email'}
+      
+        %label
+          пароль:
+          %input{:type => 'password', :name => 'password'}
+    
+        %input.button{:type => 'submit', :value => 'Добавить'}

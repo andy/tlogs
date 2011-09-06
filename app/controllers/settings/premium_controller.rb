@@ -7,11 +7,41 @@ class Settings::PremiumController < ApplicationController
   helper :settings
   layout "settings"
 
-  def index    
+  def index
+    @accounts = User.find(current_site.linked_with)
+    
     render :action => is_premium? ? :index : :about
   end
   
   def about
+  end
+  
+  def link
+    if request.post?
+      @user = User.authenticate(params[:email], params[:password])
+      
+      if @user
+        current_site.link_with(@user)
+        
+        render :json => true
+      else
+        render :json => false
+      end
+    else
+      render :layout => false
+    end
+  end
+  
+  def unlink
+    render :nothing => true and return unless request.post?
+
+    @user = User.find(params[:id])
+    current_site.unlink_from(@user) if @user
+    
+    render :update do |page|
+      page.visual_effect :highlight, "t-accounts-link-#{@user.id}", :duration => 0.3
+      page.visual_effect :fade, "t-accounts-link-#{@user.id}", :duration => 0.3
+    end
   end
   
   def history
@@ -30,7 +60,33 @@ class Settings::PremiumController < ApplicationController
     render :layout => false
   end
   
+  def account_link
+    render :nothing => true and return false unless request.post?
+
+    @user = User.authenticate(params[:email], params[:password])
+    if @user.nil?
+    elsif @user.is_openid?
+      
+    else
+      current_site.link_with(@user)
+      
+      Emailer.deliver_linked_with(current_service, current_site, @user)
+      
+      render :json => true
+    end
+  end
+  
+  def account_unlink
+    render :nothing => true and return false unless request.post?
+    
+    current_site.unlink_from(@user)
+    
+    render :json => true
+  end
+  
   def sms_update
+    render :nothing => true and return false unless request.post?
+
     last_id   = params[:last_id].to_s || 0
     @invoices = SmsonlineInvoice.for_user(current_site).successful.all(:conditions => "invoices.id > #{last_id}")
     

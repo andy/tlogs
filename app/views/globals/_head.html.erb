@@ -2,7 +2,7 @@
   disable_css ||= false unless local_assigns.has_key?(:disable_css) && disable_css
   disable_js ||= false unless local_assigns.has_key?(:disable_js) && disable_js
 -%>
-<meta name="robots" content="index,follow">
+<meta name="robots" content="<%= is_private? ? 'noindex,nofollow' : 'index,follow' %>">
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
 <%= tag :link, :rel => 'search', :href => service_url('/opensearch.xml'), :title => 'Тейсти', :type => 'application/opensearchdescription+xml' %>

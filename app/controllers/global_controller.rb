@@ -28,11 +28,6 @@ class GlobalController < ApplicationController
     render :json => @goto
   end
   
-  def switch
-    
-  end
-  
-  
   def entry_metadata
     render :nothing => true and return unless request.post?
 

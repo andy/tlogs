@@ -1,14 +1,37 @@
 class AccountController < ApplicationController
-  before_filter :require_current_user, :only => [:logout, :rename, :identity, :confirmation_required]
+  before_filter :require_current_user, :only => [:switch, :logout, :rename, :identity, :confirmation_required]
   before_filter :redirect_home_if_current_user, :only => [:index, :login, :signup, :openid_verify]
   before_filter :require_confirmed_current_user, :except => [:logout]
 
-  protect_from_forgery :only => [:login, :rename, :lost_password, :recover_password, :signup, :update_url_status]
+  protect_from_forgery :only => [:login, :logout, :rename, :lost_password, :recover_password, :signup, :update_url_status]
 
   helper :settings
 
   def index
     redirect_to service_path(login_path)
+  end
+  
+  def switch
+    if request.post?
+      @user = User.find(params[:id])
+
+      redirect_to service_path(login_path) and return if @user.nil?
+
+      redirect_to service_path(login_path) and return unless current_user.can_be_switched_to?(@user)
+
+      cookies[:t] = {
+          :value => [@user.id, @user.signature].pack('LZ*').to_a.pack('m').chop,
+          :expires => 1.year.from_now,
+          :domain => current_service.cookie_domain
+        }
+      session[:r] = nil
+
+      login_user @user, :redirect_to => service_url
+    else
+      @accounts = User.find(current_user.linked_with) if current_user.can_switch?
+      
+      render :layout => false
+    end
   end
 
   # авторизуем пользователя либо по openid, либо по паре имя/пароль
@@ -114,9 +137,23 @@ class AccountController < ApplicationController
   
   # выходим из системы
   def logout
+    redirect_to service_url unless request.delete?
+
     cookies.delete :t, :domain => current_service.cookie_domain
     reset_session
-    redirect_to service_url
+    
+    respond_to do |wants|
+      wants.html { redirect_to service_url }
+      wants.js do
+        render :update do |page|
+          if params[:p] && params[:p] == 'false'
+            page.call 'window.location.reload'
+          else
+            page << "window.location.href = #{service_url.to_json};"
+          end
+        end
+      end
+    end
   end
 
   # регистрация, для новичков

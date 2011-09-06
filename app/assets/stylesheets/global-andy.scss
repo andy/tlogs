@@ -305,6 +305,21 @@ input.placeholder, textarea.placeholder {
     }
   }
   .premium-features {
+    .accounts {
+      font-size: 12px;
+    }
+    .account {
+      display: inline;
+      
+    }
+    
+    .account .hover {
+      visibility: hidden;
+    }
+    .account:hover .hover {
+      visibility: visible;
+    }
+    
     p {
 //      font-size: 80%;
 //      padding: 4px 0;
@@ -329,6 +344,86 @@ input.placeholder, textarea.placeholder {
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
   border-radius: 3px;
+}
+
+.t-premium-link {
+  padding: 40px;
+  
+  .error {
+    margin: 0;
+    text-align: center;
+    font-family:'Lucida Grande', Verdana, Arial, Sans-Serif;
+    padding: 10px 45px;
+    border-top: 2px solid orange;
+    border-bottom: 2px solid orange;
+    cursor:pointer;
+  	cursor:hand;
+  	font-size:90%;
+  	margin-bottom: 10px;
+  	background: #d23d24;
+  	display: none;
+  }
+
+  h2 {
+    margin: 0;
+    padding: 0;
+    font-family: Myriad Pro, Tahoma, arial;
+    line-height: 1.2em;
+    color: #404040;
+    font-size: 22px;
+    margin-bottom: 15px;
+  }
+  
+  label {
+    display: block;
+    font-size: 16px;
+    line-height: 19px;
+    padding: 0;
+    margin: 0;
+    color: #444444;
+    cursor: pointer;
+    margin-bottom: 15px;
+    
+    input {
+      background: #DAFFDA;
+      padding: 3px;
+      width: 480px;
+      display: block;
+      border: 1px solid #333;
+      font-size: 27px;
+      font-family: 'Lucida Grande', 'Myriad Pro', 'Tahoma', arial;
+    }
+  }
+  input.button {
+    margin-top: 20px;
+  }
+}
+
+.t-premium-switch {
+  h2 {
+    font-size: 32px;
+    font-family: 'Lucida Grande', 'Myriad Pro', 'Tahoma', arial;
+    letter-spacing: -1px;
+    color: #404040;
+    margin: 0;
+    padding: 0;
+  }
+  label {
+    margin: 0;
+    padding: 0;
+    display: block;
+    color: #9E9E9E;
+    font-size: 45px;
+    font-family: Tahoma, Arial, 'sans serif';
+    
+    input {
+      margin: 0;
+      padding: 0;
+      vertical-align: middle;
+      padding-right: 10px;
+    }
+  }
+  
 }
 
 .t-premium-payment {
