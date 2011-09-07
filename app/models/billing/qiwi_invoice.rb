@@ -30,18 +30,18 @@ class QiwiInvoice < Invoice
   OPTIONS = {
     'small' => {
       :days     => 30,
-      :amount   => 149,
+      :amount   => 69,
       :position => 1
     },
     'medium' => {
-      :days     => 90,
-      :amount   => 299,
+      :days     => 60,
+      :amount   => 129,
       :position => 2
       
     },
     'large' => {
-      :days     => 200,
-      :amount   => 449,
+      :days     => 100,
+      :amount   => 199,
       :position => 3
     }
   }

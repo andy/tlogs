@@ -1,5 +1,6 @@
-/* andy's */
-
+/*
+ * Additional Tasty CSS 2.0
+ */
 
 /* color picker */
 #y-picker #yui-picker-controls-label { display: none; }
@@ -587,6 +588,12 @@ input.placeholder, textarea.placeholder {
 }
 
 .t-premium-payment {
+  h3 {
+    color: #444;
+    font-size: 24px;
+    margin: 0;
+    padding: 0;
+  }
   margin: 20px;
   
   #t-premium-payment-method {
@@ -594,8 +601,12 @@ input.placeholder, textarea.placeholder {
     padding-bottom: 10px;
     border-bottom: 1px dashed #ccc;
     .method {
-      margin: 2px 0;
-      font-size: 12px;
+      margin: 5px 0;
+      font-size: 14px;
+      font-family: sans-serif;
+      input {
+        margin-right: 5px;
+      }
     }
   }
   

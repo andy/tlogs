@@ -1,6 +1,7 @@
 class Settings::PremiumController < ApplicationController
   before_filter :require_current_user, :require_owner
   before_filter :require_confirmed_current_user
+  before_filter :require_premium, :except => [:index, :pay, :sms_update, :qiwi_init_bill]
 
   protect_from_forgery
 
@@ -14,25 +15,34 @@ class Settings::PremiumController < ApplicationController
   def accounts
     @accounts = User.find(current_site.linked_with)
   end
+  
+  def accounts_popup
+    render :layout => false
+  end
 
   def link
-    if request.post?
-      @user = User.authenticate(params[:email], params[:password])
-      
-      if @user && !@user.is_openid?
-        current_site.link_with(@user)
-        
-        # Emailer.deliver_link_notification(current_serivce, current_site, @user)
-        #
-        # Emailer.deliver_link_notification(current_serivce, @user, current_site)
-        #
+    render :nothing => true and return unless request.post?
 
-        render :json => true
-      else
-        render :json => false
-      end
+    @user = User.authenticate(params[:email], params[:password])
+    
+    if @user && !@user.is_openid?
+      current_site.link_with(@user)
+      
+      render :json => true
     else
-      render :layout => false
+      render :json => false
+    end
+  end
+  
+  def unlink
+    render :nothing => true and return unless request.post?
+
+    @user = User.find(params[:id])
+    current_site.unlink_from(@user) if @user
+    
+    render :update do |page|
+      page.visual_effect :highlight, "t-accounts-link-#{@user.id}", :duration => 0.3
+      page.visual_effect :fade, "t-accounts-link-#{@user.id}", :duration => 0.3
     end
   end
 
@@ -59,23 +69,15 @@ class Settings::PremiumController < ApplicationController
   def background_popup
     render :layout => false
   end
-  
-  def unlink
-    render :nothing => true and return unless request.post?
-
-    @user = User.find(params[:id])
-    current_site.unlink_from(@user) if @user
     
-    render :update do |page|
-      page.visual_effect :highlight, "t-accounts-link-#{@user.id}", :duration => 0.3
-      page.visual_effect :fade, "t-accounts-link-#{@user.id}", :duration => 0.3
-    end
-  end
-  
   def invoices
     @invoices = current_site.invoices.successful.paginate :page => params[:page], :per_page => 15, :order => 'created_at DESC'
   end
-  
+
+
+  #
+  # Payment popup
+  #
   def pay
     @countries    = SmsonlineInvoice.countries_for_select
     @qiwi_options = QiwiInvoice.options
@@ -88,30 +90,10 @@ class Settings::PremiumController < ApplicationController
     render :layout => false
   end
   
-  def account_link
-    render :nothing => true and return false unless request.post?
-
-    @user = User.authenticate(params[:email], params[:password])
-    if @user.nil?
-    elsif @user.is_openid?
-      
-    else
-      current_site.link_with(@user)
-      
-      Emailer.deliver_linked_with(current_service, current_site, @user)
-      
-      render :json => true
-    end
-  end
   
-  def account_unlink
-    render :nothing => true and return false unless request.post?
-    
-    current_site.unlink_from(@user)
-    
-    render :json => true
-  end
-  
+  #
+  # Billing services
+  #
   def sms_update
     render :nothing => true and return false unless request.post?
 
@@ -141,4 +123,9 @@ class Settings::PremiumController < ApplicationController
     
     render :json => @invoice.to_json
   end
+  
+  protected
+    def require_premium
+      redirect_to user_url(current_site, settings_premium_path) unless is_premium?
+    end
 end

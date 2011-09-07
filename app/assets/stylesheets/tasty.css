@@ -2622,7 +2622,8 @@ text-decoration:none;
     font-style:normal;
     letter-spacing:1px;
 }
-.sidebar_settings ul#f_level li a.selected, .sidebar_settings ul#f_level li a.selected:hover {
+.sidebar_settings ul#f_level li a.selected {
+  /* , .sidebar_settings ul#f_level li a.selected:hover { */
 	background:white;
 	color:#808080;
 	margin-left:-30px;

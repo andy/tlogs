@@ -9,10 +9,10 @@
         %span= h(user.url)
         = link_to_remote image_tag('delete.gif'), :url => user_url(current_site, settings_premium_path(:action => 'unlink', :id => user.id)), :confirm => 'Отключить пользователя от вашего аккаунта?', :html => { :class => 'hover' }
   
-    = link_to '+ добавить', user_url(current_site, settings_premium_path(:action => 'link')), :id => 'fancybox_link_account'
+    = link_to '+ добавить', user_url(current_site, settings_premium_path(:action => 'accounts_popup')), :id => 'fancybox_accounts_popup'
 
 :javascript  
-  jQuery('#fancybox_link_account').fancybox({
+  jQuery('#fancybox_accounts_popup').fancybox({
     titleShow: false,
     centerOnScroll: true,
     autoDimensions : true,
