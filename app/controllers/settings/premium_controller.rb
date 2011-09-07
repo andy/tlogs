@@ -76,7 +76,7 @@ class Settings::PremiumController < ApplicationController
     @invoices = current_site.invoices.successful.paginate :page => params[:page], :per_page => 15, :order => 'created_at DESC'
   end
   
-  def choose
+  def pay
     @countries    = SmsonlineInvoice.countries_for_select
     @qiwi_options = QiwiInvoice.options
 

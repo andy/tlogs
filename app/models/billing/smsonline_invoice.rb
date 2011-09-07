@@ -46,8 +46,6 @@
 #
 class SmsonlineInvoice < Invoice
   ## attributes and constants
-  DURATION = 29
-
   METADATA_KEYS = %w(pref cn op sn phone tid txt test repeat opn mpref cost zcost rate pay zpay md5)
 
   COUNTRY_NAMES = {
@@ -81,6 +79,10 @@ class SmsonlineInvoice < Invoice
   ## class methods
   def self.settings
     ::SETTINGS[:billing]['smsonline']
+  end
+  
+  def self.duration(sn)
+    settings['duration'][sn] || 1
   end
   
   def self.networks
@@ -118,7 +120,7 @@ class SmsonlineInvoice < Invoice
         
         o_nets.each do |net|
           number = OpenStruct.new(:name => [net.country, net.operator_code, net.shortnumber].join('_'),
-                                  :value => "29 дней за #{net.sms_cost_vat}",
+                                  :value => "#{duration(net.shortnumber).pluralize('день', 'дня', 'дней', true)} за #{net.sms_cost_vat}",
                                   :shortnumber => net.shortnumber,
                                   :position => settings['numbers'].index(net.shortnumber),
                                   :vat => net.vat)
@@ -172,7 +174,7 @@ class SmsonlineInvoice < Invoice
     end
     
     def export_attributes
-      self.days      = SmsonlineInvoice::DURATION      
+      self.days      = SmsonlineInvoice.duration(self.metadata[:sn].to_i)
       self.user      = User.active.find_by_id(self.metadata[:txt][1..-1].to_i) if self.metadata[:txt] && self.metadata[:txt].to_i > 0
       self.amount    = self.metadata[:cost].to_f || 0
       self.revenue   = self.metadata[:pay].to_f || 0

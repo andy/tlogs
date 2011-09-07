@@ -3,6 +3,12 @@
   Тейсти-премиум
 
 .premium-features
+  - if is_premium?
+    %p.enabled
+      Осталось
+      %span{:class => classes(['alert', current_site.premium_days_left <= 3])} #{days(current_site.premium_days_left)}.
+      Премиум-аккаунт подключен до #{Russian.strftime(current_site.premium_till, '%e %B %Y')}.
+
   .killer-features
     .feature.pad
       = image_tag 'premium/settings_blacklist.png'
@@ -57,10 +63,10 @@
   = image_tag 'premium/shadow.png', :class => 'shadow'
 
   %center
-    = link_to 'Подключить тейсти-премиум', user_url(current_site, settings_premium_path(:action => 'choose')), :class => 'paylink', :id => 'fancybox_payment_choose'
+    = link_to "#{is_premium? ? 'Продлить' : 'Подключить'} тейсти-премиум", user_url(current_site, settings_premium_path(:action => 'pay')), :class => 'paylink fancybox_payment_popup'
   
 :javascript  
-  jQuery('#fancybox_payment_choose').fancybox({
+  jQuery('.fancybox_payment_popup').fancybox({
     titleShow: false,
     centerOnScroll: true,
     autoDimensions : false,

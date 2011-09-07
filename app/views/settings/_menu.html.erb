@@ -1,10 +1,10 @@
 <h2>Что настроим сегодня, <%= h current_user.username %>?</h2>
 <ul id='f_level'>
 	<%= menu_item 'Тип тлога', :index, %w(settings/default/index) %>
-	<% menu_item 'Премиум', :premium, %w(settings/premium/index settings/premium/accounts settings/premium/background settings/premium/history) do %>
+	<% menu_item 'Премиум', :premium, %w(settings/premium/index settings/premium/accounts settings/premium/background settings/premium/invoices) do %>
 	  <% if is_premium? %>
-  	  <%= menu_item 'аккаунты', user_url(current_user, settings_premium_path(:action => :accounts)), %w(settings/premium/accounts) %>
-  	  <%= menu_item 'фон', user_url(current_user, settings_premium_path(:action => :background)), %w(settings/premium/background) %>
+  	  <%= menu_item 'аккаунты', user_url(current_user, settings_premium_path(:action => :accounts)) %>
+  	  <%= menu_item 'фон', user_url(current_user, settings_premium_path(:action => :background)) %>
   	<% end %>
 	  <%= menu_item 'платежи', user_url(current_user, settings_premium_path(:action => :invoices)) if current_site.invoices.count.nonzero? %>
 	<% end %>

@@ -206,6 +206,10 @@ END
     't-action-' + params[:action]
   end
   
+  def days(n)
+    n.pluralize('день', 'дня', 'дней', true)
+  end
+  
   def say_time_in_words(time)
     distance    = (time - Time.now).round
     in_minutes  = (distance / 1.minute).round.abs

@@ -2,15 +2,28 @@
 - content_for :header do
   История платежей
 
-%p
-  - if is_premium?
-    Ваш текущий аккаунт оплачен до #{current_site.premium_strftime}.
-  - else
-    Ваш текущий аккаунт не оплачен.
-
-- @invoices.each do |invoice|
+.t-premium-invoices
   %p
-    %b= invoice.id + invoice.user_id
-    = invoice.summary
+    - if is_premium?
+      Ваш текущий аккаунт оплачен до #{current_site.premium_strftime}.
+    - else
+      Ваш текущий аккаунт не оплачен.
 
-= paginate @invoices
+  %table
+    %tr
+      %th &num;
+      %th Дата
+      %th Срок
+      %th Описание
+    - @invoices.each_with_index do |invoice, idx|
+      %tr
+        %td.position
+          %b= ((@invoices.current_page - 1) * @invoices.per_page) + idx + 1
+        %td.datetime
+          = Russian.strftime invoice.created_at, '%e %b %Y, %H:%M'
+        %td.duration
+          = invoice.days.pluralize('день', 'дня', 'дней', true)
+        %td.summary
+          %p= invoice.summary
+
+  = paginate @invoices

@@ -25,7 +25,7 @@
 	</ul>
 	
 	<h2>Секретность</h2>
-	<table class='form'>
+	<table class='form' id='privacy_form'>
 	  <tr>
 	    <td class='label'><label>Кто может видеть ваш тлог?</label></td>
 	    <td class='input'>
@@ -76,6 +76,9 @@
 </form>
 
 <script type='text/javascript'>
+  if(window.location.hash && window.location.hash == '#privacy') {
+    new Effect.Highlight('privacy_form', { duration: '4' });
+  }
   jQuery('#privacy').change(function() {
     if(jQuery(this).val() == 'me') {
       jQuery('#privacy-note').show(300);

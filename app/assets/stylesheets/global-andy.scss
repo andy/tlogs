@@ -310,6 +310,33 @@ input.placeholder, textarea.placeholder {
       vertical-align: super;
     }
   }
+  .t-premium-invoices {
+    .entry_pagination {
+      padding-left: 20px;
+    }
+    table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 8px;
+      td {
+        p {
+          padding: 0!important;
+          margin: 0;
+        }
+      }
+      td.duration {
+        font-size: 13px;
+      }
+      td.datetime {
+        font-size: 11px;
+        color: #999;
+      }
+      td.position {
+        font-size: 11px;
+        
+      }
+    }
+  }
   .t-premium-backgrounds {
     .backgrounds {
       img {
@@ -342,11 +369,11 @@ input.placeholder, textarea.placeholder {
     .paylink {
       font-size: 24px;
       color: orange;
-      &:hover {
-        color: darker(orange, 20%);
-      }
     }
     
+    .enabled {
+      .alert { color: #F26882; }
+    }
     
     hr {
       color: #eee;
