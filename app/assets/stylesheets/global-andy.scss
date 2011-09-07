@@ -310,7 +310,7 @@ input.placeholder, textarea.placeholder {
       vertical-align: super;
     }
   }
-  .premium-features {
+  .t-premium-backgrounds {
     .backgrounds {
       img {
         border: 2px solid #eee;
@@ -322,7 +322,8 @@ input.placeholder, textarea.placeholder {
         border: 2px solid #999;
       }
     }
-
+  }
+  .premium-features {
     .accounts {
       font-size: 12px;
 
@@ -336,18 +337,93 @@ input.placeholder, textarea.placeholder {
       .account:hover .hover {
         visibility: visible;
       }
-    }    
+    }
     
-    p {
-//      font-size: 80%;
-//      padding: 4px 0;
-//      width: 201px;
-//      height: 130px;
-//      display: block;
-//      float: left;
-//      margin-right: 47px;
-//      margin-bottom: 15px;
-    }    
+    .paylink {
+      font-size: 24px;
+      color: orange;
+      &:hover {
+        color: darker(orange, 20%);
+      }
+    }
+    
+    
+    hr {
+      color: #eee;
+      margin-top: 20px;
+      margin-bottom: 20px;
+      clear: both;
+    }
+    
+    h3 {
+      font-size: 24px;
+      color: #444444;
+      margin-bottom: 20px;
+    }
+
+    .feature {
+      float: left;
+      margin-bottom: 30px;
+
+      .bold {
+        font-weight: bold;
+        color: #444;
+      }
+      .change {
+        margin-top: 10px;
+      }
+      p {
+        margin: 0;
+        padding: 0!important;        
+      }
+      a.button {
+        margin-top: 7px;
+        padding: 5px 8px;
+        height: 17px;
+        border: 3px double #999!important;
+        border-top-color: #CCC!important;
+        border-left-color: #CCC!important;
+        background: #f0f0f0!important;
+        font-family: 'Lucida Grande', 'Myriad Pro', 'Tahoma', arial;
+        color: #404040!important;
+        font-size: 11px;
+        cursor: pointer;
+        cursor: hand;
+        text-decoration: none;
+        display: inline-block;
+        vertical-align: center;
+      }
+    }
+    
+    img.shadow {
+      position: relative;
+      left: -20px;
+    }
+
+    .killer-features {
+      margin-top: 20px;
+      .feature {
+        width: 228px;
+      }
+      .bold {
+        font-size: 16px;
+      }
+      .pad {
+        margin-right: 40px;
+      }
+    }
+    
+    .extra-features {
+      .feature {
+        width: 150px;
+      }
+      .bold {
+        font-size: 13px;
+      }
+      .pad {
+        margin-right: 20px;
+      }
+    }
   }
 }
 
@@ -535,7 +611,7 @@ input.placeholder, textarea.placeholder {
           .info {
             font-size: 18px;
             text-align: center;
-            padding: 10px;
+            padding: 30px 10px;
             border: 1px dashed #eee;
             span {
               background-color: #ccc;

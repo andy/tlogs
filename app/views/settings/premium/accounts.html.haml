@@ -1,0 +1,22 @@
+- @title = 'аккаунты'
+- content_for :header do
+  Аккаунты
+
+.t-premium-accounts
+  .accounts
+    - @accounts.each do |user|
+      .account{:id => "t-accounts-link-#{user.id}"}
+        %span= h(user.url)
+        = link_to_remote image_tag('delete.gif'), :url => user_url(current_site, settings_premium_path(:action => 'unlink', :id => user.id)), :confirm => 'Отключить пользователя от вашего аккаунта?', :html => { :class => 'hover' }
+  
+    = link_to '+ добавить', user_url(current_site, settings_premium_path(:action => 'link')), :id => 'fancybox_link_account'
+
+:javascript  
+  jQuery('#fancybox_link_account').fancybox({
+    titleShow: false,
+    centerOnScroll: true,
+    autoDimensions : true,
+    hideOnOverlayClick : true,
+    hideOnContentClick: false
+  });
+

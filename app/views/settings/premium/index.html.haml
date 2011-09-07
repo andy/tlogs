@@ -1,24 +1,71 @@
 - @title = "премиум возможности, #{current_user.username}"
 - content_for :header do
   Тейсти-премиум
-  %sup.premium
-    %span{:title => current_user.premium_strftime}
-      = current_user.premium_days_left.pluralize('день', 'дня', 'дней', true)
 
-%p
-  %b Черный список.
-  Эта опция доступна вам в разделе
-  = link_to 'друзья &rarr;', user_url(current_site, settings_path(:action => :social))
-
-%p
-  %b Никаких ограничений
-  теперь действительно нет.
-
-%p
-  %b Свой фон на главной
-  можно поставить из предложенных ниже вариантов, либо загрузить свой
+.premium-features
+  .killer-features
+    .feature.pad
+      = image_tag 'premium/settings_blacklist.png'
+      %p.bold Черный список
+      %p Вы сможете добавлять определенных пользователей в черный список и они больше не смогут попасть в ваш тлог, не говоря уже о том, чтобы оставить в нем комментарий!
+      %p.change
+        = link_to 'Настроить', user_url(current_site, settings_social_path), :class => 'button'
+        
+      
+    .feature
+      = image_tag 'premium/settings_background.png'
+      %p.bold Свой фон на главной
+      %p Поменяйте фон на главной странице на свой, либо выберите один из нашей скромной коллекции.
+      %p.change
+        = link_to 'Настроить', user_url(current_site, settings_premium_path(:action => 'background')), :class => 'button'
+        
   
-%p
-  %b Для переключения между несколькими аккаунтами
-  нужно выполнить соотвествующие настройки в
-  = link_to 'этом разделе &rarr;', user_url(current_site, settings_premium_path(:action => :accounts))
+    .feature.pad
+      = image_tag 'premium/settings_privacy.png'
+      %p.bold Только для себя
+      %p В настроках приватности у вас появится еще одна опция — только для себя. Свой тлог сможете видеть только вы.
+      %p.change
+        = link_to 'Настроить', user_url(current_site, settings_path) + '#privacy', :class => 'button'
+      
+    .feature
+      = image_tag 'premium/settings_accounts.png'
+      %p.bold Несколько аккаунтов
+      %p Если вы ведете несколько тлогов одновременно, то переключаться между ними будет проще простого.
+      %p.change
+        = link_to 'Настроить', user_url(current_site, settings_premium_path(:action => 'accounts')), :class => 'button'
+
+  %hr
+  
+  %h3 А также
+  
+  .extra-features
+    .feature.pad
+      = image_tag 'premium/settings_anonymous.png'
+      %p.bold Открытые анонимки
+      %p Вы сможете сразу начать писать анонимки не дожидаясь пока пройдет 6 месяцев с начала регистрации.
+    
+    .feature.pad
+      = image_tag 'premium/settings_limits.png'
+      %p.bold Никаких ограничений
+      %p Точнее, ограничения все-равно остаются, но они такие же как у самых старых пользователей. Плюс, вы сможете сразу писать анонимки не дожидаясь, пока пройдет 6 месяцев со дня регистрации.
+    
+    .feature
+      = image_tag 'premium/settings_badge.png'
+      %p.bold Значок PRO на аватаре
+      %p Если хотите показывать всем свой статус 
+
+  = image_tag 'premium/shadow.png', :class => 'shadow'
+
+  %center
+    = link_to 'Подключить тейсти-премиум', user_url(current_site, settings_premium_path(:action => 'choose')), :class => 'paylink', :id => 'fancybox_payment_choose'
+  
+:javascript  
+  jQuery('#fancybox_payment_choose').fancybox({
+    titleShow: false,
+    centerOnScroll: true,
+    autoDimensions : false,
+    hideOnOverlayClick : true,
+    hideOnContentClick: false,
+    width: 650,
+    height: 400
+  });

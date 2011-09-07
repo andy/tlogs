@@ -4,11 +4,19 @@
 	<!-- /content_for :head -->
 <% end %>
 <div class='onair t-iscrollable'>
-	<% @entries.each do |entry| %>
-		<%= render :partial => 'entries/entry_display', :locals => { :entry => entry, :show_comments_bubble => true, :show_username => true, :show_tags => false, :comment_views => @comment_views } %>
-	<% end %>
+  <% if @entries.blank? %>
+    <div class='emptiness'>
+      <h1>Тут совершенно пусто</h1>
+      <p>К сожалению, не найдено ни одной записи, которую мы могли бы вам показать.</p>
+      <p>Скорее всего это потому, что вы ни на кого не подписаны.</p>
+    </div>
+  <% else %>
+  	<% @entries.each do |entry| %>
+  		<%= render :partial => 'entries/entry_display', :locals => { :entry => entry, :show_comments_bubble => true, :show_username => true, :show_tags => false, :comment_views => @comment_views } %>
+  	<% end %>
 
-	<%= paginate @entries %>
+  	<%= paginate @entries %>
+  <% end %>
 </div>
 
 <% content_for :sidebar_right do %>

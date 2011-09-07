@@ -78,6 +78,15 @@ class ApplicationController < ActionController::Base
         
         # перенаправляем на сайт сервиса, если адрес запрещенный
         redirect_to "#{request.protocol}www.mmm-tasty.ru#{request.port == 80 ? '' : ":#{request.port}"}" and return false if User::RESERVED.include?(url) && url != 'www'
+      elsif request.host.ends_with?('tasty.showoff.io') && request.host != 'm.tasty.showoff.io'
+        # ban www.subdomain requests
+        redirect_to "#{request.protocol}www.tasty.showoff.io#{request.port == 80 ? '' : ":#{request.port}"}" and return false if request.host.starts_with?('www.') && request.host != 'www.tasty.showoff.io'
+
+        url = request.subdomains.first
+        url = nil if url && url == 'tasty'
+
+        # перенаправляем на сайт сервиса, если адрес запрещенный
+        redirect_to "#{request.protocol}www.tasty.showoff.io#{request.port == 80 ? '' : ":#{request.port}"}" and return false if User::RESERVED.include?(url) && url != 'www'  
       elsif request.host.ends_with?('tasty.dev') && request.host != 'm.tasty.dev'
           # ban www.subdomain requests
           redirect_to "#{request.protocol}www.tasty.dev#{request.port == 80 ? '' : ":#{request.port}"}" and return false if request.host.starts_with?('www.') && request.host != 'www.tasty.dev'

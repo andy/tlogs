@@ -1,17 +1,46 @@
-!!! 5
-%html
-  %head
-    :javascript
+- @title = 'свой фон на главной'
+- content_for :header do
+  Свой фон на главной
 
+.t-premium-backgrounds  
+  %h2 Выберите фон
 
-  %body
-    .t-premium-background
-      %h2 Загрузка своей собственной фоновой картинки
-    
-      %form{:method => 'POST', :action => user_url(current_site, settings_premium_path(:action => 'background')), :enctype => 'multipart/form-data'}
-        %input{:type => 'hidden', :name => request_forgery_protection_token, :value => form_authenticity_token}
-        %label
-          Выберите файл с изображением:
-          %input{:type => 'file', :name => 'image'}
-          
-        %input{:type => 'submit', :class => 'button', :value => 'Сохранить'}
+  .backgrounds
+    - @backgrounds.each do |b|
+      = link_to image_tag(b.preview, :class => classes(['selected', b.selected])), '#', 'data-url' => user_url(current_site, settings_premium_path(:action => :background)), 'data-name' => b.name, :class => classes(['t-act-background-change', !b.selected])
+
+    = link_to '+ добавить', user_url(current_site, settings_premium_path(:action => 'background_popup')), :id => 'fancybox_link_background'
+  
+:javascript
+  var t_bg_clicked = null;
+
+  jQuery('.t-premium-backgrounds .backgrounds .t-act-background-change').live('click', function() {
+    jQuery.fancybox.showActivity();
+    t_bg_clicked = jQuery(this);
+  
+    jQuery.ajax({
+      url: jQuery(this).data('url'),
+      type: 'post',
+      dataType: 'json',
+      data: {
+        authenticity_token: window._token,
+        name: jQuery(this).data('name')
+      },
+      complete: function() { jQuery.fancybox.hideActivity(); },
+      success: function(data) {
+        if(data === true) {
+          jQuery('.backgrounds').find('img.selected').removeClass('selected').parent().addClass('t-act-background-change');
+          t_bg_clicked.removeClass('t-act-background-change').find('img').addClass('selected');
+        }
+      }
+    });
+    return false;
+  });
+
+  jQuery('#fancybox_link_background').fancybox({
+    titleShow: false,
+    centerOnScroll: true,
+    autoDimensions : true,
+    hideOnOverlayClick : true,
+    hideOnContentClick: false
+  });

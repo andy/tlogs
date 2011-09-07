@@ -6,7 +6,8 @@
     .t-premium-switch
       - if current_user.can_switch?
         %h2 Переключиться в другой аккаунт
-        %form{:method => 'POST', :action => service_url(account_path(:action => 'switch'))}
+        %form{:method => 'POST', :action => global_path(:action => 'switch')}
+          %input{:type => 'hidden', :name => request_forgery_protection_token, :value => form_authenticity_token}
           - @accounts.each do |user|
             %label
               %input{:type => 'radio', :name => 'id', :value => user.id}

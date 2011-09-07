@@ -9,15 +9,12 @@ class Settings::PremiumController < ApplicationController
 
 
   def index
-    @backgrounds  = current_site.tlog_settings.backgrounds_for_select
-    @accounts     = User.find(current_site.linked_with)
-    
-    render :action => :about
   end
   
-  def about
+  def accounts
+    @accounts = User.find(current_site.linked_with)
   end
-  
+
   def link
     if request.post?
       @user = User.authenticate(params[:email], params[:password])
@@ -38,8 +35,10 @@ class Settings::PremiumController < ApplicationController
       render :layout => false
     end
   end
-  
+
   def background
+    @backgrounds  = current_site.tlog_settings.backgrounds_for_select
+    
     if request.post?
       ts = current_site.tlog_settings
       if params[:image]
@@ -49,14 +48,16 @@ class Settings::PremiumController < ApplicationController
         flash[:good] = 'Фоновая картинка изменена!'
         redirect_to user_url(current_site, settings_premium_path)
       elsif params[:name]
-        ts.main_background = File.open(ts.backgrounds_for_select.find { |b| b.name == params[:name] }.path)
+        ts.main_background = File.open(@backgrounds.find { |b| b.name == params[:name] }.path)
         ts.save!
         
         render :json => true
-      end      
-    else
-      render :layout => false
+      end
     end
+  end
+
+  def background_popup
+    render :layout => false
   end
   
   def unlink
@@ -71,7 +72,7 @@ class Settings::PremiumController < ApplicationController
     end
   end
   
-  def history
+  def invoices
     @invoices = current_site.invoices.successful.paginate :page => params[:page], :per_page => 15, :order => 'created_at DESC'
   end
   
@@ -80,7 +81,7 @@ class Settings::PremiumController < ApplicationController
     @qiwi_options = QiwiInvoice.options
 
     # preferences
-    @pref_method  = current_site.invoices.successful.last.pref_key
+    @pref_method  = current_site.invoices.successful.last.try(:pref_key) || 'sms'
     @pref_sms     = SmsonlineInvoice.for_user(current_site).successful.last.try(:pref_options)
     @pref_qiwi    = QiwiInvoice.for_user(current_site).successful.last.try(:pref_options)
 

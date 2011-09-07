@@ -2484,9 +2484,14 @@ div.code * {
 	text-decoration:none;
 }
 .last_is_empty_note {
-	margin-top:30px;
+	margin-top:10px;
+	padding-left: 30px;
 	font-style:italic;
 } 
+.onair .emptiness {
+  padding-left: 30px;
+  font-style: italic;
+}
 .main_page h2 {
 	text-align:left;
 	font-size:1.3em;

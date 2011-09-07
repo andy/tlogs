@@ -134,6 +134,10 @@ class User
     self.settings[self.link_key] || []
   end
   
+  def linked_accounts
+    User.find(self.linked_with)
+  end
+  
   def link_with(link_user)
     links = self.linked_with + link_user.linked_with + [self.id, link_user.id]
     links.uniq!

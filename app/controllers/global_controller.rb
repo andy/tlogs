@@ -3,7 +3,6 @@ class GlobalController < ApplicationController
   
   protect_from_forgery :only => [:switch, :fast_forward, :entry_metadata, :relationship, :relationship_destroy, :relationship_toggle, :pref_friends]
 
-  # before_filter :verify_authenticity_token, :only => [:entry_metadata, :relationship, :relationship_destroy, :relationship_toggle, :pref_friends]
   
   def fast_forward
     @goto = nil
@@ -26,6 +25,30 @@ class GlobalController < ApplicationController
     end
 
     render :json => @goto
+  end
+  
+  def switch
+    if request.post?
+      @user = User.find(params[:id])
+
+      redirect_to service_path(login_path) and return if @user.nil?
+
+      redirect_to service_path(login_path) and return unless current_user.can_be_switched_to?(@user)
+
+      cookies[:t] = {
+          :value => [@user.id, @user.signature].pack('LZ*').to_a.pack('m').chop,
+          :expires => 1.year.from_now,
+          :domain => current_service.cookie_domain
+        }
+      session[:r] = nil
+      session[:u] = @user.id
+
+      redirect_to service_url
+    else
+      @accounts = current_user.linked_accounts if current_user.can_switch?
+      
+      render :layout => false
+    end
   end
   
   def entry_metadata
