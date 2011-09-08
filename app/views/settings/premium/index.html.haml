@@ -19,16 +19,17 @@
           = link_to 'Настроить', user_url(current_site, settings_social_path), :class => 'button'
         - else
           = link_to 'Подключить', user_url(current_site, settings_premium_path(:action => 'pay')), :class => 'button fancybox_payment_popup'
-      
+
     .feature
-      = image_tag 'premium/settings_background.png'
-      %p.bold Свой фон на главной
-      %p Поменяйте фон на главной странице на свой, либо выберите один из нашей скромной коллекции.
+      = image_tag 'premium/settings_accounts.png'
+      %p.bold Несколько аккаунтов
+      %p Если вы ведете несколько тлогов одновременно, то переключаться между ними будет проще простого.
       %p.change
-        - if is_premium?
-          = link_to 'Настроить', user_url(current_site, settings_premium_path(:action => 'background')), :class => 'button'
+        -if is_premium?
+          = link_to 'Настроить', user_url(current_site, settings_premium_path(:action => 'accounts')), :class => 'button'
         - else
           = link_to 'Подключить', user_url(current_site, settings_premium_path(:action => 'pay')), :class => 'button fancybox_payment_popup'
+      
   
     .feature.pad
       = image_tag 'premium/settings_privacy.png'
@@ -39,16 +40,17 @@
           = link_to 'Настроить', user_url(current_site, settings_path) + '#privacy', :class => 'button'
         - else
           = link_to 'Подключить', user_url(current_site, settings_premium_path(:action => 'pay')), :class => 'button fancybox_payment_popup'
-    
+
     .feature
-      = image_tag 'premium/settings_accounts.png'
-      %p.bold Несколько аккаунтов
-      %p Если вы ведете несколько тлогов одновременно, то переключаться между ними будет проще простого.
+      = image_tag 'premium/settings_background.png'
+      %p.bold Свой фон на главной
+      %p Поменяйте фон на главной странице на свой, либо выберите один из нашей скромной коллекции.
       %p.change
-        -if is_premium?
-          = link_to 'Настроить', user_url(current_site, settings_premium_path(:action => 'accounts')), :class => 'button'
+        - if is_premium?
+          = link_to 'Настроить', user_url(current_site, settings_premium_path(:action => 'background')), :class => 'button'
         - else
           = link_to 'Подключить', user_url(current_site, settings_premium_path(:action => 'pay')), :class => 'button fancybox_payment_popup'
+    
 
   %hr
   
