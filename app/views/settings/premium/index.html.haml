@@ -73,15 +73,26 @@
   = image_tag 'premium/shadow.png', :class => 'shadow'
 
   %center
-    = link_to "#{is_premium? ? 'Продлить' : 'Подключить'} тейсти-премиум", user_url(current_site, settings_premium_path(:action => 'pay')), :class => 'paylink fancybox_payment_popup'
+    = link_to "#{is_premium? ? 'Продлить' : 'Подключить'} тейсти-премиум", user_url(current_site, settings_premium_path(:action => 'pay')), :id => 'paylink', :class => 'paylink fancybox_payment_popup'
   
-:javascript  
-  jQuery('.fancybox_payment_popup').fancybox({
-    titleShow: false,
-    centerOnScroll: true,
-    autoDimensions : false,
-    hideOnOverlayClick : true,
-    hideOnContentClick: false,
-    width: 650,
-    height: 400
+:javascript
+  jQuery(function() {
+    jQuery('.fancybox_payment_popup').fancybox({
+      titleShow: false,
+      centerOnScroll: true,
+      autoDimensions : false,
+      hideOnOverlayClick : true,
+      hideOnContentClick: false,
+      width: 650,
+      height: 400,
+      onStart: function() {
+        window.location.hash = '#pay';
+      },
+      onClosed: function() {
+        window.location.hash = '#index';
+      }
+    });
+    if(window.location.hash != 'undefined' && window.location.hash == '#pay') {
+      jQuery('#paylink').click();
+    }
   });
