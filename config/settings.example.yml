@@ -12,6 +12,11 @@ billing:
       6365: 29
       1212: 59
       8404: 99
+    servers:
+      - 83.137.50.31
+      - 85.192.45.22
+      - 194.67.81.38
+      - 95.163.74.6
     key: xxx                                  # your sms online sign key (used for signing API requests)
   qiwi:
     login: 123456

@@ -46,7 +46,16 @@ class BillingController < ApplicationController
   def smsonline
     render :text => "utf=неверный запрос" and return unless request.post?
 
-    render :text => "utf=неверный адрес запроса" and return unless Rails.env.development? || %w(83.137.50.31 85.192.45.22 194.67.81.38 95.163.74.6).include?(request.remote_ip)
+    unless Rails.env.development? || SmsonlineInvoice.settings['servers'].include?(request.remote_ip)
+      HoptoadNotifier.notify(
+        :error_class    => 'SmsonlineInvoice',
+        :error_message  => "SmsonlineInvoice: invalid remote address (#{request.remote_ip})",
+        :parameters     => params
+      )
+      
+      render :text => "utf=неверный адрес запроса"
+      return
+    end
 
     Invoice.transaction do
       # create bulk transaction data, e.g. log everything
@@ -64,10 +73,18 @@ class BillingController < ApplicationController
 
         render :text => "utf=Премиум-доступ продлен до #{@invoice.user.premium_strftime}. Mmm-tasty.ru, т. 424-00-12"
       elsif @invoice.errors.on(:user)
+        HoptoadNotifier.notify(
+          :error_class    => 'SmsonlineInvoice',
+          :error_message  => "SmsonlineInvoice: user not found (#{params[:txt]})",
+          :parameters     => params
+        )
         render :text => "utf=Ошибка, пользователь не найден."
       else
-        Rails.logger.debug "* billing: failed with #{@invoice.errors.full_messages.join(', ')}"
-
+        HoptoadNotifier.notify(
+          :error_class    => 'SmsonlineInvoice',
+          :error_message  => "SmsonlineInvoice: other error (#{@invoice.errors.full_messages.join(', ')})",
+          :parameters     => params
+        )
         render :text => "utf=Ошибка! Обратитесь, пожалуйста, в службу поддержки premium@mmm-tasty.ru."
       end
     end
@@ -81,37 +98,41 @@ class BillingController < ApplicationController
     pass    = params["Envelope"]["Body"]["updateBill"]["password"]
     txn     = params["Envelope"]["Body"]["updateBill"]["txn"]
     status  = params["Envelope"]["Body"]["updateBill"]["status"].to_i
+
+    QiwiInvoice.transaction do
+      @invoice = QiwiInvoice.pending.find_by_id(txn)
+
+      # check wether this even exists
+      qiwi_soap_reply(QiwiInvoice::ERR_NOT_FOUND, params) and return if @invoice.nil?
+
+      # check credentials
+      qiwi_soap_reply(QiwiInvoice::ERR_AUTH, params) and return unless @invoice.login == login
+      qiwi_soap_reply(QiwiInvoice::ERR_AUTH, params) and return unless @invoice.secured_password == pass
     
-    @invoice = QiwiInvoice.pending.find_by_id(txn)
+      case status
+        when 50..59
+          # do nothing, payment in process
+        when 60
+          # paid by customer, check with remote server if that is true
+          qiwi_soap_reply(QiwiInvoice::ERR_BUSY, params) and return unless @invoice.check_bill
 
-    # check wether this even exists
-    qiwi_soap_reply(QiwiInvoice::ERR_NOT_FOUND) and return if @invoice.nil?
-
-    # check credentials
-    qiwi_soap_reply(QiwiInvoice::ERR_AUTH) and return unless @invoice.login == login
-    qiwi_soap_reply(QiwiInvoice::ERR_AUTH) and return unless @invoice.secured_password == pass
-    
-    case status
-      when 50..59
-        # do nothing, payment in process
-      when 60
-        # paid by customer, check with remote server if that is true
-        qiwi_soap_reply(QiwiInvoice::ERR_BUSY) and return unless @invoice.check_bill
-
-        # mark as paid and proceed
-        @invoice.success!
+          # mark as paid and proceed
+          @invoice.success!
           
-        @invoice.deliver!(current_service)
-      when 100..200
-        # payment failed
-        @invoice.metadata[:status] = status
+          @invoice.deliver!(current_service)
+        when 100..200
+          # payment failed
+          @invoice.metadata[:status] = status
 
-        @invoice.failed!
+          @invoice.failed!
+      end
     end
+    
+    qiwi_soap_reply(code)
   end
   
   protected
-    def qiwi_soap_reply(code)
+    def qiwi_soap_reply(code, params = {})
       answer = <<-EOF
 <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
   <soap:Body>
@@ -121,6 +142,14 @@ class BillingController < ApplicationController
   </soap:Body>
 </soap:Envelope>
 EOF
+
+      if code != QiwiInvoice::SUCCESS
+        HoptoadNotifier.notify(
+          :error_class    => 'QiwiInvoice',
+          :error_message  => "QiwiInvoice: erronous request (code: #{code})",
+          :parameters     => params
+        )
+      end
     
       render :xml => answer, :status => 200
     end
