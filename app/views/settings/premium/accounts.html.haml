@@ -3,13 +3,32 @@
   Аккаунты
 
 .t-premium-accounts
-  .accounts
-    - @accounts.each do |user|
-      .account{:id => "t-accounts-link-#{user.id}"}
-        %span= h(user.url)
-        = link_to_remote image_tag('delete.gif'), :url => user_url(current_site, settings_premium_path(:action => 'unlink', :id => user.id)), :confirm => 'Отключить пользователя от вашего аккаунта?', :html => { :class => 'hover' }
+  %p На этой странице вы можете связать несколько аккаунтов для быстрого переключения между ними.
+  %p Для того, чтобы эта функция работала, достаточно, чтобы был оплачен всего один аккаунт — тогда во всех остальных аккаунтах вы также сможете пользоваться быстрым переключением.
+
+  .t-accounts-switcher
+    .accounts
+      %hr
+      - @accounts.each do |user|
+        - wh = userpic_dimensions(user)
+        .account{:id => "t-accounts-link-#{user.id}"}
+          .userpic= userpic_tag(user, :style => "margin-top: #{32 - (wh.height || 64) / 2}px; margin-left: #{32 - (wh.width || 64) / 2}px")
+          .details
+            .url= h(user.url)
+            .meta
+              %p= user.entries_count.pluralize('запись', 'записи', 'записей', true)
+              %p Обновление #{user.last_public_entry_at.distance_between_in_words(Time.now, ' назад')}
+      
+          .controls
+            - if user.id == current_user.id
+              %p.self Это ваш аккаунт
+            - else
+              = link_to_remote image_tag('icon_x.png') + '&nbsp;Отключить аккаунт', :url => user_url(current_site, settings_premium_path(:action => 'unlink', :id => user.id)), :confirm => "Действительно отключить аккаунт #{user.url}?", :html => { :class => 'hover unlink' }
+          
+        %hr
   
-    = link_to '+ добавить', user_url(current_site, settings_premium_path(:action => 'accounts_popup')), :id => 'fancybox_accounts_popup'
+    .actions
+      = link_to 'Подключить еще один аккаунт', user_url(current_site, settings_premium_path(:action => 'accounts_popup')), :id => 'fancybox_accounts_popup'
 
 :javascript  
   jQuery('#fancybox_accounts_popup').fancybox({

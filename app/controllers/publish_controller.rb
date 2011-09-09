@@ -126,6 +126,8 @@ class PublishController < ApplicationController
         @entry.comments_enabled = @entry.is_anonymous? ? true : current_user.tlog_settings.comments_enabled?
         
         # set tag lists
+        @entry.metadata ||= {}
+        @entry.nsfw     = params[:entry][:nsfw].to_i rescue false
         @entry.tag_list = params[:entry][:tag_list]
 
         Entry.transaction do

@@ -175,7 +175,18 @@ class Entry < ActiveRecord::Base
   
 
   ## public methods
-    
+  
+  def nsfw
+    self.metadata.blank? ? false : (self.metadata[:nsfw] || false)
+  end
+  
+  def nsfw=(value)
+    value = value.zero? ? false : true if value.is_a?(Fixnum)
+    self.metadata_will_change!
+    self.metadata ||= {}
+    self.metadata[:nsfw] = value
+  end
+
   # Могут ли у этой записи быть аттачи? По умолчанию аттачменты отключены
   def can_have_attachments?
     false

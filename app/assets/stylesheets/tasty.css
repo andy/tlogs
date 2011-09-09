@@ -1265,6 +1265,21 @@ form.post input, form.post textarea {
 /*	font-family:Trebuchet MS, Arial, Helvetica, sans-serif; */
 }
 
+form.post input.checkbox {
+  margin-bottom: 1px;
+}
+
+form.post #entry_nsfw_holder {
+  margin-bottom: 15px;
+}
+
+form.post #entry_nsfw_holder_comments {
+  font-size: 11px;
+  color: #999;
+  font-family: Tahoma, Arial;
+  width: 500px;
+}
+
 /*input#attachment_uploaded_data {
   font-size:100%;
   width:600px;

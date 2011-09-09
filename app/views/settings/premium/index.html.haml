@@ -1,6 +1,7 @@
 - @title = "премиум возможности, #{current_user.username}"
 - content_for :header do
   Тейсти-премиум
+  = link_to 'Подключить', user_url(current_site, settings_premium_path(:action => 'pay')), :class => 'button fancybox_payment_popup' unless is_premium?
 
 .premium-features
   - if is_premium?
@@ -15,41 +16,28 @@
       %p.bold Черный список
       %p Вы сможете добавлять определенных пользователей в черный список и они больше не смогут попасть в ваш тлог, не говоря уже о том, чтобы оставить в нем комментарий!
       %p.change
-        - if is_premium?
-          = link_to 'Настроить', user_url(current_site, settings_social_path), :class => 'button'
-        - else
-          = link_to 'Подключить', user_url(current_site, settings_premium_path(:action => 'pay')), :class => 'button fancybox_payment_popup'
+        = link_to 'Настроить', user_url(current_site, settings_social_path), :class => 'button' if is_premium?
 
     .feature
       = image_tag 'premium/settings_accounts.png'
       %p.bold Несколько аккаунтов
       %p Если вы ведете несколько тлогов одновременно, то переключаться между ними будет проще простого.
       %p.change
-        -if is_premium?
-          = link_to 'Настроить', user_url(current_site, settings_premium_path(:action => 'accounts')), :class => 'button'
-        - else
-          = link_to 'Подключить', user_url(current_site, settings_premium_path(:action => 'pay')), :class => 'button fancybox_payment_popup'
-      
+        = link_to 'Настроить', user_url(current_site, settings_premium_path(:action => 'accounts')), :class => 'button' if is_premium?
   
     .feature.pad
       = image_tag 'premium/settings_privacy.png'
       %p.bold Только для себя
       %p В настроках приватности у вас появится еще одна опция — только для себя. Свой тлог сможете видеть только вы.
       %p.change
-        - if is_premium?
-          = link_to 'Настроить', user_url(current_site, settings_path) + '#privacy', :class => 'button'
-        - else
-          = link_to 'Подключить', user_url(current_site, settings_premium_path(:action => 'pay')), :class => 'button fancybox_payment_popup'
+        = link_to 'Настроить', user_url(current_site, settings_path) + '#privacy', :class => 'button' if is_premium?
 
     .feature
       = image_tag 'premium/settings_background.png'
       %p.bold Свой фон на главной
       %p Поменяйте фон на главной странице на свой, либо выберите один из нашей скромной коллекции.
       %p.change
-        - if is_premium?
-          = link_to 'Настроить', user_url(current_site, settings_premium_path(:action => 'background')), :class => 'button'
-        - else
-          = link_to 'Подключить', user_url(current_site, settings_premium_path(:action => 'pay')), :class => 'button fancybox_payment_popup'
+        = link_to 'Настроить', user_url(current_site, settings_premium_path(:action => 'background')), :class => 'button' if is_premium?
     
 
   %hr

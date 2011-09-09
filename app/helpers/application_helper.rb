@@ -44,10 +44,29 @@ module ApplicationHelper
 
     url ? image_tag(url,
             :class  => classes('avatar', [options[:class], options[:class]]),
+            :style  => options[:style],
             :alt    => user.url,
             :width  => width,
             :height => height
           ) : ''
+  end
+  
+  
+  def avatar_dimensions(user, options = {})
+    avatar = user.avatar
+    width  = avatar ? avatar.width : 64
+    height = avatar ? avatar.height : 64
+    
+    OpenStruct.new :width => width, :height => height
+  end
+
+  def userpic_dimensions(user, options = {})
+    return avatar_dimensions(user, options) unless user.userpic?
+    
+    width   = user.userpic.width
+    height  = user.userpic.height
+    
+    OpenStruct.new :width => width, :height => height
   end
   
   # new way to embed userpics (succeeds avatar_tag)
@@ -86,6 +105,7 @@ module ApplicationHelper
     # content_tag(:div, 'pro', :class => 't-avatar-badge-pro') + 
     image_tag(image_path(user.userpic.url(style)),
         :class  => classes('avatar', [options[:class], options[:class]]),
+        :style  => options[:style],
         :alt    => user.url,
         :width  => width,
         :height => height

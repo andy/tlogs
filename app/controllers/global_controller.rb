@@ -51,6 +51,14 @@ class GlobalController < ApplicationController
     end
   end
   
+  def nsfw
+    if request.post?
+      
+    else
+      render :layout => false
+    end    
+  end
+  
   def entry_metadata
     render :nothing => true and return unless request.post?
 

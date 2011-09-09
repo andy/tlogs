@@ -263,6 +263,33 @@ b { font-weight: bold; }
   }
 }
 
+.main_page .section_nsfw {
+  .section_nsfw_options {
+    span { background: white; }
+    a {
+      background-color: white;
+      padding: 0 2px;
+      &:hover { background-color: #ccc}
+      &.selected { background-color: #999; }
+    }
+  }
+}
+.main_page .onair .post_body .post_nsfw_sticker {
+  position: relative;
+  left: -92px;
+  font-size: 10px;
+  background-color: red;
+  color: white;
+  width: 32px;
+  padding: 0 2px;
+  top: 16px;
+  
+  a {
+    color: white;
+    text-decoration: underline;
+  }
+}
+
 input.placeholder, textarea.placeholder {
   color: #ccc;
   font-family: 'Lucida Grande', 'Myriad Pro', 'Tahoma', arial;
@@ -303,12 +330,128 @@ input.placeholder, textarea.placeholder {
   }
 }
 
+.t-accounts-switcher.popup {
+  padding: 20px;
+  h2 {
+    color: #404040;
+    font-size: 26px;
+    font-family: 'Lucida Grande', 'Myriad Pro', 'Tahoma', arial;
+    letter-spacing: -1;
+    margin-bottom: 20px;
+  }
+  
+  .accounts {
+    width: 499px;
+  
+    input.button {
+      font-size: 11px;
+      margin-top: 0px;
+    }
+  }
+}
+
+.t-accounts-switcher {
+  .actions {
+    margin-top: 10px;
+
+    a {
+      color: orange;    
+      text-decoration: none;
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+  .accounts {
+    hr {
+      margin-bottom: 0px;
+      margin-top: 0px;
+      clear: both;
+      border-top: 1px solid #eee;
+    }
+    .account {
+      margin-top: 10px;
+      .userpic {
+        float: left;
+        width: 64px;
+        height: 64px;
+        border: 1px solid #eee;
+        padding: 3px;
+        margin-bottom: 10px;
+        img.avatar {
+          padding: 0;
+          margin-bottom: 0;
+        }
+      }
+      .details {
+        float: left;
+        width: 240px;
+        height: 70px;
+        margin-left: 20px;
+        color: #999;
+        
+        .url {
+          font-weight: bold;
+          font-family: Trebuchet MS, arial;
+          font-size: 14px;
+          margin-bottom: 5px;
+        }
+        p {
+          font-size: 11px;
+          margin: 0;
+          padding: 0!important;
+        }
+      }
+      .controls {
+        float: left;
+        height: 70px;
+        width: 160px;
+        height: 70px;
+        text-align: right;
+        .self {
+          font-size: 11px;
+          color: #444;
+        }
+        
+        a.unlink {
+          font-size: 11px;
+          text-decoration: none;
+          color: #666;
+          &:hover {
+            text-decoration: underline;
+          }
+          img {
+            vertical-align: text-bottom;
+          }
+        }
+      }
+    }
+  }
+}
+
 .settings .t-controller-settings-premium {
+  
+  a.button {
+    margin-top: 7px;
+    padding: 5px 8px;
+    height: 17px;
+    border: 3px double #999!important;
+    border-top-color: #CCC!important;
+    border-left-color: #CCC!important;
+    background: #f0f0f0!important;
+    font-family: 'Lucida Grande', 'Myriad Pro', 'Tahoma', arial;
+    color: #404040!important;
+    font-size: 11px;
+    cursor: pointer;
+    cursor: hand;
+    text-decoration: none;
+    vertical-align: center;
+  }
+  
   .header {
-    sup {
-      font-size: 12px;
-      color: green;
-      vertical-align: super;
+    a.button {
+      position: relative;
+      top: -4px;
     }
   }
   .t-premium-invoices {
@@ -352,21 +495,6 @@ input.placeholder, textarea.placeholder {
     }
   }
   .premium-features {
-    .accounts {
-      font-size: 12px;
-
-      .account {
-        display: inline;
-      }
-
-      .account .hover {
-        visibility: hidden;
-      }
-      .account:hover .hover {
-        visibility: visible;
-      }
-    }
-    
     .paylink {
       font-size: 24px;
       color: orange;
@@ -403,23 +531,6 @@ input.placeholder, textarea.placeholder {
       p {
         margin: 0;
         padding: 0!important;        
-      }
-      a.button {
-        margin-top: 7px;
-        padding: 5px 8px;
-        height: 17px;
-        border: 3px double #999!important;
-        border-top-color: #CCC!important;
-        border-left-color: #CCC!important;
-        background: #f0f0f0!important;
-        font-family: 'Lucida Grande', 'Myriad Pro', 'Tahoma', arial;
-        color: #404040!important;
-        font-size: 11px;
-        cursor: pointer;
-        cursor: hand;
-        text-decoration: none;
-        display: inline-block;
-        vertical-align: center;
       }
     }
     
@@ -510,6 +621,12 @@ input.placeholder, textarea.placeholder {
 .t-premium-link {
   padding: 40px;
   
+  p {
+    margin-bottom: 20px;
+    font-size: 13px;
+    font-family: Tahoma, Arial, sans-serif;
+  }
+
   .error {
     margin: 0;
     text-align: center;

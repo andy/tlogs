@@ -12,7 +12,7 @@
     </div>
   <% else %>
   	<% @entries.each do |entry| %>
-  		<%= render :partial => 'entries/entry_display', :locals => { :entry => entry, :show_comments_bubble => true, :show_username => true, :show_tags => false, :comment_views => @comment_views } %>
+  		<%= render :partial => 'entries/entry_display', :locals => { :entry => entry, :show_comments_bubble => true, :show_username => true, :show_nsfw_sticker => true, :show_tags => false, :comment_views => @comment_views } %>
   	<% end %>
 
   	<%= paginate @entries %>

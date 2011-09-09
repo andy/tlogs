@@ -3,14 +3,14 @@
 	show_comments_bubble ||= false unless local_assigns.has_key?(:show_comments_bubble) && show_comments_bubble
 	show_username ||= false unless local_assigns.has_key?(:show_username) && show_username
 	show_tags ||= false unless local_assigns.has_key?(:show_tags) && !show_tags
-	comment_views ||= false unless local_assigns.has_key?(:comment_views) && comment_views
+	show_nsfw_sticker ||= false unless local_assigns.has_key?(:show_nsfw_sticker) && show_nsfw_sticker
+	comment_views ||= false unless local_assigns.has_key?(:comment_views) && comment_views	
 	embed ||= false unless local_assigns.has_key?(:embed) && embed
 	mini ||= false unless local_assigns.has_key?(:mini) && mini
 	index ||= -1 unless local_assigns.has_key?(:index) && index
--%>
-<%= render :partial => 'entries/entry_datetime', :locals => { :entry => entry } if show_datetime %>
-<a name='<%= dom_id(entry) %>'></a>
-<div class="post_body <%= "post_#{entry.class.to_s.underscore}" %><%= " post_is_private" if entry.is_private? %><%= " post_#{index}" if index >= 0 %>" data-entry-id="<%= entry.id %>" id="<%= dom_id(entry) %>"><%
+-%><%=
+render :partial => 'entries/entry_datetime', :locals => { :entry => entry } if show_datetime
+%><a name='<%= dom_id(entry) %>'></a><div class="post_body <%= "post_#{entry.class.to_s.underscore}" %><%= " post_is_private" if entry.is_private? %><%= " post_#{index}" if index >= 0 %>" data-entry-id="<%= entry.id %>" id="<%= dom_id(entry) %>"><%
 
   # tag-link
   if show_tags
@@ -19,7 +19,7 @@
   
   # username link
   if show_username
-    %><div class='rel'><div class='post_author'><%= link_to entry.author.url, user_url(entry.author) %></div></div><%
+    %><div class='rel'><div class='post_author'><%= link_to entry.author.url, user_url(entry.author) %></div><%= content_tag :div, link_to('NSFW', global_path(:action => 'nsfw'), :class => 'fancypopup'), :class => 'post_nsfw_sticker' if show_nsfw_sticker && entry.nsfw %></div><%
   end
   
   # comments bubble

@@ -11,7 +11,7 @@
 <% else %>
 	<div class='onair t-iscrollable'>
 		<% @entries.each do |entry| %>
-			<%= render :partial => 'entries/entry_display', :locals => { :entry => entry, :show_comments_bubble => true, :show_username => true } %>
+			<%= render :partial => 'entries/entry_display', :locals => { :entry => entry, :show_comments_bubble => true, :show_username => true, :show_tags => false, :show_nsfw_sticker => true } %>
 		<% end %>
 
 		<%= paginate @entry_ids %>

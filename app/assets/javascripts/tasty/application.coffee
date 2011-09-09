@@ -1,7 +1,6 @@
 Tasty =
   ready: ->
     Tasty.fancybox.ready()
-    jQuery('a.fancypopup').fancybox(Tasty.fancybox.popup_options)
     
     jQuery('a.t-act-vote').live "click", Tasty.vote
     jQuery('a.t-act-fave').live "click", Tasty.fave
@@ -46,18 +45,17 @@ Tasty =
 
 
   fancybox:
-    ready: (options = Tasty.fancybox.options) ->
-      Tasty.fancybox.scoped(document, options)
+    ready: (options = Tasty.fancybox.options, popup_options = Tasty.fancybox.popup_options) ->
+      Tasty.fancybox.scoped(document, options, popup_options)
     
-    scoped: (scope, options = Tasty.fancybox.options) ->
+    scoped: (scope, options = Tasty.fancybox.options, popup_options = Tasty.fancybox.popup_options) ->
       jQuery(scope).find('a.fancybox').removeClass('fancybox').fancybox(options)
+      jQuery(scope).find('a.fancypopup').removeClass('fancypopup').fancybox(popup_options)
     
     popup_options:
-      width: 650
-      height: 400
       titleShow: false
       centerOnScroll: true
-      autoDimensions: false
+      autoDimensions: true
       hideOnOverlayClick : true
       hideOnContentClick: false
       onStart: ->
