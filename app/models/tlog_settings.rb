@@ -47,19 +47,14 @@ class TlogSettings < ActiveRecord::Base
     '4.gif'
   ]
   
-  belongs_to :user
+  belongs_to  :user
+  belongs_to  :background
   
   validates_presence_of :user_id
   validates_inclusion_of :default_visibility, :in => %(public private mainpageable voteable), :on => :save
 
   validates_inclusion_of :privacy, :in => %(open rr fr me), :on => :save
 
-  
-  has_attached_file :main_background,
-    :url            => '/assets/main/:sha1_partition/:id_:style.:extension',
-    :path           => ':rails_root/public:url',
-    :use_timestamp  => false,
-    :styles         => { :square => '40x40#' }
   
   before_save do |record|
     record.privacy = 'fr' if record.privacy == 'me' && !record.user.is_premium?
@@ -72,32 +67,36 @@ class TlogSettings < ActiveRecord::Base
     record.user.update_attributes(:entries_updated_at => Time.now) unless (record.changes.keys - ['updated_at']).blank?
   end
 
-  def backgrounds_for_select
-    backgrounds = []
-
-    BACKGROUNDS.each do |img|
-      ext     = File.extname(img)
-      preview = File.basename(img, ext) + '_preview' + File.extname(img)
-      backgrounds << OpenStruct.new(:name     => img,
-                                    :preview  => File.join('backgrounds', preview),
-                                    :path     => File.join(Rails.root, 'public', 'images/backgrounds', img),
-                                    :selected => false
-                                    )
-    end
-    
-    if self.main_background?
-      if backgrounds.map(&:name).include?(self.main_background_file_name)
-        backgrounds.find { |b| b.name == self.main_background_file_name }.selected = true
-      else
-        backgrounds << OpenStruct.new(:name     => self.main_background_file_name,
-                                      :preview  => self.main_background.url(:square),
-                                      :path     => self.main_background.path,
-                                      :selected => true)
-      end
-    end
-    
-    backgrounds
-  end
+  # def backgrounds_for_select
+  #   backgrounds = []
+  # 
+  #   BACKGROUNDS.each do |img|
+  #     ext     = File.extname(img)
+  #     preview = File.basename(img, ext) + '_preview' + File.extname(img)
+  #     backgrounds << OpenStruct.new(:name       => img,
+  #                                   :preview    => File.join('backgrounds', preview),
+  #                                   :image      => File.join('backgrounds', img),
+  #                                   :path       => File.join(Rails.root, 'public', 'images/backgrounds', img),
+  #                                   :deletable  => false,
+  #                                   :selected   => false
+  #                                   )
+  #   end
+  #   
+  #   if self.main_background?
+  #     if backgrounds.map(&:name).include?(self.main_background_file_name)
+  #       backgrounds.find { |b| b.name == self.main_background_file_name }.selected = true
+  #     else
+  #       backgrounds << OpenStruct.new(:name       => self.main_background_file_name,
+  #                                     :preview    => self.main_background.url(:square),
+  #                                     :image      => self.main_background.url,
+  #                                     :path       => self.main_background.path,
+  #                                     :deletable  => true,
+  #                                     :selected   => true)
+  #     end
+  #   end
+  #   
+  #   backgrounds
+  # end
   
   def default_visibility
     read_attribute(:default_visibility) || 'mainpageable'

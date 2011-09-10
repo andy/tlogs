@@ -2,14 +2,68 @@
 - content_for :header do
   Свой фон на главной
 
-.t-premium-backgrounds  
+.t-premium-backgrounds
+  %p С этой страницы вы можете установить один из предложенных нами вариантов фона, либо загрузить и установить свой.
+  
   %h2 Выберите фон
-
   .backgrounds
     - @backgrounds.each do |b|
-      = link_to image_tag(b.preview, :class => classes(['selected', b.selected])), '#', 'data-url' => user_url(current_site, settings_premium_path(:action => :background)), 'data-name' => b.name, :class => classes(['t-act-background-change', !b.selected])
+      - is_selected   = b.id == current_site.tlog_settings.background_id
+      .background{:class => classes(['selected', is_selected], ['t-act-background-change', !is_selected]), :style => "background: url('#{b.image.url}') repeat;", :data => {:action => user_url(current_site, settings_premium_path(:action => :background)), :id => b.id, :image => b.image.url, :deletable => b.is_public? ? nil : 'deletable' }}
+        - unless b.is_public?
+          -# .change
+          .delete= image_tag 'icon_x.png'
 
+    .clear
+      %div
     = link_to '+ добавить', user_url(current_site, settings_premium_path(:action => 'background_popup')), :id => 'fancybox_link_background'
+  
+  %h2 Предпросмотр
+  .preview{:style => current_site.tlog_settings.background ? nil : "background: url('#{Background.public.first.image.url}') repeat;"}
+    .title
+      = image_tag current_service.logo, :alt => 'тейсти'
+      .subtitle
+        Будьте собой, %username%!
+    
+    .menu
+      %span Новости
+      %span Лучшее
+      %span Мое
+      %span.selected Прямой эфир
+      %span День из жизни
+    .content
+      .entry.text
+        .rel
+          .author
+            %span genue
+        %h4 Заголовок
+        %p примерно так будет выглядеть главная если отойти от монитора на 10 метров
+      
+      .entry.image
+        .rel
+          .author
+            %span andy
+        %h4 Картинка
+        %p= image_tag 'sleepy_hollow_by_spookyme.jpg'
+      
+      .entry.link
+        .rel
+          .author
+            %span genue
+        %h4 Ссылка
+        %p
+          %a{:href => 'http://www.mmm-tasty.ru/', :target => '_blank'} www.mmm-tasty.ru
+        
+      .entry.quote
+        .rel
+          .author
+            %span andy
+        -# %h4 Цитата
+        %p
+          %span &laquo;
+          То, что долго живет, растет медленно
+          %span &raquo;
+      
   
 :javascript
   var t_bg_clicked = null;
@@ -19,28 +73,56 @@
     t_bg_clicked = jQuery(this);
   
     jQuery.ajax({
-      url: jQuery(this).data('url'),
+      url: jQuery(this).data('action'),
       type: 'post',
       dataType: 'json',
       data: {
         authenticity_token: window._token,
-        name: jQuery(this).data('name')
+        id: jQuery(this).data('id')
       },
       complete: function() { jQuery.fancybox.hideActivity(); },
       success: function(data) {
         if(data === true) {
-          jQuery('.backgrounds').find('img.selected').removeClass('selected').parent().addClass('t-act-background-change');
-          t_bg_clicked.removeClass('t-act-background-change').find('img').addClass('selected');
+          jQuery('.backgrounds .selected').removeClass('selected').addClass('t-act-background-change');
+          t_bg_clicked.removeClass('t-act-background-change').addClass('selected');
+          jQuery('.preview').css({ backgroundImage: 'url(' + t_bg_clicked.data('image') + ')' });
         }
       }
     });
     return false;
   });
+  
+  jQuery('.t-premium-backgrounds .backgrounds .delete').click(function() {
+    jQuery.fancybox.showActivity();
+    t_bg_clicked = jQuery(this).parent();
+
+    jQuery.ajax({
+      url: t_bg_clicked.data('action'),
+      dataType: 'json',
+      type: 'post',
+      data: {
+        authenticity_token: window._token,
+        id: t_bg_clicked.data('id'),
+        '_method': 'delete'
+      },
+      complete: function() { jQuery.fancybox.hideActivity(); },
+      success: function(data) {
+        if(data === true) {
+          jQuery(t_bg_clicked).hide(500);
+        }
+      }
+    });
+    return false;
+  });
+  
+  jQuery('.t-premium-backgrounds .backgrounds .selected').each(function() {
+    jQuery('.preview').css({ backgroundImage: 'url(' + jQuery(this).data('image') + ')' });
+  });
 
   jQuery('#fancybox_link_background').fancybox({
     titleShow: false,
     centerOnScroll: true,
-    autoDimensions : true,
+    autoDimensions: true,
     hideOnOverlayClick : true,
     hideOnContentClick: false
   });

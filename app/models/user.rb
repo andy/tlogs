@@ -60,6 +60,7 @@ class User < ActiveRecord::Base
   has_many      :shade_conversations, :class_name => 'Conversation', :dependent => :destroy, :order => 'last_message_at DESC', :foreign_key => 'recipient_id'
   has_many      :faves, :dependent => :destroy
   has_many      :invoices
+  has_many      :backgrounds, :dependent => :destroy
 
 
   ## plugins

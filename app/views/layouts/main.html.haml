@@ -8,9 +8,9 @@
 %head
   = render :partial => 'globals/head'
   = render :partial => 'globals/dfp_head'  
-  - if is_premium? && current_user.tlog_settings.main_background?
+  - if is_premium? && current_user.tlog_settings.background
     :css
-      body.main_page { background:url(#{current_user.tlog_settings.main_background.url}) fixed; }
+      body.main_page { background:url(#{current_user.tlog_settings.background.image.url}) fixed; }
 
 %body.main_page
   .logo

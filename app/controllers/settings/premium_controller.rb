@@ -53,22 +53,39 @@ class Settings::PremiumController < ApplicationController
   end
 
   def background
-    @backgrounds  = current_site.tlog_settings.backgrounds_for_select
+    ts = current_site.tlog_settings
     
     if request.post?
-      ts = current_site.tlog_settings
       if params[:image]
-        ts.main_background = params[:image]
-        ts.save!
-      
-        flash[:good] = 'Фоновая картинка изменена!'
-        redirect_to user_url(current_site, settings_premium_path)
-      elsif params[:name]
-        ts.main_background = File.open(@backgrounds.find { |b| b.name == params[:name] }.path)
-        ts.save!
+        Background.transaction do
+          bg = Background.create :user => current_site, :image => params[:image]
+          bg.tlog_settings << ts if bg
+        end
+
+        flash[:good] = 'Спасибо, изображение добавлено!'
+        redirect_to user_url(current_site, settings_premium_path(:action => 'background'))
+      elsif params[:id]
+        Background.transaction do
+          bg = Background.find(params[:id], :conditions => "is_public = 1 OR user_id = #{current_site.id}")
+          bg.tlog_settings << ts if bg
+        end
         
         render :json => true
       end
+    elsif request.delete?
+      Background.transaction do
+        ts = current_site.tlog_settings
+        bg = Background.find(params[:id], :conditions => "is_public = 1 OR user_id = #{current_site.id}")
+        bg.destroy unless bg.is_public?
+        ts.update_attribute(:background_id, nil) if bg.id == ts.background_id
+      end
+      
+      render :json => true
+    else
+      @backgrounds  = Background.public.all
+      @backgrounds += current_site.backgrounds
+      
+      @backgrounds.uniq!
     end
   end
 
