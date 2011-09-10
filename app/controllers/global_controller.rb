@@ -29,7 +29,7 @@ class GlobalController < ApplicationController
   
   def switch
     if request.post?
-      @user = User.find(params[:id])
+      @user = User.find_by_url(params[:url])
 
       redirect_to service_path(login_path) and return if @user.nil?
 

@@ -160,11 +160,11 @@ class User
     User.transaction do
       User.find(links).each do |user|
         user.settings_will_change!
-        if user.id == unlink_user.id || user.linked_with.length <= 1
+        if user.id == unlink_user.id || user.linked_with.length <= 2
           user.settings.delete(user.link_key)
         else
           user.settings[user.link_key] = links - [unlink_user.id]
-        end
+        end        
         user.save!
         
         Rails.logger.debug "* user #{user.id} chain of command is #{user.linked_with.join(', ')}"

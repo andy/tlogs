@@ -37,12 +37,18 @@ class Settings::PremiumController < ApplicationController
   def unlink
     render :nothing => true and return unless request.post?
 
-    @user = User.find(params[:id])
+    @user = User.find_by_url(params[:url])
     current_site.unlink_from(@user) if @user
     
+    current_site.reload
+    
     render :update do |page|
-      page.visual_effect :highlight, "t-accounts-link-#{@user.id}", :duration => 0.3
-      page.visual_effect :fade, "t-accounts-link-#{@user.id}", :duration => 0.3
+      if current_site.can_switch?
+        page.visual_effect :highlight, "t-accounts-link-#{@user.url.downcase}", :duration => 0.3
+        page.visual_effect :fade, "t-accounts-link-#{@user.url.downcase}", :duration => 0.3
+      else
+        page << "jQuery('.accounts').hide(1000);"
+      end
     end
   end
 
