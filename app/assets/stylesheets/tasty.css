@@ -2476,11 +2476,12 @@ div.code * {
 	font-size:10px;
 	color:#777!important;
 	text-align:center;
-	width:22px;
+	width:26px;
+	height: 16px;
 	display:none;
 	padding-left:2px
 	text-decoration:none;
-	margin:0 0 0 1px;
+	margin:0 0 0 0;
 } 
 .vote_up:hover, .vote_down:hover, .touch .vote_up, .touch .vote_down {
 	background:#e6e6e6;
