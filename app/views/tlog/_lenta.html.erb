@@ -1,4 +1,3 @@
-<% reverse = true unless local_assigns.has_key?(:reverse) %>
 <% if @entries.size > 0 %>
 
   <% if is_owner? && current_site.tlog_settings.past_disabled? && @page && @page > 1 %>
@@ -18,7 +17,7 @@
   	<% if params[:action] == 'daylog' || current_site.tlog_settings.is_daylog? && params[:action] == 'index' %>
   		<%= render :partial => 'globals/day_pagination', :locals => { :entries => @entries }  %>
   	<% else %>
-  		<%= paginate @entries, :reverse => reverse %>
+  		<%= paginate @entries %>
   	<% end %>
   <% end %>
 	

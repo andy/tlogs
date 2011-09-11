@@ -52,7 +52,6 @@ Tasty =
     parse: (path, iteration) ->
       path.match(/^(.*?)(\d+)$/)[1] + Tasty.iscroll.next
 
-
   fancybox:
     ready: (options = Tasty.fancybox.options, popup_options = Tasty.fancybox.popup_options) ->
       Tasty.fancybox.scoped(document, options, popup_options)

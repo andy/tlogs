@@ -33,7 +33,8 @@ class TlogController < ApplicationController
   def regular
     # переворачиваем страницы, они теперь будут показываться в обратном порядке
     total_pages = current_site.public_entries_count.to_pages
-    @page = params[:page].to_i.reverse_page( total_pages ) rescue 1
+    @page = params[:page].to_i rescue 1
+    @page = 1 if @page <= 0
     options = { :page => @page }
     if @page == 1 || is_owner? || !current_site.tlog_settings.past_disabled?
       @entries = current_site.recent_entries(options) # uses paginator, so entries are not really loaded
@@ -42,6 +43,9 @@ class TlogController < ApplicationController
       @past_disabled = true
       @entries = []
     end
+    
+    @iscroll        = true if @page == 1 || is_owner? || !current_site.tlog_settings.past_disabled?
+    @iscroll_active = true if params[:_is]
     
     render :action => 'regular'
   end
