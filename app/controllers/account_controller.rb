@@ -114,13 +114,20 @@ class AccountController < ApplicationController
   
   # выходим из системы
   def logout
-    redirect_to service_url unless request.delete?
+    redirect_to service_url and return unless request.post?
 
     cookies.delete :t, :domain => current_service.cookie_domain
-    reset_session
+    cookies.delete :s, :domain => current_service.cookie_domain
+    # reset_session
     
     respond_to do |wants|
-      wants.html { redirect_to service_url }
+      wants.html do
+        if params[:p] && params[:p] == 'false'
+          redirect_to :back
+        else
+          redirect_to service_url
+        end        
+      end
       wants.js do
         render :update do |page|
           if params[:p] && params[:p] == 'false'

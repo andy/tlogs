@@ -6,12 +6,21 @@ Tasty =
     jQuery('a.t-act-fave').live "click", Tasty.fave
     jQuery('a.t-act-meta').live "click", Tasty.meta.click
     jQuery('a#t-act-fastforward').live "click", Tasty.fastforward
+    jQuery('#t-act-logout').live "click", Tasty.logout
     jQuery('.t-controller-settings-social a.t-act-social-delete').live "click", Tasty.social.del
     jQuery('.t-controller-settings-social a.t-act-social-edit').live "click", Tasty.social.edit
     Tasty.shortcut.ready() if jQuery('#t-act-shortcut')
     Tasty.iscroll.ready() if jQuery('.t-iscrollable')
 
     true
+    
+  logout: (event) ->
+    form = jQuery('#t-logout-form')
+    form.find("input[name='authenticity_token']").val(window._token)
+    form.find("input[name='p']").val(window._is_private)
+    form.submit()
+    
+    false
 
   iscroll:
     ready: (options = Tasty.iscroll.options) ->
