@@ -1273,6 +1273,12 @@ form.post #entry_nsfw_holder {
   margin-bottom: 15px;
 }
 
+form.post #entry_nsfw_holder_checkbox {
+  float: left;
+  margin-right: 20px;
+  margin-bottom: 20px;
+}
+
 form.post #entry_nsfw_holder_comments {
   font-size: 11px;
   color: #999;

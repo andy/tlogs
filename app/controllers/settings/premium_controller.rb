@@ -1,7 +1,7 @@
 class Settings::PremiumController < ApplicationController
   before_filter :require_current_user, :require_owner
   before_filter :require_confirmed_current_user
-  before_filter :require_premium, :except => [:index, :pay, :sms_update, :qiwi_init_bill]
+  before_filter :require_premium, :except => [:index, :pay, :invoices, :sms_update, :qiwi_init_bill]
 
   protect_from_forgery
 

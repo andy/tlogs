@@ -3,6 +3,7 @@
 	<%= menu_item 'Тип тлога', :index, %w(settings/default/index) %>
 	<% menu_item 'Премиум', :premium, %w(settings/premium/index settings/premium/accounts settings/premium/background settings/premium/invoices) do %>
 	  <% if is_premium? %>
+	    <%= menu_item 'общие', user_url(current_user, settings_premium_path), %w(settings/premium/index) %>
   	  <%= menu_item 'аккаунты', user_url(current_user, settings_premium_path(:action => :accounts)) %>
   	  <%= menu_item 'фон', user_url(current_user, settings_premium_path(:action => :background)) %>
   	<% end %>

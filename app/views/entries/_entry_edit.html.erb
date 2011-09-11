@@ -33,12 +33,15 @@
 						<% end %>
 					</div>
 					
-					<div id='entry_nsfw_holder'>
-					  <label for='entry_nsfw'>
-					    <%= check_box :entry, :nsfw, :class => 'checkbox' %> — NSFW (Not Safe For Work, 18+)
-					  </label>
-					  <div id='entry_nsfw_holder_comments'>Поставьте эту галочку, если ваша запись содержит нецензурные выражения, является оскорбительной или содержит порнографические материалы.</div>
-					</div>
+          <!-- <div id='entry_nsfw_holder'>
+            <div id='entry_nsfw_holder_checkbox'>
+              <%= check_box :entry, :nsfw, :class => 'checkbox' %>
+            </div>
+            <div id='entry_nsfw_holder_details'>
+              <label for='entry_nsfw'>NSFW (Not Safe For Work, 18+)</label>
+              <div id='entry_nsfw_holder_comments'>Поставьте эту галочку, если ваша запись содержит нецензурные выражения, является оскорбительной или содержит порнографические материалы.</div>
+            </div>
+          </div> -->
 			
 					<div id='entry_tags'>
 						<label for='entry_tag_list'>Теги: </label><br/>
@@ -66,7 +69,6 @@
 <% if in_bookmarklet? && params[:bm][:autosave] == 'true' %>
 <script type='text/javascript'>$('entry_edit_form').submit();</script>
 <% end %>
-
 <script type='text/javascript'>
   jQuery(function() {
     if(jQuery('#entry_visibility').val() == 'mainpageable' || jQuery('#entry_visibility').val() == 'voteable') {
@@ -83,5 +85,4 @@
       }
     });
   });
-
 </script>
