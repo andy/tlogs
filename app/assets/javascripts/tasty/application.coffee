@@ -20,8 +20,6 @@ Tasty =
       form.find("input[name='authenticity_token']").val(window._token)
       form.find("input[name='p']").val(window._is_private)
       form.submit()
-    else
-      console.log 'does not want'
     
     false
 

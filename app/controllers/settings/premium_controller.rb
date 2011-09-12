@@ -62,7 +62,7 @@ class Settings::PremiumController < ApplicationController
           bg.tlog_settings << ts if bg
         end
 
-        flash[:good] = 'Спасибо, изображение добавлено!'
+        flash[:good] = 'Великолепно, изображение добавлено!'
         redirect_to user_url(current_site, settings_premium_path(:action => 'background'))
       elsif params[:id]
         Background.transaction do
