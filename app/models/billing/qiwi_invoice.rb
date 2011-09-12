@@ -157,7 +157,7 @@ class QiwiInvoice < Invoice
   end
   
   def secured_password
-    ::Digest::MD5.hexdigest(self.id.to_s + ::Digest::MD5.hexdigest(self.password).upcase).upcase
+    ::Digest::MD5.hexdigest(self.txn_id.to_s + ::Digest::MD5.hexdigest(self.password).upcase).upcase
   end
 
   def summary

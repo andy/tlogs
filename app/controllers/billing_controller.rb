@@ -96,7 +96,7 @@ class BillingController < ApplicationController
     
     login   = params["Envelope"]["Body"]["updateBill"]["login"]
     pass    = params["Envelope"]["Body"]["updateBill"]["password"]
-    txn     = params["Envelope"]["Body"]["updateBill"]["txn"]
+    txn     = params["Envelope"]["Body"]["updateBill"]["txn"].gsub('qiwi-', '').to_i
     status  = params["Envelope"]["Body"]["updateBill"]["status"].to_i
 
     QiwiInvoice.transaction do
