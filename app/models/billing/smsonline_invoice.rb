@@ -146,7 +146,7 @@ class SmsonlineInvoice < Invoice
   
   ## public methods
   def summary
-    "SMS на номер #{self.metadata[:sn]} стоимостью #{self.amount} руб."
+    "SMS на номер #{self.metadata[:sn]} (#{self.amount} руб. с НДС)"
   end
   
   def extra_summary

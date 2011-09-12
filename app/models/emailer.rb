@@ -68,7 +68,7 @@ class Emailer < ActionMailer::Base
   # письмо любовь от пользователя
   def invoice(current_service, invoice)
     setup     current_service,
-                :subj     => 'ммм... премиум-подписка оплачена',
+                :subj     => 'ммм... премиум-чек',
                 :from     => '"Mmm... premium" <noreply+premium@mmm-tasty.ru>',
                 :reply_to => '"Mmm... premium" <premium@mmm-tasty.ru>',
                 :user     => invoice.user,
