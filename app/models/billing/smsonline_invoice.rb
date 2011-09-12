@@ -126,7 +126,7 @@ class SmsonlineInvoice < Invoice
         
         o_nets.each do |net|
           number = OpenStruct.new(:name => [net.country, net.operator_code, net.shortnumber].join('_'),
-                                  :value => "#{duration(net.shortnumber).pluralize('день', 'дня', 'дней', true)}\t(#{net.sms_cost_loc.to_f.to_s} #{CURRENCIES[net.currency] || net.currency} без НДС)",
+                                  :value => "#{duration(net.shortnumber).pluralize('день', 'дня', 'дней', true)}\t(#{net.sms_cost_vat.to_f.to_s} #{CURRENCIES[net.currency] || net.currency} с НДС)",
                                   :shortnumber => net.shortnumber,
                                   :position => settings['numbers'].index(net.shortnumber),
                                   :vat => net.vat)
