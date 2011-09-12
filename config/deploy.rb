@@ -124,22 +124,22 @@ namespace :deploy do
   namespace :sphinx do
     desc "Sphinx conf"
     task :conf, :roles => :app do
-      run "cd #{deploy_to} && RAILS_ENV=production bin/rake ts:conf"
+      run "cd #{deploy_to} && RAILS_ENV=production bundle exec rake ts:conf"
     end
     
     desc "Start sphinx"
     task :start, :roles => :sphinx do
-      run "cd #{deploy_to} && RAILS_ENV=production bin/rake ts:start"
+      run "cd #{deploy_to} && RAILS_ENV=production bundle exec rake ts:start"
     end
     
     desc "Stop sphinx"
     task :stop, :roles => :sphinx do
-      run "cd #{deploy_to} && RAILS_ENV=production bin/rake ts:stop"
+      run "cd #{deploy_to} && RAILS_ENV=production bundle exec rake ts:stop"
     end
     
     desc "Reindex"
     task :reindex, :roles => :sphinx do
-      run "cd #{deploy_to} && RAILS_ENV=production bin/rake ts:reindex"
+      run "cd #{deploy_to} && RAILS_ENV=production bundle exec rake ts:reindex"
     end
   end
   
