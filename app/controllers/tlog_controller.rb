@@ -44,8 +44,8 @@ class TlogController < ApplicationController
       @entries = []
     end
     
-    @iscroll        = true if @page == 1 || is_owner? || !current_site.tlog_settings.past_disabled?
-    @iscroll_active = true if params[:_is]
+    # @iscroll        = true if @page == 1 || is_owner? || !current_site.tlog_settings.past_disabled?
+    # @iscroll_active = true if params[:_is]
     
     render :action => 'regular'
   end
