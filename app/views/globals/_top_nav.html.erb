@@ -6,7 +6,7 @@ if current_user
   if current_user.can_switch? %><%=
     link_to image_tag('exit.gif', :size => '23x23', :class => 'exit', :title => 'Выход', :alt => 'x'), global_path(:action => 'switch'), :class => 'fancypopup' %><%
   else %>
-    <form method='post' action='<%= service_url(logout_path) %>' id='t-logout-form' style='display: none'>
+    <form method='post' action='http://www.mmm-tasty.ru/account/logout' id='t-logout-form' style='display: none'>
       <input type='hidden' name='authenticity_token' value='' />
       <input type='hidden' name='p' value='' />
     </form>
