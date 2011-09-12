@@ -63,6 +63,10 @@ class Invoice < ActiveRecord::Base
 
 
   ## public methods
+  def is_pending?
+    state == 'pending'
+  end
+
   def is_successful?
     state == 'successful'
   end
@@ -98,11 +102,11 @@ class Invoice < ActiveRecord::Base
   def pref_options
     nil
   end
+
+  def expand_premium_for_user!
+    user.update_attribute(:premium_till, ((user.premium_till || Time.now) + self.days.days).end_of_day + 8.hours)
+  end 
   
   ## protected methods
   protected
-    def expand_premium_for_user!
-      user.premium_till = ((user.premium_till || Time.now) + self.days.days).end_of_day + 8.hours
-      user.save!
-    end 
 end

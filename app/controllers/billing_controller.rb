@@ -121,7 +121,7 @@ class BillingController < ApplicationController
           qiwi_soap_reply(QiwiInvoice::ERR_BUSY, params) and return unless testing || @invoice.check_bill
 
           # mark as paid and proceed
-          @invoice.success!
+          @invoice.qiwi_success!
           
           @invoice.deliver!(current_service)
         when 100..200

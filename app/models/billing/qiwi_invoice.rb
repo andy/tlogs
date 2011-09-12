@@ -159,6 +159,10 @@ class QiwiInvoice < Invoice
   def secured_password
     ::Digest::MD5.hexdigest(self.txn_id.to_s + ::Digest::MD5.hexdigest(self.password).upcase).upcase
   end
+  
+  def qiwi_success!
+    expand_premium_for_user! && success! if is_pending?
+  end
 
   def summary
     "Платеж через QIWI кошелек на сумму #{self.amount.pluralize('рубль', 'рубля', 'рублей', true)}"
