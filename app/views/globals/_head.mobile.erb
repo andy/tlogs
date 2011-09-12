@@ -4,7 +4,7 @@
 
 <meta name="MSSmartTagsPreventParsing" content="true" />
 <meta http-equiv="imagetoolbar" content="no" />
-<meta name="generator" content="tlogs.ru" />
+<meta name="generator" content="<%= current_service.domain %>" />
 
 <link rel="shortcut icon" href="/favicon.ico" />
 
@@ -19,7 +19,7 @@
 <script type='text/javascript'>
   var current_user = <%= current_user ? current_user.id : 0 %>;
   <%- if current_user -%>
-  var _user = <%= { :id   => current_user.id, :url  => current_user.url }.to_json %>;
+  var _user = <%= { :id => current_user.id, :url => current_user.url, :premium => current_user.is_premium? }.to_json %>;
   <%- end -%>
   window._token = "<%= form_authenticity_token %>";
 </script>

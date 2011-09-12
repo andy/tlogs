@@ -44,10 +44,29 @@ module ApplicationHelper
 
     url ? image_tag(url,
             :class  => classes('avatar', [options[:class], options[:class]]),
+            :style  => options[:style],
             :alt    => user.url,
             :width  => width,
             :height => height
           ) : ''
+  end
+  
+  
+  def avatar_dimensions(user, options = {})
+    avatar = user.avatar
+    width  = avatar ? avatar.width : 64
+    height = avatar ? avatar.height : 64
+    
+    OpenStruct.new :width => width, :height => height
+  end
+
+  def userpic_dimensions(user, options = {})
+    return avatar_dimensions(user, options) unless user.userpic?
+    
+    width   = user.userpic.width
+    height  = user.userpic.height
+    
+    OpenStruct.new :width => width, :height => height
   end
   
   # new way to embed userpics (succeeds avatar_tag)
@@ -83,8 +102,10 @@ module ApplicationHelper
       height = ratio < 1 ? (height * ratio).to_i : height
     end
 
+    # content_tag(:div, 'pro', :class => 't-avatar-badge-pro') + 
     image_tag(image_path(user.userpic.url(style)),
         :class  => classes('avatar', [options[:class], options[:class]]),
+        :style  => options[:style],
         :alt    => user.url,
         :width  => width,
         :height => height
@@ -182,6 +203,10 @@ END
     render :partial => 'globals/pagination', :locals => options.merge(:pageable => pageable)
   end
   
+  def infinite_paginate(page, options = {})
+    render :partial => 'globals/infinite_pagination', :locals => options.merge(:page => page) if page
+  end
+  
   # escape and truncate html attribute
   # options are for truncate() call, e.g. :length
   def h_attr(text, options = {})
@@ -191,6 +216,18 @@ END
   def timeago(time, options = {})
     options[:class] ||= 'timeago'
     content_tag(:abbr, Russian::strftime(time, '%d %B %Y в %H:%M'), options.merge(:title => time.getutc.iso8601))
+  end
+  
+  def current_controller_class
+    't-controller-' + params[:controller].gsub('/', '-')
+  end
+  
+  def current_action_class
+    't-action-' + params[:action]
+  end
+  
+  def days(n)
+    n.pluralize('день', 'дня', 'дней', true)
   end
   
   def say_time_in_words(time)

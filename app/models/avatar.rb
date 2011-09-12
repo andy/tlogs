@@ -1,15 +1,15 @@
 # == Schema Information
-# Schema version: 20110223155201
+# Schema version: 20110816190509
 #
 # Table name: avatars
 #
 #  id           :integer(4)      not null, primary key
-#  user_id      :integer(4)      default(0), not null
+#  user_id      :integer(4)      default(0), not null, indexed
 #  content_type :string(255)
 #  filename     :string(255)
 #  size         :integer(4)
 #  position     :integer(4)
-#  parent_id    :integer(4)
+#  parent_id    :integer(4)      indexed
 #  thumbnail    :string(255)
 #  width        :integer(4)
 #  height       :integer(4)

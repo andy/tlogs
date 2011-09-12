@@ -13,7 +13,7 @@
 
   - else
     .help_intro
-      - if params[:action] == 'day'
+      - if params[:action] == 'daylog'
         - if @past_disabled
           %h2 Пользователь предпочел скрыть свои старые записи
         - else
@@ -31,7 +31,7 @@
   - if @entries.size > 0
     -# показываем навигационные элементы если прошлое не выключено или если это владелец тлога
     - if is_owner? || !current_site.tlog_settings.past_disabled?
-      - if params[:action] == 'day' || current_site.tlog_settings.is_daylog? && params[:action] == 'index'
+      - if params[:action] == 'daylog' || current_site.tlog_settings.is_daylog? && params[:action] == 'index'
         = render :partial => 'globals/day_pagination', :locals => { :entries => @entries }
       - else
         = paginate @entries, :reverse => reverse

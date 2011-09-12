@@ -13,10 +13,10 @@
 		<% unless @entry.is_anonymous? %>
 			<div id='entry_options_toggle'>
 				<% if @new_record %>
-					<%= link_to_function 'Дополнительно ...', 'new Effect.toggle("entry_options", "blind", { duration: 0.3 })' %>
+					<%#= link_to_function 'Дополнительно ...', 'new Effect.toggle("entry_options", "blind", { duration: 0.3 })' %>
 				<% end %>
 		
-				<div id='entry_options' <%= ' style="display: none"' if @new_record %>>
+				<div id='entry_options' <%#= ' style="display: none"' if @new_record %>>
 					<div id='entry_visibility_div'>
 						<% if entry.visibility != 'voteable' || @new_record %>
 							<label for='entry_visibility'>Тип записи:</label><br/>
@@ -26,12 +26,22 @@
 							  limit = current_site.visibility_limit
 							  if limit[:mainpageable_entries]
 							%>
-							<div class='visibility_comments'><b>Важно!</b> Вы можете публиковать не более <%= limit[:mainpageable_entries] %> <%= Russian.p(limit[:mainpageable_entries], 'записи', 'записей', 'записей') %> в прямой эфир, и не более <%= limit[:voteable_entries] %> <%= Russian.p(limit[:voteable_entries], 'записи', 'записей', 'записей') %> с голосованием в течение 24-х часов. Публикации в личный тлог <b>никак не ограничиваются</b>.</div>
+							<div class='visibility_comments'><b>Важно!</b> Вы можете публиковать не более <%= limit[:mainpageable_entries] %> <%= Russian.p(limit[:mainpageable_entries], 'записи', 'записей', 'записей') %> в прямой эфир, и не более <%= limit[:voteable_entries] %> <%= Russian.p(limit[:voteable_entries], 'записи', 'записей', 'записей') %> с голосованием в течение 24-х часов. Публикации в личный тлог <b>никак не ограничиваются</b>. Снять ограничения можно <%= link_to 'оплатив сервис &rarr;', user_url(current_site, settings_premium_path) %></div>
 							<% else %>
 							  <div class='visibility_comments'><b>Жизнь удалась.</b> Вы никак не ограничены в количестве публикаций в прямой эфир.</div>
 						  <% end %>
 						<% end %>
 					</div>
+					
+          <!-- <div id='entry_nsfw_holder'>
+            <div id='entry_nsfw_holder_checkbox'>
+              <%= check_box :entry, :nsfw, :class => 'checkbox' %>
+            </div>
+            <div id='entry_nsfw_holder_details'>
+              <label for='entry_nsfw'>NSFW (Not Safe For Work, 18+)</label>
+              <div id='entry_nsfw_holder_comments'>Поставьте эту галочку, если ваша запись содержит нецензурные выражения, является оскорбительной или содержит порнографические материалы.</div>
+            </div>
+          </div> -->
 			
 					<div id='entry_tags'>
 						<label for='entry_tag_list'>Теги: </label><br/>
@@ -59,3 +69,20 @@
 <% if in_bookmarklet? && params[:bm][:autosave] == 'true' %>
 <script type='text/javascript'>$('entry_edit_form').submit();</script>
 <% end %>
+<script type='text/javascript'>
+  jQuery(function() {
+    if(jQuery('#entry_visibility').val() == 'mainpageable' || jQuery('#entry_visibility').val() == 'voteable') {
+      jQuery('#entry_nsfw_holder').show();
+    } else {
+      jQuery('#entry_nsfw_holder').hide();
+    }
+    
+    jQuery('#entry_visibility').change(function() {
+      if(jQuery(this).val() == 'mainpageable' || jQuery(this).val() == 'voteable') {
+        jQuery('#entry_nsfw_holder').show(300);
+      } else {
+        jQuery('#entry_nsfw_holder').hide(300);
+      }
+    });
+  });
+</script>

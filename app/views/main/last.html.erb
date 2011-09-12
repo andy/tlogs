@@ -4,32 +4,51 @@
 	<%= auto_discovery_link_tag(:rss, service_url(main_feed_last_path(:rating => @filter.rating, :kind => @filter.kind))) %>
 	<!-- /content_for :head -->
 <% end %>
+<% content_for :sidebar_right_calendar do %>
+  <div class='section sidebar_calendar'>
+		<h2><span>Лучшее за день</span></h2>
+    <%-
+      prev_year = nil
+      User.calendar(@time).each do |month, days| -%><%=
+        content_tag :span, days.first.year, :class => 'year' unless days.first.year == prev_year %><%-
+        prev_year = days.first.year 
+        -%> <span class='month'><%= month.to_rmonth_s.capitalize %></span> <%
+        days.each do |day|
+          url = service_url(last_day_path(:year => day.year, :month => day.month, :day => day.mday, :kind => @filter.kind, :rating => @filter.rating, :page => nil)) %> <%=
+          link_to day.day, url, :class => classes('day', ['highlight', day.same_day?(@time)]) %> <%-
+        end
+    	end
+    -%>				
+	</div>
+<% end if in_beta? %>
 
 <div class='filter'>
 	<!-- <h2><%= EntryRating::RATINGS[@filter.rating.to_sym][:header] %></h2> -->
-	<form method='get' action='<%= main_url(:action => 'last_redirect') %>'>
+	<form method='get' action='<%= service_url(main_path(:action => 'last_redirect')) %>'>
 		<%= select :filter, :rating, EntryRating::RATINGS_FOR_SELECT %>
 		<%= select :filter, :kind, Entry::KINDS_FOR_SELECT %>
 		<%= submit_tag "обновить", :name => nil, :class => 'button_1' %>
 	</form>
 </div>
 
-<% if @entry_ratings.blank? %>
-	<p class='last_is_empty_note'>
-		По вашему запросу не было найдено ни одной записи.
-	</p>
-<% else %>
-	<div class='onair'>
+<div class='onair t-iscrollable'>
+  <% if @entry_ratings.blank? %>
+    <div class='emptiness'>
+      <h1>Тут совершенно пусто</h1>
+      <p>По вашему запросу не было найдено ни одной записи.</p>
+    </div>
+  <% else %>
+	
 		<% @entry_ratings.each do |entry_rating| %>
 			<%= render :partial => 'entries/entry_display', :locals => { :entry => entry_rating.entry, :show_comments_bubble => true, :show_username => true } %>
 		<% end %>
 
-		<%= paginate @entry_ratings, :url_options => { :kind => @filter.kind, :rating => @filter.rating } %>	
-	</div>
-	
-	<script type='text/javascript'>
-  // <[!CDATA[
-  	<%= "var comments_views_update = #{@comment_views.to_json(:only => [:id, :comments_count], :methods => [:last_comment_viewed])}" if @comment_views %>
-  //	]]>
-  </script>
-<% end %>
+		<%= paginate @entry_ratings, :url_options => { :kind => @filter.kind, :rating => @filter.rating } %>
+		
+		<script type='text/javascript'>
+    // <[!CDATA[
+    	<%= "var comments_views_update = #{@comment_views.to_json(:only => [:id, :comments_count], :methods => [:last_comment_viewed])}" if @comment_views %>
+    //	]]>
+    </script>
+	<% end %>
+</div>

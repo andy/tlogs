@@ -1,22 +1,21 @@
 # == Schema Information
-# Schema version: 20110223155201
+# Schema version: 20110816190509
 #
 # Table name: users
 #
 #  id                      :integer(4)      not null, primary key
-#  email                   :string(255)
-#  is_confirmed            :boolean(1)      default(FALSE), not null
-#  openid                  :string(255)
-#  url                     :string(255)     default(""), not null
+#  email                   :string(255)     indexed
+#  is_confirmed            :boolean(1)      default(FALSE), not null, indexed, indexed => [entries_count]
+#  openid                  :string(255)     indexed
+#  url                     :string(255)     default(""), not null, indexed
 #  settings                :text
 #  is_disabled             :boolean(1)      default(FALSE), not null
 #  created_at              :datetime        not null
-#  entries_count           :integer(4)      default(0), not null
+#  entries_count           :integer(4)      default(0), not null, indexed, indexed => [is_confirmed]
 #  updated_at              :datetime
 #  is_anonymous            :boolean(1)      default(FALSE), not null
 #  is_mainpageable         :boolean(1)      default(FALSE), not null
-#  is_premium              :boolean(1)      default(FALSE), not null
-#  domain                  :string(255)
+#  domain                  :string(255)     indexed
 #  private_entries_count   :integer(4)      default(0), not null
 #  email_comments          :boolean(1)      default(TRUE), not null
 #  comments_auto_subscribe :boolean(1)      default(TRUE), not null
@@ -27,6 +26,12 @@
 #  faves_count             :integer(4)      default(0), not null
 #  entries_updated_at      :datetime
 #  conversations_count     :integer(4)      default(0), not null
+#  disabled_at             :datetime
+#  ban_ac_till             :datetime
+#  userpic_file_name       :string(255)
+#  userpic_updated_at      :datetime
+#  userpic_meta            :text
+#  premium_till            :datetime
 #
 # Indexes
 #
@@ -54,7 +59,8 @@ class User < ActiveRecord::Base
   has_many      :conversations, :dependent => :destroy, :order => 'last_message_at DESC'
   has_many      :shade_conversations, :class_name => 'Conversation', :dependent => :destroy, :order => 'last_message_at DESC', :foreign_key => 'recipient_id'
   has_many      :faves, :dependent => :destroy
-  has_many      :transactions
+  has_many      :invoices
+  has_many      :backgrounds, :dependent => :destroy
 
 
   ## plugins
@@ -106,6 +112,7 @@ class User < ActiveRecord::Base
   named_scope   :active, :conditions => 'is_disabled = 0'
   named_scope   :disabled, :conditions => 'is_disabled = 1'
   named_scope   :expired, :conditions => 'is_disabled = 1 AND disabled_at < DATE_SUB(CURDATE(), INTERVAL 1 MONTH)'
+  named_scope   :premium, :conditions => 'premium_till IS NOT NULL AND premium_till > CURDATE()'
 
   
   ## validations
@@ -127,7 +134,7 @@ class User < ActiveRecord::Base
     user.is_mainpageable = true
     
     # initialize empty global & design settings
-    user.tlog_settings        = TlogSettings.create :user => user
+    user.tlog_settings        = TlogSettings.create :user => user, :comments_enabled => true
     user.tlog_design_settings = TlogDesignSettings.create :user => user
 
     # subscribe to 'news' user

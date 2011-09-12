@@ -1,0 +1,269 @@
+!!! 5
+%html
+  %head
+    :javascript
+      var sms_update_url  = #{user_url(current_site, settings_premium_path(:action => 'sms_update')).to_s.to_json};
+      var sms_last_id     = #{@sms_last_id.to_json};
+      var pref_method     = #{@pref_method.to_json};
+      var pref_sms        = #{@pref_sms.to_json};
+      var pref_qiwi       = #{@pref_qiwi.to_json};
+      
+      var sms   = jQuery('#t-premium-payment-sms');
+      
+      function sms_update() {
+        if(sms.find('.invoices:visible').length == 0) {
+          setTimeout(sms_update, 5000);
+          return;
+        }
+        jQuery.ajax({
+          url: sms_update_url,
+          dataType: 'json',
+          type: 'get',
+          data: { authenticity_token: window._token, last_id: sms_last_id || 0 },
+          complete: function() { setTimeout(sms_update, 5000); },
+          success: function(data) {
+            console.log(data);
+            data.each(function(invoice) {
+              console.log(invoice);
+              sms.find('.invoices:visible').append('<p>' + invoice.summary + '</p>');
+              sms_last_id = invoice.id;
+            });            
+          }
+        });
+      }
+      if(window.sms_update_tid) {
+        clearTimeout(window.sms_update_tid);
+      }
+      // window.sms_update_tid = setTimeout(sms_update, 5000);
+      
+      sms.find('.operators').hide();
+      sms.find('.numbers').hide();
+      
+      sms.find('select[name="country"]').change(function() {
+        var val = jQuery(this).val();
+        
+        sms.find('.operators').hide();
+        sms.find('#' + val).show();
+      });
+      
+      sms.find('select[name="operator"]').change(function() {
+        var val = jQuery(this).val();
+        var op  = sms.find('#' + val);
+        
+        sms.find('.numbers').hide();
+        sms.find('.numbers .details').hide();
+        
+        op.show();
+        if(op.find('select[name="number"] option:enabled').length > 0) {
+          sel = op.find('select[name="number"]')
+          sel.val(sel.find('option:enabled').eq(0).val()).change();
+        }
+      });
+      
+      sms.find('select[name="number"]').change(function() {
+        var val = jQuery(this).val();
+        
+        jQuery(this).parent('.numbers').find('.details').hide();
+        sms.find('#' + val).show();
+      });
+      
+      var countries = sms.find('select[name="country"]');
+      if(countries.find('option:enabled').length == 1) {
+        countries.val(countries.find('option:enabled').val());
+        countries.change();
+      }
+      
+      if(pref_sms) {
+        var sms_cn = pref_sms.split('_')[0];
+        var sms_op = pref_sms.split('_', 2).join('_');
+        var sms_sn = pref_sms;
+        
+        sms.find('select[name="country"]').val(sms_cn).change();
+        sms.find('#' + sms_cn + ' select[name="operator"]').val(sms_op).change();
+        sms.find('#' + sms_op + ' select[name="number"]').val(sms_sn).change();
+      }
+      
+      var qiwi = jQuery('#t-premium-payment-qiwi');
+      
+      qiwi.find('#qiwi-choose').submit(function() {
+        var phone = jQuery(this).find('#qiwi-select-phone').val();
+        var option = jQuery(this).find('#qiwi-select-option').val();
+        
+        phone = phone.replace(/[^0-9]/g, '');
+        
+        if(!phone.match(/^[0-9]{10}$/)) {
+          qiwi.find('#phone-hint').text('В номере должно быть ровно 10 цифр.').fadeTo(100, 1);
+          return false;
+        }
+        
+        if(!phone.match(/^[0-9]+$/)) {
+          qiwi.find('#phone-hint').text('В номере должны использоваться только цифры.').fadeTo(100, 1);
+          return false;
+        }
+        
+        qiwi.find('input[type="submit"]').attr('disabled', 'disabled');
+      
+        jQuery.ajax({
+          url: jQuery(this).data('url'),
+          dataType: 'json',
+          data: {
+              authenticity_token: window._token,
+              option: option,
+              phone: phone
+            },
+          type: 'post',
+          complete: function() {
+            qiwi.find('input[type="submit"]').removeAttr('disabled');
+          },
+          error: function() {
+            qiwi.find('#phone-hint').text('Внутреняя ошибка, попробуйте позже или обратитесь к администрации.').fadeTo(100, 1);
+          },
+          success: function(data) {
+            var form = qiwi.find('#qiwi-template');
+            
+            if(data['to'] && data['summ'] && data['com'] && data['txn_id']) {
+              form.find('input[name="to"]').val(data['to']);
+              form.find('input[name="summ"]').val(data['summ']);
+              form.find('input[name="com"]').val(data['com']);
+              form.find('input[name="txn_id"]').val(data['txn_id']);
+              form.submit();
+            } else {
+              qiwi.find('#phone-hint').text('Внутреняя ошибка, попробуйте позже или обратитесь к администрации.').fadeTo(100, 1);
+            }
+          }
+        });
+        
+        return false;
+      });
+      
+      qiwi.find('#phone-hint').fadeTo(0, 0);
+      qiwi.find('#qiwi-select-phone').keyup(function() {
+        var val = jQuery(this).val();
+        
+        if(val.match(/^[0-9\-\ ]+$/)) {
+          qiwi.find('#phone-hint').fadeTo(100, 0);
+        } else {
+          qiwi.find('#phone-hint').text('В номере должны использоваться только цифры.').fadeTo(100, 1);
+        }
+      });
+      
+      if(pref_qiwi) {
+        qiwi.find('input[name="phone"]').val(pref_qiwi).change();
+      }
+      
+      
+      jQuery('.t-premium-payment .p-module').hide();
+      
+      var meth = jQuery('#t-premium-payment-method');
+      meth.find('input[type="radio"]').change(function() {
+        var key = jQuery(this).val();
+        
+        jQuery('.t-premium-payment .p-module').hide();
+        jQuery('#t-premium-payment-' + key).show();
+      });
+      
+      if(pref_method) {
+        jQuery('input[value="' + pref_method + '"]').click();
+      }
+
+
+  %body
+    .t-premium-payment
+      %h3
+        Оплата
+
+      %form#t-premium-payment-method
+        .method
+          %label
+            %input{:type => 'radio', :name => 'method', :value => 'sms'}
+            SMS на короткий номер
+
+        .method
+          %label
+            %input{:type => 'radio', :name => 'method', :value => 'qiwi'}
+            Qiwi-кошелек (терминалы, qiwi-кошелек или банковской картой)
+
+      #t-premium-payment-qiwi.p-module
+        %form#qiwi-choose{:data => {:url => user_url(current_site, settings_premium_path(:action => 'qiwi_init_bill'))}}
+      
+          %table
+            %tr
+              %td
+                %label{:for => 'qiwi-select-option'}
+                  Выберите сумму:
+              %td
+                %select{:name => 'option', :id => 'qiwi-select-option'}
+                  = options_from_collection_for_select @qiwi_options.sort_by(&:position), :name, :text
+            %tr
+              %td
+                %label{:for => 'qiwi-select-phone'}
+                  Номер вашего телефона:
+              %td
+                %input{:id => 'qiwi-select-phone', :type => 'text', :name => 'phone', :maxlength => 13}
+                #phone-demo
+                  Например: 925 123-45-67
+                  %span#phone-hint Все хорошо
+              
+            %tr
+              %td
+              %td
+                %input.button{:type => 'submit', :value => 'Выставить счет'}
+        
+          .details
+            %p Qiwi позволяет оплачивать через терминалы, с помощью qiwi-кошелек или банковской карты.
+            %p После того, как вы нажмете "выставить счет" откроется сайт Qiwi, где вам будет предложено выбрать способ оплаты.
+        
+        %form#qiwi-template.hidden{:action => 'http://w.qiwi.ru/setInetBill_utf.do', :method => 'POST'}
+          %input{:type => 'hidden', :name => 'from', :value => QiwiInvoice.login}
+          %input{:type => 'hidden', :name => 'to', :value => ''}
+          %input{:type => 'hidden', :name => 'summ', :value => ''}
+          %input{:type => 'hidden', :name => 'com', :value => ''}
+          %input{:type => 'hidden', :name => 'lifetime', :value => (QiwiInvoice::EXPIRES_IN / 1.hour)}
+          %input{:type => 'hidden', :name => 'check_agt', :value => 'false'}
+          %input{:type => 'hidden', :name => 'txn_id', :value => ''}
+
+      %form#t-premium-payment-sms.p-module
+        %select{:name => 'country'}
+          %option{:disabled => 'disabled'} Выберите страну
+          = options_from_collection_for_select @countries.sort_by(&:position), :name, :value
+    
+        - @countries.each do |country|
+          .operators{:id => country.name}
+            %select{:name => 'operator'}
+              %option{:disabled => 'disabled'} Выберите оператора
+              = options_from_collection_for_select country.operators.sort_by(&:position), :name, :value
+
+            - country.operators.each do |operator|
+              .numbers{:id => operator.name}
+                %select{:name => 'number'}
+                  %option{:disabled => 'disabled'} Выберите стоимость
+                  = options_from_collection_for_select operator.numbers.sort_by(&:position), :name, :value
+
+                - operator.numbers.each do |number|
+                  .details{:id => number.name}
+                    .info
+                      Для оплаты, отправьте SMS на номер 
+                      %span= number.shortnumber
+                      с текстом
+                      %span
+                        tasty
+                        = '1' + current_site.id.to_s                      
+
+                    .meta
+                      - if country.name == 'ru'
+                        %p.rates
+                          %b После отправки SMS сообщения дождитесь ответного сообщения и обновите страницу.
+                          Цены указаны в рублях. В стоимость услуги будет включен НДС #{number.vat}%. Детальную информацию о стоимости SMS сообщений смотрите на сайте
+                          %a{:href => "http://www.smshelp.me/?a=rates&cn=#{country.name}&num=#{number.shortnumber}", :target => '_blank'} 
+                            smshelp.me/?a=rates
+
+                        - if operator.name == 'ru_mts'
+                          %p.mts_info
+                            %b Вниманию абонентов МТС:
+                            Стоимость доступа к услугам контент-провайдера устанавливается Вашим оператором. Подробную информацию можно узнать в разделе "Услуги по коротким номерам" на сайте
+                            %a{:href => 'http://www.mts.ru', :target => '_blank'} www.mts.ru
+                            или обратившись в контактный центр по телефону 8 800 333 0890 (0890 для абонентов МТС).
+                      - elsif country.name == 'ua'
+                        %p.rates
+                          %b После отправки SMS сообщения необходимо обновить страницу.
+                          Тариф в гривнах с учетом НДС. Дополнительно удерживается сбор в Пенсионный фонд в размере 7,5% от стоимости услуги без учета НДС. Услуга действительна для абонентов всех национальных GSM операторов Украины и предоставляется только совершеннолетним. Техническую поддержку осуществляет компания ООО "СМС ОНЛАЙН". Тех. поддержка абонентов с 9-00 до 18-00 по рабочим дням, тел. /044/ 383-20-90

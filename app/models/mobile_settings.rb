@@ -1,11 +1,11 @@
 # == Schema Information
-# Schema version: 20110223155201
+# Schema version: 20110816190509
 #
 # Table name: mobile_settings
 #
 #  id         :integer(4)      not null, primary key
-#  user_id    :integer(4)      default(0), not null
-#  keyword    :string(255)     default(""), not null
+#  user_id    :integer(4)      default(0), not null, indexed
+#  keyword    :string(255)     default(""), not null, indexed
 #  created_at :datetime
 #  updated_at :datetime
 #

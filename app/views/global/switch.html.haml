@@ -1,0 +1,44 @@
+!!! 5
+%html
+  %head
+  
+  %body
+    .t-accounts-switcher.popup
+      - if current_user.can_switch?
+        %h2 Переключиться в другой аккаунт
+      
+        .accounts
+        
+          %hr
+          - @accounts.each do |user|
+            - wh = userpic_dimensions(user)
+            .account{:id => "t-accounts-link-#{user.url.downcase}"}
+              .userpic= userpic_tag(user, :style => "margin-top: #{32 - (wh.height || 64) / 2}px; margin-left: #{32 - (wh.width || 64) / 2}px")
+              .details
+                .url= h(user.url)
+                .meta
+                  %p= user.entries_count.pluralize('запись', 'записи', 'записей', true)
+                  %p Обновление #{user.last_public_entry_at.distance_between_in_words(Time.now, ' назад')}
+
+              .controls
+                - if user.id == current_user.id
+                  %p.self Это ваш текущий аккаунт
+                - else
+                  %form{:method => 'POST', :action => global_path(:action => 'switch')}
+                    %input{:type => 'hidden', :name => request_forgery_protection_token, :value => form_authenticity_token}
+                    %input{:type => 'hidden', :name => 'url', :value => user.url.downcase}    
+                    %input{:type => 'submit', :class => 'button', :value => 'Переключиться'}
+            %hr
+        .actions
+          = link_to_remote 'Совсем выйти', :url => service_url(logout_path), :method => :delete, :with => "'p=' + window._is_private", :html => { :title => 'Выйти', :confirm => 'Вы действительно хотите выйти?', :onclick => 'ga_event("Userbar", "Logout", current_user ? _user.url : "anonymous");' }
+    
+      - else
+        .disabled
+          Извините, но вам недоступна эта опция.
+        
+        .actions
+          = link_to_remote 'Совсем выйти', :url => service_url(logout_path), :method => :delete, :with => "'p=' + window._is_private", :html => { :title => 'Выйти', :confirm => 'Вы действительно хотите выйти?', :onclick => 'ga_event("Userbar", "Logout", current_user ? _user.url : "anonymous");' }
+          
+      
+  
+  

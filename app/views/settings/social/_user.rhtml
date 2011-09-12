@@ -1,12 +1,5 @@
-<% css_class ||= '' %>
-<li class='user_rel' id="<%= "relationship_#{user.relationship_id}" %>">
-	<%= image_tag 'ctulhu.gif', :class => 'ctulhu', :title => 'я ктулху, меня можно таскать', :alt => 'drag' %>
-	<%= link_to_tlog user, nil, :class => "relationship #{css_class}", :id => "relationship_link_#{user.relationship_id}" %>
-	<% unless @light %>
-		<%= link_to_remote image_tag('delete.gif'), { :url => user_url(current_site, settings_social_path(:action => :delete, :relationship_id => user.relationship_id)), :before => "new Effect.Highlight('relationship_#{user.relationship_id}', { duration: 0.3 }); new Effect.Fade('relationship_#{user.relationship_id}', { duration: 0.3 })" }, :alt => 'del', :class => 'hover' %>
-		<%= link_to_remote image_tag('edit.gif'), { :url => user_url(current_site, settings_social_path(:action => :title, :relationship_id => user.relationship_id)), :method => :get }, :alt => 'edit', :class => 'hover' %>
-		<div id='<%= user.dom_id(:title_editor) %>' class='title_editor'>
-			<span><%= h(user.title) if user.title %></span>
-		</div>
-	<% end %>
-</li>
+<%- css_class ||= '' -%><li class='user_rel' id="<%= "relationship_#{user.relationship_id}" %>"><%=
+  image_tag 'ctulhu.gif', :class => 'ctulhu', :title => 'я ктулху, меня можно таскать', :alt => 'drag' %><%=
+  link_to_tlog user, nil, :class => "relationship #{css_class}", :id => "relationship_link_#{user.relationship_id}" %><%=
+  link_to image_tag('delete.gif', :alt => 'x', :title => 'Удалить'), '#', 'data-rel-id' => user.relationship_id, 'data-url' => user_url(current_site, settings_social_path(:action => :delete, :relationship_id => user.relationship_id)), :class => 't-act-social-delete hover', :alt => 'Удалить из списка', :title => 'Удалить из списка' %><%=
+  link_to image_tag('edit.gif', :alt => 'e', :title => 'Редактировать'), '#', 'data-rel-id' => user.relationship_id, 'data-url' => user_url(current_site, settings_social_path(:action => :title, :relationship_id => user.relationship_id)), :class => 't-act-social-edit hover', :alt => 'Редактировать описание', :title => 'Редактировать описание' %><div id='<%= user.dom_id(:title_editor) %>' class='title_editor'><span><%= h(user.title) if user.title %></span></div><%#= link_to_remote image_tag('delete.gif'), { :url => user_url(current_site, settings_social_path(:action => :delete, :relationship_id => user.relationship_id)), :before => "new Effect.Highlight('relationship_#{user.relationship_id}', { duration: 0.3 }); new Effect.Fade('relationship_#{user.relationship_id}', { duration: 0.3 })" }, :alt => 'del', :class => 'hover' %><%#= link_to_remote image_tag('edit.gif'), { :url => user_url(current_site, settings_social_path(:action => :title, :relationship_id => user.relationship_id)), :method => :get }, :alt => 'edit', :class => 'hover' %></li>

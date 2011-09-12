@@ -1,0 +1,11 @@
+<%-
+  personal_keep_open = %w(private anonymous).include?(params[:action])
+-%><div class='sidebar_section' id='sidebar_personal'><%=
+  link_to_function 'Личное', "sidebar_toggle('personal')", :title => "в вашем тлоге", :class => "sidebar_toggle#{' highlight' if personal_keep_open}", :id => 'sidebar_personal_link'
+  %><div class='sidebar_section_content' id='sidebar_personal_content'<%= " style='display: none'" unless personal_keep_open %>><ul><li><%=
+    link_to 'скрытые записи', user_url(current_site, private_entries_path), :class => ('highlight' if params[:action] == 'private') %><%=
+    content_tag :span, current_site.entries.private.count.pluralize('штука', 'штуки', 'штук', true)
+  %></li><li><%=
+    link_to 'анонимки', user_url(current_site, anonymous_entries_path), :class => ('highlight' if params[:action] == 'anonymous') %><%=
+    content_tag :span, current_site.entries.anonymous.count.pluralize('штука', 'штуки', 'штук', true)
+  %></li></ul></div></div>

@@ -1,18 +1,11 @@
 <% @title = @entry.excerpt || @entry.to_russian %>
 <% content_for :head do %>
-	<!-- content_for :head -->
-	<% cache "#{current_service.domain}/#{current_site.url}/show:#{@entry.id}/date:#{Date.today.to_s(:db)}/head", :expires_in => 1.day do %>
+	<% cache "#{current_service.domain}/#{current_site.url}/date:#{Date.today.to_s(:db)}/head", :expires_in => 1.day do %>
   	<%= auto_discovery_link_tag(:rss, user_url(current_site, tlog_feed_path(:action => :rss))) %>
   	<%= auto_discovery_link_tag(:rss, user_url(current_site, tlog_feed_path(:action => :photos)), { :title => 'только фоторафии' }) %>
   	<%= tag :link, :rel => 'meta', :type => 'application/rdf+xml', :title => 'FOAF', :href => user_url(current_site, foaf_path) %>
-  	<% if false && @entry.next_id %>
-  		<link rel="next" title="Next" href="<%= user_url(current_site, entry_path(@entry.next_id)) %>" />
-  	<% end %>
-  	<% if false && @entry.prev_id %>
-  		<link rel="prev" title="Previous" href="<%= user_url(current_site, entry_path(@entry.prev_id)) %>" />
-  	<% end %>
+  	<%= tag :meta, :name => 'description', :content => [current_site.url, current_site.tlog_settings.title, @entry.excerpt].compact.join(', ') %>
   <% end %>
-	<!-- /content_for :head -->
 <% end %>
 
 <% cache "#{current_service.domain}/#{current_site.url}/show:#{@entry.id}/date:#{Date.today.to_s(:db)}/owner:#{is_owner?}/updated_at:#{@entry.updated_at.to_i}", :expires_in => 1.day do %>

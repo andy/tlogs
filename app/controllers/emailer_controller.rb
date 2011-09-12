@@ -17,7 +17,6 @@ class EmailerController < ApplicationController
       @method_name = params[:method_name]
 
       user = User.first
-      logger.debug "DESTROY GO #{@method_name}"
 
       case @method_name
       when 'comment'
@@ -34,8 +33,13 @@ class EmailerController < ApplicationController
         @mail = Emailer.create_message(current_service, user, user.messages.last)
       when 'signup'
         @mail = Emailer.create_signup(current_service, User.unconfirmed.last)
+      when 'invoice'
+        @mail = Emailer.create_invoice(current_service, Invoice.successful.last)
+      when 'premium_expires'
+        @mail = Emailer.create_premium(current_service, User.premium.first)
+      when 'premium_expired'
+        @mail = Emailer.create_premium(current_service, User.premium.first)
       when 'destroy'
-        logger.debug "DESTROY GO"
         @mail = Emailer.create_destroy(current_service, user)
       end
       

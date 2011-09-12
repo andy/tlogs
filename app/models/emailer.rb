@@ -7,6 +7,14 @@ class Emailer < ActionMailer::Base
                 :from => '"Ммм... тейсти" <noreply+signup@mmm-tasty.ru>',
                 :user => user
   end
+  
+  def link_notification(current_service, user, link)
+    setup     current_service,
+                :subj => 'ммм... ваш аккаунт привязан к другому',
+                :from => '"Mmm... noreply <noreply@mmm-tasty.ru"',
+                :reply_to => '"Mmm... premium" <premium@mmm-tasty.ru>',
+                :body => { :user => user, :link => link }                
+  end
 
   def confirm(current_service, user, email)
     setup     current_service,
@@ -58,12 +66,29 @@ class Emailer < ActionMailer::Base
   end
   
   # письмо любовь от пользователя
-  def love(current_service, transaction)
+  def invoice(current_service, invoice)
     setup     current_service,
-                :subj => 'ммм... пожертвование',
-                :from => '"Mmm... love" <noreply+love@mmm-tasty.ru>',
-                :email => 'feedback@mmm-tasty.ru',
-                :body => { :transaction => transaction, :user => transaction.user }
+                :subj     => 'ммм... премиум-подписка оплачена',
+                :from     => '"Mmm... premium" <noreply+premium@mmm-tasty.ru>',
+                :reply_to => '"Mmm... premium" <premium@mmm-tasty.ru>',
+                :user     => invoice.user,
+                :body     => { :invoice => invoice }
+  end
+  
+  def premium_expires(current_service, user)
+    setup     current_service,
+                :subj     => 'ммм... до окончания премиум-подписки осталось 3 дня',
+                :from     => '"Mmm... premium" <noreply+premium@mmm-tasty.ru>',
+                :reply_to => '"Mmm... premium" <premium@mmm-tasty.ru>',
+                :user     => user
+  end
+  
+  def premium_expired(current_service, user)
+    setup     current_service,
+                :subj     => 'ммм... премиум-подаиска отключена',
+                :from     => '"Mmm... premium" <noreply+premium@mmm-tasty.ru>',
+                :reply_to => '"Mmm... premium" <premium@mmm-tasty.ru>',
+                :user     => user
   end
   
   def destroy(current_service, user)
@@ -82,6 +107,7 @@ class Emailer < ActionMailer::Base
       # global settings
       @sent_on    = Time.now
       @headers    = {}
+      @headers['Reply-To'] = options[:reply_to] if options[:reply_to]
       @subject    = options[:subj]
       @recipients = options[:email].blank? ? options[:user].email : options[:email]
       @from       = options[:from]

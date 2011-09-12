@@ -126,8 +126,64 @@ class User
     self.encrypt(password) == self.crypted_password
   end
   
+  def link_key
+    :ln
+  end
+  
+  def linked_with
+    self.settings[self.link_key] || []
+  end
+  
+  def linked_accounts
+    User.find(self.linked_with)
+  end
+  
+  def link_with(link_user)
+    links = self.linked_with + link_user.linked_with + [self.id, link_user.id]
+    links.uniq!
+    
+    User.transaction do
+      User.find(links).each do |user|
+        user.settings_will_change!
+        user.settings[self.link_key] = links
+        user.save!
 
-  ## private methods  	
+        Rails.logger.debug "* user #{user.id} chain of command is #{user.linked_with.join(', ')}"
+      end
+    end
+  end
+  
+  def unlink_from(unlink_user)
+    links = self.linked_with
+    return unless links.include?(unlink_user.id)
+
+    User.transaction do
+      User.find(links).each do |user|
+        user.settings_will_change!
+        if user.id == unlink_user.id || user.linked_with.length <= 2
+          user.settings.delete(user.link_key)
+        else
+          user.settings[user.link_key] = links - [unlink_user.id]
+        end        
+        user.save!
+        
+        Rails.logger.debug "* user #{user.id} chain of command is #{user.linked_with.join(', ')}"
+      end
+    end
+  end
+  
+  def can_switch?
+    Rails.cache.fetch("u:#{self.id}:#{self.linked_with.join('.')}:can_switch?", :expires_in => 1.day) do
+      !!User.find(self.linked_with).find(&:is_premium?)
+    end
+  end
+
+  def can_be_switched_to?(user)
+    self.linked_with.include?(user.id) && self.can_switch?
+  end
+  
+
+  ## private methods
 
   private
     # before filter 

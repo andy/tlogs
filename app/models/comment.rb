@@ -1,14 +1,14 @@
 # == Schema Information
-# Schema version: 20110223155201
+# Schema version: 20110816190509
 #
 # Table name: comments
 #
 #  id           :integer(4)      not null, primary key
-#  entry_id     :integer(4)      default(0), not null
+#  entry_id     :integer(4)      default(0), not null, indexed
 #  comment      :text
-#  user_id      :integer(4)      not null
+#  user_id      :integer(4)      not null, indexed
 #  is_disabled  :boolean(1)      default(FALSE), not null
-#  created_at   :datetime        not null
+#  created_at   :datetime        not null, indexed
 #  updated_at   :datetime
 #  comment_html :text
 #  remote_ip    :string(17)

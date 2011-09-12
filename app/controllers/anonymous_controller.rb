@@ -10,6 +10,8 @@ class AnonymousController < ApplicationController
   before_filter :require_not_ac_banned, :only => [:preview, :comment, :comment_destroy]
 
   before_filter :require_moderator, :only => [:toggle, :ban_ac]
+  
+  before_filter :enable_shortcut, :only => [:index, :show]
 
   layout 'main'
   helper :main, :comments

@@ -3,14 +3,14 @@ class AccountController < ApplicationController
   before_filter :redirect_home_if_current_user, :only => [:index, :login, :signup, :openid_verify]
   before_filter :require_confirmed_current_user, :except => [:logout]
 
-  protect_from_forgery :only => [:login, :rename, :lost_password, :recover_password, :signup, :update_url_status]
+  protect_from_forgery :only => [:login, :logout, :rename, :lost_password, :recover_password, :signup, :update_url_status]
 
   helper :settings
 
   def index
     redirect_to service_path(login_path)
   end
-
+  
   # авторизуем пользователя либо по openid, либо по паре имя/пароль
   def login
     if request.post?
@@ -114,9 +114,30 @@ class AccountController < ApplicationController
   
   # выходим из системы
   def logout
+    redirect_to service_url and return unless request.post?
+
     cookies.delete :t, :domain => current_service.cookie_domain
-    reset_session
-    redirect_to service_url
+    cookies.delete :s, :domain => current_service.cookie_domain
+    # reset_session
+    
+    respond_to do |wants|
+      wants.html do
+        if params[:p] && params[:p] == 'false'
+          redirect_to :back
+        else
+          redirect_to service_url
+        end        
+      end
+      wants.js do
+        render :update do |page|
+          if params[:p] && params[:p] == 'false'
+            page.call 'window.location.reload'
+          else
+            page << "window.location.href = #{service_url.to_json};"
+          end
+        end
+      end
+    end
   end
 
   # регистрация, для новичков

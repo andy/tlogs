@@ -1,0 +1,29 @@
+#!/usr/bin/env script/runner
+#
+# When successful, there should be no output from the script
+#
+require 'net/http'
+require 'hpricot'
+require 'uri'
+
+settings  = ::SETTINGS[:billing]['smsonline']
+login     = settings['login']
+pass      = settings['password']
+out       = File.join(Rails.root, settings['prices'])
+
+uri       = URI.parse("http://num.smsonline.ru/xml/?user=#{login}&pass=#{pass}")
+res       = Net::HTTP.get_response(uri)
+
+case res
+when Net::HTTPSuccess
+  doc  = Hpricot.XML(res.body)
+  if (doc/:network).length > 2
+    File.open(out, 'w').write(doc.to_s)
+  else
+    puts "- err: invalid xml received"
+    exit 1
+  end
+else
+  puts "- err: http error, #{res.to_s}"
+  exit 1
+end  

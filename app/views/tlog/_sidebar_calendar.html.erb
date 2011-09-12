@@ -1,0 +1,3 @@
+<div class='sidebar_section' id='sidebar_calendar'><%=
+  link_to_function 'Календарь', "sidebar_toggle('calendar')" , :class => "sidebar_toggle #{'highlight' if params[:action] == 'daylog'}", :id => 'sidebar_calendar_link' %><div class='sidebar_section_content' id='sidebar_calendar_content' <%= "style='display: none'" unless params[:action] == 'daylog' %>><%=
+  render :partial => 'globals/calendar', :locals => { :calendar => current_site.calendar(@time), :time => (@time || Time.now) } %></div></div>

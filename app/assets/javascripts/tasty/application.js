@@ -160,28 +160,7 @@ function do_not_reply_to_comment(id) {
   _update_comment_textarea();
 }
 
-/* ie hover fix */
-// function makeHover(classList) {
-//   classList.each(function(item) {
-//     if ($$('.' + item).length) {
-//       $$('.' + item).each(function(node) {
-//         node.onmouseover=function() { this.className+=" hover"; }
-//         node.onmouseout=function() { this.className=this.className.replace (" hover", ""); }
-//       });
-//     }
-//   });
-// }
-// 
-// if(jQuery.browser.msie && jQuery.browser.version ) {
-//   document.observe('dom:loaded', function() {
-//     var classes = new Array('post_body');
-//     makeHover(classes);
-//   });
-// }
-
-jQuery(document).ready(function() {
-	jQuery('a.fancybox').removeClass('fancybox').fancybox({ centerOnScroll: false, hideOnContentClick: true, showNavArrows: false, enableKeyboardNav: false, autoScale: false });
-	
+jQuery(document).ready(function() {	
 	jQuery('a, button').focus(function(){ this.blur();} );
 
 	jQuery('#pref_friends_holder .pref_friends_user').live('click', function() {

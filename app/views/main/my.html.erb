@@ -1,35 +1,23 @@
-<% @title = 'моё' %>
-<div class='onair' id='onair_my_<%= @entries.total_entries.zero? ? 0 : @entries.first.id %>'>
-	<%= paginate @entries, :css_class => 'top_nav_paginator' if @page > 1 %>
+<% content_for :head do %>
+	<!-- content_for :head -->
+	<%= auto_discovery_link_tag(:rss, user_url(current_user, tlog_feed_protected_path(:key => current_user.last_personalized_key, :action => :last_personalized))) %>
+	<!-- /content_for :head -->
+<% end %>
+<div class='onair t-iscrollable'>
+  <% if @entries.blank? %>
+    <div class='emptiness'>
+      <h1>Тут совершенно пусто</h1>
+      <p>К сожалению, не найдено ни одной записи, которую мы могли бы вам показать.</p>
+      <p>Скорее всего это потому, что вы ни на кого не подписаны.</p>
+    </div>
+  <% else %>
+  	<% @entries.each do |entry| %>
+  		<%= render :partial => 'entries/entry_display', :locals => { :entry => entry, :show_comments_bubble => true, :show_username => true, :show_tags => false, :comment_views => @comment_views } %>
+  	<% end %>
 
-	<% @entries.each do |entry| %>
-		<%= render :partial => 'entries/entry_display', :locals => { :entry => entry, :show_comments_bubble => true, :show_username => true, :show_tags => false, :comment_views => @comment_views } %>
-	<% end %>
-
-	<%= paginate @entries %>
+  	<%= paginate @entries %>
+  <% end %>
 </div>
-
-<script type='text/javascript'>
-  var inf_page = 1;
-
-  jQuery('.onair').infinitescroll({
-    navSelector: '.entry_pagination',
-    nextSelector: 'div.entry_pagination a.entry_paginate_prev',
-    itemSelector: 'div.post_body',
-    debug: false,
-    loadingImg: 'http://assets0.mmm-tasty.ru/images/blank.gif',
-    loadingText: '<em>Загружаем ...</em>',
-    donetext: '<em>На этом все, спасибо.</em>'    
-  }, function(items) {
-    inf_page += 1;
-
-    ga_event('Infinite Scroll', 'My', current_user ? _user.url : 'anonymous', inf_page);
-
-    // reinitialize fancybox 
-    items.each(function(obj, i) { if(current_user) { enable_services_for_current_user(); } jQuery(obj).find('a.fancybox').fancybox({ centerOnScroll: true, hideOnContentClick: true, showNavArrows: false, enableKeyboardNav: false }); });
-  });
-
-</script>
 
 <% content_for :sidebar_right do %>
   <div class='section'>

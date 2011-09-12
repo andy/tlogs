@@ -31,10 +31,20 @@ class User
     self.is_confirmed? && !self.email.blank? && !self.is_disabled?
   end
   
+  # checks wether current user has user blacklisted
+  def is_blacklisted_for?(user)
+    return false if user && user.id == self.id
+
+    user && self.blacklist_ids.include?(user.id)
+  end
+  
   # checks wether this tlog can be viewed by other users
   def can_be_viewed_by?(user)
     # you can always view your own tlog
     return true if user && user.id == self.id
+    
+    # skip if current user is blacklisted
+    return false if user && self.is_blacklisted_for?(user)
     
     case self.tlog_settings.privacy
     when 'open'
@@ -57,9 +67,13 @@ class User
   def visibility_limit
     # limits
     limits = {}
-
+    
     # on 27 apr 2011 registration was open, limit those people forever
-    if self.created_at > "27 apr 2011".to_time
+    if self.is_premium?
+      limits = {
+        (0..100.years) => { :mainpageable_entries => nil, :voteable_entries => nil }
+      }
+    elsif self.created_at > "27 apr 2001".to_time
       limits = {
         (0...4.weeks) => { :mainpageable_entries => 3, :voteable_entries => 1 },
         (4.weeks..100.years) => { :mainpageable_entries => 6, :voteable_entries => 2 }
@@ -81,7 +95,7 @@ class User
     reject = []
     
     # premium users are unlimited
-    return allow if self.is_premium?
+    # return allow if self.is_premium?
 
     entries = self.entries.find(:all, :select => 'entries.id, entries.is_voteable, entries.is_mainpageable', :conditions => 'entries.is_mainpageable = 1 AND entries.created_at > DATE_SUB(NOW(), INTERVAL 24 HOUR)')
     
@@ -113,6 +127,7 @@ class User
         # end
         
         reason = Reason.new "К сожалению, мы временно отключили возможность заливать музыку прямо на тейсти :( Поэтому, как временное решение, пользуйтесь сервисами на которые можно залить треки, а потом вставляйте проигрыватель в тейсти. Приносим свои извинения за неудобства."
+        reason.premium = "Эта опция будет доступна премиум пользователям."
 
       when 'AnonymousEntry'
         # анонимки можно создавать только раз в неделю
@@ -122,21 +137,23 @@ class User
         entry = Entry.anonymous.for_user(self).last
         if entry
           if entry.is_disabled?
-            if entry.created_at > 2.month.ago
-              reason = Reason.new "Ваша последняя анонимка была удалена меньше месяца назад."
-              reason.expires_at = entry.created_at + 2.month
+            if entry.created_at > (self.is_premium? ? 2.weeks.ago : 2.month.ago)
+              reason = Reason.new "Ваша последняя анонимка была удалена меньше двух месяцев назад."
+              reason.premium    = "Премиум пользователи банятся <b>на две недели</b>, вместо двух месяцев." unless self.is_premium?
+              reason.expires_at = entry.created_at + (self.is_premium? ? 2.weeks : 2.month)
             end
-          elsif entry.created_at > 2.weeks.ago
-            reason = Reason.new "Анонимки можно писать не чаще раза в две недели."
-            reason.expires_at = entry.created_at + 2.weeks
+          elsif entry.created_at > (self.is_premium? ? 1.week.ago : 1.month.ago)
+            reason = Reason.new "Анонимки можно писать не чаще одного раза в месяц."
+            reason.premium    = "Премиум пользователи могут писать анонимки <b>раз в неделю</b>." unless self.is_premium?
+            reason.expires_at = entry.created_at + (self.is_premium? ? 1.week : 1.month)
           end
         # и только спустя месяц после регистрации
-        elsif self.created_at > 6.months.ago
+        elsif self.created_at > 6.months.ago && !self.is_premium?
           reason = Reason.new "Анонимки можно писать только спустя шесть месяцев после регистрации."
+          reason.premium    = "Премиум пользователи могут писать анонимки <b>сразу после регистрации</b>."
           reason.expires_at = self.created_at + 6.months
         end
-
-    end unless self.is_premium?
+    end
     
     reason
   end
@@ -156,6 +173,18 @@ class User
   # показывать ли пользователю бета-функции
   def in_beta?
     !!self.relationship_with(User.find_by_url('beta'))
+  end
+  
+  def is_premium?
+    (self.premium_till && self.premium_till > Time.now) || false
+  end
+  
+  def premium_days_left
+    is_premium? ? ((self.premium_till - Time.now) / 1.day).floor : 0
+  end
+  
+  def premium_strftime
+    self.premium_till.yesterday.strftime '%d %h %Y'
   end
 
   ## private methods  

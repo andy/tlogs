@@ -1,5 +1,5 @@
 class EntryTagsController < ApplicationController
-  before_filter :require_entry, :require_current_site, :current_user_eq_current_site
+  before_filter :require_entry, :require_current_site, :require_owner
 
   # добавляем тег к записи
   def create

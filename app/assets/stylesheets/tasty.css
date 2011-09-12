@@ -389,6 +389,7 @@ img.home {
 
 #pref_ff a {
   padding-right: 4px;
+  position: relative;
   top: 1px;
 }
 
@@ -467,13 +468,13 @@ div.left {
 	color:#333;
 }
 
-#public_friends a, #friends a, #ignored a, #trash a, #guessed a {
+#public_friends a, #friends a, #ignored a, #trash a, #guessed a, #blacklisted a {
 	text-decoration:none;
 	padding:0 4px;
 	font-size:0.92em;
 }
  
-#public_friends, #friends, #ignored, #trash {
+#public_friends, #friends, #blacklisted, #ignored, #trash {
 	margin-bottom:40px;
 }
 #public_friends {
@@ -490,6 +491,9 @@ div.left {
 }
 #trash a {
 	color:#888;	
+}
+#blacklisted a {
+  color:red;
 }
 
 /* SERVICE TAGS FOR POST */
@@ -571,7 +575,7 @@ font-size:88%;
 	font-style:normal;
 	line-height:1.6em;
 	position:relative;
-	top:1px;
+	top:2px;
 	color:white!important;
 }
 div.service_comments, div.service_link, div.service_edit {
@@ -1214,6 +1218,10 @@ div.post_comment_avatar {
 	margin-top: 10px;
 	width: 500px;
 }
+#entry_options_toggle .visibility_comments a {
+  font-size: 1em;
+  color: #999;
+}
 
 div#post_preview {
 	font-size:87%;
@@ -1255,6 +1263,27 @@ form.post input, form.post textarea {
 	margin-bottom:15px;
 	padding:2px 4px;
 /*	font-family:Trebuchet MS, Arial, Helvetica, sans-serif; */
+}
+
+form.post input.checkbox {
+  margin-bottom: 1px;
+}
+
+form.post #entry_nsfw_holder {
+  margin-bottom: 15px;
+}
+
+form.post #entry_nsfw_holder_checkbox {
+  float: left;
+  margin-right: 20px;
+  margin-bottom: 20px;
+}
+
+form.post #entry_nsfw_holder_comments {
+  font-size: 11px;
+  color: #999;
+  font-family: Tahoma, Arial;
+  width: 500px;
 }
 
 /*input#attachment_uploaded_data {
@@ -2453,11 +2482,12 @@ div.code * {
 	font-size:10px;
 	color:#777!important;
 	text-align:center;
-	width:22px;
+	width:26px;
+	height: 16px;
 	display:none;
 	padding-left:2px
 	text-decoration:none;
-	margin:0 0 0 1px;
+	margin:0 0 0 0;
 } 
 .vote_up:hover, .vote_down:hover, .touch .vote_up, .touch .vote_down {
 	background:#e6e6e6;
@@ -2476,9 +2506,14 @@ div.code * {
 	text-decoration:none;
 }
 .last_is_empty_note {
-	margin-top:30px;
+	margin-top:10px;
+	padding-left: 30px;
 	font-style:italic;
 } 
+.onair .emptiness {
+  padding-left: 30px;
+  font-style: italic;
+}
 .main_page h2 {
 	text-align:left;
 	font-size:1.3em;
@@ -2610,10 +2645,13 @@ text-decoration:none;
     letter-spacing:1px;
 }
 .sidebar_settings ul#f_level li a.selected {
+  /* , .sidebar_settings ul#f_level li a.selected:hover { */
 	background:white;
 	color:#808080;
 	margin-left:-30px;
 	padding:0 10px 0 30px; 
+}
+.sidebar_settings ul#f_level li a:hover {
 }
 .sidebar_settings ul#f_level ul li {
 	border:0;
@@ -2840,9 +2878,18 @@ div.post_author:hover a.heart_red {
 #friends_table td {
 	padding:5px;
 }
+.social_manipulator {
+  border-top: 1px dotted #d4d4d4;
+  margin-top: 20px;
+  padding-top: 20px;
+  text-align: center;
+  font-size: 12px;
+}
 .social_manipulator input.button {
 	font-size:0.6em;
-	height:22px;
+  height:18px;
+  position: relative;
+  top: -4px;
 }
 #friends_table ul {
 	list-style:none;
@@ -3440,12 +3487,16 @@ div.search {
 .strong {
 	font-weight:bold;
 }
-div.sidebar_others a, div.sidebar_calendar a,  div.sidebar_calendar span{
+div.sidebar_others a, div.sidebar_calendar a,  div.sidebar_calendar span {
 	text-decoration:none;
 	/*font-size:0.92em;*/
 	color:#404040;
 	background:white;
 	padding:0 2px;
+}
+.main_page div.sidebar_calendar h2 span {
+  color:white;
+  background:#404040;
 }
 .about_more, #sidebar_hide {
 	text-decoration:none;

@@ -41,7 +41,7 @@ class User
   # время когда была написана последняя запись
   def last_public_entry_at
     # self.entries.public.last.created_at - the same?
-    Entry.find_by_sql("SELECT id, created_at FROM entries WHERE user_id = #{self.id} AND is_private = 0 ORDER BY entries.id DESC LIMIT 1").first.created_at rescue Time.now
+    @last_public_entry_at ||= Entry.find_by_sql("SELECT id, created_at FROM entries WHERE user_id = #{self.id} AND is_private = 0 ORDER BY entries.id DESC LIMIT 1").first.created_at rescue Time.now
   end
   
   # возвращает список текущих записей для пользователя, возможные параметры:

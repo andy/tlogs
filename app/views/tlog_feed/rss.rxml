@@ -2,12 +2,12 @@ xml.instruct! :xml, :version => '1.0', :encoding => 'UTF-8'
 
 xml.rss :version => '2.0', 'xmlns:ya' => "http://blogs.yandex.ru/schema/rss", 'xmlns:wfw' => "http://wellformedweb.org/CommentAPI/" do
   xml.channel do
-    xml.title { xml.cdata!(host_for_tlog(current_site) + (current_site.tlog_settings.title.blank? ? '' : (" - " + h(current_site.tlog_settings.title)))) }
+    xml.title { xml.cdata!(current_site.tlog_settings.title.blank? ? "#{h(current_site.url)} @ #{current_service.domain}" : h(current_site.tlog_settings.title)) }
     xml.link user_url(current_site)
     xml.description { xml.cdata!(strip_tags(current_site.tlog_settings.about.strip)) } unless current_site.tlog_settings.about.blank?
     xml.language 'ru-RU'
     xml.pubDate @entries.first.created_at.to_s(:rfc822) if @entries && @entries.first
-    xml.generator "tlogs rss (#{current_service.url})"
+    xml.generator current_service.domain
     xml.ttl 30
     # xml.tag!('wfw:commentRss', user_url(current_site, tlog_feed_path(:action => 'comments')))
     xml.tag!('ya:more', user_url(current_site, tlog_feed_path(:action => 'rss', :page => @entries.next_page)))
@@ -16,7 +16,7 @@ xml.rss :version => '2.0', 'xmlns:ya' => "http://blogs.yandex.ru/schema/rss", 'x
       
       xml.image do
         xml.url image_path(avatar_url)
-        xml.title { xml.cdata!(host_for_tlog(current_site) + (current_site.tlog_settings.title.blank? ? '' : (" - " + h(current_site.tlog_settings.title)))) }
+        xml.title h(current_site.url)
         xml.link user_url(current_site)
       end
     end

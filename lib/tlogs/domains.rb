@@ -51,7 +51,12 @@ module Tlogs
         @port = @options[:port] || 80
 
         @name = @options[:name] || 'tlogs'
-        @url = "#{protocol}#{domain_with_port}"
+        @url = "#{protocol}#{domain_prefix}#{domain_with_port}"
+      end
+      
+      def domain_prefix
+        # is_inline? ? '' : 'www.'
+        ''
       end
       
       def port_postfix

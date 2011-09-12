@@ -1,23 +1,23 @@
 # == Schema Information
-# Schema version: 20110223155201
+# Schema version: 20110816190509
 #
 # Table name: entries
 #
-#  id               :integer(4)      not null, primary key
-#  user_id          :integer(4)      default(0), not null
+#  id               :integer(4)      not null, primary key, indexed => [is_mainpageable]
+#  user_id          :integer(4)      default(0), not null, indexed, indexed => [is_private, created_at]
 #  data_part_1      :text
 #  data_part_2      :text
 #  data_part_3      :text
-#  type             :string(0)       default("TextEntry"), not null
-#  is_disabled      :boolean(1)      default(FALSE), not null
-#  created_at       :datetime        not null
+#  type             :string(0)       default("TextEntry"), not null, indexed
+#  is_disabled      :boolean(1)      default(FALSE), not null, indexed
+#  created_at       :datetime        not null, indexed, indexed => [user_id, is_private]
 #  metadata         :text
 #  comments_count   :integer(4)      default(0), not null
 #  updated_at       :datetime
-#  is_voteable      :boolean(1)      default(FALSE)
-#  is_private       :boolean(1)      default(FALSE), not null
+#  is_voteable      :boolean(1)      default(FALSE), indexed
+#  is_private       :boolean(1)      default(FALSE), not null, indexed, indexed => [user_id, created_at]
 #  cached_tag_list  :text
-#  is_mainpageable  :boolean(1)      default(TRUE), not null
+#  is_mainpageable  :boolean(1)      default(TRUE), not null, indexed, indexed => [id]
 #  comments_enabled :boolean(1)      default(FALSE), not null
 #
 # Indexes
@@ -46,7 +46,7 @@ class VideoEntry < Entry
   before_validation :make_a_link_from_data_part_1_if_present
   
   def excerpt
-    self.data_part_2.to_s.truncate(150).to_s
+    self.data_part_2.to_s.truncate(150).to_s.gsub("\r", '').gsub("\n", ' ')
   end
   
   def self.new_from_bm(params)

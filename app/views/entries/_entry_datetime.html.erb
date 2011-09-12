@@ -1,4 +1,4 @@
-<div class="rel"><div class="service_date"<%= " title='#{entry.created_at.distance_between_in_words(Time.now, ' назад')}'" if params[:action] == 'day' %>><%-
+<div class="rel"><div class="service_date"<%= " title='#{entry.created_at.distance_between_in_words(Time.now, ' назад')}'" if params[:action] == 'daylog' %>><%-
   if entry.created_at.today?
   -%><span class="blue"><span>Сегодня<span class='bg_text_comma'>,</span></span></span><%-
   end

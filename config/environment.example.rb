@@ -1,6 +1,6 @@
 # Be sure to restart your web server when you modify this file.
 
-RAILS_GEM_VERSION = '2.3.12' unless defined? RAILS_GEM_VERSION
+RAILS_GEM_VERSION = '2.3.14' unless defined? RAILS_GEM_VERSION
 
 # Bootstrap the Rails environment, frameworks, and default configuration
 require File.join(File.dirname(__FILE__), 'boot')
@@ -11,6 +11,7 @@ Rails::Initializer.run do |config|
 
   config.autoload_paths += %W( 
     #{RAILS_ROOT}/app/models/entries
+    #{RAILS_ROOT}/app/models/billing
     #{RAILS_ROOT}/app/jobs
     #{RAILS_ROOT}/lib/asset_gluer
   )

@@ -1,5 +1,5 @@
 class Settings::SocialController < ApplicationController
-  before_filter :require_current_user, :current_user_eq_current_site
+  before_filter :require_current_user, :require_owner
   before_filter :require_confirmed_current_user
   after_filter :expire_cache, :only => [:delete, :title_update, :add, :sort]
 
@@ -83,7 +83,7 @@ class Settings::SocialController < ApplicationController
   end
   
   def sort
-    sorts = { 'public_friends' => 2, 'friends' => 1, 'guessed' => 0, 'delete' => -1 }
+    sorts = { 'public_friends' => 2, 'friends' => 1, 'guessed' => 0, 'delete' => -1, 'blacklisted' => -2 }
     sort_key = (sorts.keys.to_a & params.keys.to_a).first
     render(:text => 'no sort key, nothing to do', :status => 200) and return unless params[sort_key]
     render(:nothing => true) and return if sort_key == 'delete'

@@ -2,7 +2,7 @@ class MessagesController < ApplicationController
   before_filter :require_current_site, :require_confirmed_current_site, :require_confirmed_current_user
   
   # can be viewed only by owner
-  before_filter :current_user_eq_current_site
+  before_filter :require_owner
 
   before_filter :preload_message, :only => [:destroy]
 

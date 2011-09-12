@@ -1,17 +1,17 @@
 # == Schema Information
-# Schema version: 20110223155201
+# Schema version: 20110816190509
 #
 # Table name: bookmarklets
 #
 #  id         :integer(4)      not null, primary key
-#  user_id    :integer(4)      not null
-#  created_at :datetime        not null
+#  user_id    :integer(4)      not null, indexed => [created_at]
+#  created_at :datetime        not null, indexed => [user_id], indexed => [is_public]
 #  name       :string(255)     not null
 #  entry_type :string(16)      default("text"), not null
 #  tags       :text
 #  visibility :string(16)      default("private"), not null
 #  autosave   :boolean(1)      default(FALSE), not null
-#  is_public  :boolean(1)      default(FALSE), not null
+#  is_public  :boolean(1)      default(FALSE), not null, indexed => [created_at]
 #
 # Indexes
 #

@@ -1,9 +1,8 @@
 class GlobalController < ApplicationController
-  before_filter :require_current_user, :only => [:fast_forward, :relationship, :relationship_destroy, :relationship_toggle, :pref_friends]
+  before_filter :require_current_user, :only => [:switch, :fast_forward, :relationship, :relationship_destroy, :relationship_toggle, :pref_friends]
   
-  protect_from_forgery :only => [:fast_forward, :entry_metadata, :relationship, :relationship_destroy, :relationship_toggle, :pref_friends]
+  protect_from_forgery :only => [:switch, :fast_forward, :entry_metadata, :relationship, :relationship_destroy, :relationship_toggle, :pref_friends]
 
-  # before_filter :verify_authenticity_token, :only => [:entry_metadata, :relationship, :relationship_destroy, :relationship_toggle, :pref_friends]
   
   def fast_forward
     @goto = nil
@@ -28,6 +27,37 @@ class GlobalController < ApplicationController
     render :json => @goto
   end
   
+  def switch
+    if request.post?
+      @user = User.find_by_url(params[:url])
+
+      redirect_to service_path(login_path) and return if @user.nil?
+
+      redirect_to service_path(login_path) and return unless current_user.can_be_switched_to?(@user)
+
+      cookies[:t] = {
+          :value => [@user.id, @user.signature].pack('LZ*').to_a.pack('m').chop,
+          :expires => 1.year.from_now,
+          :domain => current_service.cookie_domain
+        }
+      session[:r] = nil
+      session[:u] = @user.id
+
+      redirect_to service_url
+    else
+      @accounts = current_user.linked_accounts if current_user.can_switch?
+      
+      render :layout => false
+    end
+  end
+  
+  def nsfw
+    if request.post?
+      
+    else
+      render :layout => false
+    end    
+  end
   
   def entry_metadata
     render :nothing => true and return unless request.post?

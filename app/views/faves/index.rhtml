@@ -8,14 +8,14 @@
 	<div class='filter'>
 		<p><%= current_site.gender('Его', 'Её') %> <span class='highlight large'>избранное</span></p>
 	</div>
-	<%= paginate @faves if @faves.current_page > 1 %>
+	<div class='t-iscrollable'>
+  	<% @faves.each do |fave| %>
+  		<% next if fave.entry.nil? %>
+  		<%= render :partial => 'entries/entry_display', :locals => { :entry => fave.entry, :show_comments_bubble => true, :show_username => true } %>
+  	<% end %>
 
-	<% @faves.each do |fave| %>
-		<% next if fave.entry.nil? %>
-		<%= render :partial => 'entries/entry_display', :locals => { :entry => fave.entry, :show_comments_bubble => true, :show_username => true } %>
-	<% end %>
-
-	<%= paginate @faves %>
+  	<%= paginate @faves %>
+  </div>
 <% end %>
 
 <div class='return_from_permalink'>

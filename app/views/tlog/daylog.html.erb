@@ -1,0 +1,10 @@
+<% @title = current_site.tlog_settings.title %>
+<% content_for :head do %>
+  <%= render :partial => 'tlog/head' %>
+<% end %>
+
+<%= render :partial => 'lenta' %>
+
+<% content_for :sidebar do %>
+	<%= render :partial => 'tlog/sidebar' %>	
+<% end %>

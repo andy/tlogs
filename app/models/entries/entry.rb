@@ -1,23 +1,23 @@
 # == Schema Information
-# Schema version: 20110223155201
+# Schema version: 20110816190509
 #
 # Table name: entries
 #
-#  id               :integer(4)      not null, primary key
-#  user_id          :integer(4)      default(0), not null
+#  id               :integer(4)      not null, primary key, indexed => [is_mainpageable]
+#  user_id          :integer(4)      default(0), not null, indexed, indexed => [is_private, created_at]
 #  data_part_1      :text
 #  data_part_2      :text
 #  data_part_3      :text
-#  type             :string(0)       default("TextEntry"), not null
-#  is_disabled      :boolean(1)      default(FALSE), not null
-#  created_at       :datetime        not null
+#  type             :string(0)       default("TextEntry"), not null, indexed
+#  is_disabled      :boolean(1)      default(FALSE), not null, indexed
+#  created_at       :datetime        not null, indexed, indexed => [user_id, is_private]
 #  metadata         :text
 #  comments_count   :integer(4)      default(0), not null
 #  updated_at       :datetime
-#  is_voteable      :boolean(1)      default(FALSE)
-#  is_private       :boolean(1)      default(FALSE), not null
+#  is_voteable      :boolean(1)      default(FALSE), indexed
+#  is_private       :boolean(1)      default(FALSE), not null, indexed, indexed => [user_id, created_at]
 #  cached_tag_list  :text
-#  is_mainpageable  :boolean(1)      default(TRUE), not null
+#  is_mainpageable  :boolean(1)      default(TRUE), not null, indexed, indexed => [id]
 #  comments_enabled :boolean(1)      default(FALSE), not null
 #
 # Indexes
@@ -119,6 +119,7 @@ class Entry < ActiveRecord::Base
   named_scope :for_view, :include => [:author, :attachments, :rating], :order => 'entries.id DESC'
   named_scope :private, :conditions => 'entries.is_private = 1 AND entries.type != "AnonymousEntry"'
   named_scope :for_user, lambda { |u| { :conditions => "user_id = #{u.id}" } }
+  named_scope :mainpageable, :conditions => 'entries.is_mainpageable = 1'
 
   ## validations
 	validates_presence_of :author
@@ -174,7 +175,18 @@ class Entry < ActiveRecord::Base
   
 
   ## public methods
-    
+  
+  def nsfw
+    self.metadata.blank? ? false : (self.metadata[:nsfw] || false)
+  end
+  
+  def nsfw=(value)
+    value = value.zero? ? false : true if value.is_a?(Fixnum)
+    self.metadata_will_change!
+    self.metadata ||= {}
+    self.metadata[:nsfw] = value
+  end
+
   # Могут ли у этой записи быть аттачи? По умолчанию аттачменты отключены
   def can_have_attachments?
     false
@@ -191,6 +203,20 @@ class Entry < ActiveRecord::Base
   def can_delete?(user)
     user && user.id == self.user_id
   end  
+  
+  def can_be_viewed_by?(user)
+    # you can always view your own tlog
+    return true if user && user.id == self.user_id
+    
+    # skip if current user is blacklisted
+    return false if user && author.is_blacklisted_for?(user)
+    
+    # as a rule of thumb all mainpageable entries can be viewed by everyone
+    return true if self.is_mainpageable?
+
+    # delegate next stuff to the author vs. user relationship
+    self.author.can_be_viewed_by?(user)
+  end
   
   # русское написание
   def to_russian(key=:who)

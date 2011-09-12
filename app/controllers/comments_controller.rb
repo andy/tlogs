@@ -1,5 +1,7 @@
 class CommentsController < ApplicationController
   before_filter :require_current_site, :find_entry
+  
+  before_filter :check_if_can_be_viewed
 
   def preview
     render :nothing => true and return unless request.post?
@@ -106,5 +108,9 @@ class CommentsController < ApplicationController
               unless current_user.is_confirmed?
 
       true
+    end
+    
+    def check_if_can_be_viewed
+      render(:text => 'sorry, you cant post comments here') and return false unless current_site.can_be_viewed_by?(current_user)
     end
 end

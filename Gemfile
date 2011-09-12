@@ -1,6 +1,4 @@
 source "http://rubygems.org"
-source "http://gems.rubyforge.org"
-source "http://gemcutter.org"
 
 gem 'mime-types'
 gem 'rake'
@@ -8,9 +6,9 @@ gem 'rdoc'
 gem 'unicorn', :require => false
 gem 'system_timer'
 # gem 'RubyInline', :require => 'inline'
-gem 'rails', '2.3.12'
+gem 'rails', '2.3.14'
 gem 'mini_magick'
-gem 'will_paginate', '>= 2.2.2'
+gem 'will_paginate', '~> 2.3.16'
 gem 'coderay'
 gem 'ruby-openid', :require => 'openid'
 gem 'memcache-client', :require => 'memcache'
@@ -24,6 +22,7 @@ gem 'json'
 gem 'thinking-sphinx', :require => 'thinking_sphinx'
 gem 'ts-datetime-delta', '>= 1.0.0', :require => 'thinking_sphinx/deltas/datetime_delta'
 gem 'mysql'
+gem 'savon', '0.7.9', :require => false
 
 gem 'paperclip', '= 2.3.9'
 gem 'paperclip-meta'
