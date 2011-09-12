@@ -166,7 +166,7 @@ namespace :deploy do
     
     desc "Start webserver"
     task :start, :roles => :app do
-      run "cd #{deploy_to} && bin/unicorn_rails -c config/unicorn.rb -E production -D"
+      run "cd #{deploy_to} && bundle exec unicorn_rails -c config/unicorn.rb -E production -D"
     end
     
     desc "Block webserver"
@@ -191,12 +191,12 @@ namespace :deploy do
 
     desc "Create glued styles in temp directory"
     task :glue_temp, :roles => :app do
-      run "cd #{deploy_to} && RAILS_ENV=production bin/rake assets:glue"
+      run "cd #{deploy_to} && RAILS_ENV=production bundle exec rake assets:glue"
     end
 
     desc "Deploy glued styles"
     task :deploy, :roles => :app do
-      run "cd #{deploy_to} && RAILS_ENV=production bin/rake assets:install"
+      run "cd #{deploy_to} && RAILS_ENV=production bundle exec rake assets:install"
     end
   end  
   

@@ -51,7 +51,7 @@ class FavesController < ApplicationController
   
   protected
     def check_if_can_be_viewed
-      render :template => 'tlog/hidden' and return false unless current_site.can_be_viewed_by?(current_user)
+      render :template => 'tlog/hidden' and return false if current_site && !current_site.can_be_viewed_by?(current_user)
     end
     
 end
