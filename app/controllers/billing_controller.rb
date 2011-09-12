@@ -93,21 +93,25 @@ class BillingController < ApplicationController
   # POST /billing/qiwi/update_bill
   def qiwi_update_bill
     code    = QiwiInvoice::SUCCESS
+    testing = false
     
     login   = params["Envelope"]["Body"]["updateBill"]["login"]
     pass    = params["Envelope"]["Body"]["updateBill"]["password"]
     txn     = params["Envelope"]["Body"]["updateBill"]["txn"].gsub('qiwi-', '').to_i
     status  = params["Envelope"]["Body"]["updateBill"]["status"].to_i
+    
+    testing = true if pass.blank?
 
     QiwiInvoice.transaction do
       @invoice = QiwiInvoice.pending.find_by_id(txn)
+      @invoice.metadata[:testing] = true if testing
 
       # check wether this even exists
       qiwi_soap_reply(QiwiInvoice::ERR_NOT_FOUND, params) and return if @invoice.nil?
 
       # check credentials
       qiwi_soap_reply(QiwiInvoice::ERR_AUTH, params) and return unless @invoice.login == login
-      qiwi_soap_reply(QiwiInvoice::ERR_AUTH, params) and return unless @invoice.secured_password == pass
+      qiwi_soap_reply(QiwiInvoice::ERR_AUTH, params) and return unless testing || @invoice.secured_password == pass
     
       case status
         when 50..59
