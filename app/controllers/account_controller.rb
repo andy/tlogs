@@ -118,7 +118,7 @@ class AccountController < ApplicationController
 
     cookies.delete :t, :domain => current_service.cookie_domain
     cookies.delete :s, :domain => current_service.cookie_domain
-    # reset_session
+    reset_session
     
     respond_to do |wants|
       wants.html do
