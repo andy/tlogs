@@ -54,8 +54,9 @@
         sms.find('.numbers .details').hide();
         
         op.show();
-        if(op.find('select[name="number"] option:enabled').length == 1) {
-          op.find('select[name="number"]').change();
+        if(op.find('select[name="number"] option:enabled').length > 0) {
+          sel = op.find('select[name="number"]')
+          sel.val(sel.find('option:enabled').eq(0).val()).change();
         }
       });
       
@@ -248,15 +249,11 @@
                         tasty
                         = '1' + current_site.id.to_s                      
 
-                      -# .expecting
-                      -#   Ожидаем SMS-сообщение...
-                      -#   .invoices
-                      
                     .meta
                       - if country.name == 'ru'
                         %p.rates
-                          %b После отправки SMS сообщения необходимо обновить страницу.
-                          Цены указаны в рублях. В стоимость услуги включен НДС #{number.vat}%. Детальную информацию о стоимости SMS сообщений смотрите на сайте
+                          %b После отправки SMS сообщения дождитесь ответного сообщения и обновите страницу.
+                          Цены указаны в рублях. В стоимость услуги будет включен НДС #{number.vat}%. Детальную информацию о стоимости SMS сообщений смотрите на сайте
                           %a{:href => "http://www.smshelp.me/?a=rates&cn=#{country.name}&num=#{number.shortnumber}", :target => '_blank'} 
                             smshelp.me/?a=rates
 

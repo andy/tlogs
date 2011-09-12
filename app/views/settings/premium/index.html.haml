@@ -1,7 +1,7 @@
 - @title = "премиум возможности, #{current_user.username}"
 - content_for :header do
   Тейсти-премиум
-  = link_to 'Подключить', user_url(current_site, settings_premium_path(:action => 'pay')), :class => 'button fancybox_payment_popup' unless is_premium?
+  =# link_to 'Подключить', user_url(current_site, settings_premium_path(:action => 'pay')), :class => 'button fancybox_payment_popup' unless is_premium?
 
 .premium-features
   - if is_premium?
@@ -14,28 +14,40 @@
     .feature.pad
       = image_tag 'premium/settings_blacklist.png'
       %p.bold Черный список
-      %p Вы сможете добавлять определенных пользователей в черный список и они больше не смогут попасть в ваш тлог, не говоря уже о том, чтобы оставить в нем комментарий!
+      - if is_premium?
+        %p Вы можете добавлять любых пользователей в черный список и они больше не смогут попасть в ваш тлог, не говоря уже о том, чтобы оставить в нем комментарий.
+      - else
+        %p Вы сможете добавлять любых пользователей в черный список и они больше не смогут попасть в ваш тлог, не говоря уже о том, чтобы оставить в нем комментарий.
       %p.change
         = link_to 'Настроить', user_url(current_site, settings_social_path), :class => 'button' if is_premium?
 
     .feature
       = image_tag 'premium/settings_accounts.png'
       %p.bold Несколько аккаунтов
-      %p Если вы ведете несколько тлогов одновременно, то переключаться между ними будет проще простого.
+      - if is_premium?
+        %p С помощью этой функции, вы можете моментально переключаться между несколькими тлогами одновременно, без необходимости выходить и входить, запоминая текущую страницу.
+      - else
+        %p С помощью этой функции, вы сможете моментально переключаться между несколькими тлогами одновременно, без необходимости выходить и входить, запоминая текущую страницу.
       %p.change
         = link_to 'Настроить', user_url(current_site, settings_premium_path(:action => 'accounts')), :class => 'button' if is_premium?
   
     .feature.pad
       = image_tag 'premium/settings_privacy.png'
       %p.bold Только для себя
-      %p В настроках приватности у вас появится еще одна опция — только для себя. Свой тлог сможете видеть только вы.
+      - if is_premium?
+        %p В настройках секретности у вас появилась еще одна опция — только для себя, а значит вы можете существовать на сайте в полностью невидимом режиме.
+      - else
+        %p В настроках секретности у вас появится еще одна опция — только для себя, а значит вы сможете существовать на сайте в полностью невидимом режиме.
       %p.change
         = link_to 'Настроить', user_url(current_site, settings_path) + '#privacy', :class => 'button' if is_premium?
 
     .feature
       = image_tag 'premium/settings_background.png'
       %p.bold Свой фон на главной
-      %p Поменяйте фон на главной странице на свой, либо выберите один из нашей скромной коллекции.
+      - if is_premium?
+        %p Вы можете поменять фон на главной странице на свой, либо выберите любой из понравившийся из нашей скромной коллекции.
+      - else
+        %p Вы сможете поменять фон на главной странице на свой, либо выбрать любой из понравившихся из нашей скромной коллекции.
       %p.change
         = link_to 'Настроить', user_url(current_site, settings_premium_path(:action => 'background')), :class => 'button' if is_premium?
     
@@ -48,22 +60,25 @@
     .feature.pad
       = image_tag 'premium/settings_anonymous.png'
       %p.bold Открытые анонимки
-      %p Вы сможете сразу начать писать анонимки не дожидаясь пока пройдет 6 месяцев с начала регистрации.
+      %p У вас будет снято ограничение, не позволяющее вам писать анонимки сразу после регистрации.
     
     .feature.pad
       = image_tag 'premium/settings_limits.png'
       %p.bold Никаких ограничений
-      %p Точнее, ограничения все-равно остаются, но они такие же как у самых старых пользователей. Плюс, вы сможете сразу писать анонимки не дожидаясь, пока пройдет 6 месяцев со дня регистрации.
+      %p Все ограничения на публикацию в прямой эфир будут сняты, а по внутренней системе рейтингов, вы будете приравнены к самым крутым пользователям сайта.
     
     .feature
       = image_tag 'premium/settings_badge.png'
       %p.bold Значок PRO на аватаре
-      %p Если хотите показывать всем свой статус 
+      %p Название говорит само за себя, а мы не очень понимаем, что еще к этому можно добавить. Разве только то, что вы сможете выбрать показывать его или нет.
 
   = image_tag 'premium/shadow.png', :class => 'shadow'
 
   %center
-    = link_to "#{is_premium? ? 'Продлить' : 'Подключить'} тейсти-премиум", user_url(current_site, settings_premium_path(:action => 'pay')), :id => 'paylink', :class => 'paylink fancybox_payment_popup'
+    - if in_beta?
+      = link_to "#{is_premium? ? 'Продлить' : 'Подключить'} тейсти-премиум", user_url(current_site, settings_premium_path(:action => 'pay')), :id => 'paylink', :class => 'paylink fancybox_payment_popup'
+    - else
+      .paydisabled Простите, оплата временно недоступна. Надеемся, что после 16 сентября все заработает.
   
 :javascript
   jQuery(function() {

@@ -65,6 +65,10 @@ class SmsonlineInvoice < Invoice
     'tele2'   => 4
   }
   
+  CURRENCIES = {
+    'RUB'     => 'руб.',
+    'USD'     => 'дол.'
+  }
 
   ## validations
   validate :check_required_keys
@@ -97,7 +101,9 @@ class SmsonlineInvoice < Invoice
                                   :operator_id => (network/:operator_id).text.to_i,
                                   :vat => (network/:vat).text,
                                   :sms_cost_vat => (network/:sms_cost_vat).text,
-                                  :sms_cost_loc => (network/:sms_cost_loc).text)
+                                  :sms_cost_loc => (network/:sms_cost_loc).text,
+                                  :currency => (network/:currency).text
+                              )
     end
 
     result
@@ -120,7 +126,7 @@ class SmsonlineInvoice < Invoice
         
         o_nets.each do |net|
           number = OpenStruct.new(:name => [net.country, net.operator_code, net.shortnumber].join('_'),
-                                  :value => "#{duration(net.shortnumber).pluralize('день', 'дня', 'дней', true)} за #{net.sms_cost_vat}",
+                                  :value => "#{duration(net.shortnumber).pluralize('день', 'дня', 'дней', true)}\t(#{net.sms_cost_loc.to_f.to_s} #{CURRENCIES[net.currency] || net.currency} без НДС)",
                                   :shortnumber => net.shortnumber,
                                   :position => settings['numbers'].index(net.shortnumber),
                                   :vat => net.vat)

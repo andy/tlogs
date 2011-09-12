@@ -15,8 +15,8 @@ class MainController < ApplicationController
     
     news.mark_as_viewed_by!(current_user)
     
-    total_pages = news.entries_count_for(current_user).to_pages
-    @page = params[:page].to_i.reverse_page( total_pages ) rescue 1
+    @page = params[:page].to_i rescue 1
+    @page = 1 if @page <= 0
     @entries = news.recent_entries({ :page => @page })
   end
   
