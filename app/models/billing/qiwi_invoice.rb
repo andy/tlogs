@@ -149,11 +149,11 @@ class QiwiInvoice < Invoice
   end
   
   def login
-    self.class.login
+    self.class.login.to_s
   end
   
   def password
-    self.class.password
+    self.class.password.to_s
   end
   
   def secured_password
