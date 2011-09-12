@@ -1,5 +1,5 @@
 <%
-  alt   = entry.data_part_2.blank? ? nil : h_attr(entry.data_part_2)
+  alt   = entry.data_part_2.blank? ? nil : h_attr(entry.data_part_2, :length => 128)
   opts  = { :title => '', :alt => alt }
 %>
 <%# если картинка ссылкой на удаленный ресурс %>

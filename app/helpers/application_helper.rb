@@ -210,7 +210,8 @@ END
   # escape and truncate html attribute
   # options are for truncate() call, e.g. :length
   def h_attr(text, options = {})
-    truncate(strip_tags(text), { :length => 64 }.merge(options)).gsub(/(\r\n|\r|\n)/, ' ').tr('"', "&quot;").tr('\'', "&quot;")
+    clean = Hpricot.parse(text).to_plain_text.gsub('<', '&lt;').gsub('>', '&gt;') rescue ''
+    truncate(clean, { :length => 64 }.merge(options)).gsub(/(\r\n|\r|\n)/, ' ').tr('"', "&quot;").tr('\'', "&quot;")
   end
   
   def timeago(time, options = {})
