@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110726084138) do
+ActiveRecord::Schema.define(:version => 20110910193124) do
 
   create_table "attachments", :force => true do |t|
     t.integer "entry_id",     :default => 0,  :null => false
@@ -42,6 +42,18 @@ ActiveRecord::Schema.define(:version => 20110726084138) do
 
   add_index "avatars", ["parent_id"], :name => "index_avatars_on_parent_id"
   add_index "avatars", ["user_id"], :name => "index_avatars_on_user_id"
+
+  create_table "backgrounds", :force => true do |t|
+    t.integer  "user_id",                             :null => false
+    t.string   "image_file_name",                     :null => false
+    t.datetime "image_updated_at"
+    t.text     "image_meta"
+    t.boolean  "is_public",        :default => false, :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "backgrounds", ["user_id"], :name => "index_backgrounds_on_user_id"
 
   create_table "bookmarklets", :force => true do |t|
     t.integer  "user_id",                                         :null => false
@@ -144,6 +156,7 @@ ActiveRecord::Schema.define(:version => 20110726084138) do
   add_index "entries", ["created_at"], :name => "index_entries_on_created_at"
   add_index "entries", ["is_disabled"], :name => "index_entries_on_is_disabled"
   add_index "entries", ["is_mainpageable", "created_at", "type"], :name => "index_entries_on_is_mainpageable_and_created_at_and_type"
+  add_index "entries", ["is_mainpageable", "id"], :name => "index_entries_on_is_mainpageable_and_id"
   add_index "entries", ["is_mainpageable"], :name => "index_entries_on_is_mainpageable"
   add_index "entries", ["is_private"], :name => "index_entries_on_is_private"
   add_index "entries", ["is_voteable"], :name => "index_entries_on_is_voteable"
@@ -232,6 +245,21 @@ ActiveRecord::Schema.define(:version => 20110726084138) do
   create_table "innodb_table_monitor", :id => false, :force => true do |t|
     t.integer "x"
   end
+
+  create_table "invoices", :force => true do |t|
+    t.integer  "user_id",                     :null => false
+    t.string   "state",                       :null => false
+    t.string   "type",                        :null => false
+    t.string   "metadata",                    :null => false
+    t.float    "amount",     :default => 0.0, :null => false
+    t.float    "revenue",    :default => 0.0, :null => false
+    t.integer  "days",       :default => 0,   :null => false
+    t.string   "remote_ip"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "invoices", ["user_id"], :name => "index_invoices_on_user_id"
 
   create_table "messages", :force => true do |t|
     t.integer  "user_id",         :default => 0, :null => false
@@ -400,20 +428,10 @@ ActiveRecord::Schema.define(:version => 20110726084138) do
     t.boolean  "email_messages",                       :default => true,           :null => false
     t.boolean  "past_disabled",                        :default => false,          :null => false
     t.string   "privacy",                :limit => 16, :default => "open",         :null => false
+    t.integer  "background_id"
   end
 
   add_index "tlog_settings", ["user_id"], :name => "index_tlog_settings_on_user_id"
-
-  create_table "transactions", :force => true do |t|
-    t.integer  "user_id",                           :null => false
-    t.integer  "amount",                            :null => false
-    t.string   "state",      :default => "pending", :null => false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "transactions", ["state"], :name => "index_transactions_on_state"
-  add_index "transactions", ["user_id"], :name => "index_transactions_on_user_id"
 
   create_table "users", :force => true do |t|
     t.string   "email"
@@ -427,7 +445,6 @@ ActiveRecord::Schema.define(:version => 20110726084138) do
     t.datetime "updated_at"
     t.boolean  "is_anonymous",                          :default => false, :null => false
     t.boolean  "is_mainpageable",                       :default => false, :null => false
-    t.boolean  "is_premium",                            :default => false, :null => false
     t.string   "domain"
     t.integer  "private_entries_count",                 :default => 0,     :null => false
     t.boolean  "email_comments",                        :default => true,  :null => false
@@ -444,6 +461,7 @@ ActiveRecord::Schema.define(:version => 20110726084138) do
     t.string   "userpic_file_name"
     t.datetime "userpic_updated_at"
     t.text     "userpic_meta"
+    t.datetime "premium_till"
   end
 
   add_index "users", ["domain"], :name => "index_users_on_domain"
