@@ -104,7 +104,6 @@ class BillingController < ApplicationController
 
     QiwiInvoice.transaction do
       @invoice = QiwiInvoice.pending.find_by_id(txn)
-      @invoice.metadata[:testing] = true if testing
 
       # check wether this even exists
       qiwi_soap_reply(QiwiInvoice::ERR_NOT_FOUND, params) and return if @invoice.nil?
@@ -112,6 +111,9 @@ class BillingController < ApplicationController
       # check credentials
       qiwi_soap_reply(QiwiInvoice::ERR_AUTH, params) and return unless @invoice.login == login
       qiwi_soap_reply(QiwiInvoice::ERR_AUTH, params) and return unless testing || @invoice.secured_password == pass
+
+      @invoice.metadata_will_change!
+      @invoice.metadata[:testing] = true if testing
     
       case status
         when 50..59
@@ -126,6 +128,7 @@ class BillingController < ApplicationController
           @invoice.deliver!(current_service)
         when 100..200
           # payment failed
+          @invoice.metadata_will_change!
           @invoice.metadata[:status] = status
 
           @invoice.failed!
