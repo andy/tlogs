@@ -118,7 +118,7 @@ class BillingController < ApplicationController
           # do nothing, payment in process
         when 60
           # paid by customer, check with remote server if that is true
-          qiwi_soap_reply(QiwiInvoice::ERR_BUSY, params) and return unless @invoice.check_bill
+          qiwi_soap_reply(QiwiInvoice::ERR_BUSY, params) and return unless testing || @invoice.check_bill
 
           # mark as paid and proceed
           @invoice.success!
