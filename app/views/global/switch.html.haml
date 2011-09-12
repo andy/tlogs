@@ -30,14 +30,14 @@
                     %input{:type => 'submit', :class => 'button', :value => 'Переключиться'}
             %hr
         .actions
-          = link_to_remote 'Совсем выйти', :url => service_url(logout_path), :method => :delete, :with => "'p=' + window._is_private", :html => { :title => 'Выйти', :confirm => 'Вы действительно хотите выйти?', :onclick => 'ga_event("Userbar", "Logout", current_user ? _user.url : "anonymous");' }
+          %a{:class => 't-act-logout', :href => '#'} Совсем выйти
     
       - else
         .disabled
           Извините, но вам недоступна эта опция.
         
         .actions
-          = link_to_remote 'Совсем выйти', :url => service_url(logout_path), :method => :delete, :with => "'p=' + window._is_private", :html => { :title => 'Выйти', :confirm => 'Вы действительно хотите выйти?', :onclick => 'ga_event("Userbar", "Logout", current_user ? _user.url : "anonymous");' }
+          %a{:class => 't-act-logout', :href => '#'} Совсем выйти
           
       
   
