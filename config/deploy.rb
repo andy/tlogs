@@ -82,6 +82,12 @@ namespace :deploy do
     cache.flush
   end
   
+  desc "Use this deploy when only code has changed"
+  task :code do
+    git.pull
+    web.reload
+  end
+  
   namespace :cron do
     desc "Update all crontab files"
     task :update do
@@ -154,9 +160,12 @@ namespace :deploy do
     desc "Restart webserver"
     task :restart, :roles => :app do
       assets.glue_temp
-      # run "cd #{deploy_to} && touch tmp/restart.txt"
-      run "cd #{deploy_to} && kill -USR2 `cat tmp/pids/unicorn.pid`"
+      web.reload
       assets.deploy
+    end
+    
+    task :reload, :roles => :app do
+      run "cd #{deploy_to} && kill -USR2 `cat tmp/pids/unicorn.pid`"
     end
     
     desc "Stop webserver"
