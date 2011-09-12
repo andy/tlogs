@@ -21,17 +21,21 @@ module TastyradioData
           :song       => 'Не удалось получить данные'
         }
 
+        onum = 5
+        (status.length / 6).times do |i|
+          onum += status[(i*6) + 3].to_i
+        end
+
         offset = (status.length / 6) - 1
         if offset >= 0
-          pp offset
           data = status[(offset*6)...((offset + 1) * 6)]
-          pp data
           result[:online] = data[3]
           result[:song]   = data[5].strip.gsub(/^\-\s+/, '').gsub(/\s+\-$/, '')
         
           result[:song] = 'неизвестный трек' if result[:song] && result[:song] == '-'
         end
 
+        result[:online] = onum if onum > 0
         
         return result
       end
