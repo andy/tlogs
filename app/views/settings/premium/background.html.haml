@@ -19,7 +19,7 @@
     = link_to '+ добавить', user_url(current_site, settings_premium_path(:action => 'background_popup')), :id => 'fancybox_link_background'
   
   %h2 Предпросмотр
-  .preview{:style => current_site.tlog_settings.background ? nil : "background: url('#{Background.public.first.image.url}') repeat;"}
+  .preview{:style => current_site.tlog_settings.background ? nil : (Background.public.first ? "background: url('#{Background.public.first.image.url}') repeat;" : nil)}
     .title
       = image_tag current_service.logo, :alt => 'тейсти'
       .subtitle
