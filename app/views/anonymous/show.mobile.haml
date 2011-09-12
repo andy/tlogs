@@ -1,7 +1,7 @@
 %div{:data => {:role => 'header'}}
   = link_to 'В анонимки', service_url(anonymous_path), 'data-icon' => 'arrow-l', 'data-transition' => 'slide', 'data-direction' => 'reverse', 'data-iconpos' => 'notext', 'data-rel' => 'back'
   %h1 Лучшее
-  = link_to 'Обновить', '', 'data-icon' => 'refresh', 'data-iconpos' => 'notext', 'data-refresh-url' => service_url(anonymous_path(@entry)))
+  = link_to 'Обновить', '', 'data-icon' => 'refresh', 'data-iconpos' => 'notext', 'data-refresh-url' => service_url(anonymous_path(@entry))
 
 %div{:data => {:role => 'content', :theme => 'd'}}
   = render :partial => 'entries/anonymous_entry_display', :locals => { :entry => @entry, :show_datetime => true }
