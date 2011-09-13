@@ -62,13 +62,16 @@ class MainController < ApplicationController
     @time = Date.today
     # высчитываем общее число записей и запоминаем в кеше
     # total = Rails.cache.fetch("entry_ratings_count_#{kind}_#{rating}", :expires_in => 1.minute) { EntryRating.count :conditions => sql_conditions }
+
+    page = params[:page].to_i rescue 1
+    page = 1 if page <= 0
     
     if params[:year]
       @time = [params[:year], params[:month], params[:day]].join('-').to_date.to_time rescue Date.today
       sql_conditions += " AND entry_ratings.created_at BETWEEN '#{@time.strftime("%Y-%m-%d")}' AND '#{@time.tomorrow.strftime("%Y-%m-%d")}'"
-      @entry_ratings = EntryRating.paginate :all, :page => params[:page], :per_page => Entry::PAGE_SIZE, :include => { :entry => [ :attachments, :author, :rating ] }, :order => 'entry_ratings.hotness DESC, entry_ratings.id DESC', :conditions => sql_conditions      
+      @entry_ratings = EntryRating.paginate :all, :page => page, :per_page => Entry::PAGE_SIZE, :include => { :entry => [ :attachments, :author, :rating ] }, :order => 'entry_ratings.hotness DESC, entry_ratings.id DESC', :conditions => sql_conditions
     else
-      @entry_ratings = EntryRating.paginate :all, :page => params[:page], :per_page => Entry::PAGE_SIZE, :include => { :entry => [ :attachments, :author, :rating ] }, :order => 'entry_ratings.id DESC', :conditions => sql_conditions
+      @entry_ratings = EntryRating.paginate :all, :page => page, :per_page => Entry::PAGE_SIZE, :include => { :entry => [ :attachments, :author, :rating ] }, :order => 'entry_ratings.id DESC', :conditions => sql_conditions
     end
     
     @comment_views = User::entries_with_views_for(@entry_ratings.map(&:entry_id), current_user)
