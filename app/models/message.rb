@@ -153,6 +153,6 @@ class Message < ActiveRecord::Base
   
   protected
     def must_not_be_blacklisted
-      errors.add :body, 'Вы не можете отправлять этому пользователю сообщение' if self.user.is_blacklisted_for?(self.recipient) || self.recipient.is_blacklisted_for?(self.user)
+      errors.add :body, 'Вы не можете отправлять этому пользователю сообщение' if self.recipient &&  (self.user.is_blacklisted_for?(self.recipient) || self.recipient.is_blacklisted_for?(self.user))
     end
 end
