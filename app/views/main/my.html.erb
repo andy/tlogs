@@ -3,7 +3,7 @@
 	<%= auto_discovery_link_tag(:rss, user_url(current_user, tlog_feed_protected_path(:key => current_user.last_personalized_key, :action => :last_personalized))) %>
 	<!-- /content_for :head -->
 <% end %>
-<div class='onair t-iscrollable'>
+<div class='onair t-iscrollable' data-iscroll-name='my'>
   <% if @entries.blank? %>
     <div class='emptiness'>
       <h1>Тут совершенно пусто</h1>

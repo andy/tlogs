@@ -8,7 +8,7 @@
 	<div class='filter'>
 		<p><%= current_site.gender('Его', 'Её') %> <span class='highlight large'>избранное</span></p>
 	</div>
-	<div class='t-iscrollable'>
+	<div class='t-iscrollable' data-iscroll-name='faves'>
   	<% @faves.each do |fave| %>
   		<% next if fave.entry.nil? %>
   		<%= render :partial => 'entries/entry_display', :locals => { :entry => fave.entry, :show_comments_bubble => true, :show_username => true } %>

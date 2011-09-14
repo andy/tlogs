@@ -9,7 +9,7 @@
 		<p>Здесь, пока, пусто. Видимо, вы еще не подписаны ни на один тлог.</p>
 	</div>
 <% else %>
-	<div class='onair t-iscrollable'>
+	<div class='onair t-iscrollable' data-iscroll-name='my-ordered'>
 		<% @entries.each do |entry| %>
 			<%= render :partial => 'entries/entry_display', :locals => { :entry => entry, :show_comments_bubble => true, :show_username => true, :show_tags => false, :show_nsfw_sticker => true } %>
 		<% end %>

@@ -1,7 +1,7 @@
 <% content_for :head do %>
   <%= auto_discovery_link_tag(:rss, service_url(main_feed_path(:action => :live))) %>
 <% end %>
-<div class='onair t-iscrollable' data-iscroll-next="<%= @entries.last.id %>">
+<div class='onair t-iscrollable' data-iscroll-next="<%= @entries.last.id %>" data-iscroll-name='live'>
 	<% @entries.each do |entry| %>
 		<%= render :partial => 'entries/entry_display', :locals => { :entry => entry, :show_comments_bubble => true, :show_username => true, :show_nsfw_sticker => true, :show_tags => false, :comment_views => @comment_views } %>
 	<% end %>

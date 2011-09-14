@@ -22,12 +22,28 @@ Tasty =
       form.submit()
     
     false
+    
+  analytics:
+    hit: (url, title = null, referer = null) ->
+      yaCounter5021200.hit(url, title, referer) if yaCounter5021200?
+      
+      true
+      
+    event: (category, action, label = null, value = null) ->
+      if _gaq?
+    	  _gaq.push(['_trackEvent', category, action, label, value])
+
+      true
 
   iscroll:
     ready: (options = Tasty.iscroll.options) ->
       # set .next to what it should be
       Tasty.iscroll.next = jQuery('.t-iscrollable').data('iscroll-next')
-      jQuery.extend(options, { pathParse: Tasty.iscroll.parse }) if Tasty.iscroll.next
+      Tasty.iscroll.name = jQuery('.t-iscrollable').data('iscroll-name')
+      if Tasty.iscroll.next
+        jQuery.extend(options, { pathParse: Tasty.iscroll.parse })
+      else
+        jQuery.extend(options, { pathParse: Tasty.iscroll.path_save })
       
       # load the stuff
       jQuery('.t-iscrollable').infinitescroll(options, Tasty.iscroll.handler)
@@ -36,10 +52,17 @@ Tasty =
       Tasty.iscroll.next = jQuery(items[items.length - 1]).data('entry-id')
       
       enable_services_for_current_user() if current_user
-        
+      
+      Tasty.analytics.event('Scroll', Tasty.iscroll.name, current_site, Tasty.iscroll.iter)
+      Tasty.analytics.hit(Tasty.iscroll.path, document.title)
+      
       Tasty.fancybox.scoped(items)
     
     next: null
+    
+    name: null
+    
+    path: null
 
     options:
       infid: 1
@@ -50,8 +73,17 @@ Tasty =
       loadingText: '<em>Загружаем ...</em>'
       donetext: '<em>К сожалению, на этом все.</em>'
 
+    path_save: (path, iteration) ->
+      Tasty.iscroll.iter = iteration
+      Tasty.iscroll.path = path.match(/^(.*?)\b2\b(.*?$)/).slice(1).join(iteration)
+      
+      Tasty.iscroll.path
+      
     parse: (path, iteration) ->
-      path.match(/^(.*?)(\d+)$/)[1] + Tasty.iscroll.next
+      Tasty.iscroll.iter = iteration
+      Tasty.iscroll.path = path.match(/^(.*?)(\d+)$/)[1] + Tasty.iscroll.next
+      
+      Tasty.iscroll.path
 
   fancybox:
     ready: (options = Tasty.fancybox.options, popup_options = Tasty.fancybox.popup_options) ->

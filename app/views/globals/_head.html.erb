@@ -38,6 +38,7 @@
 <!-- tasty js-api settings -->
 <script type='text/javascript'>
   var current_user = <%= current_user ? current_user.id : 0 %>;
+  var current_site = <%= current_site ? current_site.url.downcase.to_json : 'www'.to_json %>;
   <%- if current_user -%>
   var _user = <%= {
         :id       => current_user.id,
