@@ -11,8 +11,9 @@
       - is_selected   = b.id == current_site.tlog_settings.background_id
       .background{:class => classes(['selected', is_selected], ['t-act-background-change', !is_selected]), :style => "background: url('#{b.image.url}') repeat;", :data => {:action => user_url(current_site, settings_premium_path(:action => :background)), :id => b.id, :image => b.image.url, :deletable => b.is_public? ? nil : 'deletable' }}
         - unless b.is_public?
-          -# .change
-          .delete= image_tag 'icon_x.png'
+          .delete= image_tag 'icon_x.png', :alt => 'Удалить изображение'
+        .note-current Текущий фон
+        .note-set Выбрать этот фон
 
     .clear
       %div
@@ -67,6 +68,9 @@
   
 :javascript
   var t_bg_clicked = null;
+  
+  jQuery('.backgrounds .t-act-background-change').find('.note-current').hide().end().find('.note-set').show();
+  jQuery('.backgrounds .selected').find('.note-current').show().end().find('.note-set').hide();
 
   jQuery('.t-premium-backgrounds .backgrounds .t-act-background-change').live('click', function() {
     jQuery.fancybox.showActivity();
@@ -83,8 +87,8 @@
       complete: function() { jQuery.fancybox.hideActivity(); },
       success: function(data) {
         if(data === true) {
-          jQuery('.backgrounds .selected').removeClass('selected').addClass('t-act-background-change');
-          t_bg_clicked.removeClass('t-act-background-change').addClass('selected');
+          jQuery('.backgrounds .selected').removeClass('selected').addClass('t-act-background-change').find('.note-current').hide().end().find('.note-set').show();
+          t_bg_clicked.removeClass('t-act-background-change').addClass('selected').find('.note-current').show().end().find('.note-set').hide();
           jQuery('.preview').css({ backgroundImage: 'url(' + t_bg_clicked.data('image') + ')' });
         }
       }
