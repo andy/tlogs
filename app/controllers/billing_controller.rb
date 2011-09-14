@@ -90,6 +90,18 @@ class BillingController < ApplicationController
     end
   end
   
+  def qiwi_fail
+    flash[:bad] = 'К сожалению, при оплате произошла какая-то ошибка.'
+
+    redirect_to current_user ? user_url(current_user, settings_premium_path) : service_url(login_path(:noref => 1))
+  end
+  
+  def qiwi_success
+    flash[:good] = 'Великолепно! Тейсти-премиум успешно оплачен через QIWI-кошелек'
+
+    redirect_to current_user ? user_url(current_user, settings_premium_path) : service_url(login_path(:noref => 1))
+  end
+  
   # POST /billing/qiwi/update_bill
   def qiwi_update_bill
     code    = QiwiInvoice::SUCCESS
