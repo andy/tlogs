@@ -18,6 +18,8 @@ class MainController < ApplicationController
     @page = params[:page].to_i rescue 1
     @page = 1 if @page <= 0
     @entries = news.recent_entries({ :page => @page })
+    
+    render :layout => false if request.xhr?
   end
   
   def last_redirect
@@ -75,6 +77,8 @@ class MainController < ApplicationController
     end
     
     @comment_views = User::entries_with_views_for(@entry_ratings.map(&:entry_id), current_user)
+    
+    render :layout => false if request.xhr?
   end
   
   def hot
@@ -88,6 +92,8 @@ class MainController < ApplicationController
     @entry_ratings = EntryRating.paginate :all, :page => params[:page], :per_page => Entry::PAGE_SIZE, :include => { :entry => [ :attachments, :author, :rating ] }, :order => 'entry_ratings.hotness DESC, entry_ratings.id DESC', :conditions => sql_conditions
     
     @comment_views = User::entries_with_views_for(@entry_ratings.map(&:entry_id), current_user)
+    
+    render :layout => false if request.xhr?
   end
   
   def live
@@ -100,6 +106,8 @@ class MainController < ApplicationController
     @entries = Entry.find_all_by_id(entry_ids, :include => [:author, :rating, :attachments]).sort_by { |entry| entry_ids.index(entry.id) }
 
     @comment_views = User::entries_with_views_for(@entries.map(&:id), current_user)
+    
+    render :layout => false if request.xhr?
   end
   
   
@@ -126,6 +134,8 @@ class MainController < ApplicationController
     end
     
     @comment_views = User::entries_with_views_for(@entries.map(&:id), current_user)
+    
+    render :layout => false if request.xhr?
   end
   
   def last_personalized
@@ -141,6 +151,8 @@ class MainController < ApplicationController
       @entries = Entry.find_all_by_id @entry_ids.map(&:id), :include => [:rating, :attachments, :author], :order => 'entries.id DESC'
     end
     expires_in 5.minutes
+    
+    render :layout => false if request.xhr?
   end
   
   def users

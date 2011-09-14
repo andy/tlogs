@@ -53,7 +53,7 @@ Tasty =
       
       enable_services_for_current_user() if current_user
       
-      Tasty.analytics.event('Scroll', Tasty.iscroll.name, current_site, Tasty.iscroll.iter)
+      Tasty.analytics.event('Infinite Scroll', Tasty.iscroll.name, current_site, Tasty.iscroll.iter)
       Tasty.analytics.hit(Tasty.iscroll.path, document.title)
       
       Tasty.fancybox.scoped(items)
@@ -158,6 +158,8 @@ Tasty =
       false
 
   fastforward: (event) ->
+    Tasty.analytics.event 'Userbar', 'flash forward', _user.url
+
     jQuery.ajax
       url: jQuery(this).data 'url'
       dataType: 'json'
@@ -204,6 +206,7 @@ Tasty =
         jQuery(this).css 'text-decoration': 'none'
 
     click: (event) ->
+      Tasty.analytics.event 'Shortcut', 'Up'
       jQuery(window).scrollTop(0)
     
     onscroll: (event) ->
@@ -215,6 +218,8 @@ Tasty =
         shortcut.fadeOut(100) if shortcut.is(':visible')
     
   vote: (event) ->
+    Tasty.analytics.event 'Vote', jQuery(this).data('vote-action'), _user.url
+
     jQuery.ajax
       url: "/vote/#{jQuery(this).data('vote-id')}/#{jQuery(this).data('vote-action')}"
       dataType: 'json'
@@ -227,6 +232,8 @@ Tasty =
     false
     
   fave: (event) ->
+    Tasty.analytics.event 'Fave', current_site, _user.url
+
     jQuery.ajax
       url: "/global/fave/#{jQuery(this).data('entry-id')}"
       dataType: 'json'
