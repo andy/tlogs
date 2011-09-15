@@ -14,7 +14,9 @@ class AccountController < ApplicationController
   # авторизуем пользователя либо по openid, либо по паре имя/пароль
   def login
     if request.post?
-      @user = User.authenticate params[:user][:email], params[:user][:password]
+      redirect_to service_path(login_path) and return unless params[:user]
+      
+      @user = User.authenticate(params[:user][:email], params[:user][:password])
       if @user.nil?
         # keep email
         @user = User.new :email => params[:user][:email]
