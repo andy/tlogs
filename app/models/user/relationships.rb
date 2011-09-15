@@ -101,6 +101,18 @@ class User
     relationship.save!
   end
   
+  # Возвращает user_id пользователей, на тлоги которых подписан текущий пользователь и 
+  # которые он может читать (т.е. они не закрытые и т.п.)
+  def readable_friend_ids
+    @readable_friend_ids ||= Rails.cache.fetch("u:rel:rfi:#{self.id}", :expires_in => 1.hour) do
+      ids = self.all_friend_r.map(&:user_id)
+      ts  = TlogSettings.all(:select => 'id, user_id, privacy', :conditions => "user_id IN (#{ids.join(',')}) AND privacy != 'me'")
+      
+      # выбрасываем тех, у кого закрытый тлог и кто на нас не подписан
+      ts.reject { |t| t.privacy == 'fr' && !t.user.subscribed_to?(self) }.map(&:user_id)
+    end
+  end
+  
   #
   # current_site.mark_as_viewed_by! current_user
   #

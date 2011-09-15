@@ -142,7 +142,8 @@ class MainController < ApplicationController
     redirect_to(service_url(main_path(:action => :live))) and return unless current_user
 
     # такая же штука определена в tlog_feed_controller.rb
-    friend_ids = current_user.all_friend_r.map(&:user_id)
+    friend_ids = current_user.readable_friend_ids
+    
     unless friend_ids.blank?
       @page = params[:page].to_i rescue 1
       @page = 1 if @page <= 0
