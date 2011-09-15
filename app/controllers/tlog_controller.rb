@@ -32,6 +32,9 @@ class TlogController < ApplicationController
   # When enabled as regular tlog
   def regular
     @title = current_site.tlog_settings.title
+    
+    @cache_key = ['tlog', 'regular', current_service.domain, current_site.url, current_page, is_owner? && current_site.tlog_settings.past_disabled?, current_site.entries_updated_at.to_i, Date.today.to_s(:db)].join(':')
+    Rails.logger.debug "* cache key is #{@cache_key}"
 
     if current_page == 1 || is_owner? || !current_site.tlog_settings.past_disabled?
       @entries = current_site.recent_entries(:page => current_page) # uses paginator, so entries are not really loaded
@@ -39,6 +42,9 @@ class TlogController < ApplicationController
       @past_disabled = true
       @entries = []
     end
+    
+    @comment_views = User::entries_with_views_for(@entries.map(&:id), current_user)
+    @entry_ratings = EntryRating.find_all_by_entry_id(@entries.map(&:id), :select => 'entry_id AS id, value')
     
     render :action => 'regular', :layout => request.xhr? ? false : true
   end
@@ -50,6 +56,9 @@ class TlogController < ApplicationController
     @time ||= time
     
     redirect_to user_url(current_site) and return if @time.nil?
+    
+    @cache_key = ['tlog', 'daylog', current_service.domain, current_site.url, @time.to_date.to_s(:db), is_owner? && current_site.tlog_settings.past_disabled?, current_site.entries_updated_at.to_i, Date.today.to_s(:db)].join(':')
+    Rails.logger.debug "* partial cache key is #{@cache_key}"
 
     # если пользователь предпочел скрыть прошлое, делаем вид что такой страницы не существует
     if current_site.tlog_settings.past_disabled? && @time.to_date != current_site.last_public_entry_at.to_date && !is_owner?
@@ -58,6 +67,9 @@ class TlogController < ApplicationController
     else
       @entries = current_site.recent_entries(:time => @time, :per_page => 50)
     end
+
+    @comment_views = User::entries_with_views_for(@entries.map(&:id), current_user)
+    @entry_ratings = EntryRating.find_all_by_entry_id(@entries.map(&:id), :select => 'entry_id AS id, value')
 
     render :action => 'daylog'
   end

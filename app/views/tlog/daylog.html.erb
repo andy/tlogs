@@ -2,7 +2,15 @@
   <%= render :partial => 'tlog/head' %>
 <% end %>
 
-<%= render :partial => 'lenta' %>
+<% cache @cache_key do %>
+  <%= render :partial => 'lenta' %>
+<% end %>
+<script type='text/javascript'>
+// <[!CDATA[
+	<%= "var comments_views_update = #{@comment_views.to_json(:only => [:id, :comments_count], :methods => [:last_comment_viewed])};" if @comment_views %>
+	<%= "var entry_ratings_update = #{@entry_ratings.to_json};" if @entry_ratings %>
+//	]]>
+</script>
 
 <% content_for :sidebar do %>
 	<%= render :partial => 'tlog/sidebar' %>	
