@@ -36,6 +36,8 @@ class SearchController < ApplicationController
 
     @entries = Entry.search params[:query], options
     
+    @comment_views = User::entries_with_views_for(@entries.map(&:id), current_user)
+    
     if !current_site
       user_options = {
         :page           => 1,

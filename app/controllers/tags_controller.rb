@@ -28,6 +28,7 @@ class TagsController < ApplicationController
     @tags = params[:tags]
     total = Entry.count_tagged_with(@tags, options) unless @tags.blank?
     @entries = (total.blank? || total <= 0) ? [] : Entry.paginate_by_category(@tags, { :total => total, :page => current_page }, options)
+    @comment_views = User::entries_with_views_for(@entries.map(&:id), current_user)
     # @tags_global_count = current_site ? (Entry.count_tagged_with(@tags) - total) : 0
 
     render :layout => 'tlog'
