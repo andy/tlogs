@@ -32,6 +32,8 @@ class ApplicationController < ActionController::Base
   helper_method   :is_robot?
   helper_method   :is_owner?
   helper_method   :is_mobile_device?
+  
+  helper_method   :current_page
 
   before_filter :preload_is_private
   before_filter :preload_current_service
