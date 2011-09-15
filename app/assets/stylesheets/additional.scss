@@ -14,6 +14,13 @@ div#y-panel_h.hd { font-size: 12px; background-color: #3c3c3c; background-image:
 #y-panel div.ft .button { height: 20px; margin-top: 10px; margin-bottom: 10px; margin-right: 10px; padding-top: 0; line-height: 11px; }
 #y-panel .yui-picker-controls { padding-left: 12px; padding-top: 12px; }
 
+.onair.feedbacks {
+  padding: 0 20px;
+  h2 {
+    margin-left: 20px;
+    font-size: 20px;
+  }
+}
 
 /* settings/social */
 a.rss { padding-right: 18px; background:url(/images/feed-icon-14x14.png) no-repeat scroll 100% 50%; }
