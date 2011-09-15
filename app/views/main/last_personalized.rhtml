@@ -1,4 +1,3 @@
-<% @title = "ваш личный прямой эфир, #{h current_user.url}" %>
 <% content_for :head do %>
 	<!-- content_for :head -->
 	<%= auto_discovery_link_tag(:rss, user_url(current_user, tlog_feed_protected_path(:key => current_user.last_personalized_key, :action => :last_personalized))) %>
@@ -15,6 +14,12 @@
 		<% end %>
 
 		<%= paginate @entry_ids %>
+		
+		<script type='text/javascript'>
+    // <[!CDATA[
+    	<%= "var comments_views_update = #{@comment_views.to_json(:only => [:id, :comments_count], :methods => [:last_comment_viewed])}" if @comment_views %>
+    //	]]>
+    </script>
 	</div>
 <% end %>
 

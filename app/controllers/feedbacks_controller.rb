@@ -4,7 +4,7 @@ class FeedbacksController < ApplicationController
 
   # GET feedbacks_url
   def index
-    @feedbacks = Feedback.pending.paginate :page => params[:page], :per_page => 15, :include => [:user]
+    @feedbacks = Feedback.pending.paginate :page => current_page, :per_page => 15, :include => [:user]
     
     render :layout => 'main'
   end

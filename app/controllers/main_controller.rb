@@ -11,13 +11,12 @@ class MainController < ApplicationController
   end
   
   def news
-    news = User.find_by_url('news')
-    
+    news = User.find_by_url('news')    
     news.mark_as_viewed_by!(current_user)
-    
-    @page = params[:page].to_i rescue 1
-    @page = 1 if @page <= 0
-    @entries = news.recent_entries({ :page => @page })
+
+    @page           = current_page
+    @entries        = news.recent_entries({ :page => @page })    
+    @comment_views  = User::entries_with_views_for(@entries.map(&:id), current_user)
     
     render :layout => false if request.xhr?
   end
@@ -40,7 +39,6 @@ class MainController < ApplicationController
   
   def hot_redirect
     kind = params[:kind]
-
     kind = 'any' unless Entry::KINDS.include?(kind.to_sym)
 
     redirect_to service_url(hot_path(:kind => kind))
@@ -65,8 +63,7 @@ class MainController < ApplicationController
     # высчитываем общее число записей и запоминаем в кеше
     # total = Rails.cache.fetch("entry_ratings_count_#{kind}_#{rating}", :expires_in => 1.minute) { EntryRating.count :conditions => sql_conditions }
 
-    page = params[:page].to_i rescue 1
-    page = 1 if page <= 0
+    page = current_page
     
     if params[:year]
       @time = [params[:year], params[:month], params[:day]].join('-').to_date.to_time rescue Date.today
@@ -84,12 +81,11 @@ class MainController < ApplicationController
   def hot
     # подгружаем
     @kind = params[:kind] || 'default'
-    
     @kind = 'any' unless Entry::KINDS.include?(@kind.to_sym)
 
     sql_conditions = Entry::KINDS[@kind.to_sym][:filter]
 
-    @entry_ratings = EntryRating.paginate :all, :page => params[:page], :per_page => Entry::PAGE_SIZE, :include => { :entry => [ :attachments, :author, :rating ] }, :order => 'entry_ratings.hotness DESC, entry_ratings.id DESC', :conditions => sql_conditions
+    @entry_ratings = EntryRating.paginate :all, :page => current_page, :per_page => Entry::PAGE_SIZE, :include => { :entry => [ :attachments, :author, :rating ] }, :order => 'entry_ratings.hotness DESC, entry_ratings.id DESC', :conditions => sql_conditions
     
     @comment_views = User::entries_with_views_for(@entry_ratings.map(&:entry_id), current_user)
     
@@ -110,19 +106,12 @@ class MainController < ApplicationController
     render :layout => false if request.xhr?
   end
   
-  
-  def fl
-    redirect_to(service_url(login_path)) and return unless current_user    
-  end
-
-  
   def my
     @title = 'моё'
 
     redirect_to(service_url(login_path)) and return unless current_user
     
-    @page = params[:page].to_i
-    @page = 1 if @page <= 0
+    @page = current_page    
 
     @entries = WillPaginate::Collection.create(@page, Entry::PAGE_SIZE, current_user.my_entries_queue_length) do |pager|
       entry_ids = current_user.my_entries_queue(pager.offset, pager.per_page)
@@ -141,17 +130,19 @@ class MainController < ApplicationController
   def last_personalized
     redirect_to(service_url(main_path(:action => :live))) and return unless current_user
 
+    @title  = "ваш личный прямой эфир, #{h current_user.url}"
+    @page   = current_page
+
     # такая же штука определена в tlog_feed_controller.rb
     friend_ids = current_user.readable_friend_ids
     
     unless friend_ids.blank?
-      @page = params[:page].to_i rescue 1
-      @page = 1 if @page <= 0
       # еще мы тут обманываем с количеством страниц... потому что считать тяжело
-      @entry_ids = Entry.paginate :all, :select => 'entries.id', :conditions => "entries.user_id IN (#{friend_ids.join(',')}) AND entries.is_private = 0", :order => 'entries.id DESC', :page => @page, :per_page => Entry::PAGE_SIZE
-      @entries = Entry.find_all_by_id @entry_ids.map(&:id), :include => [:rating, :attachments, :author], :order => 'entries.id DESC'
+      @entry_ids  = Entry.paginate :all, :select => 'entries.id', :conditions => "entries.user_id IN (#{friend_ids.join(',')}) AND entries.is_private = 0", :order => 'entries.id DESC', :page => @page, :per_page => Entry::PAGE_SIZE
+      @entries    = Entry.find_all_by_id @entry_ids.map(&:id), :include => [:rating, :attachments, :author], :order => 'entries.id DESC'
+      
+      @comment_views = User::entries_with_views_for(@entries.map(&:id), current_user)
     end
-    expires_in 5.minutes
     
     render :layout => false if request.xhr?
   end
@@ -162,9 +153,14 @@ class MainController < ApplicationController
   end
   
   def new_users
-    @users = User.paginate(:page => params[:page], :per_page => 6, :include => [:avatar, :tlog_settings], :order => 'users.id DESC', :conditions => 'users.is_confirmed = 1 AND users.entries_count > 0')
+    @page  = current_page
+    @users = User.paginate(:page => @page, :per_page => 6, :include => [:avatar, :tlog_settings], :order => 'users.id DESC', :conditions => 'users.is_confirmed = 1 AND users.entries_count > 0')
     @title = 'все пользователи тейсти'
     render :action => 'users'
+  end
+  
+  def fl
+    redirect_to(service_url(login_path)) and return unless current_user    
   end
   
   def random

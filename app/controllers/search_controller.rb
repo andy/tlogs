@@ -14,12 +14,9 @@ class SearchController < ApplicationController
       redirect_to user_url(User.find(params[:user_id]), search_path(:query => params[:query]))
       return
     end
-    
-    page = (params[:page] || 1).to_i rescue 1
-    page = 1 if page <= 0
 
     options = {
-        :page           => page,
+        :page           => current_page,
         :per_page       => Entry::PAGE_SIZE,
         :with           => {},
         :include        => :author,

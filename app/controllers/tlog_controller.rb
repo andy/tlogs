@@ -31,23 +31,15 @@ class TlogController < ApplicationController
   
   # When enabled as regular tlog
   def regular
-    # переворачиваем страницы, они теперь будут показываться в обратном порядке
-    total_pages = current_site.public_entries_count.to_pages
-    @page = params[:page].to_i rescue 1
-    @page = 1 if @page <= 0
-    options = { :page => @page }
-    if @page == 1 || is_owner? || !current_site.tlog_settings.past_disabled?
-      @entries = current_site.recent_entries(options) # uses paginator, so entries are not really loaded
-      @entries_array = @entries.to_a if @page > 1
+    if current_page == 1 || is_owner? || !current_site.tlog_settings.past_disabled?
+      @entries = current_site.recent_entries(:page => current_page) # uses paginator, so entries are not really loaded
+      @entries_array = @entries.to_a if current_page > 1
     else
       @past_disabled = true
       @entries = []
     end
     
-    # @iscroll        = true if @page == 1 || is_owner? || !current_site.tlog_settings.past_disabled?
-    # @iscroll_active = true if params[:_is]
-    
-    render :action => 'regular'
+    render :action => 'regular', :layout => request.xhr? ? false : true
   end
   
   # When enabled as daylog
@@ -70,22 +62,26 @@ class TlogController < ApplicationController
   # Private entries
   def private
     @title = 'ваши скрытые записи'
-    @entries = current_site.entries.private.for_view.paginate :page => params[:page], :per_page => Entry::PAGE_SIZE
+    @entries = current_site.entries.private.for_view.paginate :page => current_page, :per_page => Entry::PAGE_SIZE
   end
   
   # Anonymous entries
   def anonymous
     @title = 'ваши анонимки'
-    @entries = current_site.entries.anonymous.for_view.paginate :page => params[:page], :per_page => Entry::PAGE_SIZE
+    @entries = current_site.entries.anonymous.for_view.paginate :page => current_page, :per_page => Entry::PAGE_SIZE
     render :action => 'private'
   end
 
   # Вывести текущую запись
   def show
-    @comments = Rails.cache.fetch("comments_#{@entry.id}_#{@entry.comments_count}_#{@entry.updated_at.to_i}", :expires_in => 1.day) { @entry.comments.all(:include => { :user => :avatar }, :order => 'comments.id').reject { |comment| comment.user.nil? } }
+    cache_key = "tlog:show:e#{@entry.id}:c#{@entry.comments_count}:u#{@entry.updated_at.to_i}"
 
-    @last_comment_viewed = current_user ? CommentViews.view(@entry, current_user) : 0
-    @time = @entry.created_at
+    @comments = Rails.cache.fetch(cache_key, :expires_in => 1.day) do
+      @entry.comments.all(:include => { :user => :avatar }, :order => 'comments.id').reject { |comment| comment.user.nil? } 
+    end
+
+    @last_comment_viewed  = current_user ? CommentViews.view(@entry, current_user) : 0
+    @time                 = @entry.created_at
   end
   
   #

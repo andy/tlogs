@@ -160,6 +160,10 @@ class ApplicationController < ActionController::Base
       false
     end
     
+    def current_page
+      @current_page ||= ((params[:page].to_i <= 0) ? 1 : params[:page].to_i) rescue 1
+    end
+    
     def is_admin?
       current_user && current_user.is_admin?
     end

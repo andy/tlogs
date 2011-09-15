@@ -13,13 +13,13 @@ class ConversationsController < ApplicationController
   def index
     @title = 'Все переписки'
     @empty = 'У вас нет переписок'
-    @conversations = current_site.conversations.active.paginate(:page => params[:page], :per_page => 15, :include => [:recipient, :last_message])
+    @conversations = current_site.conversations.active.paginate(:page => current_page, :per_page => 15, :include => [:recipient, :last_message])
   end
   
   def unreplied
     @title = 'Неотвеченные'
     @empty = 'У вас нет неотвеченных переписок'
-    @conversations = current_site.conversations.active.unreplied.paginate(:page => params[:page], :per_page => 15, :include => :last_message)
+    @conversations = current_site.conversations.active.unreplied.paginate(:page => current_page, :per_page => 15, :include => :last_message)
     
     render :action => 'index'
   end
@@ -27,13 +27,13 @@ class ConversationsController < ApplicationController
   def unviewed
     @title = 'Непросмотренные'
     @empty = 'У вас нет непросмотренных переписок'
-    @conversations = current_site.conversations.active.unviewed.paginate(:page => params[:page], :per_page => 15, :include => :last_message)
+    @conversations = current_site.conversations.active.unviewed.paginate(:page => current_page, :per_page => 15, :include => :last_message)
     
     render :action => 'index'
   end
 
   def search
-    @messages = Message.search params[:query], :with => { :conversation_user_id => current_site.id }, :page => params[:page], :per_page => 15, :order => 'created_at DESC'
+    @messages = Message.search params[:query], :with => { :conversation_user_id => current_site.id }, :page => current_page, :per_page => 15, :order => 'created_at DESC'
   end
   
   
@@ -46,7 +46,7 @@ class ConversationsController < ApplicationController
     # mark as viewed automatically
     @conversation.toggle!(:is_viewed) unless @conversation.is_viewed?
     
-    @messages = @conversation.messages.paginate(:page => params[:page], :per_page => 15, :include => :user, :order => 'created_at DESC')
+    @messages = @conversation.messages.paginate(:page => current_page, :per_page => 15, :include => :user, :order => 'created_at DESC')
   end
   
   def subscribe

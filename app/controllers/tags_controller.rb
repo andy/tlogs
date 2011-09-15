@@ -27,8 +27,7 @@ class TagsController < ApplicationController
 
     @tags = params[:tags]
     total = Entry.count_tagged_with(@tags, options) unless @tags.blank?
-    page = params[:page].to_i.reverse_page(total.to_pages) rescue 1
-    @entries = (total.blank? || total <= 0) ? [] : Entry.paginate_by_category(@tags, { :total => total, :page => page }, options)
+    @entries = (total.blank? || total <= 0) ? [] : Entry.paginate_by_category(@tags, { :total => total, :page => current_page }, options)
     # @tags_global_count = current_site ? (Entry.count_tagged_with(@tags) - total) : 0
 
     render :layout => 'tlog'

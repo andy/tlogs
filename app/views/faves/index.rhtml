@@ -1,4 +1,4 @@
-<% @title = "#{current_site.gender('его', 'её')} избранное#{", страница #{params[:page].to_i}" if @faves.current_page > 1}" %>
+<% @title = "#{current_site.gender('его', 'её')} избранное#{", страница #{current_page}" if current_page > 1}" %>
 
 <% if current_site.faves.size.zero? %>
 	<div class='filter'>

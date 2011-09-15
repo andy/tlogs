@@ -5,15 +5,13 @@ class TlogFeedController < ApplicationController
   caches_action :photos, :last_personalized, :cache_path => Proc.new { |c| c.url_for(:expiring => (Time.now.to_i / 15.minutes).to_i, :page => c.params[:page]) }
 
   def rss
-    @page = (params[:page] || 1).to_i
-    @entries = current_site.recent_entries(:page => @page)
+    @entries = current_site.recent_entries(:page => current_page)
 
     response.headers['Content-Type'] = 'application/rss+xml'
   end
   
   def photos
-    @page = (params[:page] || 1).to_i
-    @entries = current_site.recent_entries(:type => 'ImageEntry')
+    @entries = current_site.recent_entries(:type => 'ImageEntry', :page => current_page)
 
     response.headers['Content-Type'] = 'application/rss+xml'
     render :action => 'media'

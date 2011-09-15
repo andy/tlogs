@@ -94,7 +94,7 @@ class Settings::PremiumController < ApplicationController
   end
     
   def invoices
-    @invoices = current_site.invoices.successful.paginate :page => params[:page], :per_page => 15, :order => 'created_at DESC'
+    @invoices = current_site.invoices.successful.paginate :page => current_page, :per_page => 15, :order => 'created_at DESC'
   end
 
 
