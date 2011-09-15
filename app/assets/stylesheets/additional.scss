@@ -22,6 +22,16 @@ div#y-panel_h.hd { font-size: 12px; background-color: #3c3c3c; background-image:
   }
 }
 
+.comments_disabled {
+  border-top: 1px dashed #EEE;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  text-align: center;
+  border-bottom: 1px dashed #EEE;
+  margin-bottom: 30px;
+  background-color: #EEE;
+}
+
 /* settings/social */
 a.rss { padding-right: 18px; background:url(/images/feed-icon-14x14.png) no-repeat scroll 100% 50%; }
 

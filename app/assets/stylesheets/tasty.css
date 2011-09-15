@@ -524,7 +524,13 @@ div.convo {
 	background:#acacac;
 }
 .return_from_permalink {
-	padding:12px 0 16px 176px;
+  padding: 16px 0;
+  margin: 0;
+  text-align: center;
+/*  padding:12px 0 16px 176px;*/
+}
+.return_from_permalink a {
+  padding:0;
 }
 .f56 {
 padding:0px 0pt 0px 65px;
