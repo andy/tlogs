@@ -31,9 +31,10 @@ class TlogController < ApplicationController
   
   # When enabled as regular tlog
   def regular
+    @title = current_site.tlog_settings.title
+
     if current_page == 1 || is_owner? || !current_site.tlog_settings.past_disabled?
       @entries = current_site.recent_entries(:page => current_page) # uses paginator, so entries are not really loaded
-      @entries_array = @entries.to_a if current_page > 1
     else
       @past_disabled = true
       @entries = []
@@ -44,6 +45,8 @@ class TlogController < ApplicationController
   
   # When enabled as daylog
   def daylog(time = nil)
+    @title = current_site.tlog_settings.title
+
     @time ||= time
     
     redirect_to user_url(current_site) and return if @time.nil?

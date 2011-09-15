@@ -1,7 +1,6 @@
-<% @title = current_site.tlog_settings.title %>
 <% content_for :head do %>
   <%= render :partial => 'tlog/head' %>
-<% end unless @iscroll_active %>
+<% end %>
 
 <% if @entries.size > 0 %>
   <%# spec - только если мы показываем другую навигацию %>
@@ -26,4 +25,4 @@
 
 <% content_for :sidebar do %>
 	<%= render :partial => 'tlog/sidebar' %>
-<% end unless @iscroll_active %>
+<% end %>
