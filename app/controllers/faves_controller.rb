@@ -18,6 +18,10 @@ class FavesController < ApplicationController
     faves_count = current_site.faves.count if faves_count < 0
     
     @faves = Fave.paginate :all, :page => current_page, :per_page => 15, :include => { :entry => [:attachments, :author, :rating] }, :order => 'faves.id DESC', :conditions => { :user_id => current_site.id }
+    
+    @comment_views = User::entries_with_views_for(@faves.map(&:entry_id), current_user)
+    
+    render :layout => false if request.xhr?
   end
   
   # попадаем сюда через global/fave

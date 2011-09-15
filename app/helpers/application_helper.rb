@@ -130,6 +130,26 @@ END
     ""
   end
   
+  def updated_comments_count(entry, views)
+    v = views.select { |v| v.id == entry.id }.try(:first)
+
+    txt = ''
+
+    if v
+      if (v.last_comment_viewed && v.last_comment_viewed > 0 && v.last_comment_viewed != v.comments_count)
+        txt = "#{v.last_comment_viewed}+#{v.comments_count - v.last_comment_viewed}"
+      elsif (current_user && !v.last_comment_viewed && v.comments_count > 0)
+        txt = "+#{v.comments_count}"
+      else
+        txt = entry.comments_count
+      end
+    else
+      txt = entry.comments_count
+    end
+    
+    txt
+  end
+  
   # classes is to set css-classes or other attributes conditionally
   # classes("class-without-conditions", ["logged-class", logged_in?], "third-class-without-conditions")
   def classes(*pairs)

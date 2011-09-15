@@ -11,7 +11,7 @@
 	<div class='t-iscrollable' data-iscroll-name='faves'>
   	<% @faves.each do |fave| %>
   		<% next if fave.entry.nil? %>
-  		<%= render :partial => 'entries/entry_display', :locals => { :entry => fave.entry, :show_comments_bubble => true, :show_username => true } %>
+  		<%= render :partial => 'entries/entry_display', :locals => { :entry => fave.entry, :show_comments_bubble => true, :show_username => true, :comment_views => @comment_views } %>
   	<% end %>
 
   	<%= paginate @faves %>

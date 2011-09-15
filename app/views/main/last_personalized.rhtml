@@ -10,16 +10,10 @@
 <% else %>
 	<div class='onair t-iscrollable' data-iscroll-name='my-ordered'>
 		<% @entries.each do |entry| %>
-			<%= render :partial => 'entries/entry_display', :locals => { :entry => entry, :show_comments_bubble => true, :show_username => true, :show_tags => false, :show_nsfw_sticker => true } %>
+			<%= render :partial => 'entries/entry_display', :locals => { :entry => entry, :show_comments_bubble => true, :show_username => true, :show_tags => false, :comment_views => @comment_views } %>
 		<% end %>
 
-		<%= paginate @entry_ids %>
-		
-		<script type='text/javascript'>
-    // <[!CDATA[
-    	<%= "var comments_views_update = #{@comment_views.to_json(:only => [:id, :comments_count], :methods => [:last_comment_viewed])}" if @comment_views %>
-    //	]]>
-    </script>
+		<%= paginate @entry_ids %>		
 	</div>
 <% end %>
 
