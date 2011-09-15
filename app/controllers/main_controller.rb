@@ -130,7 +130,7 @@ class MainController < ApplicationController
   def last_personalized
     redirect_to(service_url(main_path(:action => :live))) and return unless current_user
 
-    @title  = "ваш личный прямой эфир, #{h current_user.url}"
+    @title  = "ваш личный прямой эфир, #{current_user.url}"
     @page   = current_page
 
     # такая же штука определена в tlog_feed_controller.rb
