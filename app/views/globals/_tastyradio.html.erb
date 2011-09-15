@@ -1,7 +1,7 @@
 <%-
   show_track = RadioSchedule.onair.select { |s| s.onair? }.length > 0 ? false : true
   track_info = nil
-  track_info = Rails.cache.fetch('radio:data', :expires_in => Rails.env.production? ? 15.seconds : 2.minutes) { TastyradioData.fetch } if show_track
+  # track_info = Rails.cache.fetch('radio:data', :expires_in => Rails.env.production? ? 15.seconds : 2.minutes) { TastyradioData.fetch } if show_track
   show_track = false if track_info.nil?
 -%>
 <div class='section'>
