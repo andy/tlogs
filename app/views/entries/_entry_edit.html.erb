@@ -73,15 +73,19 @@
   jQuery(function() {
     if(jQuery('#entry_visibility').val() == 'mainpageable' || jQuery('#entry_visibility').val() == 'voteable') {
       jQuery('#entry_nsfw_holder').show();
+      jQuery('.visibility_comments').show();
     } else {
       jQuery('#entry_nsfw_holder').hide();
+      jQuery('.visibility_comments').hide();
     }
     
     jQuery('#entry_visibility').change(function() {
       if(jQuery(this).val() == 'mainpageable' || jQuery(this).val() == 'voteable') {
         jQuery('#entry_nsfw_holder').show(300);
+        jQuery('.visibility_comments').show(300);
       } else {
         jQuery('#entry_nsfw_holder').hide(300);
+        jQuery('.visibility_comments').hide(300);
       }
     });
   });
