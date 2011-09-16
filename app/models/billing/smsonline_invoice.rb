@@ -109,6 +109,7 @@ class SmsonlineInvoice < Invoice
                                   :vat => (network/:vat).text,
                                   :sms_cost_vat => (network/:sms_cost_vat).text,
                                   :sms_cost_loc => (network/:sms_cost_loc).text,
+                                  :payout_res => (network/:payout_res).text,
                                   :currency => (network/:currency).text
                               )
     end
@@ -172,7 +173,7 @@ class SmsonlineInvoice < Invoice
   ## protected
   protected
     def check_required_keys
-      %w(tid cn sn op phone pref txt md5 pay cost).each do |key|
+      %w(tid cn sn op phone pref txt md5).each do |key|
         errors.add_to_base "обязательный параметр #{key} отсутствует" if metadata[key].nil?
       end
     end
@@ -194,8 +195,8 @@ class SmsonlineInvoice < Invoice
         self.metadata[:currency] = net.currency
         self.days      = SmsonlineInvoice.duration(net)
         self.user      = User.active.find_by_id(self.metadata[:txt][1..-1].to_i) if self.metadata[:txt] && self.metadata[:txt].to_i > 0
-        self.amount    = self.metadata[:cost].to_f || 0
-        self.revenue   = self.metadata[:pay].to_f || 0
+        self.amount    = net.sms_cost_vat
+        self.revenue   = net.payout_res
       else
         errors.add_to_base "не удалось найти номер"
       end
