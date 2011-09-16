@@ -50,12 +50,18 @@ class SmsonlineInvoice < Invoice
 
   COUNTRY_NAMES = {
     'ru' => 'Россия',
-    'ua' => 'Украина'
+    'ua' => 'Украина',
+    'by' => 'Беларусь',
+    'kz' => 'Казахстан',
+    'md' => 'Молдова'
   }
   
   COUNTRIES = {
     'ru' => 1,
-    'ua' => 2
+    'ua' => 2,
+    'by' => 3,
+    'kz' => 4,
+    'md' => 5
   }
   
   OPERATORS = {
@@ -67,7 +73,8 @@ class SmsonlineInvoice < Invoice
   
   CURRENCIES = {
     'RUB'     => 'руб.',
-    'USD'     => 'дол.'
+    'USD'     => 'дол.',
+    'BYR'     => 'руб.'
   }
 
   ## validations
@@ -85,8 +92,8 @@ class SmsonlineInvoice < Invoice
     ::SETTINGS[:billing]['smsonline']
   end
   
-  def self.duration(sn)
-    settings['duration'][sn] || 1
+  def self.duration(net)
+    (settings['duration'][net.country][net.shortnumber] || 1) rescue 1
   end
   
   def self.networks
@@ -126,16 +133,16 @@ class SmsonlineInvoice < Invoice
         
         o_nets.each do |net|
           number = OpenStruct.new(:name => [net.country, net.operator_code, net.shortnumber].join('_'),
-                                  :value => "#{duration(net.shortnumber).pluralize('день', 'дня', 'дней', true)}\t(#{net.sms_cost_vat.to_f.to_s} #{CURRENCIES[net.currency] || net.currency} с НДС)",
+                                  :value => "#{duration(net).pluralize('день', 'дня', 'дней', true)}\t(#{net.sms_cost_vat.to_f.to_s} #{CURRENCIES[net.currency] || net.currency} с НДС)",
                                   :shortnumber => net.shortnumber,
-                                  :position => settings['numbers'].index(net.shortnumber),
+                                  :position => settings['numbers'][net.country].index(net.shortnumber),
                                   :vat => net.vat)
 
-          operator.numbers << number if settings['numbers'].include?(net.shortnumber)
+          operator.numbers << number if settings['numbers'][net.country].include?(net.shortnumber)
         end
         
         country.operators << operator if operator.numbers.any?
-      end
+      end if settings['countries'].include?(country.name)
 
       result << country if country.operators.any?
     end
@@ -146,7 +153,7 @@ class SmsonlineInvoice < Invoice
   
   ## public methods
   def summary
-    "SMS на номер #{self.metadata[:sn]} (#{self.amount} руб. с НДС)"
+    "SMS на номер #{self.metadata[:sn]} (#{self.amount} #{self.metadata[:currency]} с НДС)"
   end
   
   def extra_summary
@@ -165,7 +172,7 @@ class SmsonlineInvoice < Invoice
   ## protected
   protected
     def check_required_keys
-      %w(tid sn op phone pref txt md5 pay cost).each do |key|
+      %w(tid cn sn op phone pref txt md5 pay cost).each do |key|
         errors.add_to_base "обязательный параметр #{key} отсутствует" if metadata[key].nil?
       end
     end
@@ -180,9 +187,17 @@ class SmsonlineInvoice < Invoice
     end
     
     def export_attributes
-      self.days      = SmsonlineInvoice.duration(self.metadata[:sn].to_i)
-      self.user      = User.active.find_by_id(self.metadata[:txt][1..-1].to_i) if self.metadata[:txt] && self.metadata[:txt].to_i > 0
-      self.amount    = self.metadata[:cost].to_f || 0
-      self.revenue   = self.metadata[:pay].to_f || 0
+      net            = SmsonlineInvoice.networks.find { |n| n.country == self.metadata[:cn] && n.shortnumber == self.metadata[:sn].to_i }
+      
+      if net
+        self.metadata_will_change!
+        self.metadata[:currency] = net.currency
+        self.days      = SmsonlineInvoice.duration(net)
+        self.user      = User.active.find_by_id(self.metadata[:txt][1..-1].to_i) if self.metadata[:txt] && self.metadata[:txt].to_i > 0
+        self.amount    = self.metadata[:cost].to_f || 0
+        self.revenue   = self.metadata[:pay].to_f || 0
+      else
+        errors.add_to_base "не удалось найти номер"
+      end
     end
 end

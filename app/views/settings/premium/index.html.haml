@@ -1,7 +1,7 @@
 - @title = "премиум возможности, #{current_user.username}"
 - content_for :header do
   Тейсти-премиум
-  -# link_to 'Подключить', user_url(current_site, settings_premium_path(:action => 'pay')), :class => 'button fancybox_payment_popup' unless is_premium?
+  = link_to 'Подключить', user_url(current_site, settings_premium_path(:action => 'pay')), :class => 'button fancybox_payment_popup' unless is_premium?
 
 .premium-features
   - if is_premium?
@@ -75,10 +75,9 @@
   = image_tag 'premium/shadow.png', :class => 'shadow'
 
   %center
-    - if in_beta?
-      = link_to "#{is_premium? ? 'Продлить' : 'Подключить'} тейсти-премиум", user_url(current_site, settings_premium_path(:action => 'pay')), :id => 'paylink', :class => 'paylink fancybox_payment_popup'
-    - else
-      .paydisabled Простите, оплата временно недоступна. Надеемся, что после 16 сентября все заработает.
+    = link_to "#{is_premium? ? 'Продлить' : 'Подключить'} тейсти-премиум", user_url(current_site, settings_premium_path(:action => 'pay')), :id => 'paylink', :class => 'paylink fancybox_payment_popup'
+    -# - else
+    -#   .paydisabled Простите, оплата временно недоступна. Надеемся, что после 16 сентября все заработает.
   
 :javascript
   jQuery(function() {

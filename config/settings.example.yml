@@ -4,14 +4,36 @@ billing:
     login: user
     password: password
     prices: tmp/smsonline.xml                 # this is used by script/fetch_smsonline_prices script
+    countries:
+      - ru
+      - ua
+      - by
+      - kz
+      - md
     numbers:                                  # array of allowed sms numbers
-      - 6365
-      - 1212
-      - 8404
+      ru:
+        - 6365
+        - 1212
+        - 8404
+      ua:
+        - 1315
+        - 9395
+      by:
+        - 2090
+        - 1315
+        - 9395
     duration:
-      6365: 29
-      1212: 59
-      8404: 99
+      ru:
+        6365: 29
+        1212: 59
+        8404: 99
+      ua:
+        1315: 29
+        9395: 99
+      by:
+        2090: 29
+        1315: 59
+        9395: 99
     servers:
       - 83.137.50.31
       - 85.192.45.22
