@@ -9,6 +9,13 @@
 * u - id текущего пользователя
 * r - строка редиректа, в основном используется при авторизации для перенаправления на страницу с которой пришел пользватель
 
+== Используемые поля в users.settings
+* ng - not grateful, int(0,1) (premium#grateful)
+* ln - linked accounts, array[user_id, user_id, ...] (premium#accounts)
+* last_kind
+* last_rating
+* last_personalized_keys
+
 == Annotate
 
  bundle exec annotate -p before -m -i -s --exclude tests,fixtures

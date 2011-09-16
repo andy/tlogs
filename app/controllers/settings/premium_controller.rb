@@ -96,6 +96,14 @@ class Settings::PremiumController < ApplicationController
   def invoices
     @invoices = current_site.invoices.successful.paginate :page => current_page, :per_page => 15, :order => 'created_at DESC'
   end
+  
+  def grateful
+    current_site.settings_will_change!
+    current_site.settings[:ng] = (params[:value] && params[:value] == 'true') ? 1 : 0
+    current_site.save!
+    
+    render :json => true
+  end
 
 
   #

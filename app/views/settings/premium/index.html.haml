@@ -71,6 +71,11 @@
       = image_tag 'premium/settings_heart.png'
       %p.bold Благодарность
       %p Оплатой сервиса вы поддержите проект и его разрабочиков, и тогда они смогут выделять больше времени и ресурсов на его развитие.
+      
+      - if is_premium?
+        %label#grateful
+          %input{:type => 'checkbox', :checked => (current_site.settings[:ng] == 1) ? nil : 'checked'}
+          Отображать мое имя в списке поблагодаривших
 
   = image_tag 'premium/shadow.png', :class => 'shadow'
 
@@ -81,6 +86,21 @@
   
 :javascript
   jQuery(function() {
+    jQuery('#grateful input').change(function() {
+      var value = 
+      jQuery.ajax({
+        url: #{user_url(current_site, settings_premium_path(:action => 'grateful')).to_json},
+        type: 'post',
+        dataType: 'json',
+        data: {
+          authenticity_token: window._token,
+          value: !jQuery(this).is(':checked')
+        },
+        success: function(data) {
+          new Effect.Highlight('grateful', { duration: 0.3 });
+        }
+      });
+    });
     jQuery('.fancybox_payment_popup').fancybox({
       titleShow: false,
       centerOnScroll: true,
