@@ -39,9 +39,8 @@ class AccountController < ApplicationController
       end
     else
       @user = User.new :email => cookies[:l]
-      if !params[:noref] && request.get? && request.env['HTTP_REFERER']
-        session[:r] = request.env['HTTP_REFERER']
-      end
+
+      session[:r] = params[:ref] || request.env['HTTP_REFERER'] if params[:noref].nil?
     end
   end
 
@@ -298,8 +297,9 @@ class AccountController < ApplicationController
 
       # result redirect
       redirect = options[:redirect_to]
-      if session[:r]
-        redirect ||= session[:r]
+      if redirect.blank? && session[:r]
+        redirect = session[:r]
+        redirect = user_url(user, redirect) if redirect && redirect.starts_with?('/')
         session[:r] = nil
       end
       redirect_to redirect || user_url(user)
