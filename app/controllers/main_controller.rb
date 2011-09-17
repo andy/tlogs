@@ -18,6 +18,10 @@ class MainController < ApplicationController
     redirect_to current_user ? user_url(current_user, settings_path) : service_url(login_path(:ref => settings_path))
   end
   
+  def publish
+    redirect_to current_user ? user_url(current_user, publish_path(:action => params[:type])) : service_url(login_path(:ref => publish_path(:action => params[:type])))
+  end
+  
   def news
     news = User.find_by_url('news')    
     news.mark_as_viewed_by!(current_user)
