@@ -137,15 +137,15 @@ class User
         entry = Entry.anonymous.for_user(self).last
         if entry
           if entry.is_disabled?
-            if entry.created_at > (self.is_premium? ? 2.weeks.ago : 2.month.ago)
+            if entry.created_at > 2.month.ago
               reason = Reason.new "Ваша последняя анонимка была удалена меньше двух месяцев назад."
-              reason.premium    = "Премиум пользователи банятся <b>на две недели</b>, вместо двух месяцев." unless self.is_premium?
-              reason.expires_at = entry.created_at + (self.is_premium? ? 2.weeks : 2.month)
+              # reason.premium    = "Премиум пользователи банятся <b>на две недели</b>, вместо двух месяцев." unless self.is_premium?
+              reason.expires_at = entry.created_at + 2.month
             end
-          elsif entry.created_at > (self.is_premium? ? 1.week.ago : 1.month.ago)
-            reason = Reason.new "Анонимки можно писать не чаще одного раза в месяц."
-            reason.premium    = "Премиум пользователи могут писать анонимки <b>раз в неделю</b>." unless self.is_premium?
-            reason.expires_at = entry.created_at + (self.is_premium? ? 1.week : 1.month)
+          elsif entry.created_at > (self.is_premium? ? 2.weeks.ago : 1.month.ago)
+            reason = Reason.new "Анонимки можно писать не чаще одного раза в #{self.is_premium? ? "месяц" : "две недели"}."
+            reason.premium    = "Премиум пользователи могут писать анонимки <b>раз в две недели</b>." unless self.is_premium?
+            reason.expires_at = entry.created_at + (self.is_premium? ? 2.week : 1.month)
           end
         # и только спустя месяц после регистрации
         elsif self.created_at > 6.months.ago && !self.is_premium?

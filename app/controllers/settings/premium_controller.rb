@@ -71,6 +71,8 @@ class Settings::PremiumController < ApplicationController
         end
         
         render :json => true
+      else
+        redirect_to user_url(current_site, settings_premium_path(:action => 'background'))
       end
     elsif request.delete?
       Background.transaction do
