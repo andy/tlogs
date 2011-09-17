@@ -79,15 +79,17 @@
   if(window.location.hash && window.location.hash == '#privacy') {
     new Effect.Highlight('privacy_form', { duration: '4' });
   }
-  jQuery('#privacy').change(function() {
-    if(jQuery(this).val() == 'me') {
-      jQuery('#privacy-note').show(300);
-    } else {
-      jQuery('#privacy-note').hide(300);
-    }
-  });
+  <% if current_site.created_at > "11 sep 2011".to_time %>
+    jQuery('#privacy').change(function() {
+      if(jQuery(this).val() == 'me') {
+        jQuery('#privacy-note').show(300);
+      } else {
+        jQuery('#privacy-note').hide(300);
+      }
+    });
   
-  if(jQuery('#privacy').val() != 'me') {
-    jQuery('#privacy-note').hide()
-  }
+    if(jQuery('#privacy').val() != 'me') {
+      jQuery('#privacy-note').hide()
+    }
+  <% end %>
 </script>
