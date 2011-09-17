@@ -8,7 +8,7 @@ class PackagesController < ApplicationController
   def css
     files     = TASTY_ASSETS[:stylesheets][params[:name]]
     key       = files.each { |f| Digest::SHA1.file(f).hexdigest }.join(':')
-    cache_key = Digest::SHA1.hexdigest(key)
+    cache_key = ['pack', 'css', Digest::SHA1.hexdigest(key)].join(':')
     result    = Rails.cache.fetch(cache_key, :expires_in => 1.day) { AssetGluer::StylesheetFile.glue(files) }
 
     render :text => result, :content_type => 'text/css'
@@ -17,7 +17,7 @@ class PackagesController < ApplicationController
   def js
     files     = TASTY_ASSETS[:javascripts][params[:name]]
     key       = files.each { |f| Digest::SHA1.file(f).hexdigest }.join(':')
-    cache_key = Digest::SHA1.hexdigest(key)
+    cache_key = ['pack', 'js', Digest::SHA1.hexdigest(key)].join(':')
     result    = Rails.cache.fetch(cache_key, :expires_in => 1.day) { AssetGluer::JavascriptFile.glue(files) }
 
     render :text => result, :content_type => 'text/javascript'
