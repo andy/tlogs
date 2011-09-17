@@ -41,7 +41,15 @@ class ApplicationController < ActionController::Base
   before_filter :preload_current_site # loads @current_site
   before_filter :preload_current_user # loads @current_user
   
-  protected  
+  protected
+    def authorized?
+      !!current_user
+    end
+    
+    def login_required
+      require_current_user
+    end
+  
     def in_beta?
       @in_beta ||= Rails.env.production? ? (current_user && current_user.in_beta?) : true
     end

@@ -10,6 +10,14 @@ class MainController < ApplicationController
   def about
   end
   
+  def premium
+    redirect_to current_user ? user_url(current_user, settings_premium_path) : service_url(login_path(:ref => settings_premium_path))
+  end
+  
+  def settings
+    redirect_to current_user ? user_url(current_user, settings_path) : service_url(login_path(:ref => settings_path))
+  end
+  
   def news
     news = User.find_by_url('news')    
     news.mark_as_viewed_by!(current_user)

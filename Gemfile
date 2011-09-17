@@ -24,6 +24,9 @@ gem 'ts-datetime-delta', '>= 1.0.0', :require => 'thinking_sphinx/deltas/datetim
 gem 'mysql'
 gem 'savon', '0.7.9', :require => false
 
+# gem 'oauth'
+# gem 'oauth-plugin'
+
 gem 'paperclip', '= 2.3.9'
 gem 'paperclip-meta'
 
