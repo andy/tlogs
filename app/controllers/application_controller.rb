@@ -2,6 +2,7 @@ class ApplicationController < ActionController::Base
   filter_parameter_logging :password
 
   rescue_from ActionController::UnknownAction, :with => :render_action_not_found
+  rescue_from ActionController::UnknownHttpMethod, :with => :render_action_not_found
 
   MOBILE_USER_AGENTS =  'palm|blackberry|nokia|phone|midp|mobi|symbian|chtml|ericsson|minimo|' +
                             'audiovox|motorola|samsung|telit|upg1|windows ce|ucweb|astel|plucker|' +
