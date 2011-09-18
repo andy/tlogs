@@ -1,21 +1,19 @@
-<%
+<%-
   alt   = entry.data_part_2.blank? ? nil : h_attr(entry.data_part_2, :length => 128)
   opts  = { :title => '', :alt => alt }
-%>
-<%# если картинка ссылкой на удаленный ресурс %>
-<% if entry.data_part_1 %>
-  <%= image_tag entry.data_part_1, opts.merge(entry.geometry) %>  
-<% elsif !entry.attachments.empty? %>
-  <%
+-%><%
+  if entry.data_part_1 %><%=
+    image_tag entry.data_part_1, opts.merge(entry.geometry) %><%
+  elsif !entry.attachments.empty?
     image = entry.attachments.first
     thumb = image.thumbnails.select { |i| i.thumbnail == 'tlog' }.first
-  %>
-  <% if thumb %>
-    <%= link_to image_tag(thumb.public_filename, opts.merge(entry.geometry(:image => thumb))), image_path(image.public_filename), :rel => 'follow', :class => 'fancybox' %>
-  <% else %>
-    <%= image_tag image.public_filename, opts.merge(entry.geometry) %>
-	<% end %>
-<% end %>
 
-<%= content_tag :div, link_to(truncate(entry.data_part_3, :length => 50), entry.data_part_3, :rel => 'nofollow'), :class => 'pic_link' unless entry.data_part_3.blank? %>
-<%= content_tag :div, white_list_entry(entry.data_part_2), :class => 'pic_comment' unless entry.data_part_2.blank? %>
+    if thumb %><%=
+      link_to image_tag(thumb.public_filename, opts.merge(entry.geometry(:image => thumb))), image_path(image.public_filename), :rel => 'follow', :class => 'fancybox' %><%
+    else %><%=
+      image_tag image.public_filename, opts.merge(entry.geometry) %><%
+    end
+  end %><%=
+  
+  content_tag :div, link_to(truncate(entry.data_part_3, :length => 50), entry.data_part_3, :rel => 'nofollow'), :class => 'pic_link' unless entry.data_part_3.blank? %><%=
+  content_tag :div, white_list_entry(entry.data_part_2), :class => 'pic_comment' unless entry.data_part_2.blank? %>
