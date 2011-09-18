@@ -92,7 +92,7 @@
     if(jQuery('#privacy').val() != 'fr' && jQuery('#privacy').val() != 'me') {
       jQuery('#privacy-note').hide()
     }
-  <% elsif current_site.created_at > "11 sep 2001".to_time %>
+  <% elsif current_site.created_at > "11 sep 2011".to_time %>
     jQuery('#privacy').change(function() {
       var val = jQuery(this).val();
       if(val == 'me') {
