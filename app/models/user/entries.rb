@@ -72,16 +72,16 @@ class User
     # find_options[:page] = { :current => options[:page], :size => options[:page_size], :count => e_count } unless options[:time]
 
     WillPaginate::Collection.create(options[:page], options[:per_page] || Entry::PAGE_SIZE, e_count.zero? ? nil : e_count) do |pager|
-      entry_ids = entries.find(:all, find_options.merge( :select => 'entries.id, entries.user_id, entries.is_private', :limit => pager.per_page, :offset => pager.offset )).map(&:id)
+      entry_ids = entries.find(:all, find_options.slice(:conditions, :order).merge(:select => 'entries.id, entries.user_id, entries.is_private', :limit => pager.per_page, :offset => pager.offset)).map(&:id)
 
       if only_ids
         pager.replace(entry_ids)
       else
-        result = Entry.find_all_by_id(entry_ids, find_options.except( :conditions )).sort_by { |entry| entry_ids.index(entry.id) }
+        result = Entry.find_all_by_id(entry_ids, find_options.slice(:include)).sort_by { |entry| entry_ids.index(entry.id) }
         pager.replace(result)
       end
       
-      pager.total_entries = entries.count(find_options) unless pager.total_entries
+      pager.total_entries = entries.count(find_options.slice(:conditions)) unless pager.total_entries
     end
   end
 
