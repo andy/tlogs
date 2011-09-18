@@ -124,7 +124,7 @@ class AccountController < ApplicationController
     respond_to do |wants|
       wants.html do
         if params[:p] && params[:p] == 'false'
-          redirect_to :back
+          redirect_to(:back) rescue redirect_to(service_url)
         else
           redirect_to service_url
         end        
