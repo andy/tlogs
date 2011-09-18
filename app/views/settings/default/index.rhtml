@@ -103,7 +103,9 @@
     });
   
     if(jQuery('#privacy').val() != 'me') {
-      jQuery('#privacy-note').hide()
+      jQuery('#privacy-note').hide();
     }
+  <% else %>
+    jQuery('#privacy-note').hide();
   <% end %>
 </script>
