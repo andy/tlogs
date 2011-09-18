@@ -163,6 +163,10 @@ class QiwiInvoice < Invoice
   def qiwi_success!
     expand_premium_for_user! && success! if is_pending?
   end
+  
+  def qiwi_failed!
+    fail! if is_pending?
+  end
 
   def summary
     "Платеж через QIWI-кошелек на сумму #{self.amount.pluralize('рубль', 'рубля', 'рублей', true)}"

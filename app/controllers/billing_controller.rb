@@ -143,7 +143,7 @@ class BillingController < ApplicationController
           @invoice.metadata_will_change!
           @invoice.metadata[:status] = status
 
-          @invoice.failed!
+          @invoice.qiwi_failed!
       end
     end
     
