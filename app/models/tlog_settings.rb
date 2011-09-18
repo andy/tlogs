@@ -57,7 +57,8 @@ class TlogSettings < ActiveRecord::Base
 
   
   before_save do |record|
-    record.privacy = 'fr' if record.privacy == 'me' && record.user.created_at > "11 sep 2011".to_time && !record.user.is_premium?
+    record.privacy = 'rr' if record.privacy == 'fr' && record.user.created_at > "17 sep 2011".to_time && !record.user.is_premium?
+    record.privacy = 'rr' if record.privacy == 'me' && record.user.created_at > "11 sep 2011".to_time && !record.user.is_premium?
   end
   
   # обновляем счетчик последнего обновления, чтобы сбросить кеш для страниц.
