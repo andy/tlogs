@@ -65,7 +65,7 @@ class User
     conditions << 'entries.is_private = 0' unless include_private
     conditions << 'entries.is_private = 1' if only_private
     conditions << "entries.created_at BETWEEN '#{options[:time].strftime("%Y-%m-%d")}' AND '#{options[:time].tomorrow.strftime("%Y-%m-%d")}'" if options[:time]
-    conditions << "type = '#{options[:type]}'" if options[:type]
+    conditions << "entries.type = '#{options[:type]}'" if options[:type]
     conditions = conditions.blank? ? nil : conditions.join(' AND ')
 
     find_options = { :order => 'entries.id DESC', :include => [:author, :attachments, :rating], :conditions => conditions }
