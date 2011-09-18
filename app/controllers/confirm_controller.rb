@@ -10,7 +10,7 @@ class ConfirmController < ApplicationController
     if request.post?
       current_user.update_confirmation!(current_user.email)
       Emailer.deliver_confirm(current_service, current_user, current_user.email)
-      flash[:good] = "Загляните, пожалуйста, в почтовый ящик #{current_user.email}, там должно быть письмо с кодом подтверждения"
+      flash[:good] = "Загляните, пожалуйста, в почтовый ящик #{current_user.email}, там должно быть письмо с кодом подтверждения."
     end
     redirect_to service_url(confirm_path(:action => :required))
   end  
