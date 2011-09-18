@@ -9,16 +9,15 @@ class Settings::MobileController < ApplicationController
   
   def email
     # create mobile settings thing
-    current_user.mobile_settings ||= MobileSettings.create :user => current_user, :keyword => MobileSettings.generate_keyword
+    current_site.mobile_settings ||= MobileSettings.create :user => current_site, :keyword => MobileSettings.generate_keyword
 
     # update mobile settings if post request
-    current_user.mobile_settings.update_attributes(:keyword => MobileSettings.generate_keyword) if request.post?
+    current_site.mobile_settings.update_attributes(:keyword => MobileSettings.generate_keyword) if request.post?
 
     # used in views
-    @private_email = "post+#{current_user.mobile_settings.keyword}@#{current_service.domain}"
+    @private_email = "post+#{current_site.mobile_settings.keyword}@#{current_service.domain}"
 
     respond_to do |wants|
-      logger.info wants.class
       wants.html # email.rhtml
       wants.js do
         render :update do |page|
@@ -29,16 +28,13 @@ class Settings::MobileController < ApplicationController
     end
   end
   
-  def sms
-  end
-  
   def bookmarklets
-    @bookmarklet = Bookmarklet.find_by_id_and_user_id(params[:id], current_user.id) if params[:id]
+    @bookmarklet = Bookmarklet.find_by_id_and_user_id(params[:id], current_site.id) if params[:id]
     @bookmarklet ||= Bookmarklet.new
 
     if request.post?
       @bookmarklet.attributes = params[:bookmarklet]
-      @bookmarklet.user = current_user
+      @bookmarklet.user = current_site
       if @bookmarklet.save
         flash[:good] = 'Закладка была сохранена'
         redirect_to :action => :bookmarklets, :id => nil
@@ -49,7 +45,7 @@ class Settings::MobileController < ApplicationController
   end
   
   def bookmarklet_destroy
-    @bookmarklet = Bookmarklet.find_by_id_and_user_id(params[:id], current_user.id)
-    @bookmarklet.destroy
+    @bookmarklet = Bookmarklet.find_by_id_and_user_id(params[:id], current_site.id)
+    @bookmarklet.destroy if @bookmarklet
   end
 end
