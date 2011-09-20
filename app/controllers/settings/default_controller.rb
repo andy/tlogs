@@ -37,9 +37,11 @@ class Settings::DefaultController < ApplicationController
       @user.username = params[:user][:username]
       @user.save
 
-      @tlog_settings.about = params[:tlog_settings][:about]
-      @tlog_settings.title = params[:tlog_settings][:title]
-      @tlog_settings.save
+      if params[:tlog_settings]
+        @tlog_settings.about = params[:tlog_settings][:about]
+        @tlog_settings.title = params[:tlog_settings][:title]
+        @tlog_settings.save
+      end
 
       if params[:user][:userpic]
         @user.userpic = params[:user][:userpic]
@@ -50,7 +52,7 @@ class Settings::DefaultController < ApplicationController
         if !@user.errors.on(:userpic)
           @user.save!
         else
-          flash[:bad] = 'Не удалось изменить ваш портрет — убедитесь что картинка, которую вы загружаете, имеет расширение .jpg, .png или .gif (если расширение правильное, то скорее всего картинка слишком большая — уменьшите ее и попробуйте снова)'
+          flash[:bad] = 'Не удалось изменить ваш портрет — убедитесь, что картинка, которую вы загружаете, имеет расширение .jpg, .png или .gif (если расширение правильное, то, скорее всего, картинка слишком большая — уменьшите её и попробуйте снова)'
 
           render and return
         end
