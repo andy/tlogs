@@ -55,10 +55,12 @@
 <% end %>
 
 <% content_for :sidebar_right do %>
-  <h2><span>На кого посмотрим?</span></h2>
+  <%= render :partial => 'adv_sidebar' %>
+
+  <h2><span>Тейстяне</span></h2>
   <div class='users_nav'>
-		<%= link_to 'на кого угодно', { :action => :users }, :class => (params[:action] == 'users') ? 'highlight' : nil %><br/>
-		<%= link_to 'на новеньких', { :action => :new_users, :page => nil }, :class => (params[:action] == 'new_users') ? 'highlight' : nil %>
+		<%= link_to 'случайные', { :action => :users }, :class => (params[:action] == 'users') ? 'highlight' : nil %><br/>
+		<%= link_to 'новенькие', { :action => :new_users, :page => nil }, :class => (params[:action] == 'new_users') ? 'highlight' : nil %>
 	</div>
 	<br/>
 <% end %>

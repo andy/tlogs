@@ -16,6 +16,9 @@ javascripts:
   selectivizr:
     - app/assets/javascripts/html5/selectivizr.min.js
 
+  highcharts:
+    - app/assets/javascripts/highcharts/highcharts.js
+
   wymeditor:
     - app/assets/javascripts/wymeditor/jquery.wymeditor.js
     - app/assets/javascripts/wymeditor/en.js

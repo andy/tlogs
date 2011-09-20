@@ -1,0 +1,45 @@
+.section.t-main-adv-section
+  %h2
+    %span Статистика
+
+  %p
+    %span
+      В двух цифрах, тейсти — это
+      %b 350&nbsp;000
+      уникальных пользователей в месяц, просматривающих более
+      %b 23&nbsp;000&nbsp;000
+      страниц
+    
+  %p
+    %span
+      %a.highlight{:href => 'stats'} Смотреть статистику &rarr;
+
+.section.t-main-adv-section
+  %h2
+    %span Рекламный формат
+    
+  %p
+    %span
+      Баннер
+      %b 240x400
+      на всех главных страницах сайта. Подробнее о формате и статистике, читайте в нашем медиаките.
+  
+  %p
+    %span
+      = link_to 'Смотреть медиакит &rarr;', '/assets/adv/mediakit.pdf', :target => '_blank', :class => 'highlight'
+
+.section.t-main-adv-section
+  %h2
+    %span Контакты
+  
+  %p
+    %span
+      По всем вопросам, связанным с рекламой, можно писать по адресу
+      %b
+        = mail_to 'adv@mmm-tasty.ru', 'adv@mmm-tasty.ru', :encode => :javascript
+  
+  %p
+    %span
+      По любым иным вопросам сотрудничества с площадкой, пишите нам, пожалуйста, на адрес
+      %b
+        = mail_to 'hello@mmm-tasty.ru', 'hello@mmm-tasty.ru', :encode => :javascript

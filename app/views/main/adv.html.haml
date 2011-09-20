@@ -1,0 +1,44 @@
+- @title = 'Реклама на страницах проекта'
+
+- content_for :sidebar_right do
+  = render :partial => 'adv_sidebar_right'
+
+- content_for :sidebar_left do
+  = render :partial => 'adv_sidebar_left'
+
+.t-main-adv
+  %h1 Реклама на сайте
+  
+  %p Mmm-tasty.ru — это проект, объединяющий активную молодежь в возрасте от 14 до 28 лет. Это люди, которым необходимо делиться своими переживаниями, самовыражаться, постоянно искать что-то новое и интересное лично для себя, не следуя при этом общим тенденциям. Они интересуются самыми разными сферами жизни – модой, литературой, искусством, фотографией, занимаются творчеством, большинство еще находятся в поиске себя в профессиональном плане и открыты всему новому.
+
+  %p
+    = link_to 'Здесь', service_url(main_path(:action => 'stats')), :target => '_blank'
+    можно подробно ознакомиться со 
+    = succeed '.' do
+      %b статистическими показателями сайта
+
+  %p
+    На нашем сайте возможно размещение баннера формата
+    = succeed '.' do
+      %b 240*400
+
+  %p Также мы открыты для любых новых идей, спецпроектов и нестандартных рекламных размещений.
+
+  %h2 Медиакит
+
+  %p
+    Чтобы подробнее узнать о площадке, ознакомится с ценами на размещение и нашими возможностями,
+    = succeed '.' do
+      %b
+        скачайте
+        %a{:href => '/assets/adv/mediakit.pdf', :target => '_blank'}
+          медиакит
+    
+  <iframe class="scribd_iframe_embed" src="http://www.scribd.com/embeds/65664022/content?start_page=1&view_mode=list&access_key=key-2n9dfx7jziedevcoa3y5&secret_password=2oe6kew7hs3mhhakbno0" data-auto-height="true" data-aspect-ratio="" scrolling="no" id="doc_69332" width="100%" height="600" frameborder="0"></iframe>
+
+  %br
+  %br
+  %p
+    По всем вопросам, связанным с рекламой, можно писать по адресу
+    = mail_to 'adv@mmm-tasty.ru', 'adv@mmm-tasty.ru', :encode => :javascript
+

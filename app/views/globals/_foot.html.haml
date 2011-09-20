@@ -8,7 +8,7 @@
 
       #{link_to current_service.domain, service_url},
       = link_to 'о проекте', service_url(main_path(:action => 'about'))
-      = link_to 'реклама', service_url(main_path(:action => 'ads')) if false
+      = link_to 'реклама', service_url(main_path(:action => 'adv')) unless current_site
       = link_to 'новости', service_url(main_path(:action => 'news'))
 
       - unless current_site

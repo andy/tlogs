@@ -10,6 +10,13 @@ class MainController < ApplicationController
   def about
   end
   
+  def adv
+  end
+  
+  def stats
+  end
+    
+  
   def premium
     redirect_to current_user ? user_url(current_user, settings_premium_path) : service_url(login_path(:ref => settings_premium_path))
   end

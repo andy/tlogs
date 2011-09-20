@@ -965,3 +965,46 @@ input.placeholder, textarea.placeholder {
     }
   }
 }
+
+.t-main-adv {
+  margin: 0 40px;
+  text-align: left;
+  h1, h2 {
+    font-family: Georgia, serif;
+    font-size: 21px;
+    color: #404040;
+    margin: 0;
+    padding: 0;
+    margin-bottom: 1em;
+  }
+  h2 {
+    margin-top: 1em;
+  }
+  p {
+    font-family: Georgia, serif;
+    font-size: 14px;
+    margin-bottom: 1em;
+  }
+  .t-main-chart {
+    margin-bottom: 1em;
+  }
+  .top_nav_paginator {
+    padding: 0;
+    a {
+      padding: 0;
+      margin: 0;
+    }
+  }
+}
+
+.t-main-adv-section {
+  p {
+    display: block;
+    background-color: transparent; 
+    margin-bottom: 1em;
+    span {
+      background-color: white;
+      line-height: 1.5em;
+    }
+  }
+}
