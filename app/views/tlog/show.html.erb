@@ -32,7 +32,7 @@
 		<% if current_user && current_user.id != current_site.id %>
 			<div class='rel'>
 				<div class='subscribe_controls'>
-					<%= link_to_remote image_tag('letter.gif', :size => '17x15', :title => 'подписаться на новые комментарии'), { :url => user_url(current_site, subscribe_entry_path(@entry)).downcase }, :id => 'subscribe_link', :style => "display: #{!@entry.subscriber_ids.include?(current_user.id) ? 'block' : 'none'}", :title => 'подписаться на новые комментарии' %>
+					<%= link_to_remote image_tag('letter.gif', :size => '17x15', :title => 'подписаться на комментарии'), { :url => user_url(current_site, subscribe_entry_path(@entry)).downcase }, :id => 'subscribe_link', :style => "display: #{!@entry.subscriber_ids.include?(current_user.id) ? 'block' : 'none'}", :title => 'подписаться на новые комментарии' %>
 					<%= link_to_remote image_tag('unletter.gif', :size => '17x15', :title => 'отписаться от комментариев'), { :url => user_url(current_site, unsubscribe_entry_path(@entry)).downcase }, :id => 'unsubscribe_link', :style => "display: #{@entry.subscriber_ids.include?(current_user.id) ? 'block' : 'none'}", :title => 'отписаться от комментариев' %>
 				</div>
 			</div>
@@ -56,3 +56,10 @@
 <% content_for :sidebar do %>
 	<%= render :partial => 'tlog/sidebar' %>
 <% end %>
+
+<script type='text/javascript'>
+  jQuery(function() {
+    jQuery('#subscribe_link img').twipsy({ offset: 5 });
+    jQuery('#unsubscribe_link img').twipsy({ offset: 5 });
+  });
+</script>

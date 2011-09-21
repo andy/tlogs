@@ -56,6 +56,7 @@ javascripts:
     # - app/assets/javascripts/slides/slides.min.jquery.js
     # - app/assets/javascripts/slides/slides.configuration.js
     # application code
+    - app/assets/javascripts/bootstrap-twipsy.js
     - app/assets/javascripts/tasty/hotkeys.js
     - app/assets/javascripts/tasty/button.js
     - app/assets/javascripts/tasty/autoresize.js
@@ -84,6 +85,7 @@ stylesheets:
   application:
     - app/assets/stylesheets/html5.css
     - app/assets/stylesheets/tasty.css
+    - app/assets/stylesheets/twipsy.css
     - app/assets/stylesheets/additional.scss
     - app/assets/stylesheets/conversations.scss
     - app/assets/stylesheets/jquery.fancybox-1.3.4.css
