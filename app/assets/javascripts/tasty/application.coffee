@@ -5,7 +5,7 @@ Tasty =
     jQuery('a.t-act-vote').live "click", Tasty.vote
     jQuery('a.t-act-fave').live "click", Tasty.fave
     jQuery('a.t-act-meta').live "click", Tasty.meta.click
-    jQuery('a#t-act-fastforward').live "click", Tasty.fastforward
+    Tasty.fastforward.ready()
     jQuery('.t-act-logout').live "click", Tasty.logout
     jQuery('.t-controller-settings-social a.t-act-social-delete').live "click", Tasty.social.del
     jQuery('.t-controller-settings-social a.t-act-social-edit').live "click", Tasty.social.edit
@@ -157,20 +157,61 @@ Tasty =
 
       false
 
-  fastforward: (event) ->
-    Tasty.analytics.event 'Userbar', 'flash forward', _user.url
+  fastforward:
+    ready: ->
+      Tasty.fastforward.e = jQuery('a#t-act-fastforward')
+      Tasty.fastforward.e.hover Tasty.fastforward.hoverIn, Tasty.fastforward.hoverOut
+      Tasty.fastforward.e.live "click", Tasty.fastforward.click
+      Tasty.fastforward.e.twipsy
+        offset: 12
+        placement: 'below'
+        trigger: 'manual'
+        html: true
+        title: Tasty.fastforward.title
+    
+    e: null
+    data: null
+    fetched: false
+    
+    title: ->
+      if Tasty.fastforward.data
+        "далее в перемотке: #{Tasty.fastforward.data.url} (+#{Tasty.fastforward.data.count})"
+      else
+        "на этом, похоже, всё"
+    
+    fetch: ->
+      if Tasty.fastforward.fetched then Tasty.fastforward.data else Tasty.fastforward.load()
+      
+    load: ->
+      jQuery.ajax
+        url: Tasty.fastforward.e.data 'url'
+        dataType: 'json'
+        data:
+          authenticity_token:
+            window._token
+        type: 'get'
+        success: (data) =>
+          Tasty.fastforward.fetched = true
+          if data
+            Tasty.fastforward.data = data
+          else
+            Tasty.fastforward.e.find('img').attr('src', '/images/fastforward_empty.gif')
+    
+    hoverIn: ->
+      jQuery.when(Tasty.fastforward.fetch()).then ->
+        Tasty.fastforward.e.twipsy('show')
+      
+    
+    hoverOut: ->
+      Tasty.fastforward.e.twipsy('hide')
+    
+    click: (event) ->
+      Tasty.analytics.event 'Userbar', 'flash forward', _user.url
 
-    jQuery.ajax
-      url: jQuery(this).data 'url'
-      dataType: 'json'
-      data:
-        authenticity_token:
-          window._token
-      type: 'get'
-      success: (data) =>
-        window.location.href = data.href if data.href
+      jQuery.when(Tasty.fastforward.fetch()).then ->
+        window.location.href = Tasty.fastforward.data.href if Tasty.fastforward.data?.href
         
-    false      
+      false      
 
   shortcut:
     ready: ->

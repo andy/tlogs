@@ -4,7 +4,7 @@
   visibility: visible;
   padding: 5px;
   font-size: 11px;
-  z-index: 1000;
+  z-index: 1001;
   filter: alpha(opacity=80);
   -khtml-opacity: 0.8;
   -moz-opacity: 0.8;
