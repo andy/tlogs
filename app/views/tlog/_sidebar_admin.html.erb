@@ -4,6 +4,7 @@
     <p>
       <%= content_tag :span, "id #{current_site.id}", :title => "#{current_site.created_at.to_s(:db)}, #{current_site.created_at.distance_between_in_words(Time.now, ' назад')}" %><br />
       <%= h current_site.email %><br />
+      <%= content_tag(:span, 'premium', :title => current_site.premium_till.to_s(:db)) + '<br/>' if current_site.is_premium? %>
   
       <%= link_to_remote 'Скрыть с главной', {
                         :url => user_url(current_site, admin_path(:action => 'demainpage')),
