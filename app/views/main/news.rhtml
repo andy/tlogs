@@ -17,7 +17,9 @@
   //	]]>
   </script>
 </div>
-
+<% content_for :sidebar_right do %>
+  <%= render :partial => 'adv_sidebar_right' %>
+<% end %>
 <% content_for :sidebar_left do %>
 	<h2 class='center'><span>Авторы</span></h2>
 	<div class='users'>
