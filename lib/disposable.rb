@@ -31,6 +31,8 @@ module Disposable
     DISPOSABLE_DOMAINS.each do |domain|
       return true if email.downcase.ends_with?(domain.downcase)
     end
+    
+    return false
 
     begin
       req = Net::HTTP::Get.new("/services/json/isDisposableEmail/?email=#{email}")
