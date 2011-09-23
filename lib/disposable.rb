@@ -20,6 +20,7 @@ DISPOSABLE_DOMAINS = %w(
   frapmail.com
   SendSpamHere.com
   SpamThisPlease.com
+  suremail.info
 )
 
 module Disposable
