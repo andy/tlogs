@@ -21,6 +21,9 @@ DISPOSABLE_DOMAINS = %w(
   SendSpamHere.com
   SpamThisPlease.com
   suremail.info
+  zippymail.info
+  chammy.info
+  bobmail.info
 )
 
 module Disposable
