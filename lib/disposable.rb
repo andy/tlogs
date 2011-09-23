@@ -7,8 +7,17 @@ require 'net/http'
 require 'uri'
 require 'json'
 
+DISPOSABLE_DOMAINS = %w(
+  mailforspam.com
+  mailinator.com
+)
+
 module Disposable
   def is_disposable_email?(email)
+    DISPOSABLE_DOMAINS.each do |domain|
+      return true if email.ends_with?(domain)
+    end
+
     begin
       req = Net::HTTP::Get.new("/services/json/isDisposableEmail/?email=#{email}")
       res = Net::HTTP.start('www.undisposable.net') { |http| http.request(req) }

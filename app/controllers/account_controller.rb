@@ -160,7 +160,7 @@ class AccountController < ApplicationController
           @user = User.new :email => email_or_openid, :password => params[:user][:password], :url => params[:user][:url], :openid => nil
         
           # проверяем на левые емейл адреса
-          # @user.errors.add(:email, 'извините, но выбранный вами почтовый сервис находится в черном списке') if @user.email.any? && Disposable::is_disposable_email?(@user.email) 
+          @user.errors.add(:email, 'извините, но выбранный вами почтовый сервис находится в черном списке') if @user.email.any? && Disposable::is_disposable_email?(@user.email)
     
           @user.settings = {}
           @user.is_confirmed = false
