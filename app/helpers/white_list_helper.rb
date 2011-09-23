@@ -58,7 +58,7 @@ module WhiteListHelper
     html.gsub!('amp;', '')
     
     media_width = options[:media_width] || 400
-    link_target = options[:link_target] || '_blank'
+    link_target = options[:link_target] || nil
     
     doc = Nokogiri::HTML(simple_tasty_format(html), :fixup_tags => true)
 
@@ -272,7 +272,7 @@ module WhiteListHelper
     html.gsub!('amp;', '')
     
     media_width = options[:media_width] || 400
-    link_target = options[:link_target] || nil
+    link_target = options[:link_target] || '_blank'
     
     doc = Hpricot(simple_tasty_format(html), :fixup_tags => true)
 
