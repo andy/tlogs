@@ -10,12 +10,22 @@ require 'json'
 DISPOSABLE_DOMAINS = %w(
   mailforspam.com
   mailinator.com
+  binkmail.com
+  safetymail.info
+  thisisnotmyrealemail.com
+  bobmail.info
+  spamherelots.com
+  devnullmail.com
+  obobbo.com
+  frapmail.com
+  SendSpamHere.com
+  SpamThisPlease.com
 )
 
 module Disposable
   def is_disposable_email?(email)
     DISPOSABLE_DOMAINS.each do |domain|
-      return true if email.ends_with?(domain)
+      return true if email.downcase.ends_with?(domain.downcase)
     end
 
     begin
