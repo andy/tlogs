@@ -1,6 +1,6 @@
 #!/usr/bin/env script/runner
 
-User.paginated_each do |user|
+def fix_counters_for(user)
   User.transaction do
     user.reload
 
@@ -31,5 +31,13 @@ User.paginated_each do |user|
       # execute directly as fc is protected
       user.connection.execute("UPDATE users SET faves_count = #{fc} WHERE id = #{user.id}") if fc != user.faves_count
     end
-  end
+  end  
+end
+
+if ARGV.blank?
+  puts "+ fixing counters for all active users"
+  User.active.paginated_each { |user| fix_counters_for(user) }
+else
+  puts "+ fixing counters for user #{ARGV[0]}"
+  fix_counters_for(User.find_by_url(ARGV[0]))
 end
