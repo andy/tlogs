@@ -203,6 +203,14 @@ class User < ActiveRecord::Base
     Resque.enqueue(TlogDestroyJob, self.id)
   end
   
+  def rename!
+    self.remove_subscribers!
+
+    self.conversations.map(&:destroy)
+
+    self.shade_conversations.map(&:destroy)    
+  end
+  
   # отключаем друзей от пользователя
   # full - так же отключаем пользователя от друзей
   def disconnect!(full = false)
