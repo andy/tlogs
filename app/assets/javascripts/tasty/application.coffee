@@ -45,11 +45,21 @@ Tasty =
       else
         jQuery.extend(options, { pathParse: Tasty.iscroll.path_save })
       
+      jQuery('.t-iscrollable div.post_body').each (i, o) ->
+        Tasty.iscroll.visible.push jQuery(o).attr('id')
+        
       # load the stuff
       jQuery('.t-iscrollable').infinitescroll(options, Tasty.iscroll.handler)
     
     handler: (items) ->
       Tasty.iscroll.next = jQuery(items[items.length - 1]).data('entry-id')
+      
+      jQuery(items).each (i, o) ->
+        item = jQuery(o)
+        if item.attr('id') in Tasty.iscroll.visible
+          item.hide()
+        else
+          Tasty.iscroll.visible.push item.attr('id')
       
       enable_services_for_current_user() if current_user
       
@@ -63,6 +73,8 @@ Tasty =
     name: null
     
     path: null
+    
+    visible: []
 
     options:
       infid: 1
