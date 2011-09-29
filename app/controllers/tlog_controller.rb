@@ -46,7 +46,7 @@ class TlogController < ApplicationController
     @comment_views = User::entries_with_views_for(@entries.map(&:id), current_user)
     @entry_ratings = EntryRating.find_all_by_entry_id(@entries.map(&:id), :select => 'entry_id AS id, value')
     
-    render :action => 'regular', :layout => request.xhr? ? false : true
+    render :action => 'regular', :layout => !should_xhr?
   end
   
   # When enabled as daylog

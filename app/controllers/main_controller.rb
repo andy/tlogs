@@ -37,7 +37,7 @@ class MainController < ApplicationController
     @entries        = news.recent_entries({ :page => @page })    
     @comment_views  = User::entries_with_views_for(@entries.map(&:id), current_user)
     
-    render :layout => false if request.xhr?
+    render :layout => false if should_xhr?
   end
   
   def last_redirect
@@ -94,7 +94,7 @@ class MainController < ApplicationController
     
     @comment_views = User::entries_with_views_for(@entry_ratings.map(&:entry_id), current_user)
     
-    render :layout => false if request.xhr?
+    render :layout => false if should_xhr?
   end
   
   def hot
@@ -108,7 +108,7 @@ class MainController < ApplicationController
     
     @comment_views = User::entries_with_views_for(@entry_ratings.map(&:entry_id), current_user)
     
-    render :layout => false if request.xhr?
+    render :layout => false if should_xhr?
   end
   
   def live
@@ -122,7 +122,7 @@ class MainController < ApplicationController
 
     @comment_views = User::entries_with_views_for(@entries.map(&:id), current_user)
     
-    render :layout => false if request.xhr?
+    render :layout => false if should_xhr?
   end
   
   def my
@@ -143,7 +143,7 @@ class MainController < ApplicationController
     
     @comment_views = User::entries_with_views_for(@entries.map(&:id), current_user)
     
-    render :layout => false if request.xhr?
+    render :layout => false if should_xhr?
   end
   
   def last_personalized
@@ -163,7 +163,7 @@ class MainController < ApplicationController
       @comment_views = User::entries_with_views_for(@entries.map(&:id), current_user)
     end
     
-    render :layout => false if request.xhr?
+    render :layout => false if should_xhr?
   end
   
   def users

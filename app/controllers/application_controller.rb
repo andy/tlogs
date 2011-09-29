@@ -42,6 +42,10 @@ class ApplicationController < ActionController::Base
   before_filter :preload_current_user # loads @current_user
   
   protected
+    def should_xhr?
+      request.xhr? && request.format != :mobile
+    end
+  
     def authorized?
       !!current_user
     end
