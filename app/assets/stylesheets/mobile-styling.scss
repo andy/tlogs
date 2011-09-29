@@ -26,6 +26,20 @@
 	.t-entry-header {
   	padding: 10px 0;
   }
+
+  .t-entry-code {
+    .t-entry-code-header {
+      font-size: 150%;
+      margin-bottom: 0.5em;
+    }
+  }
+  
+  .t-entry-convo {
+    .t-entry-convo-header {
+      font-size: 150%;
+      margin-bottom: 0.5em;
+    }
+  }
   
   .t-entry-header-avatar {
   	vertical-align: middle;
@@ -39,14 +53,20 @@
   .t-entry-text {
   	-o-text-overflow: ellipsis-word;
   	text-overflow: ellipsis-word;
+  	
+  	.t-entry-text-header {
+  	  font-size: 150%;
+  	  margin-bottom: 0.5em;
+  	}
+
+    .t-entry-text-body {
+    	border-left: 1px dotted black;
+    	padding-left: 10px;	
+    	-o-text-overflow: ellipsis-word;
+    	text-overflow: ellipsis-word;
+    }  	
   }
   
-  .t-entry-text-body {
-  	border-left: 1px dotted black;
-  	padding-left: 10px;	
-  	-o-text-overflow: ellipsis-word;
-  	text-overflow: ellipsis-word;
-  }
 
   .t-entry-quote-body {
   	font-size: 150%;

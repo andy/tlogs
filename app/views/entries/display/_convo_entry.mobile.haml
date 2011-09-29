@@ -1,4 +1,4 @@
 .t-entry-convo
-  = content_tag :h2, strip_tags(entry.data_part_2), :class => 't-entry-code-header' if entry.data_part_2
+  = content_tag :h2, strip_tags(entry.data_part_2), :class => 't-entry-convo-header' if entry.data_part_2
   .t-entry-convo-body
     = Convoray.scan(entry.data_part_1)
