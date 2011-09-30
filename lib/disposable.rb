@@ -24,6 +24,8 @@ DISPOSABLE_DOMAINS = %w(
   zippymail.info
   chammy.info
   bobmail.info
+  dreamsbook.org
+  summer-breath.com
 )
 
 module Disposable

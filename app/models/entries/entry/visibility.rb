@@ -53,6 +53,7 @@ class Entry
       'formspring.me/',
       'beon.ru/test',
       'summer-breath.com',
+      'dreamsbook.org',
       'uath.org/nev',
       'sprashivai.ru',
       'florist.ru',
