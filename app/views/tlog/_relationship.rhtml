@@ -1,5 +1,5 @@
 <%- relationship = current_user.relationship_with(current_site) -%>
 <div id='sidebar_relationship'<%= ' class="subscribed"' if relationship.friendship_status >= Relationship::DEFAULT %>>
-  <%= content_tag :div, 'pro', :id => 'sidebar_pro' if current_site.is_premium? %>
+  <%#= content_tag :div, 'pro', :id => 'sidebar_pro' if current_site.is_premium? %>
 	<%= link_to_remote relationship.say_it(current_site, current_user), :url => user_url(current_site, relationship_entries_path).downcase -%>
 </div>
