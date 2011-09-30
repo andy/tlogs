@@ -184,6 +184,7 @@ Tasty =
     e: null
     data: null
     fetched: false
+    timeout: null
     
     title: ->
       if Tasty.fastforward.data
@@ -211,12 +212,19 @@ Tasty =
     
     hoverIn: ->
       jQuery.when(Tasty.fastforward.fetch()).then ->
-        Tasty.fastforward.e.twipsy('show')
-      
-    
+        clearTimeout(Tasty.fastforward.timeout) if Tasty.fastforward.timeout?
+        Tasty.fastforward.timeout = setTimeout(Tasty.fastforward.show, 2000)
+        
     hoverOut: ->
-      Tasty.fastforward.e.twipsy('hide')
+      clearTimeout(Tasty.fastforward.timeout) if Tasty.fastforward.timeout?
+      Tasty.fastforward.hide()
     
+    show: ->
+      Tasty.fastforward.e.twipsy('show')
+
+    hide: ->
+      Tasty.fastforward.e.twipsy('hide')
+
     click: (event) ->
       Tasty.analytics.event 'Userbar', 'flash forward', _user.url
 
