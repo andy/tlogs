@@ -130,7 +130,7 @@ class Entry < ActiveRecord::Base
   before_create :set_default_metadata
 
   before_destroy do |entry|
-    entry.disable!
+    entry.unlink!
   end
   
   after_destroy do |entry|
@@ -234,17 +234,12 @@ class Entry < ActiveRecord::Base
     end
   end
   
-  def disable!
+  def unlink!
     self.block!
 
     # disconnect other people from this record
     self.disconnect!
-    
-    # clear social stuff
-    self.faves.map(&:destroy)
-    self.rating.destroy if self.rating
-    self.votes.map(&:destroy)
-    
+
     # destroy watchers before entry subscribers are removed
     self.try_watchers_destroy
     
@@ -252,6 +247,15 @@ class Entry < ActiveRecord::Base
     #  была видимая запись И если она не входила в число _новых_ записей для пользователя который просматривает. Поэтому, как 
     #  критерий мы испльзуем поле last_viewed_at для того чтобы определить входила ли запись в число новых 
     Relationship.update_all "last_viewed_entries_count = last_viewed_entries_count - 1", "user_id = #{self.user_id} AND last_viewed_entries_count > 0 AND last_viewed_at > '#{self.created_at.to_s(:db)}'" unless self.is_private?
+  end
+  
+  def disable!
+    self.unlink!
+    
+    # clear social stuff
+    self.faves.map(&:destroy)
+    self.rating.destroy if self.rating
+    self.votes.map(&:destroy)    
   end
   
   def disconnect!
