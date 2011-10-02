@@ -44,6 +44,13 @@
         
         sms.find('.operators').hide();
         sms.find('#' + val).show();
+        
+        var op_dom = sms.find('#' + val +  ' select[name="operator"]');
+        var op_val = op_dom.val();
+        
+        if(op_val != undefined && op_val != '' && op_val != null) {
+          op_dom.change();
+        }
       });
       
       sms.find('select[name="operator"]').change(function() {
@@ -71,6 +78,10 @@
       if(countries.find('option:enabled').length == 1) {
         countries.val(countries.find('option:enabled').val());
         countries.change();
+      } else {
+        if(countries.val() != undefined && countries.val() != '' && countries.val() != null) {
+          countries.change();
+        }
       }
       
       if(pref_sms) {
