@@ -96,7 +96,7 @@ class Comment < ActiveRecord::Base
     if !reply_to.blank?
       comment_ids = reply_to.split(',').map(&:to_i)
       # выбирает все комментарии для этой записи и достает оттуда уникальных пользователей
-      user_ids  = Comment.find_by_id(comment_ids, :conditions => "entry_id = #{entry.id}").map(&:user_id).reject { |id| id <= 0 }.uniq
+      user_ids  = Comment.find_all_by_id(comment_ids, :conditions => "entry_id = #{entry.id}").map(&:user_id).reject { |id| id <= 0 }.uniq
       users     = User.find(user_ids).reject { |u| !u.email_comments? } if user_ids.any?
     end
 

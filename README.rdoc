@@ -19,3 +19,7 @@
 == Annotate
 
  bundle exec annotate -p before -m -i -s --exclude tests,fixtures
+ 
+== Resque Web Interface
+
+  RAILS_ENV=production RACK_ENV=production RAILS_ROOT=`pwd` bundle exec resque-web -p 8282 tmp/resque-web-config.rb
