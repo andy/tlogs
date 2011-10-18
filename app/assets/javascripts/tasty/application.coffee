@@ -37,19 +37,20 @@ Tasty =
 
   iscroll:
     ready: (options = Tasty.iscroll.options) ->
-      # set .next to what it should be
-      Tasty.iscroll.next = jQuery('.t-iscrollable').data('iscroll-next')
-      Tasty.iscroll.name = jQuery('.t-iscrollable').data('iscroll-name')
-      if Tasty.iscroll.next
-        jQuery.extend(options, { pathParse: Tasty.iscroll.parse })
-      else
-        jQuery.extend(options, { pathParse: Tasty.iscroll.path_save })
+      if current_user > 0
+        # set .next to what it should be
+        Tasty.iscroll.next = jQuery('.t-iscrollable').data('iscroll-next')
+        Tasty.iscroll.name = jQuery('.t-iscrollable').data('iscroll-name')
+        if Tasty.iscroll.next
+          jQuery.extend(options, { pathParse: Tasty.iscroll.parse })
+        else
+          jQuery.extend(options, { pathParse: Tasty.iscroll.path_save })
       
-      jQuery('.t-iscrollable div.post_body').each (i, o) ->
-        Tasty.iscroll.visible.push jQuery(o).attr('id')
+        jQuery('.t-iscrollable div.post_body').each (i, o) ->
+          Tasty.iscroll.visible.push jQuery(o).attr('id')
         
-      # load the stuff
-      jQuery('.t-iscrollable').infinitescroll(options, Tasty.iscroll.handler)
+        # load the stuff
+        jQuery('.t-iscrollable').infinitescroll(options, Tasty.iscroll.handler)
     
     handler: (items) ->
       Tasty.iscroll.next = jQuery(items[items.length - 1]).data('entry-id')
