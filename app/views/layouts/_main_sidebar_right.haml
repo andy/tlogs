@@ -4,7 +4,7 @@
 
 = render(:partial => 'globals/tastyradio') if params[:action] == 'live' || params[:action] == 'last' || (params[:controller] == 'main' && params[:action] == 'index')
 = yield :sidebar_right_calendar
-= render(:partial => 'globals/dfp240x400') if params[:action] == 'news' || params[:action] == 'last' || params[:action] == 'live'  || params[:controller] == 'anonymous'
+= render(:partial => 'globals/dfp240x400') if %w(news last live my last_personalized hot).include?(params[:action]) || params[:controller] == 'anonymous'
 
 - if params[:controller] == 'search' && @users
   %h2
