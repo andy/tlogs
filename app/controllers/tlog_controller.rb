@@ -65,7 +65,7 @@ class TlogController < ApplicationController
       @past_disabled = true
       @entries = []
     else
-      @entries = current_site.recent_entries(:time => @time, :per_page => 50)
+      @entries = current_site.recent_entries(:time => @time, :per_page => 100)
     end
 
     @comment_views = User::entries_with_views_for(@entries.map(&:id), current_user)
@@ -175,7 +175,7 @@ class TlogController < ApplicationController
   end
   
   def prev_day
-    @entries = current_site.recent_entries(:time => @time)
+    @entries = current_site.recent_entries(:time => @time, :per_page => 200)
 
   	d = @entries.last.prev.created_at rescue nil
 
