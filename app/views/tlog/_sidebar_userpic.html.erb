@@ -9,7 +9,6 @@
 			<%= userpic_tag(current_site) %>
   	<% end %>
 		
-		
 		<% if current_user && !is_owner? %>
 			<%# код из _relationship.rhtml, один в один %>
 			<%- relationship = current_user.relationship_with(current_site, true) -%>
@@ -17,6 +16,15 @@
 				<%= link_to_remote relationship.say_it(current_site, current_user), :url => user_url(current_site, relationship_entries_path).downcase -%>
 				<%#= link_to image_tag('pref.gif'), user_url(current_site, global_path(:action => :relationship)).downcase, :class => 'fancybox hover' %>
 			</div>
+		<% elsif !current_user %>
+		  <div id='sidebar_relationship'>
+		    <%= link_to "Подписаться на #{current_site.gender('его', 'её')} тлог", service_url(login_path), :title => 'Зарегистрируйтесь или войдите, чтобы подписаться', :id => 'anonymous_follow_link' %>
+		  </div>
 		<% end %>
 	</div>
 </div>
+<script type='text/javascript'>
+  jQuery(function() {
+    jQuery('#anonymous_follow_link').twipsy({ offset: 5, placement: 'below' });
+  });
+</script>
