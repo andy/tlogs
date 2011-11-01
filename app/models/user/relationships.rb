@@ -175,7 +175,13 @@ class User
       end # if/else relationship.positive?
       
       Rails.logger.debug "** mark_as_viewed_by save!"
-      relationship.save!
+      
+      # for some mys
+      begin
+        relationship.save!
+      rescue ActiveRecord::StatementInvalid => ex
+        Rails.logger.debug "** mark_as_viewed_by save failed, ignoring. Error: #{ex.message}"
+      end
     end # Relationship.transaction
     
     Rails.logger.debug "** mark_as_viewed_by done"
