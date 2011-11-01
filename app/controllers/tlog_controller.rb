@@ -115,6 +115,8 @@ class TlogController < ApplicationController
 
   def relationship
     redirect_to user_url(current_site) and return unless request.post?
+    
+    redirect_to service_url(login_path) and return unless current_user
 
     relationship = current_user.relationship_with(current_site, true)
     
