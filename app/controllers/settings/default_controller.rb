@@ -168,7 +168,8 @@ class Settings::DefaultController < ApplicationController
       @email = params[:user][:email]      
 
       @tlog_settings.update_attributes({
-        :tasty_newsletter => params[:tlog_settings][:tasty_newsletter]
+        :tasty_newsletter => params[:tlog_settings][:tasty_newsletter],
+        :email_messages   => params[:tlog_settings][:email_messages]
       })
 
       flash[:good] = 'Здорово! Мы успешно сохранили ваши почтовые настройки'

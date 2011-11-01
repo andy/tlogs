@@ -38,6 +38,7 @@ class ConversationsController < ApplicationController
   
   
   def new
+    @send_notifications = current_site.tlog_settings.email_messages && current_site.is_emailable?
     # @recipient = User.find_by_url(params[:url]) if params[:url]
     @message = Message.new :recipient_url => params[:url]
   end

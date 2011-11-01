@@ -10,8 +10,8 @@
 
     <div class='rel'>
     	<div class='conversation_subscribe_controls'>
-    		<%= link_to_remote image_tag('letter.gif', :size => '17x15'), { :url => user_url(current_site, subscribe_conversation_path(@conversation)).downcase }, :id => 'subscribe_link', :style => "display: #{@conversation.send_notifications? ? 'none' : 'block'}", :title => 'подписаться новые сообщение' %>
-    		<%= link_to_remote image_tag('unletter.gif', :size => '17x15'), { :url => user_url(current_site, unsubscribe_conversation_path(@conversation)).downcase }, :id => 'unsubscribe_link', :style => "display: #{@conversation.send_notifications? ? 'block' : 'none'}", :title => 'отписаться от новых сообщений' %>
+    		<%= link_to_remote image_tag('letter.gif', :size => '17x15'), { :url => user_url(current_site, subscribe_conversation_path(@conversation)).downcase }, :id => 'subscribe_link', :style => "display: #{@conversation.send_notifications? ? 'none' : 'block'}", :title => 'подписаться на уведомления по почте' %>
+    		<%= link_to_remote image_tag('unletter.gif', :size => '17x15'), { :url => user_url(current_site, unsubscribe_conversation_path(@conversation)).downcase }, :id => 'unsubscribe_link', :style => "display: #{@conversation.send_notifications? ? 'block' : 'none'}", :title => 'отписаться от уведомлений по почте' %>
     	</div>
     </div>
   </div>
@@ -29,6 +29,9 @@
 
 <script type='text/javascript'>
   jQuery(document).ready(function() {
+    jQuery('#subscribe_link').twipsy({ placement: 'below' });
+    jQuery('#unsubscribe_link').twipsy({ placement: 'below' });
+    
     // enable hover stuff
     jQuery(".message", jQuery('div.messages')[0]).live({
       mouseenter: function() {
