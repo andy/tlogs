@@ -18,14 +18,9 @@
 <% end %>
 
 <% content_for :sidebar_right do %>
-  <div class='section'>
-    <h2><span>Сортировать</span></h2>
-    <div class='vertical_nav'>
-  		<%= link_to 'по последнему комментарию', { :action => :my, :page => nil }, :class => (params[:action] == 'my') ? 'highlight' : nil %><br/>
-  		<%= link_to 'по дате написания', { :action => :last_personalized, :page => nil }, :class => (params[:action] == 'last_personalized') ? 'highlight' : nil %>
-  	</div>		
-  </div>
-	
+  <%= render :partial => 'main/my_sidebar_right' %>	
+  <%= render :partial => 'conversations/sidebar' %>
+
 	<div class='section'>
 		<h2><span>RSS</span></h2>
 
@@ -33,6 +28,5 @@
       <p>На эту ленту можно подписаться через <%= link_to 'RSS', user_url(current_user, tlog_feed_protected_path(:key => current_user.last_personalized_key, :action => :last_personalized)), :class => 'rss' %></p>
 	  
     </div>
-
 	</div>
 <% end %>

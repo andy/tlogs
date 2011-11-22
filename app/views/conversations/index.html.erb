@@ -1,26 +1,28 @@
-<% content_tag :div, :class => 'conversations' do %>
-  <div class='header'>
-    <% if params[:action] != 'index' || @conversations.current_page > 1 %>
-      <div class='rel'>
-        <div class='return'><%= link_to '&larr; все переписки', user_url(current_site, conversations_path) %></div>
-      </div>
-    <% end %>
+<div class='onair convos'>
+  <% content_tag :div, :class => 'conversations' do %>
+    <div class='header'>
+      <% if params[:action] != 'index' || @conversations.current_page > 1 %>
+        <div class='rel'>
+          <div class='return'><%= link_to '&larr; все переписки', service_url(conversations_path) %></div>
+        </div>
+      <% end %>
 
-    <h3><%= @title %></h3>
-  </div>
-
-  <% if @conversations.total_entries.zero? %>
-    <div class='centered'>
-      <p><%= @empty %></p>
+      <h3><%= @title %></h3>
     </div>
-  <% else %>
-    <%= paginate @conversations if @conversations.current_page > 1 %>
-  
-  	<%= render :partial => 'conversation', :collection => @conversations, :spacer_template => 'conversation_spacer' %>
 
-    <%= paginate @conversations %>
+    <% if @conversations.total_entries.zero? %>
+      <div class='centered'>
+        <p><%= @empty %></p>
+      </div>
+    <% else %>
+      <%= paginate @conversations if @conversations.current_page > 1 %>
+  
+    	<%= render :partial => 'conversation', :collection => @conversations, :spacer_template => 'conversation_spacer' %>
+
+      <%= paginate @conversations %>
+    <% end %>
   <% end %>
-<% end %>
+</div>
 
 <script type='text/javascript'>
   jQuery(document).ready(function() {
@@ -38,3 +40,8 @@
     jQuery('abbr.timeago').timeago();
   });
 </script>
+
+<% content_for :sidebar_right do %>
+  <%= render :partial => 'main/my_sidebar_right' %>	
+  <%= render :partial => 'conversations/sidebar' %>
+<% end %>

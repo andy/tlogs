@@ -1,10 +1,11 @@
-.sidebar_search
-  %form{ :method => 'get', :action => service_url(search_path) }
-    = text_field_tag 'query', params[:query], :placeholder => 'Поиск по тлогам', :type => :search, :autosave => "com.tlogs", :results => 10
+- unless params[:controller] == 'conversations' || (params[:controller] == 'main' && %w(my last_personalized).include?(params[:action]))
+  .sidebar_search
+    %form{ :method => 'get', :action => service_url(search_path) }
+      = text_field_tag 'query', params[:query], :placeholder => 'Поиск по тлогам', :type => :search, :autosave => "com.tlogs", :results => 10
 
 = render(:partial => 'globals/tastyradio') if params[:action] == 'live' || params[:action] == 'last' || (params[:controller] == 'main' && params[:action] == 'index')
 = yield :sidebar_right_calendar
-= render(:partial => 'globals/dfp240x400') if %w(news last live my last_personalized hot).include?(params[:action]) || params[:controller] == 'anonymous'
+= render(:partial => 'globals/dfp240x400') if %w(news last live my last_personalized hot).include?(params[:action]) || params[:controller] == 'anonymous' || params[:controller] == 'conversations'
 
 - if params[:controller] == 'search' && @users
   %h2

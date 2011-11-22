@@ -1,38 +1,25 @@
-<div class='sidebar_section' id='sidebar_conversations'>
-	<%= link_to_function 'Переписки', "sidebar_toggle('conversations')", :class => "sidebar_toggle highlight", :id => 'sidebar_conversations_link' %>		
-	<div class='sidebar_section_content' id='sidebar_conversations_content'>
+<div class='section' id='sidebar_conversations'>
+  <h2><span>Переписки</span></h2>
+	<div id='sidebar_conversations_content'>
 	  <ul>
 	    <li>
-	      <%= link_to 'все', user_url(current_site, conversations_path), :class => ('highlight' if params[:action] == 'index') %>
+	      <p><%= link_to "все", service_url(conversations_path), :class => ('highlight' if params[:action] == 'index') %><%= "<sup>+#{current_user.unviewed_conversations_count}</sup>" if current_user.unviewed_conversations_count.nonzero? %></p>
+	    </li>
+      <!-- <li>
+        <p><%= link_to "непросмотренные", service_url(unviewed_conversations_path), :class => ('highlight' if params[:action] == 'unviewed') %></p>
+      </li> -->
+	    <li>
+	      <p><%= link_to "неотвеченные #{"(#{current_user.unreplied_conversations_count})" if current_user.unreplied_conversations_count.nonzero?}", service_url(unreplied_conversations_path), :class => ('highlight' if params[:action] == 'unreplied') %></p>
 	    </li>
 	    <li>
-	      <%= link_to 'неотвеченные', user_url(current_site, unreplied_conversations_path), :class => ('highlight' if params[:action] == 'unreplied') %>
-	    </li>
-	    <li>
-	      <%= link_to 'новая', user_url(current_site, new_conversation_path), :class => ('highlight' if params[:action] == 'new') %>
+	      <p><%= link_to '+ написать', service_url(new_conversation_path), :class => ('highlight' if params[:action] == 'new') %></p>
 	    </li>
 	  </ul>
 	</div>    
 </div>
 
-<div class='sidebar_section' id='sidebar_conversations_search'>
-	<%= link_to_function 'Поиск', "sidebar_toggle('conversations_search')", :title => "по перепискам", :class => "sidebar_toggle highlight", :id => 'sidebar_conversations_search_link' %>		
-	<div class='sidebar_section_content' id='sidebar_conversations_search_content'>
-	  <% content_tag :form, :method => 'get', :action => user_url(current_site, search_conversations_path) do %>
-	    <%= tag :input, :name => 'query', :value => params[:query], :tabindex => '0' %>
-	  <% end %>
-	</div>    
-</div>
-
-<div class='sidebar_section' id='sidebar_conversations_help'>
-	<%= link_to_function 'Помощь', "sidebar_toggle('conversations_help')", :class => "sidebar_toggle", :id => 'sidebar_conversations_help_link' %>		
-	<div class='sidebar_section_content' id='sidebar_conversations_help_content' style='display: none'>
-	  <ul>
-	    <li><p>1/ Только вы видите вашу переписку с другими пользователями.</p></li>
-
-      <li><p>2/ Вы можете удалить как всю переписку, так и каждое сообщение индивидуально, но при этом оно не удалится у человека с которым вы переписываетесь.</p></li>
-
-      <li><p>3/ Изменить настройки почтовых уведомлений можно пройдя по этой ссылке.</p></li>
-	  </ul>
-	</div>    
+<div class='sidebar_search'>
+  <% content_tag :form, :method => 'get', :action => service_url(search_conversations_path) do %>
+    <%= tag :input, :type => :search, :name => 'query', :value => params[:query], :tabindex => '0', :placeholder => 'Поиск по перепискам' %>
+  <% end %>
 </div>

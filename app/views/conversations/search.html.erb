@@ -1,27 +1,29 @@
 <% @title = "Поиск в сообщениях" %>
 
-<% content_tag :div, :class => 'messages' do %>
-  <div class='header'>
-    <h3>Поиск по сообщениям: <span class='highlight'><%= h(params[:query]) %></span></h3>
-  </div>
-
-  <% if @messages.total_entries.zero? %>
-    <div class='centered'>
-      <p>К сожалению, по вашему запросу не найдено ни одного сообщения.</p>
-      
-      <div class='linkback'>
-        <%= link_to '&larr; вернуться к сообщениям', user_url(current_site, conversations_path) %>
-      </div>
+<div class='onair convos'>
+  <% content_tag :div, :class => 'messages' do %>
+    <div class='header'>
+      <h3>Поиск по сообщениям: <span class='highlight'><%= h(params[:query]) %></span></h3>
     </div>
-  <% else %>
-    <%= paginate @messages if @messages.current_page > 1 %>
 
-  	<%= render :partial => 'messages/message', :collection => @messages, :spacer_template => 'messages/message_spacer' %>
+    <% if @messages.total_entries.zero? %>
+      <div class='centered'>
+        <p>К сожалению, по вашему запросу не найдено ни одного сообщения.</p>
+      
+        <div class='linkback'>
+          <%= link_to '&larr; вернуться к сообщениям', service_url(conversations_path) %>
+        </div>
+      </div>
+    <% else %>
+      <%= paginate @messages if @messages.current_page > 1 %>
 
-    <%= paginate @messages %>
+    	<%= render :partial => 'messages/message', :collection => @messages, :spacer_template => 'messages/message_spacer' %>
+
+      <%= paginate @messages %>
+    <% end %>
+
   <% end %>
-
-<% end %>
+</div>
 <script type='text/javascript'>
   jQuery(document).ready(function() {
     // enable hover stuff
@@ -41,3 +43,8 @@
     jQuery('abbr.timeago').timeago();
   });
 </script>
+
+<% content_for :sidebar_right do %>
+  <%= render :partial => 'main/my_sidebar_right' %>	
+  <%= render :partial => 'conversations/sidebar' %>
+<% end %>

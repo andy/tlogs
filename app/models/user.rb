@@ -154,7 +154,15 @@ class User < ActiveRecord::Base
 
   def username
     @username ||= read_attribute(:username).blank? ? self.url : read_attribute(:username)
-  end      
+  end
+  
+  def unreplied_conversations_count
+    @unrepied_conversations_count ||= self.conversations.active.unreplied.count
+  end
+  
+  def unviewed_conversations_count
+    @unviewed_conversations_count ||= self.conversations.active.unviewed.count
+  end
 
   # blocks access to tlog
   def block!

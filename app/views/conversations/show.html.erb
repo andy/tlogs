@@ -1,31 +1,33 @@
 <% @title = "Переписка между вами и #{h @conversation.recipient.url}" %>
 
-<% content_tag :div, :class => 'messages' do %>
-  <div class='header'>
-    <div class='rel'>
-      <div class='return'><%= link_to '&larr; все переписки', user_url(current_site, conversations_path) %></div>
+<div class='onair convos'>
+  <% content_tag :div, :class => 'messages' do %>
+    <div class='header'>
+      <div class='rel'>
+        <div class='return'><%= link_to '&larr; все переписки', service_url(conversations_path) %></div>
+      </div>
+
+      <h3><span class='gray'>Переписка между вами и </span><span class='highlight'><%= @conversation.recipient.url %></span></h3>
+
+      <div class='rel'>
+      	<div class='conversation_subscribe_controls'>
+      		<%= link_to_remote image_tag('letter.gif', :size => '17x15'), { :url => service_url(subscribe_conversation_path(@conversation)).downcase }, :id => 'subscribe_link', :style => "display: #{@conversation.send_notifications? ? 'none' : 'block'}", :title => 'подписаться на уведомления по почте' %>
+      		<%= link_to_remote image_tag('unletter.gif', :size => '17x15'), { :url => service_url(unsubscribe_conversation_path(@conversation)).downcase }, :id => 'unsubscribe_link', :style => "display: #{@conversation.send_notifications? ? 'block' : 'none'}", :title => 'отписаться от уведомлений по почте' %>
+      	</div>
+      </div>
     </div>
 
-    <h3><span class='gray'>Переписка между вами и </span><span class='highlight'><%= @conversation.recipient.url %></span></h3>
+    <%= paginate @messages %>
 
-    <div class='rel'>
-    	<div class='conversation_subscribe_controls'>
-    		<%= link_to_remote image_tag('letter.gif', :size => '17x15'), { :url => user_url(current_site, subscribe_conversation_path(@conversation)).downcase }, :id => 'subscribe_link', :style => "display: #{@conversation.send_notifications? ? 'none' : 'block'}", :title => 'подписаться на уведомления по почте' %>
-    		<%= link_to_remote image_tag('unletter.gif', :size => '17x15'), { :url => user_url(current_site, unsubscribe_conversation_path(@conversation)).downcase }, :id => 'unsubscribe_link', :style => "display: #{@conversation.send_notifications? ? 'block' : 'none'}", :title => 'отписаться от уведомлений по почте' %>
-    	</div>
-    </div>
-  </div>
+  	<%= render :partial => 'messages/message', :collection => @messages.reverse, :spacer_template => 'messages/message_spacer' %>
 
-  <%= paginate @messages %>
+    <%= render :partial => 'messages/message_spacer' %>
 
-	<%= render :partial => 'messages/message', :collection => @messages.reverse, :spacer_template => 'messages/message_spacer' %>
+    <%= render :partial => 'messages/form', :locals => { :conversation => @conversation } if @messages.current_page == 1 %>
 
-  <%= render :partial => 'messages/message_spacer' %>
-
-  <%= render :partial => 'messages/form', :locals => { :conversation => @conversation } if @messages.current_page == 1 %>
-
-  <%= paginate @messages if @messages.current_page > 1 %>
-<% end %>
+    <%= paginate @messages if @messages.current_page > 1 %>
+  <% end %>
+</div>
 
 <script type='text/javascript'>
   jQuery(document).ready(function() {
@@ -49,3 +51,8 @@
     jQuery('abbr.timeago').timeago();
   });
 </script>
+
+<% content_for :sidebar_right do %>
+  <%= render :partial => 'main/my_sidebar_right' %>	
+  <%= render :partial => 'conversations/sidebar' %>
+<% end %>

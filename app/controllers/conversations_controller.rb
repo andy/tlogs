@@ -1,25 +1,27 @@
 class ConversationsController < ApplicationController
-  before_filter :require_current_site, :require_confirmed_current_site, :require_confirmed_current_user
+  before_filter :require_current_user
 
-  before_filter :require_owner
-  
+  before_filter :require_confirmed_current_user
+
   before_filter :preload_conversation, :only => [:show, :subscribe, :unsubscribe, :mav, :destroy]
 
   protect_from_forgery
 
-  layout 'conversations'
+  layout 'main'
+
+  helper :main
 
 
   def index
     @title = 'Все переписки'
     @empty = 'У вас нет переписок'
-    @conversations = current_site.conversations.active.paginate(:page => current_page, :per_page => 15, :include => [:recipient, :last_message])
+    @conversations = current_user.conversations.active.paginate(:page => current_page, :per_page => 15, :include => [:recipient, :last_message])
   end
   
   def unreplied
     @title = 'Неотвеченные'
     @empty = 'У вас нет неотвеченных переписок'
-    @conversations = current_site.conversations.active.unreplied.paginate(:page => current_page, :per_page => 15, :include => :last_message)
+    @conversations = current_user.conversations.active.unreplied.paginate(:page => current_page, :per_page => 15, :include => :last_message)
     
     render :action => 'index'
   end
@@ -27,18 +29,18 @@ class ConversationsController < ApplicationController
   def unviewed
     @title = 'Непросмотренные'
     @empty = 'У вас нет непросмотренных переписок'
-    @conversations = current_site.conversations.active.unviewed.paginate(:page => current_page, :per_page => 15, :include => :last_message)
+    @conversations = current_user.conversations.active.unviewed.paginate(:page => current_page, :per_page => 15, :include => :last_message)
     
     render :action => 'index'
   end
 
   def search
-    @messages = Message.search params[:query], :with => { :conversation_user_id => current_site.id }, :page => current_page, :per_page => 15, :order => 'created_at DESC'
+    @messages = Message.search params[:query], :with => { :conversation_user_id => current_user.id }, :page => current_page, :per_page => 15, :order => 'created_at DESC'
   end
   
   
   def new
-    @send_notifications = current_site.tlog_settings.email_messages && current_site.is_emailable?
+    @send_notifications = current_user.tlog_settings.email_messages && current_user.is_emailable?
     # @recipient = User.find_by_url(params[:url]) if params[:url]
     @message = Message.new :recipient_url => params[:url]
   end
@@ -66,28 +68,45 @@ class ConversationsController < ApplicationController
     @value        = params[:url]
     
     @recipient    = User.find_by_url(@value) if @value
-    @conversation = current_site.conversations.active.find_by_recipient_id(@recipient) if @recipient    
+    @conversation = current_user.conversations.active.find_by_recipient_id(@recipient) if @recipient    
   end
   
   def destroy    
     @conversation.async_destroy!
     
     respond_to do |wants|
-      wants.html { redirect_to user_url(current_site, conversations_path) }
+      wants.html { redirect_to service_url(conversations_path) }
       wants.js # render destroy.rjs
     end
+  end
+  
+  # Legacy
+  def legacy_index
+    redirect_to service_url(conversations_path)
+  end
+  
+  def legacy_show
+    redirect_to service_url(conversation_path(:id => params[:id]))
+  end
+  
+  def legacy_new
+    redirect_to service_url(new_conversation_path)
+  end
+  
+  def legacy_named_new
+    redirect_to service_url(named_new_conversation_path(:url => params[:url]))
   end
   
   protected
     def preload_conversation
       @recipient    = User.find_by_url params[:id]
-      @conversation = current_site.conversations.active.find_by_recipient_id(@recipient.id)
+      @conversation = current_user.conversations.active.find_by_recipient_id(@recipient.id)
       
       if @conversation.nil? && @recipient.nil?
         flash[:bad] = 'Запрошенная вами переписка не найдена'
-        redirect_to user_url(current_site, conversations_path) and return false
+        redirect_to service_url(conversations_path) and return false
       elsif @conversation.nil? && @recipient
-        redirect_to user_url(current_site, named_new_conversation_path(:url => params[:id])) and return false
+        redirect_to service_url(named_new_conversation_path(:url => params[:id])) and return false
       else
         return true
       end

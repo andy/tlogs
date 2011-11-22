@@ -13,13 +13,19 @@ tlog_settings = lambda do |tlog|
   tlog.connect 'tag/*tags', :controller => 'tags', :action => 'view'
   tlog.connect 'tags/:action/:id', :controller => 'tags'
 
+  # conversations legacy
+  tlog.connect 'convos', :controller => 'conversations', :action => 'legacy_index'
+  tlog.connect 'convos/new', :controller => 'conversations', :action => 'legacy_new'
+  tlog.connect 'convos/new/:url', :controller => 'conversations', :action => 'legacy_named_new'
+  tlog.connect 'convos/:id', :controller => 'conversations', :action => 'legacy_show'
+
   # 'static' files
   tlog.style 'style/:revision.css', :action => 'style', :requirements => { :revision => /\d+/ }  
   tlog.robots 'robots.txt', :controller => 'tlog', :action => 'robots'
   tlog.foaf 'foaf.rdf', :controller => 'tlog', :action => 'foaf'
   
   tlog.day ':year/:month/:day', :controller => 'tlog', :action => 'daylog', :requirements => { :year => /\d{4}/, :month => /\d{1,2}/, :day => /\d{1,2}/ }
-
+  
   tlog.next_day ':year/:month/:day/next', :controller => 'tlog', :action => 'next_day', :requirements => { :year => /\d{4}/, :month => /\d{1,2}/, :day => /\d{1,2}/ }
   tlog.prev_day ':year/:month/:day/prev', :controller => 'tlog', :action => 'prev_day', :requirements => { :year => /\d{4}/, :month => /\d{1,2}/, :day => /\d{1,2}/ }
 
@@ -33,11 +39,6 @@ tlog_settings = lambda do |tlog|
     entry.resources :comments, :new => { :preview => :post }
     entry.resources :tags, :controller => 'entry_tags'
   end
-
-  # conversations
-  tlog.resources :messages, :controller => 'messages'
-  tlog.resources :conversations, :as => 'convos', :controller => 'conversations', :collection => { :unreplied => :get, :unviewed => :get, :search => :get, :verify_recipient => :post }, :member => { :subscribe => :post, :unsubscribe => :post, :mav => :post }
-  tlog.named_new_conversation 'convos/new/:url', :controller => 'conversations', :action => 'new', :requirements => { :url => /[a-z0-9]([a-z0-9\-]{1,20})?/i }
 
   tlog.resources :faves, :controller => 'faves'
 end
@@ -57,6 +58,11 @@ www_settings = lambda do |www|
   www.connect 'main/:action/:page', :controller => 'main', :page => /\d+/
   www.main 'main/:action', :controller => 'main'
   www.robots 'robots.txt', :controller => 'main', :action => 'robots'
+
+  # conversations
+  www.resources :messages, :controller => 'messages'
+  www.resources :conversations, :as => 'convos', :controller => 'conversations', :collection => { :unreplied => :get, :unviewed => :get, :search => :get, :verify_recipient => :post }, :member => { :subscribe => :post, :unsubscribe => :post, :mav => :post }
+  www.named_new_conversation 'convos/new/:url', :controller => 'conversations', :action => 'new', :requirements => { :url => /[a-z0-9]([a-z0-9\-]{1,20})?/i }
 
   # billing processing
   www.billing 'billing/:action', :controller => 'billing'

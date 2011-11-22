@@ -5,7 +5,7 @@
 
 <%# this is used to get directly to the form %>
 <a name='form'></a>
-<% remote_form_for :message, @message, :url => user_url(current_site, messages_path).downcase, :before => 'submit_started();', :failure => 'submit_failure()', :complete => 'jQuery("#submitting").hide()' do |f| %>
+<% remote_form_for :message, @message, :url => service_url(messages_path).downcase, :before => 'submit_started();', :failure => 'submit_failure()', :complete => 'jQuery("#submitting").hide()' do |f| %>
 
   <div class='rel'>
 	  <div class='message_sender'><%= link_to_tlog current_user %></div>

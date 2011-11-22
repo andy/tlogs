@@ -12,7 +12,7 @@ page << "if(jQuery('#message_recipient_url').val() == #{@value.to_json}) {"
     if @conversation
       text = "#{user_url(@recipient).sub('http://', '')} — #{@conversation.messages_count.pluralize('сообщение', 'сообщения', 'сообщений', true)}.&nbsp;"
       text += "Посмотреть "
-      text += link_to "всю переписку с #{@recipient.gender('ним', 'ней')} &rarr;", user_url(current_site, conversation_path(@conversation))
+      text += link_to "всю переписку с #{@recipient.gender('ним', 'ней')} &rarr;", service_url(conversation_path(@conversation))
     else
       text = "#{user_url(@recipient)}, ранее у вас не было переписки с #{@recipient.gender('ним', 'ней')}"
     end

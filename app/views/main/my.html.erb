@@ -20,36 +20,6 @@
 </div>
 
 <% content_for :sidebar_right do %>
-  <div class='section'>
-    <h2><span>Упорядочить</span></h2>
-    <div class='vertical_nav'>
-			<%= link_to 'по последнему комментарию', { :action => :my, :page => nil }, :class => (params[:action] == 'my') ? 'highlight' : nil %><br/>
-			<%= link_to 'по дате написания', { :action => :last_personalized, :page => nil }, :class => (params[:action] == 'last_personalized') ? 'highlight' : nil %>
-		</div>		
-  </div>
-
-  <!-- <div class='section'>
-    <h2><span>Об этом разделе</span></h2>
-    
-    <div>
-      <p>На этой странице появляются все записи, которые могут быть вам интересны: записи людей, на которых вы подписаны и ваши собственные записи.</p>
-    </div>
-  </div> -->
-  
-  <div class='section'>
-    <h2><span>Переписки</span></h2>
-    
-    <div>
-      <%
-      unviewed_count = current_user.conversations.unviewed.count
-      if unviewed_count > 0
-      %>
-  	    <p>У вас <%= link_to "#{unviewed_count.pluralize('непрочтенная переписка', 'непрочтенных переписки', 'непрочтенных переписок', true)}", user_url(current_user, unviewed_conversations_path) %>.</p>
-  	  <% else %>
-  	    <p>У вас нет непрочтенных сообщений.</p>
-  	  <% end %>
-  	  <br/><br/>
-      <p><%= link_to 'Все ваши переписки &rarr;', user_url(current_user, conversations_path) %></p>
-    </div>
-  </div>
+  <%= render :partial => 'main/my_sidebar_right' %>
+  <%= render :partial => 'conversations/sidebar' %>
 <% end %>

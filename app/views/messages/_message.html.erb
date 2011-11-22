@@ -10,7 +10,7 @@
   
   <div class='message_controls showonhover'>
     <div class='delete'>
-      <%= link_to_remote image_tag('delete.gif', :size => '9x11', :alt => '[x]'), { :url => user_url(current_site, message_path(message)).downcase, :method => :delete }, :title => 'Удалить сообщение' %>
+      <%= link_to_remote image_tag('delete.gif', :size => '9x11', :alt => '[x]'), { :url => service_url(message_path(message)).downcase, :method => :delete }, :title => 'Удалить сообщение' %>
     </div>
 
     <div class='clear'><div></div></div>

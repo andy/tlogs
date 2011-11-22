@@ -23,7 +23,7 @@ if @message.valid?
       page << "jQuery('##{dom_id(msg)}').find('abbr.timeago').timeago();"
     end
   else
-    page.redirect_to user_url(current_site, conversation_path(@message.conversation) + '#' + dom_id(@message))
+    page.redirect_to service_url(conversation_path(@message.conversation) + '#' + dom_id(@message))
   end
 else
   # re-enable submit button

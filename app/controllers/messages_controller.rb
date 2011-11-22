@@ -1,17 +1,18 @@
 class MessagesController < ApplicationController
-  before_filter :require_current_site, :require_confirmed_current_site, :require_confirmed_current_user
-  
-  # can be viewed only by owner
-  before_filter :require_owner
+  before_filter :require_current_user
 
+  before_filter :require_confirmed_current_user
+  
   before_filter :preload_message, :only => [:destroy]
 
   protect_from_forgery
 
+  helper :main
+
 
   # this is an legacy redirect url
   def index
-    redirect_to user_url(current_site, conversations_path)
+    redirect_to service_url(conversations_path)
   end
   
   def create
@@ -36,7 +37,7 @@ class MessagesController < ApplicationController
       @recipient_message.async_deliver!(current_service)
 
       respond_to do |wants|
-        wants.html { redirect_to user_url(current_site, conversation_path(@message.conversation)) }
+        wants.html { redirect_to service_url(conversation_path(@message.conversation)) }
         wants.js # render create.js
       end
 

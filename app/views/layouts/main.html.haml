@@ -31,7 +31,7 @@
         = menu_item "Новости#{"<sup>+#{news_count}</sup>" unless news_count.zero?}", :news
         = menu_item 'Лучшее', :last
         = menu_item 'Анонимки', :anonymous, %w(anonymous/*)
-        = menu_item "Моё", :my, %w(main/my main/last_personalized) if current_user
+        = menu_item "Моё#{"<sup>+#{current_user.unviewed_conversations_count}" unless current_user.unviewed_conversations_count.zero?}", :my, %w(main/my main/last_personalized conversations/index conversations/show conversations/new conversations/search) if current_user
         = menu_item 'Прямой эфир', :live
         = menu_item "День из жизни", :random
 

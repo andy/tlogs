@@ -16,21 +16,21 @@ message = conversation.messages.last
 
   <% if conversation.is_replied? %>
     <div class='rel'><div class='reply'>
-  	  <%= link_to image_tag('arrow_g.gif', :size => '10x10'), user_url(current_site, conversation_path(conversation)) + '#form' %>
+  	  <%= link_to image_tag('arrow_g.gif', :size => '10x10'), service_url(conversation_path(conversation)) + '#form' %>
     </div></div>
   <% end %>
   
   <% if !conversation.is_viewed? && !conversation.is_replied? %>
     <div class='rel'><div class='unviewed'>
-  	  <%= link_to_remote image_tag('unread-conversation.png', :size => '8x8', :alt => '[n]'), { :url => user_url(current_site, mav_conversation_path(conversation)).downcase }, :title => 'Отметить как прочитанное' %>
+  	  <%= link_to_remote image_tag('unread-conversation.png', :size => '8x8', :alt => '[n]'), { :url => service_url(mav_conversation_path(conversation)).downcase }, :title => 'Отметить как прочитанное' %>
   	</div></div>
   <% end %>
 
   <div class='conversation_controls showonhover'><div class='delete'>
-      <%= link_to_remote image_tag('delete.gif', :size => '9x11', :alt => '[x]'), { :url => user_url(current_site, conversation_path(conversation)).downcase, :method => :delete }, :confirm => 'Действительно удалить всю переписку?' %>
+      <%= link_to_remote image_tag('delete.gif', :size => '9x11', :alt => '[x]'), { :url => service_url(conversation_path(conversation)).downcase, :method => :delete }, :confirm => 'Действительно удалить всю переписку?' %>
   </div></div>
 
-  <% content_tag :div, :class => 'body', :link => user_url(current_site, conversation_path(conversation)) do %>
+  <% content_tag :div, :class => 'body', :link => service_url(conversation_path(conversation)) do %>
     <% if show_message %>
       <%= simple_tasty_format(auto_link(h(show_message.body))) %>
     <% else %>

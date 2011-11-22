@@ -127,6 +127,7 @@
 
 /* convos sidebar */
 div#sidebar_conversations ul { list-style-type: none; padding: 0px; margin: 0px;}
+div#sidebar_conversations_content ul li sup { padding-left: 3px; font-style: italic; color: #FF0412; text-decoration: none; }
 div#sidebar_conversations_help ul { list-style-type: none; padding: 0px; margin: 0px;}
 div#sidebar_conversations_help ul li { margin-bottom: 1em; }
 div#sidebar_conversations_search_content input {
