@@ -17,7 +17,7 @@
     <% else %>
       <%= paginate @messages if @messages.current_page > 1 %>
 
-    	<%= render :partial => 'messages/message', :collection => @messages, :spacer_template => 'messages/message_spacer' %>
+    	<%= render :partial => 'messages/message', :collection => @messages.compact, :spacer_template => 'messages/message_spacer' %>
 
       <%= paginate @messages %>
     <% end %>
