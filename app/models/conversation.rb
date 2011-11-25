@@ -45,7 +45,11 @@ class Conversation < ActiveRecord::Base
   named_scope :disabled, :conditions => 'is_disabled = 1'
 
 
-  before_create { |record| record.send_notifications = record.user.tlog_settings.email_messages }
+  before_create do |record|
+    record.send_notifications = record.user.tlog_settings.email_messages
+    
+    true
+  end
 
 
   # shadow conversation — opposite conversation by other party
