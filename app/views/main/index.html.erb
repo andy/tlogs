@@ -13,7 +13,7 @@
 <% content_for :sidebar_left do %>
 	<h2 class='center'><span>Тлоги</span></h2>
 	<div class='users'>
-		<% User.popular(9).each do |user| %>
+		<% User.active_for(current_user, :limit => 6, :popularity => 4).each do |user| %>
 			<div>
 				<%= link_to_tlog user, :link => :userpic, :empty => :blank %>
 				<p><%= link_to_tlog user %></p>
