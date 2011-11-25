@@ -167,7 +167,7 @@ class MainController < ApplicationController
   end
   
   def users
-    @users = User.popular(20).shuffle
+    @users = User.active_for(current_user, :limit => 20, :popularity => 2)
     @title = 'пользователи в абсолютно случайной последовательности'
   end
   
