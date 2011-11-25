@@ -39,9 +39,15 @@ class User
   end
   
   # время когда была написана последняя запись
+  # TODO: добавить кеширование только для случаев, когда есть публичные записи (public_entries_count.nonzero?)
   def last_public_entry_at
-    # self.entries.public.last.created_at - the same?
     @last_public_entry_at ||= Entry.find_by_sql("SELECT id, created_at FROM entries WHERE user_id = #{self.id} AND is_private = 0 ORDER BY entries.id DESC LIMIT 1").first.created_at rescue Time.now
+  end
+  
+  # время, когда была написана первая запись
+  # TODO: добавить кеширование только для случаев, когда есть публичные записи (public_entries_count.nonzero?)
+  def first_public_entry_at
+    @first_public_entry_at ||= Entry.find_by_sql("SELECT id, created_at FROM entries WHERE user_id = #{self.id} AND is_private = 0 ORDER BY entries.id ASC LIMIT 1").first.created_at rescue Time.now
   end
   
   # возвращает список текущих записей для пользователя, возможные параметры:
