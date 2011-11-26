@@ -35,7 +35,7 @@ case @design.date_style
 <% end %>
 <% unless @design.background_url.blank? %>
 /* new background */
-div.tlog { background: transparent url(<%= h @design.background_url %>) <%= @design.background_fixed? ? 'fixed' : 'repeat' %>!important; }
+div.tlog { background: transparent url(<%= @design.background_url.starts_with?('/') ? image_path(h(@design.background_url)) : h(@design.background_url) %>) <%= @design.background_fixed? ? 'fixed' : 'repeat' %>!important; }
 <% end %>
 <% unless @design.color_tlog_text.blank? %>
 /* text of tlog */
