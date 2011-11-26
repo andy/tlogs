@@ -23,3 +23,21 @@
   <%= render :partial => 'main/my_sidebar_right' %>
   <%= render :partial => 'conversations/sidebar' %>
 <% end %>
+<% content_for :sidebar_right_below do
+    rd = (Time.now - current_user.created_at).to_i / 1.day
+    fc = Fave.count :conditions => "entry_user_id = #{current_user.id} AND created_at > '#{24.hours.ago.to_time}'"
+  %>
+  <div class='section'>
+    <h2><span>Статистика</span></h2>
+    <% if current_user.created_at < 1.week.ago %>
+      <p>Вы зарегистрированы в тейсти <b><%= content_tag(:span, days(rd), :title => current_user.created_at.to_s(:db)) %></b> и за это время успели написать <b><%= content_tag(:span, current_user.entries_count.pluralize('запись', 'записи', 'записей', true), :title => "из них #{current_user.private_entries_count} — скрытых") %></b></p><br/>
+    <% end %>
+    <p><%= fc > 50 ? 'Обалдеть, за' : 'За' %> последние 24 часа ваши записи в избранное добавили <b><%= fc.pluralize('раз', 'раза', 'раз', true) %></b><%= ', увы' if fc.zero? %><%= ', что очень здорово' if fc > 15 %><%= '!' if fc > 50 %></p><br/>
+    <% if current_user.is_premium? %>
+      <p<%= ' class="highlight"' if current_user.premium_days_left <= 3 %>>Премиум-подписка заканчивается <b><%= ((current_user.premium_till - Time.now) > 24.hours) ? 'через ' + days(current_user.premium_days_left) : ( ((current_user.premium_till - Time.now) > 60.minutes) ? 'уже через ' + hours((current_user.premium_till - Time.now) / 1.hour) : 'с минуты на минуту!' ) %></b><% if current_user.premium_days_left <= 3 %>,
+        <%= link_to 'продлить &rarr;', user_url(current_user, settings_premium_path) %>
+      <% end %>
+      </p>
+    <% end %>
+  </div>
+<% end %>

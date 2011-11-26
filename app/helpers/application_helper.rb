@@ -251,6 +251,10 @@ END
     n.pluralize('день', 'дня', 'дней', true)
   end
   
+  def hours(n)
+    n.pluralize('час', 'часа', 'часов', true)
+  end
+  
   def say_time_in_words(time)
     distance    = (time - Time.now).round
     in_minutes  = (distance / 1.minute).round.abs
