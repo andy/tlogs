@@ -1,6 +1,8 @@
 class MainController < ApplicationController
   skip_before_filter :require_confirmation_on_current_user
   
+  before_filter :require_current_user, :only => [:worst]
+  
   before_filter :enable_shortcut, :only => [:news, :hot, :last, :hot, :live, :my, :last_personalized, :random]
   
 
@@ -92,6 +94,16 @@ class MainController < ApplicationController
       @entry_ratings = EntryRating.paginate :all, :page => page, :per_page => Entry::PAGE_SIZE, :include => { :entry => [ :attachments, :author, :rating ] }, :order => 'entry_ratings.id DESC', :conditions => sql_conditions
     end
     
+    @comment_views = User::entries_with_views_for(@entry_ratings.map(&:entry_id), current_user)
+    
+    render :layout => false if should_xhr?
+  end
+  
+  def worst
+    sql_conditions = "entry_ratings.value < -5"
+    
+    @entry_ratings = EntryRating.paginate :all, :page => current_page, :per_page => Entry::PAGE_SIZE, :include => { :entry => [ :attachments, :author, :rating ] }, :order => 'entry_ratings.id DESC', :conditions => sql_conditions
+
     @comment_views = User::entries_with_views_for(@entry_ratings.map(&:entry_id), current_user)
     
     render :layout => false if should_xhr?

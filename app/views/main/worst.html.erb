@@ -1,11 +1,4 @@
-<% @title = 'Самые популярыне записи сейчас' %>
-
-<div class='filter'>
-	<form method='get' action='<%= main_url(:action => 'hot_redirect') %>'>
-		<%= select_tag :kind, options_for_select(Entry::KINDS_FOR_SELECT) %>
-		<%= submit_tag "обновить", :name => nil, :class => 'button_1' %>
-	</form>
-</div>
+<% @title = 'Отвратительная фигня, которая никому не понравилась' %>
 
 <% if @entry_ratings.blank? %>
 	<p class='last_is_empty_note'>

@@ -5,6 +5,12 @@
 	<!-- /content_for :head -->
 <% end %>
 <% content_for :sidebar_right_calendar do %>
+  <div class='section'>
+    <h2><span>Дополнительно</span></h2>
+    <p><%= link_to 'самое "горячее"', service_url(main_path(:action => 'hot')) %></p><br/>
+    <p><%= link_to 'отвратительное', service_url(main_path(:action => 'worst')) %></p>      
+  </div>
+
   <div class='section sidebar_calendar'>
 		<h2><span>Лучшее за день</span></h2>
     <%-
@@ -18,7 +24,7 @@
           link_to day.day, url, :class => classes('day', ['highlight', day.same_day?(@time)]) %> <%-
         end
     	end
-    -%>				
+    -%>
 	</div>
 <% end if in_beta? %>
 
