@@ -67,7 +67,11 @@ class User
     
     if openid.blank? && !email.blank? && password.nil? && crypted_password.blank?
       errors.add(:password, 'необходимо выбрать пароль')
-    end    
+    end
+    
+    if !url.blank? && User::RESERVED.include?(url.downcase)
+      errors.add(:url, 'к сожалению, этот адрес уже занят')
+    end
   end  
 
 
