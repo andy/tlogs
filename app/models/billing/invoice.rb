@@ -104,7 +104,8 @@ class Invoice < ActiveRecord::Base
   end
 
   def expand_premium_for_user!
-    user.update_attribute(:premium_till, ((user.premium_till || Time.now) + self.days.days).end_of_day + 8.hours)
+    expand_since = [user.premium_till, Time.now].compact.max
+    user.update_attribute(:premium_till, (expand_since + self.days.days).end_of_day + 8.hours)
   end 
   
   ## protected methods
