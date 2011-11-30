@@ -3,6 +3,8 @@
 <div class='center_data_big_form'>
 	<% form_for :user, @user, :html => { :class => 'big' } do |f| %>
 
+    <%= tag(:input, :type => 'hidden', :name => 'code', :value => h(params[:code])) if params[:code] %>
+
 		<%= render :partial => 'login_and_signup_form', :locals => { :f => f } %>
 
 		<div class='form_string'>
