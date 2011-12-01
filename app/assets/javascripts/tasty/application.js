@@ -26,7 +26,7 @@ function new_radio_shedule() {
     var d = new Date();
     for (var i = 1; i <= d.getMonth(); i++)
         jQuery('#radio_schedule_air_at_2i option[value="'+i+'"]').remove();
-    for (var k = 0; k < d.getDay(); k++)
+    for (var k = 1; k < d.getDate(); k++)
         jQuery('#radio_schedule_air_at_3i option[value="'+k+'"]').remove();
 
     jQuery('#new_radio_schedule_block').addClass('date_prepared');
