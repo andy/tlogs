@@ -186,9 +186,36 @@ form.donation input.submit_donation { margin-top: 20px; margin-left: 380px; }
 #pref_messages a { padding-right: 6px; position: relative; top: 1px; }
 
 /* radioedit */
-.new_radio_schedule { font-size: 11px; text-align: left; padding: 20px; }
-.new_radio_schedule h3 { padding-top: 0px; margin-top: 0px;}
-.new_radio_schedule table { width: 100%; }
+.new_radio_schedule {
+  font-size: 11px; 
+  text-align: left; 
+  padding: 20px 20px 0 20px; 
+}
+.new_radio_schedule h3 { 
+  padding-top: 0px; 
+  margin-top: 0px;
+}
+.new_radio_schedule table { 
+  width: 100%;
+  -webkit-box-shadow: rgba(0, 0, 0, 0.199219) 0px 0px 2px;
+  -moz-box-shadow: rgba(0, 0, 0, 0.199219) 0px 0px 2px;
+  -o-box-shadow: rgba(0, 0, 0, 0.199219) 0px 0px 2px;
+  box-shadow: rgba(0, 0, 0, 0.199219) 0px 0px 2px;
+  behavior: url(/6903707708/images/htc/PIE.htc);
+}
+.new_radio_schedule table tr td { 
+  vertical-align: middle;
+  padding-top: 10px;
+}
+.new_radio_schedule table tr.rs_submit td { 
+  padding-bottom: 10px;
+}
+.new_radio_schedule table tr.rs_submit td .button { 
+  margin-top: 0px;
+}
+.new_radio_schedule table tr td label {
+  padding-right: 5px;
+}
 
 .radio_schedule { margin: 20px; text-align: center;padding: 10px; }
 .radio_schedule .showonhover { display: none; }
@@ -199,7 +226,7 @@ form.donation input.submit_donation { margin-top: 20px; margin-left: 380px; }
 .radio_schedule .radio_schedule_owner a { color: gray!important;}
 
 #new_radio_schedule_block { text-align: center; }
-a#new_radio_schedule_showform { font-size: 12px; color: gray; }
+a#new_radio_schedule_showform { font-size: 1.4em; font-family: Tahoma; color: #333!important; }
 
 .radio_schedule_controls { position: relative; }
 .radio_schedule_controls .radio_schedule_delete { position: absolute; left: 460px; }
