@@ -7,7 +7,7 @@
   <%= h @message.body %>
 
 Посмотреть на сайте:
-<%- convo_link = user_url(@user, conversation_path(@message.conversation)) -%>
+<%- convo_link = service_url(conversation_path(@message.conversation)) -%>
 <%= link_to convo_link, convo_link %>
 
 --
