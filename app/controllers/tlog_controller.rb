@@ -237,7 +237,9 @@ class TlogController < ApplicationController
     end
     
     def set_time
-      @time = [params[:year], params[:month], params[:day]].join('-').to_date.to_time
+      if params[:year].to_i > 0 && params[:month].to_i > 0 && params[:day].to_i > 0
+        @time = [params[:year], params[:month], params[:day]].join('-').to_date.to_time
+      end
       redirect_to user_url(current_site) and return if @time.nil?
       
       true
