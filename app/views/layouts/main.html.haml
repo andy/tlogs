@@ -26,7 +26,7 @@
     .top_menu
       %ul
         - news = User.find_by_url 'news'
-        - news_count = news.new_entries_count_for(current_user)
+        - news_count = if news then news.new_entries_count_for(current_user) else 0 end
         = menu_item 'О проекте', :about, %w(main/about main/users main/new_users main/stats main/adv)
         = menu_item "Новости#{"<sup>+#{news_count}</sup>" unless news_count.zero?}", :news
         = menu_item 'Лучшее', :last

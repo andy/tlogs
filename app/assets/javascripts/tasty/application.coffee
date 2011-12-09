@@ -341,6 +341,19 @@ Tasty =
         Tasty.flash.hide()
 
       true
+  
+  radio:
+    new_schedule: () ->
+      jQuery('#new_radio_schedule').toggle()
+      if !jQuery('#new_radio_schedule_block').hasClass('date_prepared')
+        d = new Date()
+        months = d.getMonth()
+        jQuery('#radio_schedule_air_at_2i option[value="'+num+'"]').remove() for num in [1..months]
+        days = d.getDate()-1
+        jQuery('#radio_schedule_air_at_3i option[value="'+num+'"]').remove() for num in [1..days]
+        jQuery('#new_radio_schedule_block').addClass('date_prepared')
+
+      true
 
 jQuery ($) ->
   Tasty.ready()
