@@ -21,19 +21,6 @@ function sidebar_toggle(section) {
   return false;
 }
 
-function new_radio_shedule() {
-  if ( ! jQuery('#new_radio_schedule_block').hasClass('date_prepared')) {
-    var d = new Date();
-    for (var i = 1; i <= d.getMonth(); i++)
-        jQuery('#radio_schedule_air_at_2i option[value="'+i+'"]').remove();
-    for (var k = 1; k < d.getDate(); k++)
-        jQuery('#radio_schedule_air_at_3i option[value="'+k+'"]').remove();
-
-    jQuery('#new_radio_schedule_block').addClass('date_prepared');
-  }
-  jQuery('#new_radio_schedule').toggle();
-}
-
 /* меняет количество комментариев на странице */
 function run_comments_views_update( ) {
   if (typeof comments_views_update == 'undefined')
