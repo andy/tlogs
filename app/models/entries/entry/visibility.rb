@@ -70,7 +70,8 @@ class Entry
       'godudu.com',
       'jujuju.ru',
       'blogspot.com',
-      'liveinternet.ru'
+      'liveinternet.ru',
+      'radikal.ru'
       ]
     
     bads.find { |bad| contents.include?(bad) } ? true : false    
