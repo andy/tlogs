@@ -58,6 +58,7 @@ www_settings = lambda do |www|
   www.connect 'main/:action/:page', :controller => 'main', :page => /\d+/
   www.main 'main/:action', :controller => 'main'
   www.robots 'robots.txt', :controller => 'main', :action => 'robots'
+  www.specials 'specials/:action', :controller => 'specials'
 
   # conversations
   www.resources :messages, :controller => 'messages'
