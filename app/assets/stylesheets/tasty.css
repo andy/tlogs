@@ -3341,6 +3341,10 @@ img.heart {
 	text-decoration: underline;
   color:white;
 }
+.register_enter .top_hello.gray,
+.register_enter .top_hello.gray a {
+	color: #404040;
+}
 .tl {
 	/*width:246px;
 	height:23px;
@@ -3784,4 +3788,7 @@ td.about p{
   width: 510px !important;
   height: 33px;
   margin-top: 0px;
+}
+.logo_color label {
+	font-size: 90%;
 }

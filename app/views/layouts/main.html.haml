@@ -14,10 +14,10 @@
 
 %body.main_page
   .logo
-    = link_to_if((params[:controller] != 'main' || params[:action] != 'index'), image_tag(current_service.logo(:white), :alt => current_service.name, :class => 'logo_img'), service_url, :class => 'logo_link')
+    = link_to_if((params[:controller] != 'main' || params[:action] != 'index'), image_tag ((is_premium? && current_user.tlog_settings.gray_logo) ? current_service.logo : current_service.logo(:white), :alt => current_service.name, :class => 'logo_img'), service_url, :class => 'logo_link')
 
   .register_enter
-    .top_hello
+    %div{ :class => classes('top_hello', ['gray', is_premium? && current_user.tlog_settings.gray_logo]) }
       - if current_user
         Будьте собой, #{link_to_tlog(current_user, :link => :username)}!
       - else
