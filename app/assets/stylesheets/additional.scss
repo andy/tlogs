@@ -617,6 +617,10 @@ input.placeholder, textarea.placeholder {
         }
         .subtitle {
           font-size: 10px;
+          color: #fff;
+        }
+        .subtitle.gray {
+          color: #444;
         }
         margin-bottom: 20px;
       }
@@ -814,6 +818,24 @@ input.placeholder, textarea.placeholder {
 //      border: 1px solid #333;
 //      font-size: 27px;
 //      font-family: 'Lucida Grande', 'Myriad Pro', 'Tahoma', arial;
+    }
+  }
+  .logo_color {
+    label {
+      font-size: 90%;
+      display: inline;
+      font-size: 16px;
+      line-height: 19px;
+      padding: 0;
+      margin: 0;
+      color: #444;
+      cursor: pointer;
+      margin-bottom: 15px;
+
+      input {
+        display: inline;
+        padding: 0px;
+      }
     }
   }
   input.button {
