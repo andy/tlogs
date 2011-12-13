@@ -84,6 +84,7 @@ class Settings::PremiumController < ApplicationController
       
       render :json => true
     else
+      @gray_logo = current_user.tlog_settings.gray_logo
       @backgrounds  = Background.public.all
       @backgrounds += current_site.backgrounds
       
@@ -97,6 +98,18 @@ class Settings::PremiumController < ApplicationController
     
   def invoices
     @invoices = current_site.invoices.successful.paginate :page => current_page, :per_page => 15, :order => 'created_at DESC'
+  end
+
+  def change_logo_color
+    @success = false
+    if request.post? && params[:gray_logo]
+      @tlog_settings = current_user.tlog_settings
+      @tlog_settings.gray_logo = params[:gray_logo].to_i
+      @tlog_settings.save
+
+      @success = true
+    end
+    render :json => @success
   end
   
   def grateful
