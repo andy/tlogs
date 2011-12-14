@@ -227,7 +227,7 @@ Tasty =
       Tasty.fastforward.e.twipsy('hide')
 
     click: (event) ->
-      Tasty.analytics.event 'Userbar', 'flash forward', _user.url
+      Tasty.analytics.event 'Userbar', 'Fast Forward', _user.url
 
       jQuery.when(Tasty.fastforward.fetch()).then ->
         window.location.href = Tasty.fastforward.data.href if Tasty.fastforward.data?.href
