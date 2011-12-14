@@ -18,22 +18,12 @@
     .clear
       %div
     = link_to '+ добавить', user_url(current_site, settings_premium_path(:action => 'background_popup')), :id => 'fancybox_link_background'
-  
-  %h2 Цвет логотипа
-  .logo_color
-    %label
-      %input{ :type => 'radio', :name => 'gray_logo', :checked => @gray_logo ? false : true , :value => 0, :data => { :action => user_url(current_site, settings_premium_path(:action => :change_logo_color)) } }
-      белый
-    &nbsp;
-    %label
-      %input{ :type => 'radio', :name => 'gray_logo', :checked => @gray_logo ? true : false, :value => 1, :data => { :action => user_url(current_site, settings_premium_path(:action => :change_logo_color)) } }
-      серый
 
   %h2 Предпросмотр
   .preview{:style => current_site.tlog_settings.background ? nil : (Background.public.first ? "background: url('#{Background.public.first.image.url}') repeat;" : nil)}
     .title
       = image_tag @gray_logo ? current_service.logo : current_service.logo(:white), :alt => 'тейсти'
-      .subtitle
+      %div{:class => classes('subtitle', ['gray', @gray_logo])}
         Будьте собой, %username%!
     
     .menu
@@ -82,34 +72,6 @@
   jQuery('.backgrounds .t-act-background-change').find('.note-current').hide().end().find('.note-set').show();
   jQuery('.backgrounds .selected').find('.note-current').show().end().find('.note-set').hide();
 
-  jQuery('.t-premium-backgrounds .logo_color input').live('change', function(){
-    jQuery.fancybox.showActivity();
-
-    var selLogo = jQuery(this).val();
-    jQuery.ajax({
-      url: jQuery(this).data('action'),
-      type: 'post',
-      dataType: 'json',
-      data: {
-        authenticity_token: window._token,
-        gray_logo: selLogo
-      },
-      complete: function() { jQuery.fancybox.hideActivity(); },
-      success: function(json) {
-        var src = jQuery('div.preview div.title img').attr('src');
-        var dir = src.substr(0, src.lastIndexOf('/'))+'/';
-        var logo = 'default_white.png';
-        var hello_color = '#fff';
-        if (selLogo == 1) {
-          logo = 'default.png';
-          hello_color = '#444';
-        }
-        jQuery('div.preview div.title img').attr('src', dir+logo);
-        jQuery('div.preview div.title div.subtitle').css('color', hello_color);
-      }
-    });
-  });
-
   jQuery('.t-premium-backgrounds .backgrounds .t-act-background-change').live('click', function() {
     jQuery.fancybox.showActivity();
     t_bg_clicked = jQuery(this);
@@ -124,10 +86,21 @@
       },
       complete: function() { jQuery.fancybox.hideActivity(); },
       success: function(data) {
-        if(data === true) {
+        if(data.success === true) {
           jQuery('.backgrounds .selected').removeClass('selected').addClass('t-act-background-change').find('.note-current').hide().end().find('.note-set').show();
           t_bg_clicked.removeClass('t-act-background-change').addClass('selected').find('.note-current').show().end().find('.note-set').hide();
           jQuery('.preview').css({ backgroundImage: 'url(' + t_bg_clicked.data('image') + ')' });
+
+          var src = jQuery('div.preview div.title img').attr('src');
+          var dir = src.substr(0, src.lastIndexOf('/'))+'/';
+          var logo = 'default_white.png';
+          var hello_color = '#fff';
+          if (data.gray_logo) {
+            logo = 'default.png';
+            hello_color = '#444';
+          }
+          jQuery('div.preview div.title img').attr('src', dir+logo);
+          jQuery('div.preview div.title div.subtitle').css('color', hello_color);
         }
       }
     });
