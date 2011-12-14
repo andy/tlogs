@@ -11,5 +11,16 @@
         %label
           Выберите файл с изображением:
           %input{:type => 'file', :name => 'image'}
+
+        %h2 
+          Цвет логотипа
+          .logo_color
+            %label
+              %input{ :type => 'radio', :name => 'gray_logo', :checked => true, :value => 0 }
+              белый
+            &nbsp;
+            %label
+              %input{ :type => 'radio', :name => 'gray_logo', :checked => false, :value => 1 }
+              серый
           
         %input{:type => 'submit', :class => 'button', :value => 'Загрузить'}

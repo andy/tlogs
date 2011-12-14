@@ -14,10 +14,14 @@
 
 %body.main_page
   .logo
-    = link_to_if((params[:controller] != 'main' || params[:action] != 'index'), image_tag ((is_premium? && current_user.tlog_settings.gray_logo) ? current_service.logo : current_service.logo(:white), :alt => current_service.name, :class => 'logo_img'), service_url, :class => 'logo_link')
+    - bg = Background.find(current_user.tlog_settings.background_id, :conditions => "is_public = 1 OR user_id = #{current_user.id}") if is_premium? && current_user.tlog_settings.background_id
+    - if bg
+      - if bg.gray_logo
+        - gray_logo = current_service.logo
+    = link_to_if((params[:controller] != 'main' || params[:action] != 'index'), image_tag (gray_logo ? gray_logo : current_service.logo(:white), :alt => current_service.name, :class => 'logo_img'), service_url, :class => 'logo_link')
 
   .register_enter
-    %div{ :class => classes('top_hello', ['gray', is_premium? && current_user.tlog_settings.gray_logo]) }
+    %div{ :class => classes('top_hello', ['gray', gray_logo]) }
       - if current_user
         Будьте собой, #{link_to_tlog(current_user, :link => :username)}!
       - else

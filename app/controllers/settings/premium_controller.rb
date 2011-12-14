@@ -60,6 +60,7 @@ class Settings::PremiumController < ApplicationController
         Background.transaction do
           bg = Background.create :user => current_site, :image => params[:image]
           bg.tlog_settings << ts if bg
+          bg.update_attribute(:gray_logo, params[:gray_logo])
         end
 
         flash[:good] = 'Великолепно, изображение добавлено!'
@@ -70,7 +71,7 @@ class Settings::PremiumController < ApplicationController
           bg.tlog_settings << ts if bg
         end
         
-        render :json => true
+        render :json => {:success => true, :gray_logo => Background.find(params[:id], :conditions => "is_public = 1 OR user_id = #{current_site.id}").gray_logo }
       else
         redirect_to user_url(current_site, settings_premium_path(:action => 'background'))
       end
@@ -84,7 +85,10 @@ class Settings::PremiumController < ApplicationController
       
       render :json => true
     else
-      @gray_logo = current_user.tlog_settings.gray_logo
+      if current_site.tlog_settings.background_id then
+        bg = Background.find(current_site.tlog_settings.background_id, :conditions => "is_public = 1 OR user_id = #{current_site.id}")
+        @gray_logo = bg.gray_logo if bg
+      end
       @backgrounds  = Background.public.all
       @backgrounds += current_site.backgrounds
       
@@ -98,18 +102,6 @@ class Settings::PremiumController < ApplicationController
     
   def invoices
     @invoices = current_site.invoices.successful.paginate :page => current_page, :per_page => 15, :order => 'created_at DESC'
-  end
-
-  def change_logo_color
-    @success = false
-    if request.post? && params[:gray_logo]
-      @tlog_settings = current_user.tlog_settings
-      @tlog_settings.gray_logo = params[:gray_logo].to_i
-      @tlog_settings.save
-
-      @success = true
-    end
-    render :json => @success
   end
   
   def grateful
