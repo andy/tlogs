@@ -145,7 +145,8 @@
         </div>
     </div>
     <!--/Middle-->
-</div> 
+</div>
 <!--/Wrapper-->
+<%= render :partial => 'globals/counters' if Rails.env.production? %>
 </body>
 </html>
