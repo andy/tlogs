@@ -7,7 +7,7 @@ class SpecialsController < ApplicationController
     sb_config = YAML.load_file(File.join(Rails.root, 'config/specials/surfingbird.yml')).symbolize_keys!
     
     # pick random set
-    offset = 1 # rand(sb_config[:sets].length)
+    offset = rand(sb_config[:sets].length)
     
     @items = []
     sb_config[:sets][offset].each do |item|
