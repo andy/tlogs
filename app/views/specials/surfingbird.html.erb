@@ -85,7 +85,7 @@
                         </div>
                         <div class="description">
                             <h3>Персональный поиск</h3>
-                            <p>Мы стараемся найти интересные сайты персонально для тебя. Чем больше ты пользуешься Surfingbird, тем лучше мы понимаем твои предпочтения, и когда ты снова нажмешь кнопку "Серф!" мы постараемся приятно удивить тебя. Снова и снова :)</p>
+                            <p>Мы&nbsp;стараемся найти интересные сайты персонально для тебя. Чем больше ты&nbsp;пользуешься Surfingbird, тем лучше мы&nbsp;понимаем твои предпочтения, и&nbsp;когда ты&nbsp;снова нажмешь кнопку &laquo;Серф!&raquo; мы&nbsp;постараемся приятно удивить тебя. Снова и&nbsp;снова:)</p>
                         </div>
                     </li>
                     <li class="b-reasons-item-2">
@@ -95,7 +95,7 @@
                         </div>
                         <div class="description">
                             <h3>Не перегружайся</h3>
-                            <p>Тебе больше не нужно перегружать себя лишней и бесполезной информацией. Surfingbird помогает не думать над тем, что надо вбить в поисковик, что бы увидеть действительно «интересные фото» или «смешное видео».</p>
+                            <p>Тебе больше не&nbsp;нужно перегружать себя лишней и&nbsp;бесполезной информацией. Surfingbird помогает не&nbsp;думать над тем, что надо вбить в&nbsp;поисковик, чтобы увидеть действительно &laquo;интересные фото&raquo; или &laquo;смешное видео&raquo;.</p>
                         </div>
                     </li>
                     <li class="b-reasons-item-3">
@@ -105,7 +105,7 @@
                         </div>
                         <div class="description">
                             <h3>Помни все</h3>
-                            <p>Интернет очень большой и в нем много интересных, нужных и полезных страниц. Проблема в том, что все их очень сложно запомнить. Мы поможем тебе не потерять найденное. Surfingbird можно использовать, как инструмент социальных закладок.</p>
+                            <p>Интернет очень большой и&nbsp;в&nbsp;нем много интересных, нужных и&nbsp;полезных страниц. Проблема в&nbsp;том, что все их&nbsp;очень сложно запомнить. Мы&nbsp;поможем тебе не&nbsp;потерять найденное. Surfingbird можно использовать, как инструмент социальных закладок.</p>
                         </div>
                     </li>
                 </ul>
@@ -118,78 +118,17 @@
                 <h1>Мы подобрали сайты, соответствующие<br /> вашим интересам, посмотрите<br /> и присоединяйтесь к серфингу!</h1>
                 <!--B-items-list-->
                 <div class="b-items-list" id="examples">
-                    <!--B-item-->
-                    <div class="b-item">
+                    <% @items.each do |item| %>
+                      <div class="b-item">
                         <div class="b-item-i">
-                            <img src="/images/specials/surfingbird/image_1.jpg" width="380" height="240" alt="Детки &mdash; конфетки!" />
-                            <!--Caption-->
-                            <div class="caption">
-                                <span><a href="#" title="Детки &mdash; конфетки!">Детки &mdash; конфетки!</a></span>
-                            </div>
-                            <!--/Caption-->
+                          <%= link_to image_tag(item.image, :size => '380x240', :alt => item.title), item.url, :title => item.title, :target => '_blank' %>
+                          <div class='caption'>
+                            <span><%= link_to item.title, item.url, :title => item.title, :target => '_blank' %></span>
+                          </div>
                         </div>
-                    </div>
-                    <!--/B-item-->
-                    <!--B-item-->
-                    <div class="b-item">
-                        <div class="b-item-i">
-                            <img src="/images/specials/surfingbird/image_2.jpg" width="380" height="240" alt="Лиса и бренды" />
-                            <!--Caption-->
-                            <div class="caption">
-                                <span><a href="#" title="Лиса и бренды">Лиса и бренды</a></span>
-                            </div>
-                            <!--/Caption-->
-                        </div>
-                    </div>
-                    <!--/B-item-->
-                    <!--B-item-->
-                    <div class="b-item">
-                        <div class="b-item-i">
-                            <img src="/images/specials/surfingbird/image_3.jpg" width="380" height="240" alt="Мой лучший подарок" />
-                            <!--Caption-->
-                            <div class="caption">
-                                <span><a href="#" title="Мой лучший подарок">Мой лучший подарок</a></span>
-                            </div>
-                            <!--/Caption-->
-                        </div>
-                    </div>
-                    <!--/B-item-->
-                    <!--B-item-->
-                    <div class="b-item">
-                        <div class="b-item-i">
-                            <img src="/images/specials/surfingbird/image_4.jpg" width="380" height="240" alt="Работы иллюстратора Ali Gulec Али Гулец |" />
-                            <!--Caption-->
-                            <div class="caption">
-                                <span><a href="#" title="Работы иллюстратора Ali Gulec Али Гулец |">Работы иллюстратора Ali Gulec Али Гулец |</a></span>
-                            </div>
-                            <!--/Caption-->
-                        </div>
-                    </div>
-                    <!--/B-item-->
-                    <!--B-item-->
-                    <div class="b-item">
-                        <div class="b-item-i">
-                            <img src="/images/specials/surfingbird/image_5.jpg" width="380" height="240" alt="Фото мест, где никогда не был" />
-                            <!--Caption-->
-                            <div class="caption">
-                                <span><a href="#" title="Фото мест, где никогда не был">Фото мест, где никогда не был</a></span>
-                            </div>
-                            <!--/Caption-->
-                        </div>
-                    </div>
-                    <!--/B-item-->
-                    <!--B-item-->
-                    <div class="b-item">
-                        <div class="b-item-i">
-                            <img src="/images/specials/surfingbird/image_6.jpg" width="380" height="240" alt="Фотоподборка. Со всего Света!" />
-                            <!--Caption-->
-                            <div class="caption">
-                                <span><a href="#" title="Фотоподборка. Со всего Света!">Фотоподборка. Со всего Света!</a></span>
-                            </div>
-                            <!--/Caption-->
-                        </div>
-                    </div>
-                    <!--/B-item-->
+                      </div>
+
+                    <% end %>                    
                 </div>
                 <!--/B-items-list-->
                 <div class="start-surfing">
