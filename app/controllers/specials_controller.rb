@@ -2,7 +2,7 @@ class SpecialsController < ApplicationController
   
 
   def surfingbird
-    @title = "Surfingbird — мы подбираем интересные страницы, фото и видео на основе рекомендаций людей, которым нравится тоже, что и тебе."
+    @title = "Surfingbird — мы подбираем интересные страницы, фото и видео на основе рекомендаций людей, которым нравится то же, что и тебе."
 
     sb_config = YAML.load_file(File.join(Rails.root, 'config/specials/surfingbird.yml')).symbolize_keys!
     
