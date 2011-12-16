@@ -1,0 +1,7 @@
+#!/usr/bin/env script/runner
+
+current_service = Tlogs::Domains::CONFIGURATION.options_for('mmm-tasty.ru', nil) || Tlogs::Domains::CONFIGURATION.default
+
+User.paginated_each(:conditions => "DATE(premium_till) = '#{Date.yesterday}'") do |user|
+  Emailer.deliver_premium_expired(current_service, user)
+end

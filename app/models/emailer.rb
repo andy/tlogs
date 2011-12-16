@@ -75,7 +75,7 @@ class Emailer < ActionMailer::Base
                 :body     => { :invoice => invoice }
   end
   
-  def premium_expires(current_service, user)
+  def premium_will_expire(current_service, user)
     setup     current_service,
                 :subj     => 'ммм... до окончания премиум-подписки осталось 3 дня',
                 :from     => '"Mmm... premium" <noreply+premium@mmm-tasty.ru>',
@@ -85,7 +85,7 @@ class Emailer < ActionMailer::Base
   
   def premium_expired(current_service, user)
     setup     current_service,
-                :subj     => 'ммм... премиум-подаиска отключена',
+                :subj     => 'ммм... премиум-подписка отключена',
                 :from     => '"Mmm... premium" <noreply+premium@mmm-tasty.ru>',
                 :reply_to => '"Mmm... premium" <premium@mmm-tasty.ru>',
                 :user     => user
