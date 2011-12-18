@@ -8,7 +8,7 @@ class MentionsController < ApplicationController
     users = []
     all_users = current_user.public_friends+current_user.friends
     if entry_id > 0
-      user_ids  = Comment.find(:all, :conditions => "entry_id = #{entry_id}").map(&:user_id).reject { |id| id <= 0 }.uniq
+      user_ids  = Comment.find(:all, :conditions => "entry_id = #{entry_id}").map(&:user_id).reject { |id| id <= 0 || id == current_user.id }.uniq
       all_users += User.find(user_ids).reject { |u| !u.email_comments? } if user_ids.any?
       if all_users
         all_users.each do |u|

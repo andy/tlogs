@@ -363,6 +363,7 @@ Tasty =
       suggest_list: [],
       dog: -1,
       last_caret: 0,
+      current_obj: false,
       escaped: false
 
     load: (selector, eid = false) ->
@@ -404,23 +405,21 @@ Tasty =
       if selector
         jQuery(selector).live "keyup", Tasty.mentions.search
         jQuery(selector).live "click", Tasty.mentions.search
-        jQuery(selector).live "blur", Tasty.mentions.blur
         jQuery(selector).bind "keydown", "tab", Tasty.mentions.complete
         jQuery(selector).bind "keydown", "return", Tasty.mentions.complete
         jQuery(selector).bind "keydown", "up", Tasty.mentions.suggest.controls
         jQuery(selector).bind "keydown", "down", Tasty.mentions.suggest.controls
         jQuery(selector).bind "keydown", "esc", Tasty.mentions.suggest.escape
+        jQuery('*').bind      "click", Tasty.mentions.suggest.blur
 
       true
 
-    blur: ->
-      if !jQuery('#mentions_holder').hasClass('after_click')
-        Tasty.mentions.suggest.hide()
-
-      true
-
-    complete: ->
-      obj = this
+    complete: (s = false) ->
+      if !s
+        obj = this
+      else
+        if Tasty.mentions.options.current_obj
+          obj = Tasty.mentions.options.current_obj
 
       if obj
         t = jQuery(obj).val()
@@ -511,6 +510,7 @@ Tasty =
           can_show = false
 
         if can_show
+          Tasty.mentions.options.current_obj = obj
           pos = Tasty.mentions.caret.get_xy(obj)
           jQuery('#mentions_holder').css('left', pos.x)
           jQuery('#mentions_holder').css('top', pos.y)
@@ -571,8 +571,15 @@ Tasty =
         true
 
       click: ->
-        jQuery('#mentions_holder').addClass('after_click')
-        Tasty.mentions.complete()
+        Tasty.mentions.complete(true)
+
+        false
+
+      blur: (e) ->
+        if !jQuery(e.target).parents().is('#mentions_holder')
+          Tasty.mentions.suggest.hide()
+        else
+          jQuery(Tasty.mentions.options.current_obj).focus()
 
         true
 
@@ -587,11 +594,14 @@ Tasty =
 
     caret: 
       set: (obj, pos) ->
-        # добавить для ie
-        if obj.selectionEnd
-          obj.selectionEnd = pos
+        if typeof(obj.caretPos) != 'undefined'
+          obj.caretPos = pos
+        else
+          if obj.selectionEnd
+            obj.selectionEnd = pos
 
         false
+
       get: (obj) ->
         selection = 0
         if obj.selectionStart 
@@ -606,6 +616,7 @@ Tasty =
           selection clone.text.length;
 
         return selection-1
+
       get_xy: (obj) ->
         pos = { 'x':0, 'y':0 }
         if (jQuery(obj).is('textarea') || jQuery(obj).is('input')) && obj.selectionEnd != null
@@ -644,9 +655,10 @@ Tasty =
           g = jQuery(e).position()
           jQuery(d).remove()
           pos = { 'x':g.left, 'y':g.top }
-          
+
         left = jQuery(obj).offset().left+(parseInt(jQuery(obj).css('font-size'))/2)
         top = jQuery(obj).offset().top+parseInt(jQuery(obj).css('font-size'))+7
+
         return { 'x':left+pos.x-3, 'y':top+pos.y }
 
 jQuery ($) ->
