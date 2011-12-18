@@ -164,6 +164,7 @@ DISPOSABLE_DOMAINS = %w(
   longmusic.com
   epac.to
   dynamic-dns.net
+  temporamail.com
 )
 
 module Disposable
