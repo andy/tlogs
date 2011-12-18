@@ -26,7 +26,7 @@ class Emailer < ActionMailer::Base
   
   def message(current_service, user, message)
     setup     current_service,
-                :subj => 'ммм.... новое личное сообщение',
+                :subj => "ммм.... новое личное сообщение от #{message.user.url}",
                 :from => '"Mmm... message" <noreply+messages@mmm-tasty.ru>',
                 :user => user,
                 :body => { :message => message }
