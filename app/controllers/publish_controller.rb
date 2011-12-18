@@ -91,6 +91,14 @@ class PublishController < ApplicationController
         render :action => 'limit_exceeded'
         return
       end
+
+      all_friends = current_user.public_friends+current_user.friends
+      @friends = []
+      all_friends.each do |friend|
+        pic = 0
+        pic = friend.userpic_file_name if friend.userpic_file_name
+        @friends.push({ 'pic' => pic, 'url' => friend.url })
+      end
       
       # запрашивается уже существующая запись
       if params[:id]

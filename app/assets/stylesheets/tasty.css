@@ -1161,6 +1161,7 @@ div.post_comment_avatar {
 	border:1px solid #777;
 	font-size:0.95em;
 	font-style:normal;
+	outline: none;
 }
 
 .post_comment_time {

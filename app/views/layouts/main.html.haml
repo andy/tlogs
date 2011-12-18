@@ -67,7 +67,7 @@
   = render :partial => 'globals/top_nav'
   
   - if @enable_shortcut
-    #t-act-shortcut &uarr; Наверх
+    %div{ :id => 't-act-shortcut', :class => classes(['gray', gray_logo]) } &uarr; Наверх
   
   = render :partial => 'globals/reformal' if Rails.env.production?
 </html>
