@@ -15,21 +15,21 @@
 	    unviewed_count = current_site.conversations.unviewed.count
 	    if unviewed_count > 0
 	    %>
-		    <li><p>У вас <%= link_to "#{unviewed_count.pluralize('непрочтенная переписка', 'непрочтенных переписки', 'непрочтенных переписок', true)}", user_url(current_site, unviewed_conversations_path) %>.</p></li>
+		    <li><p>У вас <%= link_to "#{unviewed_count.pluralize('непрочтенная переписка', 'непрочтенных переписки', 'непрочтенных переписок', true)}", service_url(unviewed_conversations_path) %>.</p></li>
 		  <% else %>
 		    <li><p>У вас нет непрочтенных сообщений.</p></li>
 		  <% end %>
-	    <li><p><%= link_to 'Все ваши переписки &rarr;', user_url(current_site, conversations_path) %></p></li>
+	    <li><p><%= link_to 'Все ваши переписки &rarr;', service_url(conversations_path) %></p></li>
 	  <% else %>
 	    <%
 	      convo = current_user.conversations.with(current_site).first
 	      if convo
 	    %>
-	      <li><p>Между вами <%= link_to "#{convo.messages_count.pluralize('сообщение', 'сообщения', 'сообщений', true)}", user_url(current_user, conversation_path(convo)) %>.</p></li>
-	      <li><p><%= link_to "Напишите #{current_site.gender('ему', 'ей')}", user_url(current_user, named_new_conversation_path(:url => current_site.url)) %>.</p></li>
+	      <li><p>Между вами <%= link_to "#{convo.messages_count.pluralize('сообщение', 'сообщения', 'сообщений', true)}", service_url(conversation_path(convo)) %>.</p></li>
+	      <li><p><%= link_to "Напишите #{current_site.gender('ему', 'ей')}", service_url(named_new_conversation_path(:url => current_site.url)) %>.</p></li>
 	    <% else %>
 	      <li><p>Между вами не было переписки.</p></li>
-	      <li><p><%= link_to "Напишите #{current_site.gender('ему', 'ей')}", user_url(current_user, named_new_conversation_path(:url => current_site.url)) %>!</p></li>
+	      <li><p><%= link_to "Напишите #{current_site.gender('ему', 'ей')}", service_url(named_new_conversation_path(:url => current_site.url)) %>!</p></li>
 	    <% end %>
 	  <% end %>
 	  </ul>
