@@ -6,4 +6,10 @@ jQuery(document).ready(function($){
     $(this).closest('form').find("#comment_submit_button").trigger('click');
     return false;
   });
+  $('textarea#comment_comment').bind('keydown', 'Shift+@', function(evt) {
+  	if (jQuery('.post_body').length) {
+    	return Tasty.mentions.load('textarea#comment_comment', jQuery('.post_body').data('entry-id'));
+    }
+    return true;
+  });
 });

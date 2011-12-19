@@ -319,6 +319,7 @@ b { font-weight: bold; }
 #entry_edit_form {
   input, textarea {
     font-family: 'Lucida Grande', 'Myriad Pro', 'Tahoma', arial;
+    outline: none;
   }
 }
 
@@ -382,6 +383,10 @@ input.placeholder, textarea.placeholder {
     top: 2px;
     left: 2px;    
   }
+}
+
+#t-act-shortcut.gray {
+  color: #444;  
 }
 
 .settings .t-controller-settings-default {
@@ -1059,6 +1064,48 @@ input.placeholder, textarea.placeholder {
     span {
       background-color: white;
       line-height: 1.5em;
+    }
+  }
+}
+
+.t-mentions-holder {
+  position: absolute;
+  z-index: 800;
+  display: none;
+  background: #fff;
+  color: #444;
+  -webkit-box-shadow: rgba(0, 0, 0, 0.2) 1px 1px 3px;
+  -moz-box-shadow: rgba(0, 0, 0, 0.2) 1px 1px 3px;
+  -o-box-shadow: rgba(0, 0, 0, 0.2) 1px 1px 3px;
+  box-shadow: rgba(0, 0, 0, 0.2) 1px 1px 3px;
+  font-size: 13px;
+  max-height: 198px;
+  overflow-y: auto;
+
+  ul {
+    li {
+      display: block;
+      padding: 2px 3px 2px 3px;
+      cursor: pointer;
+      
+      img {
+        max-width: 16px;
+        max-height: 16px;
+        vertical-align: top;
+        margin-right: 3px;
+        border: 1px solid #ccc;
+        -webkit-border-radius: 2px;
+        -moz-box-border-radius: 2px;
+        -o-border-radius: 2px;
+        border-radius: 2px;
+      }
+    }
+    li:last-child {
+      padding-bottom: 2px;
+    }
+    li.active {
+      background: #444;
+      color: #fff;
     }
   }
 }

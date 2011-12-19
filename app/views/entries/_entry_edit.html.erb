@@ -71,6 +71,8 @@
 <% end %>
 <script type='text/javascript'>
   jQuery(function() {
+	  Tasty.mentions.ready('<%= @friends.to_json %>', '#entry_data_part_1, #entry_data_part_2');
+
     if(jQuery('#entry_visibility').val() == 'mainpageable' || jQuery('#entry_visibility').val() == 'voteable') {
       jQuery('#entry_nsfw_holder').show();
       jQuery('.visibility_comments').show();
