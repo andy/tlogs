@@ -71,7 +71,9 @@ class Entry
       'jujuju.ru',
       'blogspot.com',
       'liveinternet.ru',
-      'radikal.ru'
+      'radikal.ru',
+      'apikabu.ru',
+      '9gag.com'
       ]
     
     bads.find { |bad| contents.include?(bad) } ? true : false    
