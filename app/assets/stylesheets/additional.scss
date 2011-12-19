@@ -1079,6 +1079,8 @@ input.placeholder, textarea.placeholder {
   -o-box-shadow: rgba(0, 0, 0, 0.2) 1px 1px 3px;
   box-shadow: rgba(0, 0, 0, 0.2) 1px 1px 3px;
   font-size: 13px;
+  max-height: 198px;
+  overflow-y: auto;
 
   ul {
     li {

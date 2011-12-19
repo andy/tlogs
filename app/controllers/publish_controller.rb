@@ -97,7 +97,7 @@ class PublishController < ApplicationController
       all_friends.each do |friend|
         pic = 0
         pic = friend.userpic_file_name if friend.userpic_file_name
-        @friends.push({ 'pic' => pic, 'url' => friend.url })
+        @friends.push({ 'pic' => pic, 'url' => friend.url }) if friend.url
       end
       
       # запрашивается уже существующая запись
