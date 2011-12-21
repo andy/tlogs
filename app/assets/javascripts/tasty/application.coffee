@@ -364,10 +364,14 @@ Tasty =
       dog: -1,
       last_caret: 0,
       current_obj: false,
-      escaped: false
+      escaped: false,
+      scrollbar_size: -1
 
     load: (selector, eid = false) ->
       if !Tasty.mentions.options.list_loaded && eid && selector.length
+        jQuery('body').append('<div id="mentions_loader" class="t-mentions-holder" style="display:block;width:16px;height:16px;"><img src="/images/ajax-smaller-loader.gif" width="16" height="16" alt="загружаем список"/></div>')
+        pos = Tasty.mentions.caret.get_xy(jQuery(selector))
+        jQuery('#mentions_loader').css({ 'left': pos.x, 'top': pos.y })
         jQuery.ajax
           url: "/mentions/#{eid}"
           dataType: 'json'
@@ -378,6 +382,7 @@ Tasty =
               eid
           type: 'get'
           success: (data) =>
+            jQuery('#mentions_loader').remove()
             if data.success
               Tasty.mentions.ready(data.list, selector, true)
 
@@ -391,7 +396,7 @@ Tasty =
           l = jQuery.parseJSON(l)
         Tasty.mentions.options.list = l
         Tasty.mentions.options.list_loaded = true if !Tasty.mentions.options.list_loaded
-        jQuery('body').append('<div id="mentions_holder" class="t-mentions-holder"><ul id="mentions_suggest"></ul></div>')
+        jQuery('body').append('<div id="mentions_holder" class="t-mentions-holder"><div class="box"><div id="mentions_scroll" class="antiscroll-inner"><div class="box-inner"><ul id="mentions_suggest"></ul></div></div></div></div>')
         Tasty.mentions.suggest.add_mention(value) for value in Tasty.mentions.options.list
         jQuery('#mentions_holder ul li').live "mouseover", Tasty.mentions.suggest.over
         jQuery('#mentions_holder ul li').live "click", Tasty.mentions.suggest.click
@@ -517,7 +522,20 @@ Tasty =
           jQuery('#mentions_holder').css('font-family', jQuery(obj).css('font-family'))
           jQuery('#mentions_holder ul li').hide()
           jQuery('#mentions_holder ul li#sm_'+value.url).show() for value in Tasty.mentions.options.suggest_list 
-          jQuery('#mentions_holder').show()
+          jQuery('#mentions_holder').css('display', 'inline-block')
+          jQuery('#mentions_scroll').scrollTop(0)
+          sl_height = jQuery('#mentions_holder ul li:visible').length * (jQuery('#mentions_holder ul li:first-child').height()+4)
+          jQuery('#mentions_holder .box').css('height', sl_height)
+          if jQuery('#mentions_holder').height() > 198
+            jQuery('#mentions_holder .box').css('height', '198px')
+            max_height = 198
+            if jQuery('#mentions_holder').hasClass('antiscrolled')
+              max_height = 198+Tasty.mentions.suggest.scrollbar_size()
+            jQuery('#mentions_holder .box .antiscroll-inner').css('height', max_height)
+          if !jQuery('#mentions_holder').hasClass('antiscrolled')
+            jQuery('#mentions_holder .box').css('width', jQuery('#mentions_holder').width())
+            jQuery('#mentions_holder').antiscroll()
+            jQuery('#mentions_holder').addClass('antiscrolled')
           Tasty.mentions.options.last_caret = Tasty.mentions.caret.get(obj)+1
           jQuery('#mentions_holder ul li.active').removeClass('active') if jQuery('#mentions_holder ul li.active').length
           if Tasty.mentions.options.suggest_list.length == 1
@@ -535,19 +553,21 @@ Tasty =
 
       controls: (event) ->
         if jQuery('#mentions_holder:visible').length && Tasty.mentions.options.suggest_list.length > 1
-          if event.keyCode == 40 #38 - вверх
+          if event.keyCode == 40 # down
             if !jQuery('#mentions_holder ul li.active').length
               jQuery('#mentions_holder ul li:first-child').addClass('active')
-            else 
+            else
               if !jQuery('#mentions_holder ul li.active:last-child').length
                 jQuery('#mentions_holder ul li.active').removeClass('active').next('li').addClass('active')
           
-          if event.keyCode == 38
+          if event.keyCode == 38 # up
             if !jQuery('#mentions_holder ul li.active').length
-              jQuery('#mentions_holder ul li:last-child').addClass('active')
+              jQuery('#mentions_holder ul li:last').addClass('active')
             else 
               if !jQuery('#mentions_holder ul li.active:first-child').length
                 jQuery('#mentions_holder ul li.active').removeClass('active').prev('li').addClass('active')
+
+          jQuery('#mentions_scroll').scrollTop(jQuery('#mentions_holder ul li.active').position().top)
 
           return false
 
@@ -582,6 +602,18 @@ Tasty =
           jQuery(Tasty.mentions.options.current_obj).focus()
 
         true
+      
+      scrollbar_size: ->
+        if Tasty.mentions.options.scrollbar_size == -1
+          div = jQuery('<div style="width:50px;height:50px;overflow:hidden;position:absolute;top:-200px;left:-200px;"><div style="height:100px;"></div>')
+          jQuery('body').append(div)
+          w1 = jQuery('div', div).innerWidth()
+          div.css('overflow-y', 'scroll')
+          w2 = jQuery('div', div).innerWidth()
+          jQuery(div).remove()
+          Tasty.mentions.options.scrollbar_size = w1 - w2
+
+        Tasty.mentions.options.scrollbar_size
 
     compare: (value) ->
       value = value.url if typeof value != 'string'
@@ -647,7 +679,11 @@ Tasty =
           d=document.createElement("div")
           jQuery(d).css(h)
           jQuery(obj).after(d)
-          d.textContent = obj.value.substring(0, obj.selectionEnd)
+          if obj.value
+            sstr = obj.value.substring(0, obj.selectionEnd)
+          else
+            sstr = '@'
+          d.textContent = sstr
           d.scrollTop = d.scrollHeight
           e = document.createElement("span")
           e.innerHTML = "&nbsp;"
