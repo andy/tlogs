@@ -94,7 +94,7 @@ end
 
 ActionController::Routing::Routes.draw do |map|
   map.vote 'vote/:entry_id/:action', :controller => 'vote'
-  map.mentions 'mentions/:entry_id', :controller => 'mentions', :action => 'mentions'
+  map.mentions 'mentions/:entry_id', :controller => 'mentions', :action => 'in_comments'
   map.global_fave 'global/fave/:id', :controller => 'faves', :action => 'create'
   map.global 'global/:action.:format', :controller => 'global'
   
