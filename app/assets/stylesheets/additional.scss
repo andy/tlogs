@@ -1079,14 +1079,14 @@ input.placeholder, textarea.placeholder {
   -o-box-shadow: rgba(0, 0, 0, 0.2) 1px 1px 3px;
   box-shadow: rgba(0, 0, 0, 0.2) 1px 1px 3px;
   font-size: 13px;
-  max-height: 198px;
-  overflow-y: auto;
+  overflow: hidden;
 
   ul {
     li {
       display: block;
       padding: 2px 3px 2px 3px;
       cursor: pointer;
+      white-space: nowrap;
       
       img {
         max-width: 16px;
