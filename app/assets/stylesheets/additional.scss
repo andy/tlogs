@@ -1073,7 +1073,6 @@ input.placeholder, textarea.placeholder {
   z-index: 800;
   display: none;
   background: #fff;
-  color: #444;
   -webkit-box-shadow: rgba(0, 0, 0, 0.2) 0px 0px 2px;
   -moz-box-shadow: rgba(0, 0, 0, 0.2) 0px 0px 2px;
   -o-box-shadow: rgba(0, 0, 0, 0.2) 0px 0px 2px;
@@ -1081,31 +1080,50 @@ input.placeholder, textarea.placeholder {
   font-size: 13px;
   overflow: hidden;
 
+  .box { width: 126px; }
   ul {
     li {
       display: block;
-      padding: 2px 3px 2px 3px;
+      padding: 2px 3px 4px 3px;
       cursor: pointer;
       white-space: nowrap;
+      height: 16px;
+      width: 120px;
+      overflow: hidden;
+      text-overflow: ellipsis;
       
-      img {
-        max-width: 16px;
-        max-height: 16px;
-        vertical-align: top;
-        margin-right: 3px;
-        border: 1px solid #ccc;
-        -webkit-border-radius: 2px;
-        -moz-box-border-radius: 2px;
-        -o-border-radius: 2px;
-        border-radius: 2px;
+      a {
+        text-decoration: none;
+        color: #444;
+      }
+      div {
+        width: 16px;
+        height: 16px;
+        float: left;
+        display: block;
+        margin-right: 5px;
+
+        img {
+          max-width: 16px;
+          max-height: 16px;
+          vertical-align: top;
+          border: 1px solid #ccc;
+          -webkit-border-radius: 2px;
+          -moz-box-border-radius: 2px;
+          -o-border-radius: 2px;
+          border-radius: 2px;
+        }
       }
     }
     li:last-child {
-      padding-bottom: 2px;
+      padding-bottom: 4px;
     }
     li.active {
       background: #444;
-      color: #fff;
+
+      a {
+        color: #fff;
+      }
     }
   }
 }
