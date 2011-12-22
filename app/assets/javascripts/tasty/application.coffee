@@ -524,9 +524,8 @@ Tasty =
           jQuery('#mentions_holder ul li').hide()
           jQuery('#mentions_holder ul li#sm_'+value.url).show() for value in Tasty.mentions.options.suggest_list 
           jQuery('#mentions_holder').css('display', 'inline-block')
-          Tasty.mentions.options.suggest_el_height = jQuery('#mentions_holder ul li:visible:first').height()+4
           jQuery('#mentions_scroll').scrollTop(0)
-          jQuery('#mentions_holder .box').css('height', jQuery('#mentions_holder ul li:visible').length * Tasty.mentions.options.suggest_el_height)
+          jQuery('#mentions_holder .box').css('height', jQuery('#mentions_holder ul li:visible').length * (jQuery('#mentions_holder ul li:visible:first').height()+4))
           if jQuery('#mentions_holder').height() > 198
             jQuery('#mentions_holder .box').css('height', '198px')
             max_height = 198
@@ -558,19 +557,25 @@ Tasty =
           pos = jQuery('#mentions_scroll').scrollTop()
           if event.keyCode == 40 # down
             if !jQuery('#mentions_holder ul li.active').length
-              jQuery('#mentions_holder ul li:first-child').addClass('active')
+              jQuery('#mentions_holder ul li:visible:first').addClass('active')
             else
-              if !jQuery('#mentions_holder ul li.active:last-child').length
-                jQuery('#mentions_holder ul li.active').removeClass('active').next('li').addClass('active')
-                pos += Tasty.mentions.options.suggest_el_height
+              if !jQuery('#mentions_holder ul li.active:visible:last-child').length
+                index = jQuery('#mentions_holder ul li.active').index('#mentions_holder ul li:visible')
+                if index < jQuery('#mentions_holder ul li:visible').length-1
+                  jQuery('#mentions_holder ul li.active').removeClass('active')
+                  jQuery('#mentions_holder ul li:visible:eq('+(index+1)+')').addClass('active')
+                  pos += Tasty.mentions.options.suggest_el_height
           
           if event.keyCode == 38 # up
             if !jQuery('#mentions_holder ul li.active').length
-              jQuery('#mentions_holder ul li:last-child').addClass('active')
+              return false
             else 
-              if !jQuery('#mentions_holder ul li.active:first-child').length
-                jQuery('#mentions_holder ul li.active').removeClass('active').prev('li').addClass('active')
-                pos -= Tasty.mentions.options.suggest_el_height
+              if !jQuery('#mentions_holder ul li.active:first-child:visible').length
+                index = jQuery('#mentions_holder ul li.active').index('#mentions_holder ul li:visible')
+                if index > 0
+                  jQuery('#mentions_holder ul li.active').removeClass('active')
+                  jQuery('#mentions_holder ul li:visible:eq('+(index-1)+')').addClass('active')
+                  pos -= Tasty.mentions.options.suggest_el_height
 
           jQuery('#mentions_scroll').scrollTop(pos)
           return false
