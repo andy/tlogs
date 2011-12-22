@@ -399,6 +399,7 @@ Tasty =
         Tasty.mentions.options.list_loaded = true if !Tasty.mentions.options.list_loaded
         jQuery('body').append('<div id="mentions_holder" class="t-mentions-holder"><div class="box"><div id="mentions_scroll" class="antiscroll-inner"><div class="box-inner"><ul id="mentions_suggest"></ul></div></div></div></div>')
         Tasty.mentions.suggest.add_mention(value) for value in Tasty.mentions.options.list
+        jQuery('#mentions_holder ul li a').live "click", Tasty.mentions.suggest.a
         jQuery('#mentions_holder ul li').live "mouseover", Tasty.mentions.suggest.over
         jQuery('#mentions_holder ul li').live "click", Tasty.mentions.suggest.click
         Tasty.mentions.bind_events(selector)
@@ -525,7 +526,7 @@ Tasty =
           jQuery('#mentions_holder ul li#sm_'+value.url).show() for value in Tasty.mentions.options.suggest_list 
           jQuery('#mentions_holder').css('display', 'inline-block')
           jQuery('#mentions_scroll').scrollTop(0)
-          jQuery('#mentions_holder .box').css('height', jQuery('#mentions_holder ul li:visible').length * (jQuery('#mentions_holder ul li:visible:first').height()+4))
+          jQuery('#mentions_holder .box').css('height', jQuery('#mentions_holder ul li:visible').length * Tasty.mentions.options.suggest_el_height)
           if jQuery('#mentions_holder').height() > 198
             jQuery('#mentions_holder .box').css('height', '198px')
             max_height = 198
@@ -533,7 +534,6 @@ Tasty =
               max_height = 198+Tasty.mentions.suggest.scrollbar_size()
             jQuery('#mentions_holder .box .antiscroll-inner').css('height', max_height)
           if !jQuery('#mentions_holder').hasClass('antiscrolled')
-            jQuery('#mentions_holder .box').css('width', jQuery('#mentions_holder').width())
             jQuery('#mentions_holder').antiscroll()
             jQuery('#mentions_holder').addClass('antiscrolled')
           Tasty.mentions.options.last_caret = Tasty.mentions.caret.get(obj)+1
@@ -547,7 +547,7 @@ Tasty =
         src = '/images/noavatar.gif'
         if value.pic
           src = value.pic
-        jQuery('#mentions_holder ul').append('<li id="sm_'+value.url+'"><img src="'+src+'" alt="'+value.url+'" />'+value.url+'</li>')
+        jQuery('#mentions_holder ul').append('<li id="sm_'+value.url+'"><div><img src="'+src+'" alt="'+value.url+'" /></div><a href="#" title="'+value.url+'">'+value.url+'</a></li>')
 
         false
 
@@ -625,6 +625,11 @@ Tasty =
           Tasty.mentions.options.scrollbar_size = w1 - w2
 
         Tasty.mentions.options.scrollbar_size
+      
+      a: ->
+        jQuery(this).parent().trigger('click')
+        
+        false
 
     compare: (value) ->
       value = value.url if typeof value != 'string'
