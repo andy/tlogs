@@ -365,7 +365,8 @@ Tasty =
       last_caret: 0,
       current_obj: false,
       escaped: false,
-      scrollbar_size: -1
+      scrollbar_size: -1,
+      suggest_el_height: 22
 
     load: (selector, eid = false) ->
       if !Tasty.mentions.options.list_loaded && eid && selector.length
@@ -523,9 +524,9 @@ Tasty =
           jQuery('#mentions_holder ul li').hide()
           jQuery('#mentions_holder ul li#sm_'+value.url).show() for value in Tasty.mentions.options.suggest_list 
           jQuery('#mentions_holder').css('display', 'inline-block')
+          Tasty.mentions.options.suggest_el_height = jQuery('#mentions_holder ul li:visible:first').height()+4
           jQuery('#mentions_scroll').scrollTop(0)
-          sl_height = jQuery('#mentions_holder ul li:visible').length * (jQuery('#mentions_holder ul li:first-child').height()+4)
-          jQuery('#mentions_holder .box').css('height', sl_height)
+          jQuery('#mentions_holder .box').css('height', jQuery('#mentions_holder ul li:visible').length * Tasty.mentions.options.suggest_el_height)
           if jQuery('#mentions_holder').height() > 198
             jQuery('#mentions_holder .box').css('height', '198px')
             max_height = 198
@@ -553,22 +554,25 @@ Tasty =
 
       controls: (event) ->
         if jQuery('#mentions_holder:visible').length && Tasty.mentions.options.suggest_list.length > 1
+          jQuery('#mentions_holder').addClass('keydown')
+          pos = jQuery('#mentions_scroll').scrollTop()
           if event.keyCode == 40 # down
             if !jQuery('#mentions_holder ul li.active').length
               jQuery('#mentions_holder ul li:first-child').addClass('active')
             else
               if !jQuery('#mentions_holder ul li.active:last-child').length
                 jQuery('#mentions_holder ul li.active').removeClass('active').next('li').addClass('active')
+                pos += Tasty.mentions.options.suggest_el_height
           
           if event.keyCode == 38 # up
             if !jQuery('#mentions_holder ul li.active').length
-              jQuery('#mentions_holder ul li:last').addClass('active')
+              jQuery('#mentions_holder ul li:last-child').addClass('active')
             else 
               if !jQuery('#mentions_holder ul li.active:first-child').length
                 jQuery('#mentions_holder ul li.active').removeClass('active').prev('li').addClass('active')
+                pos -= Tasty.mentions.options.suggest_el_height
 
-          jQuery('#mentions_scroll').scrollTop(jQuery('#mentions_holder ul li.active').position().top)
-
+          jQuery('#mentions_scroll').scrollTop(pos)
           return false
 
         true
@@ -584,9 +588,11 @@ Tasty =
         true
 
       over: ->
-        if jQuery('#mentions_holder ul li.active').length
-          jQuery('#mentions_holder ul li.active').removeClass('active')
-        jQuery(this).addClass('active')
+        if !jQuery('#mentions_holder').hasClass('keydown')
+          jQuery('#mentions_holder ul li.active').removeClass('active') if jQuery('#mentions_holder ul li.active').length
+          jQuery(this).addClass('active')
+        else
+          jQuery('#mentions_holder').removeClass('keydown')
 
         true
 
