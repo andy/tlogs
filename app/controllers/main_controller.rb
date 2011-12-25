@@ -3,7 +3,7 @@ class MainController < ApplicationController
   
   before_filter :require_current_user, :only => [:worst]
   
-  before_filter :enable_shortcut, :only => [:news, :hot, :last, :hot, :live, :my, :last_personalized, :random]
+  before_filter :enable_shortcut, :only => [:news, :hot, :last, :hot, :live, :my, :worst, :tagged, :last_personalized, :random]
   
 
   def index
@@ -132,6 +132,26 @@ class MainController < ApplicationController
     entry_ids = Entry.mainpageable.find(:all, :select => 'entries.id', :conditions => "entries.id < #{entry_id}", :order => 'entries.id DESC', :limit => Entry::PAGE_SIZE).map(&:id)
     @entries = Entry.find_all_by_id(entry_ids, :include => [:author, :rating, :attachments]).sort_by { |entry| entry_ids.index(entry.id) }
 
+    @comment_views = User::entries_with_views_for(@entries.map(&:id), current_user)
+    
+    render :layout => false if should_xhr?
+  end
+  
+  def tagged
+    total = Entry::PAGE_SIZE * 1000
+
+    @page = params[:page].to_i rescue 1
+    @page = 1 if @page.zero?
+
+    # grab id-s only, this is an mysql optimization
+    @entries = WillPaginate::Collection.create(@page, Entry::PAGE_SIZE, total) do |pager|
+      result = Entry.paginate_by_category(params[:tag], { :total => total, :page => pager.current_page }, { :is_mainpageable => true })
+    
+      pager.replace(result.to_a)
+    
+      pager.total_entries = total unless pager.total_entries
+    end
+    
     @comment_views = User::entries_with_views_for(@entries.map(&:id), current_user)
     
     render :layout => false if should_xhr?

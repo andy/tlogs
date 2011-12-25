@@ -5,18 +5,21 @@
 
 = render(:partial => 'globals/tastyradio') if params[:action] == 'live' || params[:action] == 'last' || (params[:controller] == 'main' && params[:action] == 'index')
 = yield :sidebar_right_calendar
-= render(:partial => 'globals/dfp240x400') if %w(news last live my last_personalized hot random worst).include?(params[:action]) || params[:controller] == 'anonymous' || params[:controller] == 'conversations'
+= render(:partial => 'globals/dfp240x400') if %w(news last live my last_personalized hot random worst tagged).include?(params[:action]) || params[:controller] == 'search' || params[:controller] == 'anonymous' || params[:controller] == 'conversations'
 
-- if params[:controller] == 'search' && @users
+- if params[:controller] == 'search'
   %h2
     %span Пользователи
 
-  .users
-    - @users.each do |user|
-      %div
-        = link_to_tlog(user, :link => :userpic, :empty => :blank)
-        %p= link_to_tlog(user)
+  - if @users.blank? && !@users.any?
+    %p К сожалению, по вашему запросу пользователей не найдено.
+  - else
+    .users
+      - @users.each do |user|
+        %div
+          = link_to_tlog(user, :link => :userpic, :empty => :blank)
+          %p= link_to_tlog(user)
     
-    = content_tag(:p, "... и еще #{(@users.total_entries - @users.per_page).pluralize('пользователь', 'пользователя', 'пользователей', true)}") if @users.total_pages > 1
+      = content_tag(:p, "... и еще #{(@users.total_entries - @users.per_page).pluralize('пользователь', 'пользователя', 'пользователей', true)}") if @users.total_pages > 1
 
 = yield :sidebar_right_below

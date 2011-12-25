@@ -4,6 +4,8 @@ class ConversationsController < ApplicationController
   before_filter :require_confirmed_current_user
 
   before_filter :preload_conversation, :only => [:show, :subscribe, :unsubscribe, :mav, :destroy]
+  
+  before_filter :enable_shortcut
 
   protect_from_forgery
 

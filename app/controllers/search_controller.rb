@@ -3,6 +3,8 @@ class SearchController < ApplicationController
   
   before_filter :check_if_can_be_viewed
   
+  before_filter :enable_shortcut
+  
   helper :main
   layout 'main'
 
