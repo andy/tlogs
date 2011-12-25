@@ -138,7 +138,7 @@ class MainController < ApplicationController
   end
   
   def tagged
-    total = Entry::PAGE_SIZE * 1000
+    total = Entry.count_tagged_with(params[:tag], :is_mainpageable => true)
 
     @page = params[:page].to_i rescue 1
     @page = 1 if @page.zero?
@@ -151,6 +151,9 @@ class MainController < ApplicationController
     
       pager.total_entries = total unless pager.total_entries
     end
+    
+    popular_tag_ids = Tagging.all(:limit => 1000, :order => 'id desc').group_by(&:tag_id).sort_by { |k, v| -v.length }[0..20].map(&:first)
+    @popular_tags = Tag.find_all_by_id(popular_tag_ids).sort_by { |tag| popular_tag_ids.index(tag.id) }
     
     @comment_views = User::entries_with_views_for(@entries.map(&:id), current_user)
     

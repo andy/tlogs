@@ -55,7 +55,7 @@ www_settings = lambda do |www|
   www.last 'main/last/:rating/:kind', :controller => 'main', :action => 'last', :rating => 'default', :kind => 'default'
   www.hot 'main/hot/:kind', :controller => 'main', :action => 'hot', :kind => 'default'
   www.anonymous 'main/anonymous/:action/:id', :controller => 'anonymous'
-  www.tagged 'main/tagged/:tag', :controller => 'main', :action => 'tagged'
+  www.tagged 'main/tagged/:tag/:page', :controller => 'main', :action => 'tagged', :page => 1, :requirements => { :page => /\d+/ }
   www.connect 'main/:action/:page', :controller => 'main', :page => /\d+/
   www.main 'main/:action', :controller => 'main'
   www.robots 'robots.txt', :controller => 'main', :action => 'robots'

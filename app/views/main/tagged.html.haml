@@ -1,8 +1,32 @@
+- @title = "все записи с тегом '#{h params[:tag]}'"
 - content_for :head do
   = auto_discovery_link_tag(:rss, service_url(main_feed_path(:action => :live)))
+- content_for :sidebar_right_below do
+  %h2
+    %span Популярные теги
+  
+  .tags
+    - @popular_tags.each do |tag|
+      %span= link_to h(tag.name), tagged_path(:tag => tag.name)
 
+.filter
+  %p
+    Вы искали
+    %span.highlight.large= h params[:tag]
+    - if @entries.total_entries.zero?
+      , но мы, к сожалению, ничего не нашли
+    - else
+      и мы нашли 
+      %span.strong
+        - if @entries.total_entries > 1000
+          = "очень много записей"
+        - else
+          = @entries.total_entries.pluralize("запись", "записи", "записей", true)
+	
 .onair
   - @entries.each do |entry|
     = render :partial => 'entries/entry_display', :locals => { :entry => entry, :show_comments_bubble => true, :show_username => true, :show_tags => false, :comment_views => @comment_views }
 
   = paginate @entries
+
+  

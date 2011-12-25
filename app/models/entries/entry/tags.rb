@@ -75,6 +75,7 @@ class Entry
     conditions = []
     conditions << "tags.name IN (#{tags.map(&:sql_quote)})"
     conditions << 'entries.is_private = 0' unless options[:include_private]
+    conditions << 'entries.is_mainpageable = 1' if options[:is_mainpageable]
     conditions << "entries.user_id = #{options[:owner].id}" if options[:owner]
 
     sql = <<-GO
