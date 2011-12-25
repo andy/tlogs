@@ -92,6 +92,7 @@ class User < ActiveRecord::Base
     :url    => '/assets/userpic/:sha1_partition/:id_:style.:extension',
     :path   => ':rails_root/public:url',
     :use_timestamp => false,
+    :convert_options => '-strip',
     :styles => {
       :large    => '800x800>',
       :thumb128 => '128x128>',
