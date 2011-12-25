@@ -8,9 +8,10 @@ class Background < ActiveRecord::Base
 
   ## plugins
   has_attached_file :image,
-    :url            => '/assets/bgs/:sha1_partition/:id_:style.:extension',
-    :path           => ':rails_root/public:url',
-    :use_timestamp  => false
+    :url              => '/assets/bgs/:sha1_partition/:id_:style.:extension',
+    :path             => ':rails_root/public:url',
+    :convert_options  => { :all => '-strip' },
+    :use_timestamp    => false
 
   
   ## named_scopes
