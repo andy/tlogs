@@ -1965,12 +1965,12 @@ div.service_date span{
 /* MAIN PAGE */
 
 div.main_page {
-	/*background:url("/assets/bgs/53/25/3_original.jpg");*/
+	/*background:url("/assets/bgs/f7/49/5_original.jpg");*/
 	min-height:100%;
 }
 
 * html div.main_page {
-	background:url("/assets/bgs/53/25/3_original.jpg");
+	background:url("/assets/bgs/f7/49/5_original.jpg");
 	height:100%;
 }
 
@@ -2035,7 +2035,7 @@ div.popular a {
 
 
 body.main_page {
-	background:url("/assets/bgs/53/25/3_original.jpg") fixed;
+	background:url("/assets/bgs/f7/49/5_original.jpg") fixed;
 }
 
 .main_rounded_holder {
