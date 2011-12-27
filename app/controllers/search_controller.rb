@@ -33,8 +33,11 @@ class SearchController < ApplicationController
         options[:with][:is_private] = 0
       end
     else
+      options[:with][:is_mainpageable] = 1
       options[:with][:is_private] = 0
     end
+    
+    Rails.logger.debug options.inspect
 
     @entries = Entry.search params[:query], options
     

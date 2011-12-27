@@ -94,11 +94,13 @@ class Entry < ActiveRecord::Base
 	define_index do
 	  indexes :data_part_1
 	  indexes :data_part_2
+	  indexes :data_part_3
     indexes tags.name, :as => :tag
 
 	  has :type
 	  has :user_id
 	  has :is_private
+	  has :is_mainpageable
 	  has :created_at
 	  has :updated_at
 	  has tags(:id), :as => :tag_ids
@@ -108,10 +110,8 @@ class Entry < ActiveRecord::Base
 	  
     where 'entries.is_disabled = 0'
     
-    # FIXME: запретить поиск записей из закрытых тлогов
-
 	  set_property :delta => :datetime, :threshold => 1.hour
-  end
+  end  
 
 
   ## named_scopes
