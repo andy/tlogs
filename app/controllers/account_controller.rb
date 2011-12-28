@@ -157,7 +157,7 @@ class AccountController < ApplicationController
     # check wether a secret signup code is known
     @allow_by_code = params[:code] && params[:code] == 'welcome'
     
-    if @allow_by_remote_addr || @allow_by_date || @allow_by_code
+    if Rails.env.development? || @allow_by_remote_addr || @allow_by_date || @allow_by_code
       if request.post?
         email_or_openid = params[:user][:email]
         if email_or_openid.is_openid?
@@ -165,7 +165,7 @@ class AccountController < ApplicationController
           session[:user_url] = params[:user][:url]
           login_with_openid email_or_openid
         else
-          @user = User.new :email => email_or_openid, :password => params[:user][:password], :url => params[:user][:url], :openid => nil
+          @user = User.new :email => email_or_openid, :password => params[:user][:password], :url => params[:user][:url], :openid => nil, :eula => params[:user][:eula]
         
           # проверяем на левые емейл адреса
           @user.errors.add(:email, 'извините, но выбранный вами почтовый сервис находится в черном списке') if @user.email.any? && Disposable::is_disposable_email?(@user.email)

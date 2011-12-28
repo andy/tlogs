@@ -4,13 +4,18 @@ class User
   SIGNATURE_SECRET = 'kab00mmm, tasty!'
 
   attr_accessor :password
-  attr_accessible :openid, :email, :url, :password
+  attr_accessor :eula
+  attr_accessible :openid, :email, :url, :password, :eula
 
 
   ## associations
   ## plugins
   ## named_scopes
   ## validations
+  validates_acceptance_of     :eula,
+                              :on => :create,
+                              :message => "вы должны принять и прочесть пользовательское соглашение"
+
 	validates_presence_of       :url,
 	                            :message => "это обязательное поле"
 

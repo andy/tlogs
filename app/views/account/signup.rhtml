@@ -14,6 +14,11 @@
 				<%= tasty_error_message_on('user', 'url') %>
 			</label>
 		</div>
+		
+		<div class='form_eula'>
+  		<%= f.check_box :eula %> — я прочел и принял условия <%= link_to 'пользовательского соглашения', account_url(:action => 'eula') %>
+  		<%= tasty_error_message_on 'user', 'eula' %>
+		</div>
 			
 		<input type="submit" value="Зарегистрироваться" class='button'/>
 
