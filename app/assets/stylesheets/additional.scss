@@ -1127,3 +1127,23 @@ input.placeholder, textarea.placeholder {
     }
   }
 }
+
+.content_layout_2 .eula {
+  p {
+    font-size: 12px;
+    font-weight: normal;    
+  }
+  ul, ol {
+    margin-left: 1em;
+    font-size: 12px;
+    font-weight: bold;
+    margin-bottom: 1em;
+    li {
+      font-size: 12px;
+      p {
+        font-size: 12px;
+        font-weight: normal;
+      }
+    }
+  }
+}

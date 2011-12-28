@@ -140,6 +140,9 @@ class AccountController < ApplicationController
       end
     end
   end
+  
+  def eula
+  end
 
   # регистрация, для новичков
   def signup
