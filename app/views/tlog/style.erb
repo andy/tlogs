@@ -33,10 +33,10 @@ case @design.date_style
 	span.bg_text_date { text-decoration: none; font-size: 26pt; }
 	span.blue { text-decoration: none; font-size: 13pt; }
 <% end %>
-<% if @design.background_url %>
+<% if !@design.background_url.blank? %>
 /* new background */
 body { background: transparent url(<%= @design.background_url.starts_with?('/') ? image_path(h(@design.background_url)) : h(@design.background_url) %>) <%= @design.background_fixed? ? 'fixed' : 'repeat' %>!important; }
-<% elsif @design.color_bg %>
+<% elsif !@design.color_bg.blank? %>
 /* background color */
 body { background:#<%= @design.color_bg %>!important; }
 <% else %>
