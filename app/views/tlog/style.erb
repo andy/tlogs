@@ -33,9 +33,14 @@ case @design.date_style
 	span.bg_text_date { text-decoration: none; font-size: 26pt; }
 	span.blue { text-decoration: none; font-size: 13pt; }
 <% end %>
-<% unless @design.background_url.blank? %>
+<% if @design.background_url %>
 /* new background */
-div.tlog { background: transparent url(<%= @design.background_url.starts_with?('/') ? image_path(h(@design.background_url)) : h(@design.background_url) %>) <%= @design.background_fixed? ? 'fixed' : 'repeat' %>!important; }
+body { background: transparent url(<%= @design.background_url.starts_with?('/') ? image_path(h(@design.background_url)) : h(@design.background_url) %>) <%= @design.background_fixed? ? 'fixed' : 'repeat' %>!important; }
+<% elsif @design.color_bg %>
+/* background color */
+body { background:#<%= @design.color_bg %>!important; }
+<% else %>
+body { background: #acacac url(<%= image_path 'images/background.gif' %>); }
 <% end %>
 <% unless @design.color_tlog_text.blank? %>
 /* text of tlog */
@@ -53,10 +58,6 @@ div.tlog { background: transparent url(<%= @design.background_url.starts_with?('
 		background:#<%= @design.color_tlog_bg %>!important;
 	<%- end -%>
 }
-<% end %>
-<% unless @design.color_bg.blank? %>
-/* background color */
-.tlog { background:#<%= @design.color_bg %>!important; }
 <% end %>
 <% unless @design.color_sidebar_text.blank? %>
 /* sidebar text */

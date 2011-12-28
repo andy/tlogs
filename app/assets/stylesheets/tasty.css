@@ -294,7 +294,7 @@ div.avatar_holder {
 }
 /* JUST */
 div.tlog {
-	background:#acacac url("/images/background.gif");
+/*  background:#acacac;*/
 	min-height:100%;
 	position:relative;
 	bottom:0;
