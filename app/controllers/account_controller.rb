@@ -142,6 +142,7 @@ class AccountController < ApplicationController
   end
   
   def eula
+    @title = 'Пользовательское соглашение с сервисом Тейсти'
   end
 
   # регистрация, для новичков
