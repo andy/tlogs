@@ -41,7 +41,7 @@ javascripts:
     - app/assets/javascripts/jquery/jquery-1.6.4.min.js
     - app/assets/javascripts/jquery/jquery.noconflict.js
     - app/assets/javascripts/jquery/jquery.hotkeys.js
-    - app/assets/javascripts/jquery/jquery.autoresize.min.js
+    - app/assets/javascripts/jquery/jquery.autoresize.js
     - app/assets/javascripts/jquery/jquery.infinitescroll.min.js
     - app/assets/javascripts/jquery/jquery.fancybox-1.3.4.pack.js
     - app/assets/javascripts/jquery/jquery.timeago.js
@@ -58,7 +58,7 @@ javascripts:
     - app/assets/javascripts/jquery/jquery-1.6.4.min.js
     - app/assets/javascripts/jquery/jquery.noconflict.js
     - app/assets/javascripts/jquery/jquery.hotkeys.js
-    - app/assets/javascripts/jquery/jquery.autoresize.min.js
+    - app/assets/javascripts/jquery/jquery.autoresize.js
     - app/assets/javascripts/jquery/jquery.infinitescroll.min.js
     # - app/assets/javascripts/jquery/jquery.easing-1.3.pack.js
     - app/assets/javascripts/jquery/jquery.fancybox-1.3.4.pack.js
