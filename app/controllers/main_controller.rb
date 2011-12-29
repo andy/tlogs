@@ -178,6 +178,15 @@ class MainController < ApplicationController
     
     @comment_views = User::entries_with_views_for(@entries.map(&:id), current_user)
     
+    @stats = Rails.cache.fetch(["main", "my", "stats", current_user.id].join(':'), :expires_in => 15.minutes) do
+      result              = OpenStruct.new
+      result.days         = (Time.now - current_user.created_at).to_i / 1.day
+      result.faves_count  = Fave.count(:conditions => "entry_user_id = #{current_user.id} AND created_at > '#{24.hours.ago.to_time.to_s(:db)}'")
+      
+      result
+    end
+    
+    
     render :layout => false if should_xhr?
   end
   
