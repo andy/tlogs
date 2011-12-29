@@ -5,34 +5,31 @@
 %>
 <a name="comment<%= comment.id %>"></a>
 <%= "<a name='new'></a>" if @last_comment_viewed == (@comments || @entry.comments).index(comment) %>
-<div class="post_comment<%= ' post_comment_new' if @last_comment_viewed <= (@comments || @entry.comments).index(comment) %><%= ' post_comment_by_anonymous' if is_anonymous_author %>" id="<%= dom_id(comment) %>">				
+<div class="t-post-comment post_comment<%= ' post_comment_new t-post-comment-new' if @last_comment_viewed <= (@comments || @entry.comments).index(comment) %><%= ' t-post-anonymous-comment post_comment_by_anonymous' if is_anonymous_author %>" id="<%= dom_id(comment) %>">				
 	<div class='rel'>
 		<div class='post_comment_avatar<%= ' post_comment_avatar_anonymous' if is_anonymous_author %>'>
-			<% if !is_anonymous_author && !comment.user.nil? && (comment.user.userpic? || comment.user.avatar) %>
-				<%= link_to userpic_tag(comment.user), user_url(comment.user) %>
-			<% end %>
+			<%= link_to userpic_tag(comment.user), user_url(comment.user) if !is_anonymous_author && !comment.user.nil? && (comment.user.userpic? || comment.user.avatar) %>
 		</div>
 		<div class="post_comment_controls">
-			<% if comment.is_owner?(current_user, @entry) %>
-				<%= link_to_remote image_tag('delete.gif', :alt => "удалить этот комментарий", :title => "удалить этот комментарий", :class => 'comment_delete'), :url => @entry.is_anonymous? ? service_url("/main/anonymous/comment_destroy/#{comment.id}") : user_url(@entry.author, entry_comment_path(@entry, comment)).downcase, :method => :delete, :confirm => "Вы действительно хотите удалить этот комментарий?", :alt => 'удалить комментарий', :title => 'удалить комментарий' %>
-			<% else %>
-				<%= image_tag('blank.gif', :size => '12x13') %>
-			<% end %>
-			<% if current_user && !comment.user.nil? && current_user.id != comment.user.id %>
-				<%= link_to_function image_tag('arrow_i.gif', :class => 'img_reply'), "reply_to_comment(#{comment.id});", :id => "reply_to_comment_#{comment.id}", :title => "Ответить на #{is_anonymous_author ? "этот" : comment.user.gender('его', 'её')} комментарий" %>
-				<%= link_to_function image_tag('arrow_g.gif', :class => 'img_reply img_reply_active'), "do_not_reply_to_comment(#{comment.id});", :style => 'display: none;', :id => "replying_to_comment_#{comment.id}", :title => "Не отвечать на #{is_anonymous_author ? "этот" : comment.user.gender('его', 'её')} комментарий" %>
-			<% end %>
+		  <div class='t-post-comment-destroy-holder'>
+  			<% if comment.is_owner?(current_user, @entry) %>
+  			  <%= content_tag :a, '&nbsp;', :href => '#', 'data-url' => @entry.is_anonymous? ? service_url("/main/anonymous/comment_destroy/#{comment.id}") : user_url(@entry.author, entry_comment_path(@entry, comment)).downcase, :class => 't-act-comment-destroy t-post-comment-destroy', :title => 'удалить этот комментарий' %>
+  			<% else %>
+  				<%= image_tag('blank.gif', :size => '9x11', :alt => '', :title => '') %>
+  			<% end %>
+  		</div>
+			
+			<div class='t-post-comment-reply-holder'>
+			  <%= content_tag :a, '&nbsp;', :class => 't-act-comment-reply t-post-comment-reply', :id => "reply_to_comment_#{comment.id}", :title => "Ответить на #{is_anonymous_author ? "этот" : comment.user.gender('его', 'её')} комментарий" if current_user && !comment.user.nil? && current_user.id != comment.user.id %>
+			</div>
 		</div>
 	</div>
 	<div class='comment_text'>
-		<!-- keep this for js reply_to code -->
-			<div style='display: none;' id='comment_author_<%= comment.id %>'><%= is_anonymous_author ? 'аноним' : h(comment.user.url) %></div>
-		<!-- /keep -->
 		<div class='post_comment_author'><%= is_anonymous_author ? 'аноним' : link_to_comment_author(comment, current_site && comment.user_id == current_site.id) %></div>
 		<div class='post_comment_time' title='<%= comment.created_at.to_timestamp_s %>'><%= comment.created_at.distance_between_in_words(Time.now, ' назад') %></div>
 		<div class='post_comment_text'>
 			<%= comment.fetch_cached_or_run_block { |text| white_list_comment text } %>
 		</div>
-		<%= render :partial => 'globals/ban_controls', :locals => { :comment => comment } if current_user && current_user.is_moderator? && @entry.is_anonymous? %>
+		<%= render :partial => 'globals/ban_controls', :locals => { :comment => comment } if @entry.is_anonymous? && is_moderator? %>
 	</div>
 </div>

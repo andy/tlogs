@@ -1171,6 +1171,7 @@ div.post_comment_avatar {
 	float:right;
 	position:relative;
 	top:-15px;
+	z-index: 200;
 }
 
 .comment_string {
@@ -2375,31 +2376,12 @@ a {
 	border-left:3px solid #404040;
 	padding:0 0 0 15px!important;
 }
-.comment_delete {
-	position:relative; 
-	left:319px;
-	position:relative;
-	top:-4px;
-	visibility:hidden;
-}
 .post_comment_controls {
  height:24px;
 }
 .users_nav a {
 	background:white;
 } 
-.img_reply {
-	position:relative;
-	top:-3px;
-	left:-36px;
-	visibility:hidden;
-}
-.img_reply_active {
-	visibility:visible!important;
-	position:relative;
-	top:-3px;
-	left:-33px;
-}
 .post_body:hover div.service_comments, .post_body:hover div.service_link, .post_body:hover div.service_edit, .hover div.service_comments, .hover div.service_link, .hover div.service_edit {
 	display:block;
 }

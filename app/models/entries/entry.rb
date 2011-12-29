@@ -158,13 +158,12 @@ class Entry < ActiveRecord::Base
     if entry.changes.keys.include?('is_private')
       if entry.is_private?
         User.increment_counter(:private_entries_count, entry.user_id)
+        entry.try_watchers_destroy
       else
         User.decrement_counter(:private_entries_count, entry.user_id)
+        entry.try_watchers_update
       end
-    end      
-    
-    # add/remove watchers if entry is became anonymous or private
-    entry.is_private? ? entry.try_watchers_destroy : entry.try_watchers_update
+    end    
   end
 
 

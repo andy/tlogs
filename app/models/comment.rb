@@ -89,6 +89,13 @@ class Comment < ActiveRecord::Base
     user && (user.id == self.user_id || user.id == entry.user_id)
   end
   
+  # returns true if we might suggest blacklisting comment author by *user* when comment is removed
+  # basically, if author is another person and is not in friends with current user then blacklisting might
+  # be an option
+  def suggest_author_blacklisting_by?(user)
+    user.id != self.user.id && !user.all_friend_ids.include?(self.user.id)
+  end
+  
   # deliver comment 
   def deliver!(current_service, reply_to)
     users = []

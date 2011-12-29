@@ -52,23 +52,15 @@ class AnonymousController < ApplicationController
   def comment_destroy
     render :nothing => true and return unless request.delete?
 
+    render :json => false and return unless current_user
+
     @comment = Comment.find_by_id(params[:id])
     
-    if @comment
-      @comment.destroy if current_user && @comment.is_owner?(current_user)
+    render :json => false and return unless @comment
+
+    @comment.destroy if current_user && @comment.is_owner?(current_user) if @comment
     
-      respond_to do |wants|
-        wants.html { flash[:good] = 'Комментарий был удален'; redirect_to service_url(anonymous_path(:action => 'show', :id => @comment.entry_id)) }
-        wants.js # comment_destroy.rjs
-      end
-    else
-      respond_to do |wants|
-        wants.html { flash[:bad] = 'Комментарий не найден'; redirect_to :back }
-        wants.js { render :update do |page|
-          page.call 'window.location.reload'
-        end }
-      end
-    end
+    render :json => { :restorable => false, :blacklistable => @comment.suggest_author_blacklisting_by?(current_user) }
   end
   
   

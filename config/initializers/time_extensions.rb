@@ -10,7 +10,7 @@ class Time
   end
   
   def to_timestamp_s
-    "#{mday} #{month.to_rmonth} #{year}, #{hour}:#{min}"
+    "#{mday} #{month.to_rmonth} #{year}, #{"%02d" % hour}:#{"%02d" % min}"
   end
   
   # Time.now.distance_between_in_words(1.year.ago, ' спустя')

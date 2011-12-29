@@ -238,6 +238,73 @@ a#new_radio_schedule_showform { font-size: 1.4em; font-family: Tahoma; color: #3
 .post_comment_ban { font-size: 10px; color: #ccc; }
 .post_comment_ban a { color: #ccc; text-decoration: none; }
 
+.t-post-comment {
+  .t-post-comment-destroy-holder {
+    position: relative;
+    left: 319px;
+    top: -4px;
+    width: 9px;
+    height: 11px;
+  }
+  .t-post-comment-destroy {
+    background: url(/images/delete.gif) no-repeat;
+    width: 9px;
+    height: 11px;
+    display: block;
+    visibility: hidden;
+    cursor: hand;
+    cursor: pointer;
+    text-decoration: none;
+  }
+  .t-post-comment-destroyed {
+    position: absolute;
+    left: 0px;
+    width: 330px;
+    font-size: 11px;
+    padding: 20px 100px;
+    text-align: center;
+    z-index: 10;
+  }
+  
+  .t-post-comment-reply-holder {
+    position: relative;
+    top: -18px;
+    left: -25px;
+    width: 20px;
+    height: 20px;    
+  }
+  .t-post-comment-reply {
+    background: url(/images/arrow_i.gif) no-repeat 5px 5px;
+    width: 20px;
+    height: 20px;
+    display: none;
+    cursor: hand;
+    cursor: pointer;
+    
+    &:hover {
+      background: url(/images/arrow_g.gif) no-repeat 5px 5px;
+    }
+  }
+  
+  .t-post-comment-replied {
+    display: block;
+    background: url(/images/arrow_g.gif) no-repeat 5px 5px;
+  }
+  
+  &:hover {
+    .t-post-comment-reply {
+      display: block;
+      &:hover {
+        display: block;
+      }
+    }
+    .t-post-comment-destroy {
+      visibility: visible;
+    }
+  }
+}
+
+
 .user_rel .hover { visibility: hidden; }
 .user_rel:hover .hover { visibility: visible; }
 

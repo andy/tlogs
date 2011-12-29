@@ -4,7 +4,7 @@
 	<a name="comments"></a>
 
 	<% if @entry.comments_enabled? || @entry.comments.size > 0 %>
-		<div class="post_comments">
+		<div class="t-post-comments post_comments">
 			<div class="top_comments_text">
 				<% if @entry.comments.size == 0 %>
 					Комментариев еще нет
@@ -16,8 +16,8 @@
   		<% if current_user && current_user.id != @entry.user_id %>
   			<div class='rel'>
   				<div class='subscribe_controls'>
-  					<%= link_to_remote image_tag('letter.gif', :size => '17x15', :title => 'подписаться на комментарии'), { :url => service_url(anonymous_path(:action => 'subscribe', :id => @entry)) }, :id => 'subscribe_link', :style => "display: #{!@entry.subscriber_ids.include?(current_user.id) ? 'block' : 'none'}", :title => 'подписаться на новые комментарии' %>
-  					<%= link_to_remote image_tag('unletter.gif', :size => '17x15', :title => 'отписаться от комментариев'), { :url => service_url(anonymous_path(:action => 'unsubscribe', :id => @entry)) }, :id => 'unsubscribe_link', :style => "display: #{@entry.subscriber_ids.include?(current_user.id) ? 'block' : 'none'}", :title => 'отписаться от комментариев' %>
+  					<%= link_to_remote image_tag('letter.gif', :size => '17x15', :alt => 'подписаться'), { :url => service_url(anonymous_path(:action => 'subscribe', :id => @entry)) }, :id => 'subscribe_link', :style => "display: #{!@entry.subscriber_ids.include?(current_user.id) ? 'block' : 'none'}", :title => 'подписаться на новые комментарии' %>
+  					<%= link_to_remote image_tag('unletter.gif', :size => '17x15', :alt => 'отписаться'), { :url => service_url(anonymous_path(:action => 'unsubscribe', :id => @entry)) }, :id => 'unsubscribe_link', :style => "display: #{@entry.subscriber_ids.include?(current_user.id) ? 'block' : 'none'}", :title => 'отписаться от комментариев' %>
   				</div>
   			</div>
   		<% elsif current_user && current_user.id == @entry.user_id %>
@@ -41,3 +41,9 @@
 		<div class='return_from_permalink'>комментарии были отключены владельцем тлога</div>
 	<% end %>
 </div>
+<script type='text/javascript'>
+  jQuery(function() {
+    jQuery('#subscribe_link').twipsy({ offset: 5, delayIn: 2000 });
+    jQuery('#unsubscribe_link').twipsy({ offset: 5, delayIn: 2000 });
+  });
+</script>

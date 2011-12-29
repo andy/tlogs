@@ -126,40 +126,6 @@ function emulate_rails_flash(klass, message) {
 	jQuery('#flash_holder #flash_message').addClass(klass).find('p').text(message);
 }
 
-var reply_to_comments = new Array;
-var reply_to_string = null;
-
-function _update_comment_textarea( ) {
-  comment = $('comment_comment');
-
-  if(reply_to_comments.length > 0) {
-    reply_to_string = '<b>' + reply_to_comments.map( function(id) { return $('comment_author_'+id).innerHTML; } ).join(', ') + ':</b>';
-    if (comment.value.match(/^<b>.*:<\/b>/)) {
-      comment.value = comment.value.replace(/^<b>.*:<\/b>/i, reply_to_string);
-    } else {
-      comment.value = reply_to_string + ' ' + comment.value;
-    }
-  } else if (comment.value.match(/^<b>.*:<\/b>/)) {
-    comment.value = comment.value.replace(/^<b>.*:<\/b>/i, '');
-  }
-}
-
-function reply_to_comment(id) {
-  Element.show('replying_to_comment_' + id);
-  Element.hide('reply_to_comment_' + id);
-  if(reply_to_comments.indexOf(id) == -1) reply_to_comments.push(id);
-  $('comment_reply_to').value = reply_to_comments.join(',');
-  _update_comment_textarea();
-}
-
-function do_not_reply_to_comment(id) {
-  Element.hide('replying_to_comment_' + id);
-  Element.show('reply_to_comment_' + id);
-  if(reply_to_comments.indexOf(id) != -1) reply_to_comments = reply_to_comments.without(id);
-  $('comment_reply_to').value = reply_to_comments.join(',');  
-  _update_comment_textarea();
-}
-
 jQuery(document).ready(function() {	
 	jQuery('a, button').focus(function(){ this.blur();} );
 
