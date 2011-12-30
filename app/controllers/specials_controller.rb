@@ -20,4 +20,10 @@ class SpecialsController < ApplicationController
     render :layout => false
   end
   
+  def foreveralonenewyear
+    @title = "Forever Alone Tasty New Year"
+    
+    @addr  = Ipgeobase.lookup(request.remote_ip)
+    @city  = @addr[:city] if @addr && @addr[:city]
+  end
 end
