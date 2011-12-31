@@ -44,7 +44,7 @@
       .channel.active { background-color: #4A554A; }
       .channel:hover { background-color: #4A554A; }
       .message { clear: both; border-bottom: 1px solid #758A75; width: 100%; margin-top: 10px; }
-      .message .userpic { float: left; width: 40px; height: 40px; margin-right: 20px; }
+      .message .userpic { float: left; width: 40px; height: 40px; margin-right: 10px; text-align: center; }
       .message .userpic img {  }
       .message .info { font-size: 11px; margin-bottom: 10px; }
       .message .info .username { display: inline; }
@@ -80,7 +80,7 @@
         jQuery('textarea').placeholder().autoResize();
         jQuery('.timestamp').timeago();
         var cn_height = jQuery(window).height() - jQuery('.top').height() - jQuery('#compose').height() - 100;
-        jQuery('#channels .content').css({ height: cn_height + 'px' }).lionbars();
+        jQuery('#channels .content').css({ height: cn_height + 'px' });
         jQuery('.channel').live('click', function() {
           setActiveChannel(jQuery(this).data('uuid'));
         });
@@ -100,10 +100,13 @@
         }
         
         function setActiveChannel(channel_uuid) {
+          if(current_uuid) {
+            jQuery('#chanmsg' + current_uuid).hide();
+            jQuery('#channel' + current_uuid).removeClass('active');
+          }
+          
           resetCounter(channel_uuid);
-          jQuery('#chanmsg' + current_uuid).hide();
           jQuery('#chanmsg' + channel_uuid).show();
-          jQuery('#channel' + current_uuid).removeClass('active');
           jQuery('#channel' + channel_uuid).addClass('active');
           current_uuid = channel_uuid;
         }
@@ -130,10 +133,8 @@
         
         function renderMessage(channel_uuid, message) {
           if(jQuery('#message' + message.id).length == 0) {
-            console.log('rendering message: ' + message);
           
             var output = Mustache.to_html(tpl_message, message);
-            console.log('uuid is #chanmsg' + channel_uuid);
             jQuery('#chanmsg' + channel_uuid).append(output);
             jQuery('#message' + message.id + ' .timestamp').timeago();
           
@@ -175,6 +176,8 @@
             var output = Mustache.to_html(tpl_chanmsg, channel)
             jQuery('#channels .content').append(output);
             
+            jQuery('#chanmsg' + channel.uuid).css({ height: cn_height + 'px' }).lionbars();
+            
             if(current_uuid == null) {
               current_uuid = channel.uuid;
             } else {
@@ -184,8 +187,6 @@
         }
         
         function renderChannel(channel) {
-          console.log('rendering channel: ' + channel);
-          
           createChannel(channel);
           
           for(var i = 0; i < channel.messages.length; i ++) {
@@ -194,8 +195,6 @@
         }
         
         function renderRecent(data) {
-          console.log('rendering recent: ' + data);
-          
           for(var i = 0; i < data.length; i ++) {
             renderChannel(data[i]);
           }
