@@ -1,0 +1,283 @@
+!!! 5
+%html{:lang => 'ru'}
+  %head
+    = application_title
+    %meta{:charset => 'utf8'}
+    %meta{:robots => 'index,follow'}
+    %meta{'http-equiv' => 'imagetoolbar', :content => 'no'}
+    %link{:rel => 'shortcut icon', :href => image_path('specials/newyear/favicon.ico')}
+    
+    = stylesheet_link_tag 'specials/newyear/newyear.css', 'specials/newyear/lionbars.css', 'specials/newyear/formalize.css'
+    = tasty_include_javascripts :specials
+    = javascript_include_tag 'specials/newyear/mustache.js', 'specials/newyear/jquery.lionbars.0.3.min.js', 'specials/newyear/jquery.formalize.min.js'
+    
+    :css
+      .clearfix:after {
+      	content: ".";
+      	display: block;
+      	clear: both;
+      	visibility: hidden;
+      	line-height: 0;
+      	height: 0;
+      }
+      
+      .clearfix {
+      	display: inline-block;
+      }
+      
+      html[xmlns] .clearfix {
+      	display: block;
+      }
+      
+      * html .clearfix {
+      	height: 1%;
+      }
+      
+      #chat { width: 600px; margin: 0 auto; }
+      #compose { width: 100%; }
+      #compose textarea { width: 500px; height: 4em; }
+      #compose input#submit { margin-left: 415px; margin-top: 10px; }
+      #compose .userpic { float: left; width: 50px; height: 50px; }
+      
+      
+      .channel { float: left; display: block; border: 1px solid #606D5F; border-bottom: 0; border-top-left-radius: 4px; border-top-right-radius: 4px; padding: 4px; margin-right: 5px; font-family: Arial, Verdana, Tahoma; font-weight: bold; font-size: 14px; cursor: hand; cursor: pointer; }
+      .channel.active { border: 1px solid #4A554A; }
+      .channel:hover { border: 1px solid #4A554A; border-bottom: 0px; }
+      .message { clear: both; border-bottom: 1px solid #ccc; width: 100%; margin-top: 10px; }
+      .message .userpic { float: left; width: 40px; height: 40px; margin-right: 20px; }
+      .message .userpic img { width: 32px; height: 32px; }
+      .message .info { font-size: 11px; margin-bottom: 10px; }
+      .message .info .username { display: inline; }
+      .message .info .timestamp { text-align: right; float: right; display: inline; visibility: hidden; }
+      .message:hover .timestamp { visibility: visible; }
+      .message .text { float: left; margin-bottom: 10px; }
+
+    :javascript
+      jQuery(document).ready(function($) {
+        var tpl_channel = "<div class='channel' id='channel{{uuid}}' data-uuid='{{uuid}}' data-name='{{name}}'>{{name}}</div>";
+        var tpl_chanmsg = "<div class='messages' id='chanmsg{{uuid}}' data-uuid='{{uuid}}'></div>";
+        var tpl_message = "\
+        <div class='message clearfix' id='message{{id}}' data-id='{{id}}'> \
+          {{#userpic}} \
+            <div class='userpic'> \
+              <a href='http://{{url}}.mmm-tasty.ru/' target='_blank'> \
+                <img src='{{userpic}}' alt='{{url}}' /> \
+              </a> \
+            </div> \
+          {{/userpic}} \
+          {{^userpic}} \
+            <div class='userpic'>&nbsp;</div> \
+          {{/userpic}} \
+          <div class='info'> \
+            <div class='username'><a href='http://{{url}}.mmm-tasty.ru/' target='_blank'>{{url}}</a></div> \
+            <div class='timestamp' title='{{iso8601}}'>{{time}}</div> \
+          </div> \
+          <div class='text'>{{text}}</div> \
+        </div>";
+        var current_uuid = null;
+        var autojoin     = #{@autojoin.to_json};
+        
+        jQuery('textarea').placeholder().autoResize();
+        jQuery('.timestamp').timeago();
+        var cn_height = jQuery(window).height() - jQuery('.top').height() - jQuery('#compose').height() - 100;
+        jQuery('#channels .content').css({ height: cn_height + 'px' }).lionbars();
+        jQuery('.channel').live('click', function() {
+          setActiveChannel(jQuery(this).data('uuid'));
+        });
+        jQuery('textarea').bind('keydown', 'Ctrl+return', function(evt) {
+          jQuery(this).closest('form').submit();
+          return false;
+        });
+        
+        
+        function bootstrap() {
+          var defs = new Array();
+          for(var i = 0; i < autojoin.length; i ++) {
+            defs += joinChannel(autojoin[i]);
+          }
+          
+          jQuery.when(defs).done(loadRecent);
+        }
+        
+        function setActiveChannel(channel_uuid) {
+          resetCounter(channel_uuid);
+          jQuery('#chanmsg' + current_uuid).hide();
+          jQuery('#chanmsg' + channel_uuid).show();
+          jQuery('#channel' + current_uuid).removeClass('active');
+          jQuery('#channel' + channel_uuid).addClass('active');
+          current_uuid = channel_uuid;
+        }
+        
+        function resetCounter(channel_uuid) {
+          var text = jQuery('#channel' + channel_uuid).text();
+          var newtext = text.replace(/^\((\d+)\)\s+/, '');
+          jQuery('#channel' + channel_uuid).text(newtext);
+        }
+        
+        function updateCounter(channel_uuid) {
+          if(channel_uuid == current_uuid) {
+            return;
+          }
+          var text = jQuery('#channel' + channel_uuid).text();
+          if (text.match(/^\((\d+)\)\s+/)) {
+            var update  = parseInt(text.match(/^\((\d+)\)/)[1]) + 1;
+            var newtext = text.replace(/^\((\d+)\)\s+/, '(' + update + ') ');
+            jQuery('#channel' + channel_uuid).text(newtext);
+          } else {
+            jQuery('#channel' + channel_uuid).text('(1) ' + text);
+          }
+        }
+        
+        function renderMessage(channel_uuid, message) {
+          if(jQuery('#message' + message.id).length == 0) {
+            console.log('rendering message: ' + message);
+          
+            var output = Mustache.to_html(tpl_message, message);
+            console.log('uuid is #chanmsg' + channel_uuid);
+            jQuery('#chanmsg' + channel_uuid).append(output);
+            jQuery('#message' + message.id + ' .timestamp').timeago();
+          
+            updateCounter(channel_uuid);
+          }
+        }
+        
+        function joinChannel(name) {
+          jQuery.ajax({
+            url: '/specials/join',
+            type: 'post',
+            dataType: 'json',
+            data: {
+              authenticity_token: window._token,
+              name: name
+            },
+            success: renderRecent
+          });
+        }
+        
+        function leaveChannel(name) {
+          jQuery.ajax({
+            url: '/specials/leave',
+            type: 'post',
+            dataType: 'json',
+            data: {
+              authenticity_token: window._token,
+              name: name
+            },
+            success: closeChannel
+          });
+        }
+        
+        function createChannel(channel) {
+          if(jQuery('#channel' + channel.uuid).length == 0) {
+            var output = Mustache.to_html(tpl_channel, channel);
+            jQuery('#channels .list').append(output);
+            
+            var output = Mustache.to_html(tpl_chanmsg, channel)
+            jQuery('#channels .content').append(output);
+            
+            if(current_uuid == null) {
+              current_uuid = channel.uuid;
+            } else {
+              jQuery('#chanmsg' + channel.uuid).hide();
+            }
+          }
+        }
+        
+        function renderChannel(channel) {
+          console.log('rendering channel: ' + channel);
+          
+          createChannel(channel);
+          
+          for(var i = 0; i < channel.messages.length; i ++) {
+            renderMessage(channel.uuid, channel.messages[i]);
+          }
+        }
+        
+        function renderRecent(data) {
+          console.log('rendering recent: ' + data);
+          
+          for(var i = 0; i < data.length; i ++) {
+            renderChannel(data[i]);
+          }
+        }
+        
+        function loadRecent() {
+          jQuery.ajax({
+            url: '/specials/read',
+            type: 'post',
+            dataType: 'json',
+            data: {
+              authenticity_token: window._token
+            },
+            success: renderRecent
+          });
+        }
+        
+        bootstrap();
+        
+        jQuery('#load_recent').click(loadRecent);
+        
+        jQuery('#compose form').submit(function() {
+          jQuery.ajax({
+            url: '/specials/post',
+            type: 'post',
+            dataType: 'json',
+            data: {
+              authenticity_token: window._token,
+              name: jQuery('#channels .channel.active').data('name'),
+              text: jQuery('#compose form textarea').val()
+            },
+            success: function(data) {
+              console.log(data);
+            }
+          });
+          return false;
+        });
+        
+        
+      });
+
+  %body
+  
+    #wrapper
+      .top
+        .btm-sh-top
+        .top-i
+          - if current_user
+            .b-who= link_to_tlog current_user
+
+          .b-logotype
+            = link_to image_tag('specials/newyear/tasty.png', :alt => 'Mmm... Tasty'), '/'
+
+          %ul.b-navigation
+            %li
+              %a{:href => '/main/about'} О проекте
+            %li
+              %a{:href => '/main/news'} Новости
+            %li
+              %a{:href => '/main/last'} Лучшее
+            %li
+              %a{:href => '/main/anonymous'} Анонимки
+            - if current_user
+              %li
+                %a{:href => '/main/my'} Моё
+            %li
+              %a{:href => '/main/live'} Прямой эфир
+            %li
+              %a{:href => '/main/random'} День из жизни
+
+      .middle
+        #chat
+          #channels
+            .list.clearfix
+            
+            .content
+
+          
+          #compose
+            .userpic= userpic_tag(current_user, :width => 32)
+            %form
+              %textarea{:placeholder => 'Введите текст сообщения ...'}
+              %input#submit{:type => 'submit', :value => 'Отправить'}
+  
+    = render :partial => 'globals/counters' if Rails.env.production?
