@@ -144,7 +144,7 @@
         
         function joinChannel(name) {
           jQuery.ajax({
-            url: '/specials/join',
+            url: '/specials/newyear/join',
             type: 'post',
             dataType: 'json',
             data: {
@@ -157,7 +157,7 @@
         
         function leaveChannel(name) {
           jQuery.ajax({
-            url: '/specials/leave',
+            url: '/specials/newyear/leave',
             type: 'post',
             dataType: 'json',
             data: {
@@ -179,7 +179,7 @@
             jQuery('#chanmsg' + channel.uuid).css({ height: cn_height + 'px' }).lionbars();
             
             if(current_uuid == null) {
-              current_uuid = channel.uuid;
+              setActiveChannel(channel.uuid);
             } else {
               jQuery('#chanmsg' + channel.uuid).hide();
             }
@@ -210,7 +210,7 @@
         
         function loadRecent() {
           jQuery.ajax({
-            url: '/specials/read',
+            url: '/specials/newyear/read',
             type: 'post',
             dataType: 'json',
             data: {
@@ -227,7 +227,7 @@
           jQuery(this).find('textarea').val('');
           
           jQuery.ajax({
-            url: '/specials/post',
+            url: '/specials/newyear/post',
             type: 'post',
             dataType: 'json',
             data: {
