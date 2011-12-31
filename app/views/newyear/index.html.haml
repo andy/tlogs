@@ -34,16 +34,17 @@
       }
       
       #chat { width: 600px; margin: 0 auto; }
-      #compose { width: 100%; }
+      #compose { width: 100%; margin-top: 10px; }
       #compose textarea { width: 500px; height: 4em; }
       #compose input#submit { margin-left: 415px; margin-top: 10px; }
-      #compose .userpic { float: left; width: 50px; height: 50px; }
+      #compose .userpic { float: left; width: 50px; height: 50px; text-align: center; }
       
       
       .channel { float: left; display: block; background-color: #606D5F;  padding: 6px; margin-right: 5px; font-family: Arial, Verdana, Tahoma; font-weight: bold; font-size: 14px; cursor: hand; cursor: pointer; }
       .channel.active { background-color: #4A554A; }
       .channel:hover { background-color: #4A554A; }
       .message { clear: both; border-bottom: 1px solid #758A75; width: 100%; margin-top: 10px; }
+      .message .rel { float: left; width: 400px; }
       .message .userpic { float: left; width: 40px; height: 40px; margin-right: 10px; text-align: center; }
       .message .userpic img {  }
       .message .info { font-size: 11px; margin-bottom: 10px; }
@@ -68,11 +69,13 @@
           {{^userpic}} \
             <div class='userpic'>&nbsp;</div> \
           {{/userpic}} \
-          <div class='info'> \
-            <div class='username'><a href='http://{{url}}.mmm-tasty.ru/' target='_blank'>{{url}}</a></div> \
-            <div class='timestamp' title='{{iso8601}}'>{{time}}</div> \
+          <div class='rel'> \
+            <div class='info'> \
+              <div class='username'><a href='http://{{url}}.mmm-tasty.ru/' target='_blank'>{{url}}</a></div> \
+              <div class='timestamp' title='{{iso8601}}'>{{time}}</div> \
+            </div> \
+            <div class='text'>{{text}}</div> \
           </div> \
-          <div class='text'>{{text}}</div> \
         </div>";
         var current_uuid = null;
         var autojoin     = #{@autojoin.to_json};
