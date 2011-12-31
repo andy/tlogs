@@ -13,7 +13,7 @@
     
     :javascript
       jQuery(document).ready(function($) {
-        var tpl_channel = "<div class='channel' id='channel{{uuid}}' data-uuid='{{uuid}}' data-name='{{name}}'>{{name}}</div>";
+        var tpl_channel = "<div class='channel' id='channel{{uuid}}' data-uuid='{{uuid}}' data-name='{{name}}'><span class='counter' data-value='0'></span>{{name}}</div>";
         var tpl_chanmsg = "<div class='scrollbars' id='scrollbar{{uuid}}'><div class='viewport' id='viewport{{uuid}}'><div class='overview' id='chanmsg{{uuid}}' data-uuid='{{uuid}}'></div></div></div>";
         var tpl_message = "\
         <div class='message clearfix' id='message{{id}}' data-id='{{id}}'> \
@@ -37,6 +37,7 @@
         </div>";
         var current_uuid = null;
         var autojoin     = #{@autojoin.to_json};
+        var last_msg_ids = {};
         
         jQuery('textarea').placeholder() // .autoResize();
         var cn_height = jQuery(window).height() - jQuery('.top').height() - jQuery('#compose').height() - 100;
@@ -107,28 +108,34 @@
         }
         
         function resetCounter(channel_uuid) {
-          var text = jQuery('#channel' + channel_uuid).text();
-          var newtext = text.replace(/^\((\d+)\)\s+/, '');
-          jQuery('#channel' + channel_uuid).text(newtext);
+          var obj  = jQuery('#channel' + channel_uuid + ' .counter')
+          obj.data('value', 0);
+          obj.hide();
         }
         
         function updateCounter(channel_uuid) {
           if(channel_uuid == current_uuid) {
             return;
           }
-          var text = jQuery('#channel' + channel_uuid).text();
-          if (text.match(/^\((\d+)\)\s+/)) {
-            var update  = parseInt(text.match(/^\((\d+)\)/)[1]) + 1;
-            var newtext = text.replace(/^\((\d+)\)\s+/, '(' + update + ') ');
-            jQuery('#channel' + channel_uuid).text(newtext);
+          var obj   = jQuery('#channel' + channel_uuid + ' .counter')
+          var value = obj.data('value')
+          if (value > 0) {
+            value += 1
+            obj.data('value', value);
+            obj.text('(' + value + ')');
           } else {
-            jQuery('#channel' + channel_uuid).text('(1) ' + text);
+            obj.data('value', 1);
+            obj.text('(1)');
           }
+          obj.show();
         }
         
         function renderMessage(channel_uuid, message) {
           if(jQuery('#message' + message.id).length == 0) {
           
+            var curid = last_msg_ids[channel_uuid] || 0;
+            last_msg_ids[channel_uuid] = Math.max(curid, message.seq);
+            
             var output = Mustache.to_html(tpl_message, message);
             jQuery('#chanmsg' + channel_uuid).append(output);
             jQuery('#message' + message.id + ' .timestamp').timeago();
@@ -167,8 +174,15 @@
           });
         }
         
+        function closeChannel(data) {
+          delete(last_msg_ids[data.uuid]);
+          
+          /* not implemented */
+        }
+        
         function createChannel(channel) {
           if(jQuery('#scrollbar' + channel.uuid).length == 0) {
+            last_msg_ids[channel.uuid] = 0;
             var output = Mustache.to_html(tpl_channel, channel);
             jQuery('#channels .list').append(output);
             
@@ -214,7 +228,8 @@
             type: 'post',
             dataType: 'json',
             data: {
-              authenticity_token: window._token
+              authenticity_token: window._token,
+              after: last_msg_ids
             },
             error: ajaxError,
             success: renderRecent
@@ -266,7 +281,7 @@
             .b-who= link_to_tlog current_user
 
           .b-logotype
-            = link_to image_tag('specials/newyear/tasty.png', :alt => 'Mmm... Tasty'), '/'
+            = link_to image_tag('specials/newyear/tasty.png', :alt => 'Mmm... Tasty') + image_tag('specials/newyear/hat_ico.gif', :id => 'hat_ico'), '/'
 
           %ul.b-navigation
             %li

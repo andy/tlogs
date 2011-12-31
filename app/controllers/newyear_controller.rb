@@ -39,24 +39,28 @@ class NewyearController < ApplicationController
   def read
     chat = TastyChat.for(:user => current_user, :redis => $redis)
 
+    after  = params[:after] || {}
     result = []
-    chat.channels.each { |chan| result << make_channel_recent(chan) }
+    chat.channels.each { |chan| result << make_channel_recent(chan, after[chan.uuid].try(:to_i)) }
     
     render :json => result
   end
   
   protected
-    def make_channel_recent(channel)
+    def make_channel_recent(channel, after_seq = nil)
       recent = channel.recent.sort_by { |message| message[:id] }.map do |message|
+        next if after_seq && message[:id] <= after_seq
+
         user_details = make_user_details(message[:user])
         
         {
           :id       => [channel.uuid, message[:id]].join('-'),
+          :seq      => message[:id],
           :text     => message[:text],
           :iso8601  => Time.at(message[:stamp]).getutc.iso8601,
           :time     => Russian::strftime(Time.at(message[:stamp]), '%d %B %Y в %H:%M')
         }.merge(user_details)
-      end
+      end.compact
       
       { :name => channel.name, :uuid => channel.uuid, :messages => recent }
     end
