@@ -5,11 +5,12 @@
     %meta{:charset => 'utf8'}
     %meta{:robots => 'index,follow'}
     %meta{'http-equiv' => 'imagetoolbar', :content => 'no'}
-    %link{:rel => 'shortcut icon', :href => image_path('specials/newyear/favicon.ico')}
+    %link{:rel => 'shortcut icon', :href => '/images/specials/newyear/favicon.ico'}
     
     = stylesheet_link_tag 'specials/newyear/newyear.css', 'specials/newyear/scrollbar.css', 'specials/newyear/formalize.css'
     = tasty_include_javascripts :specials
     = javascript_include_tag 'specials/newyear/mustache.js', 'specials/newyear/jquery.tinyscrollbar.js', 'specials/newyear/jquery.formalize.min.js', 'specials/newyear/spin.min.js'
+    = render :partial => 'globals/gajs'
     
     :javascript
       jQuery(document).ready(function($) {
