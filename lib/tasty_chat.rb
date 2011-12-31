@@ -45,7 +45,7 @@ class TastyChatChannel
 
   def initialize chat, name
     @chat = chat
-    @name = name
+    @name = name || 'Лепрозорий'
   end
   
   def uuid

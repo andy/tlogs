@@ -7,56 +7,14 @@
     %meta{'http-equiv' => 'imagetoolbar', :content => 'no'}
     %link{:rel => 'shortcut icon', :href => image_path('specials/newyear/favicon.ico')}
     
-    = stylesheet_link_tag 'specials/newyear/newyear.css', 'specials/newyear/lionbars.css', 'specials/newyear/formalize.css'
+    = stylesheet_link_tag 'specials/newyear/newyear.css', 'specials/newyear/scrollbar.css', 'specials/newyear/formalize.css'
     = tasty_include_javascripts :specials
-    = javascript_include_tag 'specials/newyear/mustache.js', 'specials/newyear/jquery.lionbars.0.3.min.js', 'specials/newyear/jquery.formalize.min.js'
+    = javascript_include_tag 'specials/newyear/mustache.js', 'specials/newyear/jquery.tinyscrollbar.js', 'specials/newyear/jquery.formalize.min.js', 'specials/newyear/spin.min.js'
     
-    :css
-      .clearfix:after {
-      	content: ".";
-      	display: block;
-      	clear: both;
-      	visibility: hidden;
-      	line-height: 0;
-      	height: 0;
-      }
-      
-      .clearfix {
-      	display: inline-block;
-      }
-      
-      html[xmlns] .clearfix {
-      	display: block;
-      }
-      
-      * html .clearfix {
-      	height: 1%;
-      }
-      
-      #chat { width: 600px; margin: 0 auto; }
-      #compose { width: 100%; margin-top: 10px; }
-      #compose textarea { width: 500px; height: 4em; }
-      #compose input#submit { margin-left: 415px; margin-top: 10px; }
-      #compose .userpic { float: left; width: 50px; height: 50px; text-align: center; }
-      
-      
-      .channel { float: left; display: block; background-color: #606D5F;  padding: 6px; margin-right: 5px; font-family: Arial, Verdana, Tahoma; font-weight: bold; font-size: 14px; cursor: hand; cursor: pointer; }
-      .channel.active { background-color: #4A554A; }
-      .channel:hover { background-color: #4A554A; }
-      .message { clear: both; border-bottom: 1px solid #758A75; width: 100%; margin-top: 10px; }
-      .message .rel { float: left; width: 400px; }
-      .message .userpic { float: left; width: 40px; height: 40px; margin-right: 10px; text-align: center; }
-      .message .userpic img {  }
-      .message .info { font-size: 11px; margin-bottom: 10px; }
-      .message .info .username { display: inline; }
-      .message .info .timestamp { text-align: right; float: right; display: inline; visibility: hidden; }
-      .message:hover .timestamp { visibility: visible; }
-      .message .text { float: left; margin-bottom: 10px; }
-
     :javascript
       jQuery(document).ready(function($) {
         var tpl_channel = "<div class='channel' id='channel{{uuid}}' data-uuid='{{uuid}}' data-name='{{name}}'>{{name}}</div>";
-        var tpl_chanmsg = "<div class='messages' id='chanmsg{{uuid}}' data-uuid='{{uuid}}'></div>";
+        var tpl_chanmsg = "<div class='scrollbars' id='scrollbar{{uuid}}'><div class='viewport' id='viewport{{uuid}}'><div class='overview' id='chanmsg{{uuid}}' data-uuid='{{uuid}}'></div></div></div>";
         var tpl_message = "\
         <div class='message clearfix' id='message{{id}}' data-id='{{id}}'> \
           {{#userpic}} \
@@ -80,9 +38,12 @@
         var current_uuid = null;
         var autojoin     = #{@autojoin.to_json};
         
-        jQuery('textarea').placeholder().autoResize();
-        jQuery('.timestamp').timeago();
+        jQuery('textarea').placeholder() // .autoResize();
         var cn_height = jQuery(window).height() - jQuery('.top').height() - jQuery('#compose').height() - 100;
+        if (cn_height < 100) {
+          cn_height = 100;
+        }
+        
         jQuery('#channels .content').css({ height: cn_height + 'px' });
         jQuery('.channel').live('click', function() {
           setActiveChannel(jQuery(this).data('uuid'));
@@ -91,6 +52,33 @@
           jQuery(this).closest('form').submit();
           return false;
         });
+        
+        $.fn.spin = function(opts) {
+          this.each(function() {
+            var $this = $(this),
+                data = $this.data();
+                
+            if (data.spinner) {
+              data.spinner.stop();
+              delete data.spinner;
+            }
+            if (opts !== false) {
+              data.spinner = new Spinner($.extend({color: $this.css('color')}, opts)).spin(this);
+            }
+          });
+          return this;
+        };
+        
+        var small_spin_options = {
+          lines: 10, // The number of lines to draw
+          length: 3, // The length of each line
+          width: 2, // The line thickness
+          radius: 1, // The radius of the inner circle
+          color: '#000', // #rgb or #rrggbb
+          speed: 1, // Rounds per second
+          trail: 54, // Afterglow percentage
+          shadow: false // Whether to render a shadow
+        }
         
         
         function bootstrap() {
@@ -102,14 +90,18 @@
           jQuery.when(defs).done(loadRecent);
         }
         
+        function ajaxError() {
+          jQuery('#chat_errors').show();
+        }
+        
         function setActiveChannel(channel_uuid) {
           if(current_uuid) {
-            jQuery('#chanmsg' + current_uuid).hide();
+            jQuery('#scrollbar' + current_uuid).hide();
             jQuery('#channel' + current_uuid).removeClass('active');
           }
           
           resetCounter(channel_uuid);
-          jQuery('#chanmsg' + channel_uuid).show();
+          jQuery('#scrollbar' + channel_uuid).show().tinyscrollbar_update('bottom');
           jQuery('#channel' + channel_uuid).addClass('active');
           current_uuid = channel_uuid;
         }
@@ -140,8 +132,10 @@
             var output = Mustache.to_html(tpl_message, message);
             jQuery('#chanmsg' + channel_uuid).append(output);
             jQuery('#message' + message.id + ' .timestamp').timeago();
-          
+            
             updateCounter(channel_uuid);
+            
+            jQuery('#scrollbar' + channel_uuid).tinyscrollbar_update('bottom');
           }
         }
         
@@ -154,6 +148,7 @@
               authenticity_token: window._token,
               name: name
             },
+            error: ajaxError,
             success: renderRecent
           });
         }
@@ -167,24 +162,26 @@
               authenticity_token: window._token,
               name: name
             },
+            error: ajaxError,
             success: closeChannel
           });
         }
         
         function createChannel(channel) {
-          if(jQuery('#channel' + channel.uuid).length == 0) {
+          if(jQuery('#scrollbar' + channel.uuid).length == 0) {
             var output = Mustache.to_html(tpl_channel, channel);
             jQuery('#channels .list').append(output);
             
             var output = Mustache.to_html(tpl_chanmsg, channel)
             jQuery('#channels .content').append(output);
             
-            jQuery('#chanmsg' + channel.uuid).css({ height: cn_height + 'px' }).lionbars();
+            jQuery('#viewport' + channel.uuid).css({ height: cn_height + 'px' });
+            jQuery('#scrollbar' + channel.uuid).tinyscrollbar();
             
             if(current_uuid == null) {
               setActiveChannel(channel.uuid);
             } else {
-              jQuery('#chanmsg' + channel.uuid).hide();
+              jQuery('#scrollbar' + channel.uuid).hide();
             }
           }
         }
@@ -219,6 +216,7 @@
             data: {
               authenticity_token: window._token
             },
+            error: ajaxError,
             success: renderRecent
           });
         }
@@ -227,21 +225,31 @@
         
         jQuery('#compose form').submit(function() {
           var text = jQuery(this).find('textarea').val();
-          jQuery(this).find('textarea').val('');
+          if(text && text.length > 0) {
+            jQuery(this).find('textarea').val('').attr('disabled', 'disabled');
+            jQuery('#submit').attr('disabled', 'disabled');
+            jQuery('#submit_spinner').spin(small_spin_options);
           
-          jQuery.ajax({
-            url: '/specials/newyear/post',
-            type: 'post',
-            dataType: 'json',
-            data: {
-              authenticity_token: window._token,
-              name: jQuery('#channels .channel.active').data('name'),
-              text: text
-            },
-            success: function(data) {
-              console.log(data);
-            }
-          });
+            jQuery.ajax({
+              url: '/specials/newyear/post',
+              type: 'post',
+              dataType: 'json',
+              data: {
+                authenticity_token: window._token,
+                name: jQuery('#channels .channel.active').data('name'),
+                text: text
+              },
+              error: ajaxError,
+              complete: function() {
+                jQuery('#submit').removeAttr('disabled');
+                jQuery('#compose form textarea').removeAttr('disabled');
+                jQuery('#submit_spinner').spin(false);
+              },
+              success: function(data) {
+                console.log(data);
+              }
+            });
+          }
           return false;
         });
         
@@ -290,5 +298,7 @@
             %form
               %textarea{:placeholder => 'Введите текст сообщения ...'}
               %input#submit{:type => 'submit', :value => 'Отправить'}
+              #submit_spinner
+              #chat_errors Знаете, #{current_user.url}, у нас тут какие-то проблемы. Вобщем, нужно обновить страницу.
   
     = render :partial => 'globals/counters' if Rails.env.production?
