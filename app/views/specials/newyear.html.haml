@@ -40,12 +40,12 @@
       #compose .userpic { float: left; width: 50px; height: 50px; }
       
       
-      .channel { float: left; display: block; border: 1px solid #606D5F; border-bottom: 0; border-top-left-radius: 4px; border-top-right-radius: 4px; padding: 4px; margin-right: 5px; font-family: Arial, Verdana, Tahoma; font-weight: bold; font-size: 14px; cursor: hand; cursor: pointer; }
-      .channel.active { border: 1px solid #4A554A; }
-      .channel:hover { border: 1px solid #4A554A; border-bottom: 0px; }
-      .message { clear: both; border-bottom: 1px solid #ccc; width: 100%; margin-top: 10px; }
+      .channel { float: left; display: block; background-color: #606D5F;  padding: 6px; margin-right: 5px; font-family: Arial, Verdana, Tahoma; font-weight: bold; font-size: 14px; cursor: hand; cursor: pointer; }
+      .channel.active { background-color: #4A554A; }
+      .channel:hover { background-color: #4A554A; }
+      .message { clear: both; border-bottom: 1px solid #758A75; width: 100%; margin-top: 10px; }
       .message .userpic { float: left; width: 40px; height: 40px; margin-right: 20px; }
-      .message .userpic img { width: 32px; height: 32px; }
+      .message .userpic img {  }
       .message .info { font-size: 11px; margin-bottom: 10px; }
       .message .info .username { display: inline; }
       .message .info .timestamp { text-align: right; float: right; display: inline; visibility: hidden; }
@@ -61,7 +61,7 @@
           {{#userpic}} \
             <div class='userpic'> \
               <a href='http://{{url}}.mmm-tasty.ru/' target='_blank'> \
-                <img src='{{userpic}}' alt='{{url}}' /> \
+                <img src='{{userpic}}' alt='{{url}}' width='{{userpic_width}}' height='{{userpic_height}}' /> \
               </a> \
             </div> \
           {{/userpic}} \
@@ -201,6 +201,14 @@
           }
         }
         
+        function scheduleRefresh() {
+          setTimeout(doRefresh, 5000);
+        }
+        
+        function doRefresh() {
+          jQuery.when(loadRecent()).done(scheduleRefresh);
+        }
+        
         function loadRecent() {
           jQuery.ajax({
             url: '/specials/read',
@@ -213,11 +221,12 @@
           });
         }
         
-        bootstrap();
-        
-        jQuery('#load_recent').click(loadRecent);
+        jQuery.when(bootstrap()).done(doRefresh);
         
         jQuery('#compose form').submit(function() {
+          var text = jQuery(this).find('textarea').val();
+          jQuery(this).find('textarea').val('');
+          
           jQuery.ajax({
             url: '/specials/post',
             type: 'post',
@@ -225,7 +234,7 @@
             data: {
               authenticity_token: window._token,
               name: jQuery('#channels .channel.active').data('name'),
-              text: jQuery('#compose form textarea').val()
+              text: text
             },
             success: function(data) {
               console.log(data);

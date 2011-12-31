@@ -34,4 +34,6 @@ module AssetsHelper
       javascript_include_tag(name, :cache => "cache/#{name}" ) rescue nil
     end
   end
+  
+  
 end

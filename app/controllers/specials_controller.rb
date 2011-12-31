@@ -69,25 +69,27 @@ class SpecialsController < ApplicationController
   protected
     def make_channel_recent(channel)
       recent = channel.recent.sort_by { |message| message[:id] }.map do |message|
-        # cache user details
-        user_details = Rails.cache.fetch("chat:resolve:#{message[:user]}", :expires_in => 1.hour) do
-          user    = User.find(message[:user])
-          userpic = user.userpic? ? user.userpic.url : (user.avatar ? user.avatar.public_filename : nil)
-
-          { :url => user.url, :userpic => userpic }
-        end
+        user_details = make_user_details(message[:user])
         
-        # result
         {
           :id       => [channel.uuid, message[:id]].join('-'),
           :text     => message[:text],
           :iso8601  => Time.at(message[:stamp]).getutc.iso8601,
-          :time     => Russian::strftime(Time.at(message[:stamp]), '%d %B %Y в %H:%M'),
-          :url      => user_details[:url],
-          :userpic  => user_details[:userpic]
-        }
+          :time     => Russian::strftime(Time.at(message[:stamp]), '%d %B %Y в %H:%M')
+        }.merge(user_details)
       end
       
       { :name => channel.name, :uuid => channel.uuid, :messages => recent }
+    end
+    
+    def make_user_details(user_id)
+      Rails.cache.fetch("chat:resolve:#{user_id}", :expires_in => 1.hour) do
+        user = User.find(user_id)
+        size = userpic_dimensions(user, :width => 32)
+        
+        userpic = user.userpic? ? user.userpic.url(:thumb32) : (user.avatar ? user.avatar.public_filename : nil)
+
+        { :url => user.url, :userpic => userpic, :userpic_width => size.width, :userpic_height => size.height }
+      end
     end
 end
