@@ -45,7 +45,6 @@ gem 'resque-lock'
 # gem 'resque-ensure-connected'
 
 # gem 'god'
-gem 'xmpp4r', :require => false
 
 group :development do
 	gem 'annotate'
