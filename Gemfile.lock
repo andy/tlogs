@@ -101,7 +101,6 @@ GEM
       aaronh-chronic (>= 0.3.9)
       activesupport (>= 2.3.4)
     will_paginate (2.3.16)
-    xmpp4r (0.5)
 
 PLATFORMS
   ruby
@@ -140,4 +139,3 @@ DEPENDENCIES
   unicorn
   whenever
   will_paginate (~> 2.3.16)
-  xmpp4r
