@@ -1,5 +1,7 @@
 class NewyearController < ApplicationController
   before_filter :require_current_user
+  
+  before_filter :require_not_banned_users
 
   
   def index
@@ -47,6 +49,10 @@ class NewyearController < ApplicationController
   end
   
   protected
+    def require_not_banned_users
+      redirect_to '/' and return false if $redis.sismember(['chat', 'blacklist'].join(':'), current_user.id)
+    end
+
     def make_channel_recent(channel, after_seq = nil)
       recent = channel.recent.sort_by { |message| message[:id] }.map do |message|
         next if after_seq && message[:id] <= after_seq
