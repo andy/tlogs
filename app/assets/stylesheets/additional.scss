@@ -1073,10 +1073,10 @@ input.placeholder, textarea.placeholder {
   z-index: 800;
   display: none;
   background: #fff;
-  -webkit-box-shadow: rgba(0, 0, 0, 0.2) 0px 0px 2px;
-  -moz-box-shadow: rgba(0, 0, 0, 0.2) 0px 0px 2px;
-  -o-box-shadow: rgba(0, 0, 0, 0.2) 0px 0px 2px;
-  box-shadow: rgba(0, 0, 0, 0.2) 0px 0px 2px;
+  -webkit-box-shadow: rgba(0, 0, 0, 0.35) 0px 0px 3px;
+  -moz-box-shadow: rgba(0, 0, 0, 0.35) 0px 0px 3px;
+  -o-box-shadow: rgba(0, 0, 0, 0.35) 0px 0px 3px;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 0px 3px;
   font-size: 13px;
   overflow: hidden;
 
@@ -1093,8 +1093,9 @@ input.placeholder, textarea.placeholder {
       text-overflow: ellipsis;
       
       a {
-        text-decoration: none;
-        color: #444;
+        text-decoration: none !important;
+        color: #444 !important;
+        text-shadow: none !important;
       }
       div {
         width: 16px;
@@ -1122,7 +1123,7 @@ input.placeholder, textarea.placeholder {
       background: #444;
 
       a {
-        color: #fff;
+        color: #fff !important;
       }
     }
   }
