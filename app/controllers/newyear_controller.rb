@@ -3,6 +3,8 @@ class NewyearController < ApplicationController
   
   before_filter :require_not_banned_users
 
+  protect_from_forgery
+
   
   def index
     @title = "Forever Alone Tasty New Year"
@@ -33,12 +35,14 @@ class NewyearController < ApplicationController
     chat = TastyChat.for(:user => current_user, :redis => $redis)
     chan = chat.channel params[:name]
     
-    chan.post params[:text]
+    render :json => [] and return unless chan.subscribed?
+
+    chan.post(params[:text])
     
-    render :json => true
+    render :json => [make_channel_recent(chan, params[:after].try(:to_i))]
   end
   
-  def read
+  def recent
     chat = TastyChat.for(:user => current_user, :redis => $redis)
 
     after  = params[:after] || {}

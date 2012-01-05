@@ -91,6 +91,14 @@ javascripts:
     - app/assets/javascripts/jquery/jquery.timeago.ru.js
     - app/assets/javascripts/tasty/google-analytics.js
 
+  chat:
+    - app/assets/javascripts/chat/mustache.js
+    - app/assets/javascripts/chat/jquery.tinyscrollbar.js
+    - app/assets/javascripts/chat/jquery.formalize.js
+    - app/assets/javascripts/chat/spin.min.js
+    - app/assets/javascripts/chat/spin.init.js
+    - app/assets/javascripts/chat/chat.coffee
+
   tastyradio:
     - app/assets/javascripts/jquery/jquery-1.7.1.min.js
     - app/assets/javascripts/soundmanager/soundmanager2.js

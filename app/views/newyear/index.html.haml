@@ -8,269 +8,26 @@
     %link{:rel => 'shortcut icon', :href => '/images/specials/newyear/favicon.ico'}
     
     = stylesheet_link_tag 'specials/newyear/newyear.css', 'specials/newyear/scrollbar.css', 'specials/newyear/formalize.css'
-    = tasty_include_javascripts :specials
-    = javascript_include_tag 'specials/newyear/mustache.js', 'specials/newyear/jquery.tinyscrollbar.js', 'specials/newyear/jquery.formalize.min.js', 'specials/newyear/spin.min.js'
+    = tasty_include_javascripts :specials, :chat
     = render :partial => 'globals/gajs'
     
     :javascript
-      jQuery(document).ready(function($) {
-        var tpl_channel = "<div class='channel' id='channel{{uuid}}' data-uuid='{{uuid}}' data-name='{{name}}'><span class='counter' data-value='0'></span>{{name}}</div>";
-        var tpl_chanmsg = "<div class='scrollbars' id='scrollbar{{uuid}}'><div class='viewport' id='viewport{{uuid}}'><div class='overview' id='chanmsg{{uuid}}' data-uuid='{{uuid}}'></div></div></div>";
-        var tpl_message = "\
-        <div class='message clearfix' id='message{{id}}' data-id='{{id}}'> \
-          {{#userpic}} \
-            <div class='userpic'> \
-              <a href='http://{{url}}.mmm-tasty.ru/' target='_blank'> \
-                <img src='{{userpic}}' alt='{{url}}' width='{{userpic_width}}' height='{{userpic_height}}' /> \
-              </a> \
-            </div> \
-          {{/userpic}} \
-          {{^userpic}} \
-            <div class='userpic'>&nbsp;</div> \
-          {{/userpic}} \
-          <div class='rel'> \
-            <div class='info'> \
-              <div class='username'><a href='http://{{url}}.mmm-tasty.ru/' target='_blank'>{{url}}</a></div> \
-              <div class='timestamp' title='{{iso8601}}'>{{time}}</div> \
-            </div> \
-            <div class='text'>{{text}}</div> \
-          </div> \
-        </div>";
-        var current_uuid = null;
-        var autojoin     = #{@autojoin.to_json};
-        var last_msg_ids = {};
-        
-        jQuery('textarea').placeholder() // .autoResize();
-        var cn_height = jQuery(window).height() - jQuery('.top').height() - jQuery('#compose').height() - 100;
-        if (cn_height < 100) {
-          cn_height = 100;
-        }
-        
-        jQuery('#channels .content').css({ height: cn_height + 'px' });
-        jQuery('.channel').live('click', function() {
-          setActiveChannel(jQuery(this).data('uuid'));
-        });
-        jQuery('textarea').bind('keydown', 'Ctrl+return', function(evt) {
-          jQuery(this).closest('form').submit();
-          return false;
-        });
-        
-        $.fn.spin = function(opts) {
-          this.each(function() {
-            var $this = $(this),
-                data = $this.data();
-                
-            if (data.spinner) {
-              data.spinner.stop();
-              delete data.spinner;
-            }
-            if (opts !== false) {
-              data.spinner = new Spinner($.extend({color: $this.css('color')}, opts)).spin(this);
-            }
-          });
-          return this;
-        };
-        
-        var small_spin_options = {
-          lines: 10, // The number of lines to draw
-          length: 3, // The length of each line
-          width: 2, // The line thickness
-          radius: 1, // The radius of the inner circle
-          color: '#000', // #rgb or #rrggbb
-          speed: 1, // Rounds per second
-          trail: 54, // Afterglow percentage
-          shadow: false // Whether to render a shadow
-        }
-        
-        
-        function bootstrap() {
-          var defs = new Array();
-          for(var i = 0; i < autojoin.length; i ++) {
-            defs += joinChannel(autojoin[i]);
-          }
-          
-          jQuery.when(defs).done(loadRecent);
-        }
-        
-        function ajaxError() {
-          jQuery('#chat_errors').show();
-        }
-        
-        function setActiveChannel(channel_uuid) {
-          if(current_uuid) {
-            jQuery('#scrollbar' + current_uuid).hide();
-            jQuery('#channel' + current_uuid).removeClass('active');
-          }
-          
-          resetCounter(channel_uuid);
-          jQuery('#scrollbar' + channel_uuid).show().tinyscrollbar_update('bottom');
-          jQuery('#channel' + channel_uuid).addClass('active');
-          current_uuid = channel_uuid;
-        }
-        
-        function resetCounter(channel_uuid) {
-          var obj  = jQuery('#channel' + channel_uuid + ' .counter')
-          obj.data('value', 0);
-          obj.hide();
-        }
-        
-        function updateCounter(channel_uuid) {
-          if(channel_uuid == current_uuid) {
-            return;
-          }
-          var obj   = jQuery('#channel' + channel_uuid + ' .counter')
-          var value = obj.data('value')
-          if (value > 0) {
-            value += 1
-            obj.data('value', value);
-            obj.text('(' + value + ')');
-          } else {
-            obj.data('value', 1);
-            obj.text('(1)');
-          }
-          obj.show();
-        }
-        
-        function renderMessage(channel_uuid, message) {
-          if(jQuery('#message' + message.id).length == 0) {
-          
-            var curid = last_msg_ids[channel_uuid] || 0;
-            last_msg_ids[channel_uuid] = Math.max(curid, message.seq);
-            
-            var output = Mustache.to_html(tpl_message, message);
-            jQuery('#chanmsg' + channel_uuid).append(output);
-            jQuery('#message' + message.id + ' .timestamp').timeago();
-            
-            updateCounter(channel_uuid);
-            
-            jQuery('#scrollbar' + channel_uuid).tinyscrollbar_update('bottom');
-          }
-        }
-        
-        function joinChannel(name) {
-          jQuery.ajax({
-            url: '/specials/newyear/join',
-            type: 'post',
-            dataType: 'json',
-            data: {
-              authenticity_token: window._token,
-              name: name
-            },
-            error: ajaxError,
-            success: renderRecent
-          });
-        }
-        
-        function leaveChannel(name) {
-          jQuery.ajax({
-            url: '/specials/newyear/leave',
-            type: 'post',
-            dataType: 'json',
-            data: {
-              authenticity_token: window._token,
-              name: name
-            },
-            error: ajaxError,
-            success: closeChannel
-          });
-        }
-        
-        function closeChannel(data) {
-          delete(last_msg_ids[data.uuid]);
-          
-          /* not implemented */
-        }
-        
-        function createChannel(channel) {
-          if(jQuery('#scrollbar' + channel.uuid).length == 0) {
-            last_msg_ids[channel.uuid] = 0;
-            var output = Mustache.to_html(tpl_channel, channel);
-            jQuery('#channels .list').append(output);
-            
-            var output = Mustache.to_html(tpl_chanmsg, channel)
-            jQuery('#channels .content').append(output);
-            
-            jQuery('#viewport' + channel.uuid).css({ height: cn_height + 'px' });
-            jQuery('#scrollbar' + channel.uuid).tinyscrollbar();
-            
-            if(current_uuid == null) {
-              setActiveChannel(channel.uuid);
-            } else {
-              jQuery('#scrollbar' + channel.uuid).hide();
-            }
-          }
-        }
-        
-        function renderChannel(channel) {
-          createChannel(channel);
-          
-          for(var i = 0; i < channel.messages.length; i ++) {
-            renderMessage(channel.uuid, channel.messages[i]);
-          }
-        }
-        
-        function renderRecent(data) {
-          for(var i = 0; i < data.length; i ++) {
-            renderChannel(data[i]);
-          }
-        }
-        
-        function scheduleRefresh() {
-          setTimeout(doRefresh, 5000);
-        }
-        
-        function doRefresh() {
-          jQuery.when(loadRecent()).done(scheduleRefresh);
-        }
-        
-        function loadRecent() {
-          jQuery.ajax({
-            url: '/specials/newyear/read',
-            type: 'post',
-            dataType: 'json',
-            data: {
-              authenticity_token: window._token,
-              after: last_msg_ids
-            },
-            error: ajaxError,
-            success: renderRecent
-          });
-        }
-        
-        jQuery.when(bootstrap()).done(doRefresh);
-        
-        jQuery('#compose form').submit(function() {
-          var text = jQuery(this).find('textarea').val();
-          if(text && text.length > 0) {
-            jQuery(this).find('textarea').val('').attr('disabled', 'disabled');
-            jQuery('#submit').attr('disabled', 'disabled');
-            jQuery('#submit_spinner').spin(small_spin_options);
-          
-            jQuery.ajax({
-              url: '/specials/newyear/post',
-              type: 'post',
-              dataType: 'json',
-              data: {
-                authenticity_token: window._token,
-                name: jQuery('#channels .channel.active').data('name'),
-                text: text
-              },
-              error: ajaxError,
-              complete: function() {
-                jQuery('#submit').removeAttr('disabled');
-                jQuery('#compose form textarea').removeAttr('disabled');
-                jQuery('#submit_spinner').spin(false);
-              },
-              success: function(data) {
-                console.log(data);
-              }
-            });
-          }
-          return false;
-        });
-        
-        
+      var current_user = #{current_user ? current_user.id : 0};
+      var current_site = #{current_site ? current_site.url.downcase.to_json : 'www'.to_json};
+      var _user = #{ {
+            :id       => current_user.id,
+            :url      => current_user.url,
+            :premium  => current_user.is_premium?
+            # :sid  => cookies[ActionController::Base.session_options[:key]]
+          }.to_json };
+      
+      window._is_private = #{is_private?.to_json};
+      window._token = #{form_authenticity_token.to_json};  
+      
+      jQuery(document).ready(function() {
+        Chat.ready(#{ { :autojoin => @autojoin }.to_json });
       });
+      
 
   %body
   
@@ -312,7 +69,7 @@
           #compose
             .userpic= userpic_tag(current_user, :width => 32)
             %form
-              %textarea{:placeholder => 'Введите текст сообщения ...'}
+              %textarea{:placeholder => 'Введите текст сообщения ...', :maxlength => 250}
               %input#submit{:type => 'submit', :value => 'Отправить'}
               #submit_spinner
               #chat_errors Знаете, #{current_user.url}, у нас тут какие-то проблемы. Вобщем, нужно обновить страницу.
