@@ -47,12 +47,12 @@ javascripts:
     - app/assets/javascripts/jquery/jquery.timeago.js
     - app/assets/javascripts/jquery/jquery.timeago.ru.js
     - app/assets/javascripts/jquery/jquery.popupWindow.js
-    - app/assets/javascripts/jquery/jquery.placeholder.min.js    
+    - app/assets/javascripts/jquery/jquery.placeholder.min.js
     - app/assets/javascripts/bootstrap-twipsy.js
 
   application:
     # prototype setup and plugins
-    - app/assets/javascripts/prototype/prototype.1.7.0.0.js
+    - app/assets/javascripts/prototype/prototype.1.7.0.0.min.js
     - app/assets/javascripts/prototype/effects.min.js
     # jquery setup & plugins
     - app/assets/javascripts/jquery/jquery-1.7.1.min.js

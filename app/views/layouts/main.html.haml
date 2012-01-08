@@ -7,7 +7,7 @@
 <!--[if (gte IE 9)|!(IE)]><!--> <html class="no-js" lang="ru"> <!--<![endif]-->
 %head
   = render :partial => 'globals/head'
-  = javascript_include_tag 'specials/snowstorm.js'
+  =# javascript_include_tag 'specials/snowstorm.js'
   = render :partial => 'globals/dfp_head'
   - logo_is_gray = true
   - if is_premium? && current_user.tlog_settings.background

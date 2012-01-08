@@ -61,7 +61,7 @@
 <%-   end
     end
     unless disable_js -%>
-  <%= tasty_include_javascripts :modernizr, :application %>
+  <%= tasty_include_javascripts :application %>
   <!--[if (gte IE 6)&(lte IE 8)]><%= tasty_include_javascripts :selectivizr %><![endif]-->
 <%- end -%>
 
