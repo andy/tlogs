@@ -298,9 +298,9 @@ module WhiteListHelper
         end
 
         # @andy -> ссылка на пользователя
-        new_text.gsub!(/(\@([0-9a-zA-Z\-]{2,20}))/) do
-          user = User.find_by_url($2)
-          user ? "<a href='#{user_url(user)}' class='t-entry-tlog'>@#{user.url}</a>" : $1
+        new_text.gsub!(/(^|\s+|\n)(\@([a-z0-9_-]{2,20}))(\,|\:|\;|\.(\s+|$)|\s+|$)/i) do
+          user = User.find_by_url($3)
+          user ? "#{$1}<a href='#{user_url(user)}' class='t-entry-tlog'>@#{user.url}</a>#{$4}" : $1
         end
 
         text.swap(new_text) unless new_text.blank?        

@@ -45,12 +45,6 @@ class CommentsController < ApplicationController
 
       @comment.async_deliver!(current_service, params[:reply_to])
       
-      # ищем пользователей, упоминающихся в комментарии и добавляем их в список рассылки
-      params[:comment][:comment].scan(/@([0-9a-zA-Z\-])/).each do |user_name|
-        user = User.find_by_url(user_name)
-        @entry.subscribers << user if user && !@entry.subscribers.map(&:id).include?(user.id)
-      end
-      
       # автоматически подписываем пользователя если на комментарии к этой записи если он еще не подписан
       @entry.subscribers << current_user if current_user && current_user.comments_auto_subscribe? && @entry.user_id != current_user.id && !@entry.subscribers.map(&:id).include?(current_user.id)
       
