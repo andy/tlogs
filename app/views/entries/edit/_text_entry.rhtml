@@ -43,7 +43,7 @@
     });
 
     editor.on('field:change', function() {
-      $('entry_data_part_1').setValue(editor.innerHTML);
+      $('entry_data_part_1').setValue(WysiHat.Formatting.getApplicationMarkupFrom(editor));
     });
     // Tasty.mentions.bind_events('#' + editor.id);
     
