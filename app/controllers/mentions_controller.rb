@@ -10,10 +10,10 @@ class MentionsController < ApplicationController
     entry_id = params[:entry_id].to_i
     users = []
     commenters = []
-    @entry = Entry.find_by_id entry_id if entry_id > 0
-    if @entry.can_be_viewed_by?(current_user)
+    @entry = Entry.find_by_id entry_id
+    if @entry && @entry.can_be_viewed_by?(current_user)
       reject_author_id = @entry.user_id if @entry.is_anonymous?
-      user_ids = Comment.find(:all, :conditions => "entry_id = #{entry_id}").map(&:user_id).reject { |id| id <= 0 || id == current_user.id || id == reject_author_id }.uniq
+      user_ids = Comment.find(:all, :select => "user_id", :conditions => "entry_id = #{entry_id}").map(&:user_id).reject { |id| id == current_user.id || id == reject_author_id }.uniq
       commenters += User.find(user_ids).reject { |u| !u.email_comments? } if user_ids.any?
       if commenters
         commenters.each do |u| 
