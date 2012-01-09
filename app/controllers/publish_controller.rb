@@ -92,7 +92,7 @@ class PublishController < ApplicationController
         return
       end
 
-      @friends = current_user.public_friends+current_user.friends
+      @friends = User.find(current_user.all_friend_ids, :select => 'id, url, userpic_file_name, userpic_updated_at, userpic_meta', :include => :avatar)
       
       # запрашивается уже существующая запись
       if params[:id]
