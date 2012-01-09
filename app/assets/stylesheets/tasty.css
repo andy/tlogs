@@ -1270,7 +1270,11 @@ form.post input, form.post textarea {
 	font-size:150%;
 	margin-bottom:15px;
 	padding:2px 4px;
-/*	font-family:Trebuchet MS, Arial, Helvetica, sans-serif; */
+}
+
+form.post input:focus, form.post textarea:focus {
+  outline: none;
+  border: 1px solid #8F8319;
 }
 
 /* wysihat editor */
@@ -1288,6 +1292,10 @@ form.post .editor {
 
 form.post .editor p {
   margin: 0;
+}
+
+form.post .editor:focus {
+  border: 1px solid #8F8319;
 }
 
 form.post .editor_toolbar {
