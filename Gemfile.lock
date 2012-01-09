@@ -27,7 +27,7 @@ GEM
       multi_json (~> 1.0)
     fssm (0.2.7)
     haml (3.1.2)
-    hiredis (0.3.2)
+    hiredis (0.4.4)
     hoptoad_notifier (2.4.11)
       activesupport
       builder
@@ -110,7 +110,7 @@ DEPENDENCIES
   coderay
   compass
   haml
-  hiredis (~> 0.3.0)
+  hiredis (~> 0.4.0)
   hoptoad_notifier
   hpricot
   json
@@ -124,7 +124,7 @@ DEPENDENCIES
   rails (= 2.3.14)
   rake
   rdoc
-  redis (>= 2.0.0)
+  redis (>= 2.2.0)
   resque
   resque-lock
   ruby-openid

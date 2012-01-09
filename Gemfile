@@ -15,8 +15,8 @@ gem 'memcache-client', :require => 'memcache'
 gem 'hpricot'
 # gem 'nokogiri'
 gem 'russian'
-gem 'hiredis', '~> 0.3.0'
-gem 'redis', '>= 2.0.0'
+gem 'hiredis', '~> 0.4.0'
+gem 'redis', '>= 2.2.0', :require => ["redis/connection/hiredis", "redis"]
 gem 'whenever', :require => false
 gem 'json'
 gem 'thinking-sphinx', :require => 'thinking_sphinx'
