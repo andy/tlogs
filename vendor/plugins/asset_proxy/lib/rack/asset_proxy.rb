@@ -15,7 +15,13 @@ module Rack
       if env['PATH_INFO'].match(@asset_path)
         uri = URI.parse(@asset_url + env['PATH_INFO'])
         
+        # Verify that asset negative reply is stored in cache
+        cache_key = ['assetproxy', 'cache', Digest::SHA1.hexdigest(uri.to_s)].join(':')
+        cached_reply = Rails.cache.read(cache_key)
+        return cached_reply unless cached_reply.nil?
+
         logger.debug "AssetProxy: fetching #{uri.to_s}"
+        
         res = Net::HTTP.get_response(uri)
         
         # save file on success
@@ -24,6 +30,7 @@ module Rack
           FileUtils.mkdir_p(::File.dirname(local)) unless ::File.exist?(::File.dirname(local))
           ::File.open(local, 'w') { |file| file.write res.body } unless ::File.exist?(local)
         else
+          Rails.cache.write(cache_key, [res.code, { 'Content-type' => res.content_type}, res.body], :expires_in => 1.week)
           logger.debug "AssetProxy: error fetching #{uri.to_s}: #{res.code} (#{res.content_type})"
         end
 
