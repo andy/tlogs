@@ -22,15 +22,6 @@ javascripts:
   highcharts:
     - app/assets/javascripts/highcharts/highcharts.js
 
-  wymeditor:
-    - app/assets/javascripts/wymeditor/jquery.wymeditor.js
-    - app/assets/javascripts/wymeditor/en.js
-    - app/assets/javascripts/wymeditor/ru.js
-    - app/assets/javascripts/wymeditor/plugins/hovertools/jquery.wymeditor.hovertools.js
-    - app/assets/javascripts/wymeditor/plugins/embed/jquery.wymeditor.embed.js
-    - app/assets/javascripts/wymeditor/plugins/resizable/jquery.wymeditor.resizable.js
-    - app/assets/javascripts/wymeditor/application.js
-  
   extended:
     - app/assets/javascripts/wysihat.js
     - app/assets/javascripts/prototype/dragdrop.min.js
