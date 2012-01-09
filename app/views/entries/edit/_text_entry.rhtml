@@ -41,6 +41,11 @@
       label: "Link",
       handler: function(editor) { return editor.promptLinkSelection(); }
     });
+
+    editor.on('field:change', function() {
+      $('entry_data_part_1').setValue(editor.innerHTML);
+    });
+    // Tasty.mentions.bind_events('#' + editor.id);
     
   });
 </script> -->

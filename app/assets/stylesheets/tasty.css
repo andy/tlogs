@@ -1301,7 +1301,7 @@ form.post .editor:focus {
 form.post .editor_toolbar {
   min-height: 1.6em;
 }
-form.post .editor_toolbar .button {  
+form.post .editor_toolbar .button {
   float: left;
   display: block;
   margin: 2px 3px;
@@ -1316,7 +1316,12 @@ form.post .editor_toolbar .button {
   font-family: 'Courier New', Courier, monospace, sans-serif;
 }
 
+form.post .editor_toolbar .button:hover {
+  background-color: #CDCDCD;
+}
+
 form.post .editor_toolbar .selected {
+  background-color: #CDCDCD;
   font-weight: bold;
 }
 
