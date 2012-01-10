@@ -1,6 +1,7 @@
 Chat =
   current_uuid: null
   height: null
+  timeout_handler: null
   cache:
     seq: {}
     ids: {}
@@ -102,11 +103,30 @@ Chat =
     Chat.current_uuid = channel_uuid
 
   scheduleRefresh: ->
-    setTimeout Chat.doRefresh, Chat.opts?.timeout? || 5000
+    Chat.timeout_handler = setTimeout Chat.doRefresh, Chat.opts?.timeout? || 5000
 
   doRefresh: ->
     jQuery.when(Chat.ajax.recent()).done(Chat.scheduleRefresh)
 
+  test:
+    stop: ->
+      clearTimeout(Chat.timeout_handler) if Chat.timeout_handler?
+
+    inject: ->
+      seq = Chat.cache.seq[Chat.current_uuid] + 1
+      chr = " qwertyuio pasdfgh jkl;zxcv bnmQWE RTYU IOP.!?"
+      num = Math.floor(Math.random() * 200)
+      str = while num -= 1
+        chr[Math.floor(Math.random() * chr.length)]
+      str = str.join('')
+
+      Chat.dom.renderMessage Chat.current_uuid,
+        id: "8a574d8cd-#{seq}"
+        iso8601: "2012-01-05T19:55:34Z"
+        seq: seq
+        text: "injected message, seq #{seq}, garbage #{str}"
+        time: "05 января 2012 в 23:55"
+        url: "injected"
 
   dom:
     resetCounter: (channel_uuid) ->
@@ -133,16 +153,49 @@ Chat =
       if jQuery("#message#{message.id}").length == 0
         Chat.cache.seq[channel_uuid] = Math.max(Chat.cache.seq[channel_uuid] || 0, message.seq)
 
+        # calculate scrollbar update
+        if channel_uuid == Chat.current_uuid
+          s = jQuery("#scrollbar#{channel_uuid}")
+          v = s.find('.viewport')
+          o = v.find('.overview')
+          m = 'relative'
+          p = 20                    # this is padding for sticky content
+
+          # basically this show if we have content overflow, e.g. wether scrollbar will be displayed or not
+          # l == true - sb is displayed
+          # l == false - sb is hidden
+        
+          l = o[0].scrollHeight > v[0].offsetHeight
+          m = 'bottom' if l && (o[0].scrollHeight - p <= (v[0].offsetHeight - o[0].offsetTop))
+        
         jQuery("#chanmsg#{channel_uuid}").append Mustache.to_html(Chat.tpl.message, message)
         jQuery("#message#{message.id} .timestamp").timeago()
-
+        
         Chat.dom.updateCounter channel_uuid
-
-        jQuery("#scrollbar#{channel_uuid}").tinyscrollbar_update 'bottom'
+        
+        if channel_uuid == Chat.current_uuid
+          # scroll to bottom on conditions, where scrollbar overflow happend, e.g. there was no scrollbar
+          # before content was rendered, but it appeared afterwards
+          # this condition happens on fast channel initialization (e.g. on join, etc)
+          m = 'bottom' if !l && o[0].scrollHeight > v[0].offsetHeight
+          s.tinyscrollbar_update m
         
         # trim queue if it exceeds 250 entries
-        if Chat.cache.ids[channel_uuid].push(message.id) > 250
-          jQuery("#message#{Chat.cache.ids[channel_uuid].shift()}").remove()
+        if Chat.cache.ids[channel_uuid].push(message.id) > 10
+          msg = jQuery("#message#{Chat.cache.ids[channel_uuid].shift()}")
+          if channel_uuid == Chat.current_uuid
+            # original height PLUS padding + border + margin
+            h = msg.height() + 0 + 3 + 10
+            u = -o[0].offsetTop - h
+
+          msg.remove()
+
+          if channel_uuid == Chat.current_uuid
+            # update scrollbars after message was removed
+            if m == 'bottom'
+              s.tinyscrollbar_update 'relative'
+            else if u >= 0
+              s.tinyscrollbar_update u
     
     closeChannel: (channel) ->
       # FIXME: not implemented

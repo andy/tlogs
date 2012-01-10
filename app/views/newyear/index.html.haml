@@ -7,7 +7,8 @@
     %meta{'http-equiv' => 'imagetoolbar', :content => 'no'}
     %link{:rel => 'shortcut icon', :href => '/images/specials/newyear/favicon.ico'}
     
-    = stylesheet_link_tag 'specials/newyear/newyear.css', 'specials/newyear/scrollbar.css', 'specials/newyear/formalize.css'
+    = tasty_include_stylesheets :chat
+    =# stylesheet_link_tag 'specials/newyear/newyear.css', 'specials/newyear/scrollbar.css', 'specials/newyear/formalize.css'
     = tasty_include_javascripts :specials, :chat
     = render :partial => 'globals/gajs'
     

@@ -38,7 +38,7 @@ javascripts:
     - app/assets/javascripts/jquery/jquery.hotkeys.min.js
     - app/assets/javascripts/jquery/jquery.autoresize.min.js
     - app/assets/javascripts/jquery/jquery.infinitescroll.min.js
-    - app/assets/javascripts/jquery/jquery.fancybox-1.3.4.pack.js
+    # - app/assets/javascripts/jquery/jquery.fancybox-1.3.4.pack.js
     - app/assets/javascripts/jquery/jquery.timeago.min.js
     - app/assets/javascripts/jquery/jquery.timeago.ru.min.js
     - app/assets/javascripts/jquery/jquery.popupWindow.min.js
@@ -87,8 +87,8 @@ javascripts:
     - app/assets/javascripts/tasty/google-analytics.js
 
   chat:
-    - app/assets/javascripts/chat/mustache.js
-    - app/assets/javascripts/chat/jquery.tinyscrollbar.js
+    - app/assets/javascripts/chat/mustache.min.js
+    - app/assets/javascripts/chat/jquery.tinyscrollbar.min.js
     - app/assets/javascripts/chat/jquery.formalize.js
     - app/assets/javascripts/chat/spin.min.js
     - app/assets/javascripts/chat/spin.init.js
@@ -110,6 +110,11 @@ stylesheets:
     - app/assets/stylesheets/jquery.slides.css
     - app/assets/stylesheets/html5closing.css
     - app/assets/stylesheets/antiscroll.css
+  
+  chat:
+    - app/assets/stylesheets/chat/chat.css
+    - app/assets/stylesheets/chat/scrollbar.css
+    - app/assets/stylesheets/chat/formalize.css
 
   tlog:
     - app/assets/stylesheets/tlog.css
