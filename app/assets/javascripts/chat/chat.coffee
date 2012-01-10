@@ -181,7 +181,7 @@ Chat =
           s.tinyscrollbar_update m
         
         # trim queue if it exceeds 250 entries
-        if Chat.cache.ids[channel_uuid].push(message.id) > 10
+        if Chat.cache.ids[channel_uuid].push(message.id) > 250
           msg = jQuery("#message#{Chat.cache.ids[channel_uuid].shift()}")
           if channel_uuid == Chat.current_uuid
             # original height PLUS padding + border + margin
