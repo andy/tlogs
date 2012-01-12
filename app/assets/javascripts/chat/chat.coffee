@@ -48,6 +48,11 @@ Chat =
   ready: (opts = {}) ->
     Chat.opts = opts if opts?
     
+    jQuery('[rel="twipsy"]').twipsy
+      delayIn: 3000
+    
+    jQuery('.fancybox').fancybox()
+    
     # resize chat window to fit
     Chat.height = jQuery(window).height() - jQuery('.top').height() - jQuery('#compose').height() - 100;
     Chat.height = 100 if Chat.height < 100  
@@ -66,8 +71,6 @@ Chat =
     jQuery('.channel').live 'click', (_event) ->
       Chat.setActiveChannel jQuery(this).data('uuid')
       false
-
-    jQuery('#compose form textarea').placeholder()
 
     jQuery('#compose form textarea').bind 'keydown', 'Ctrl+return', (_event) ->
       jQuery('#compose form').submit()

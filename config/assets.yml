@@ -61,7 +61,7 @@ javascripts:
     - app/assets/javascripts/jquery/jquery.timeago.ru.min.js
     - app/assets/javascripts/jquery/jquery.popupWindow.min.js
     - app/assets/javascripts/jquery/jquery.placeholder.min.js
-    - app/assets/javascripts/jquery/jquery.mousewheel-3.0.4.pack.js
+    - app/assets/javascripts/jquery/jquery.mousewheel-3.0.6.pack.js
     - app/assets/javascripts/jquery/jquery.antiscroll.min.js
     # - app/assets/javascripts/slides/slides.min.jquery.js
     # - app/assets/javascripts/slides/slides.configuration.js
@@ -87,6 +87,20 @@ javascripts:
     - app/assets/javascripts/tasty/google-analytics.js
 
   chat:
+    # assets
+    - app/assets/javascripts/jquery/jquery-1.7.1.min.js
+    - app/assets/javascripts/jquery/jquery.noconflict.js
+    - app/assets/javascripts/jquery/jquery.hotkeys.min.js
+    #- app/assets/javascripts/jquery/jquery.autoresize.min.js
+    #- app/assets/javascripts/jquery/jquery.infinitescroll.min.js
+    - app/assets/javascripts/jquery/jquery.timeago.min.js
+    - app/assets/javascripts/jquery/jquery.timeago.ru.min.js
+    - app/assets/javascripts/jquery/jquery.mousewheel-3.0.6.pack.js
+    - app/assets/javascripts/jquery/jquery.autoSuggest.js
+    #- app/assets/javascripts/jquery/jquery.popupWindow.min.js
+    #- app/assets/javascripts/jquery/jquery.placeholder.min.js
+    - app/assets/javascripts/fancybox/jquery.fancybox.pack.js
+    - app/assets/javascripts/bootstrap-twipsy.min.js
     - app/assets/javascripts/chat/mustache.min.js
     - app/assets/javascripts/chat/jquery.tinyscrollbar.min.js
     - app/assets/javascripts/chat/jquery.formalize.js
@@ -112,9 +126,12 @@ stylesheets:
     - app/assets/stylesheets/antiscroll.css
   
   chat:
-    - app/assets/stylesheets/chat/chat.css
     - app/assets/stylesheets/chat/scrollbar.css
     - app/assets/stylesheets/chat/formalize.css
+    - app/assets/stylesheets/twipsy.css
+    - app/assets/stylesheets/fancybox/jquery.fancybox.css
+    - app/assets/stylesheets/jquery.autoSuggest.css
+    - app/assets/stylesheets/chat/chat.css
 
   tlog:
     - app/assets/stylesheets/tlog.css

@@ -8,8 +8,7 @@
     %link{:rel => 'shortcut icon', :href => '/images/specials/newyear/favicon.ico'}
     
     = tasty_include_stylesheets :chat
-    =# stylesheet_link_tag 'specials/newyear/newyear.css', 'specials/newyear/scrollbar.css', 'specials/newyear/formalize.css'
-    = tasty_include_javascripts :specials, :chat
+    = tasty_include_javascripts :chat
     = render :partial => 'globals/gajs'
     
     :javascript
@@ -63,6 +62,7 @@
         #chat
           #channels
             .list.clearfix
+              // %a.join.fancybox{:rel => 'twipsy', :type => 'ajax', :href => '/specials/newyear/choose', :title => 'Подключиться к новому каналу или создать его', :data => { :placement => 'below', :offset => 5 } } +
             
             .content
 

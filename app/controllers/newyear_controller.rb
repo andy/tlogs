@@ -15,7 +15,15 @@ class NewyearController < ApplicationController
     @autojoin = ['Прямой эфир', @city].compact
   end
   
+  def choose
+    chat = TastyChat.for(:user => current_user, :redis => $redis)
+    
+    @channels = chat.all
+  end
+  
   def join
+    render :json => false and return unless request.post?
+
     chat = TastyChat.for(:user => current_user, :redis => $redis)
     chan = chat.channel params[:name]
     chan.subscribe!
@@ -24,6 +32,8 @@ class NewyearController < ApplicationController
   end
   
   def leave
+    render :json => false and return unless request.post?
+
     chat = TastyChat.for(:user => current_user, :redis => $redis)
     chan = chat.channel params[:name]
     chan.unsubscribe!
@@ -32,6 +42,8 @@ class NewyearController < ApplicationController
   end
   
   def post
+    render :json => false and return unless request.post?
+    
     chat = TastyChat.for(:user => current_user, :redis => $redis)
     chan = chat.channel params[:name]
     
@@ -43,6 +55,8 @@ class NewyearController < ApplicationController
   end
   
   def recent
+    render :json => false and return unless request.post?
+
     chat = TastyChat.for(:user => current_user, :redis => $redis)
 
     after  = params[:after] || {}

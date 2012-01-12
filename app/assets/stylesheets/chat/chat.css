@@ -96,6 +96,25 @@ html[xmlns] .clearfix {
 #compose .userpic { float: left; width: 50px; height: 50px; text-align: center; }
 #compose #chat_errors { font-size: 11px; display: none; color: #D7C6C7;position: relative;top: -38px;width: 250px;text-shadow: 1px 1px 0 black;left: 50px; }
 
+#channels .list:hover .join {
+  opacity: 1.0;
+  /* visibility: visible;*/
+  -webkit-transition: all 100ms cubic-bezier(0.000, 0.000, 0.580, 1.000); 
+     -moz-transition: all 100ms cubic-bezier(0.000, 0.000, 0.580, 1.000); 
+      -ms-transition: all 100ms cubic-bezier(0.000, 0.000, 0.580, 1.000); 
+       -o-transition: all 100ms cubic-bezier(0.000, 0.000, 0.580, 1.000); 
+          transition: all 100ms cubic-bezier(0.000, 0.000, 0.580, 1.000); /* ease-out */
+
+  -webkit-transition-timing-function: cubic-bezier(0.000, 0.000, 0.580, 1.000); 
+     -moz-transition-timing-function: cubic-bezier(0.000, 0.000, 0.580, 1.000); 
+      -ms-transition-timing-function: cubic-bezier(0.000, 0.000, 0.580, 1.000); 
+       -o-transition-timing-function: cubic-bezier(0.000, 0.000, 0.580, 1.000); 
+          transition-timing-function: cubic-bezier(0.000, 0.000, 0.580, 1.000); /* ease-out */
+}
+#channels .list { width: 100%; }
+#channels .list .join { float: left; display: block; padding: 6px; margin-right: 20px; margin-left: 10px; font-family: Arial, Verdana, Tahoma; font-weight: bold; font-size: 14px; cursor: hand; cursor: pointer; opacity: 0.3; text-decoration: none;}
+#channels .list .join:hover { color: #4A554A; }
+
 .channel { float: left; display: block; background-color: #606D5F;  padding: 6px; margin-right: 5px; font-family: Arial, Verdana, Tahoma; font-weight: bold; font-size: 14px; cursor: hand; cursor: pointer; }
 .channel.active { background-color: #4A554A; }
 .channel:hover { background-color: #4A554A; }

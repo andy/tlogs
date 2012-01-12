@@ -1,0 +1,17 @@
+!!! 5
+%html{:lang => 'ru'}
+  %head
+    = application_title
+    %meta{:charset => 'utf8'}
+    %meta{:robots => 'index,follow'}
+    %meta{'http-equiv' => 'imagetoolbar', :content => 'no'}
+    %link{:rel => 'shortcut icon', :href => '/images/specials/newyear/favicon.ico'}
+
+
+  %body
+    %input#autosuggest
+    
+    
+    :javascript
+      var data = #{@channels.to_json};
+      jQuery('#autosuggest').autoSuggest(data);

@@ -24,6 +24,10 @@ class TastyChat
     @redis.smembers(subs_key).map { |name| channel(name) }
   end
   
+  def all
+    (@redis.hgetall(counter_key).reject { |name,subs| name.starts_with?('-') }.map { |name,subs| channel(name) } + channels).uniq
+  end
+  
   def subs_key
     ['chat', 'subs', @user.id].join(':')
   end
