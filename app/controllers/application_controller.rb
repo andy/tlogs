@@ -41,7 +41,7 @@ class ApplicationController < ActionController::Base
   before_filter :preload_current_site # loads @current_site
   before_filter :preload_current_user # loads @current_user
 
-  after_filter  :log_memory_usage if Rails.env.production?
+  # after_filter  :log_memory_usage if Rails.env.production?
   
   protected
     def log_memory_usage
