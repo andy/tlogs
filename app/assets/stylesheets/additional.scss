@@ -1224,5 +1224,7 @@ input.placeholder, textarea.placeholder {
   .image {
     float: left;
     margin: 1px;
+    
+    img { padding: 3px; }
   }
 }

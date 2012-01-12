@@ -23,7 +23,7 @@
   <div class='users_mosaic' id='users_mosaic'>
     <% User.active_for(current_user, :limit => 16).each do |user| %>
       <% content_tag :div, :class => 'image', :title => h(user.url) do %>
-        <%= link_to userpic_tag(user, :width => 32), user_url(user) %>
+        <%= link_to userpic_tag(user, :width => 32, :height => 32), user_url(user) %>
       <% end %>
     <% end %>
   </div>
@@ -38,4 +38,4 @@
       });
     });
   </script>
-<% end if is_admin? %>
+<% end if in_beta? %>

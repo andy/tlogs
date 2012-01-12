@@ -1,0 +1,87 @@
+<% @title = 'о проекте' %>
+<div id='main_about' class='text'>
+  <div class='faq'>
+    <h2 class='clicked'>Что такое тейсти?</h2>
+    <p>Тейсти — это место, где нужно быть собой. Это ваше личное пространство, которое вы создаете и развиваете только для себя, постепенно обрастая новыми знакомствами вокруг. Это место для людей, для которых самовыражение и искренность важнее количества друзей, рейтингов и других бесмысленных вещей. Здесь важно и нужно быть собой. И не бойтесь, что поначалу у вас может быть мало знакомых. Начните писать и к вам сразу потянутся люди.</p>
+  </div>
+
+  <div class='faq'>
+    <h2>Можно ли скрыть факт моего присутствия на сайте?</h2>
+    <p>Возможность оставаться анонимным &mdash; важная часть сервиса. Для этого есть несколько механизмов. <nobr>Во-первых</nobr>, вы можете закрыть свой тлог от всех незарегистрированных пользователей, либо поименно указать список тех, кто может вас читать. <nobr>Во-вторых</nobr>, вы можете вести закрытые записи, которые будут доступны только вам.</p>
+    <p>Ну и самое важное &mdash; вы всегда быстро и без проблем можете изменить адрес своего тлога и начать жизнь с чистого листа.</p>
+  </div>
+
+  <div class='faq'>
+    <h2>Как узнать сколько людей на меня подписано?</h2>
+    <p>Это невозможно. И вообще, тщеславие — это грех.</p>
+  </div>
+
+  <div class='faq'>
+    <h2>Почему регистрация ограничена?</h2>
+    <p>По многим причинам, в первую очередь — чтобы ограничить количество спама, а также убедиться, что люди, регистрирующиеся на сайте, делают это осознанно.</p>
+  </div>
+
+  <div class='faq'>
+    <h2 class='clicked'>Когда открывается регистрация?</h2>
+    <p>Регистрация открывается каждую субботу и воскресенье ночью, после 10 часов вечера по московскому времени и продолжается примерно до 4 утра. Иногда мы открываем неограниченную регистрацию для некоторых городов, сегодня это два города: <b>Пермь</b> и <b>Тверь</b>.</p>
+  </div>
+
+  <div class='faq'>
+    <h2>Если у вас остались вопросы …</h2>
+    <p>Если у вас остались вопросы, пишите нам по адресу <%= mail_to "feedback@#{current_service.domain}", nil, :encode => 'javascript' %>,  мы постараемся помочь.</p>
+    <p>Спасибо!</p>
+  </div>
+</div>
+
+<script type='text/javascript'>
+  jQuery('.faq').each(function(i, obj) {
+    jQuery(obj).find('h2').click(function(obj) { jQuery(this).toggleClass('clicked').siblings().toggle(); });
+    jQuery(obj).find('h2[class!="clicked"]').siblings().hide();
+  });
+</script>
+
+<% content_for :sidebar_left do %>
+	<%= render :partial => 'feedbacks/feedbacks' %>
+
+	<% if current_user && current_user.is_confirmed? %>
+		<div id='feedback_create'<%= ' style="display: none"' if current_user.feedback %>>
+			<h2><span>Что тейсти для Вас?</span></h2>
+			<form method='post' action='<%= service_url(feedbacks_path) %>'>
+				<%= text_area :feedback, :message, :rows => 4, :cols => 15 %>
+				<%= submit_to_remote nil, 'добавить', :url => feedbacks_url %>
+			</form>
+		</div>
+	<% end %>
+<% end %>
+
+<% content_for :sidebar_right do %>
+  <%= render :partial => 'adv_sidebar_right' %>
+<% end %>
+
+<% content_for :sidebar_right_below do %>
+	<h2><span>Все пользователи</span></h2>
+	<div class='users_mosaic' id='users_mosaic'>
+    <% User.active_for(current_user, :limit => 16).each do |user| %>
+      <% content_tag :div, :class => 'image', :title => h(user.url) do %>
+        <%= link_to userpic_tag(user, :width => 32, :height => 32), user_url(user) %>
+      <% end %>
+    <% end %>
+  </div>
+  
+  <div class='users_nav'>
+		<%= link_to 'случайные', { :action => :users }, :class => (params[:action] == 'users') ? 'highlight' : nil %><br/>
+		<%= link_to 'новенькие', { :action => :new_users, :page => nil }, :class => (params[:action] == 'new_users') ? 'highlight' : nil %>
+	</div>
+
+  <script type='text/javascript'>
+    jQuery(document).ready(function() {
+      var mosaic = jQuery('#users_mosaic');
+      mosaic.imagesLoaded(function() {
+        mosaic.find('.image[title]').twipsy({ delayIn: 1000 })
+        mosaic.fadeIn();
+        mosaic.masonry({ itemSelector: '.image' });
+      });
+    });
+  </script>
+  
+<% end if in_beta? %>
