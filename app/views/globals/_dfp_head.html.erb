@@ -1,12 +1,20 @@
 <script type='text/javascript' src='http://partner.googleadservices.com/gampad/google_service.js'>
 </script>
-<script type='text/javascript'>
+<script type='text/javascript' charset='utf-8'>
 GS_googleAddAdSenseService("ca-pub-7340552624818832");
 GS_googleEnableAllServices();
 </script>
-<script type='text/javascript'>
+<script type='text/javascript' charset='utf-8'>
+GA_googleAddAttr('Anonymous', <%= current_user ? 'no'.to_json : 'yes'.to_json %>);
+<%- if current_user -%>
+GA_googleAddAttr('Gender', <%= current_user.gender.to_json %>);
+GA_googleAddAttr('Premium', <%= current_user.is_premium? ? 'yes'.to_json : 'no'.to_json %>);
+GA_googleAddAttr('Updated', <%= current_user.entries_updated_at > 2.weeks.ago ? 'yes'.to_json : 'no'.to_json %>);
+<%- end -%>
+</script>
+<script type='text/javascript' charset='utf-8'>
 GA_googleAddSlot("ca-pub-7340552624818832", "240x400");
 </script>
-<script type='text/javascript'>
+<script type='text/javascript' charset='utf-8'>
 GA_googleFetchAds();
 </script>
