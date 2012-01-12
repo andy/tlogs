@@ -43,5 +43,11 @@
   }
   
   // focus immediately on page load
-  jQuery(document).ready(function() { if(window.document.location.hash == '#form') { jQuery('#message_body').focus(); } });
+  jQuery(document).ready(function() { 
+    jQuery('#message_body').bind('keydown', 'Shift+@', function(){
+      Tasty.mentions.load('#message_body', '/convos/<%=params[:id]%>/mentions');
+    });
+
+    if(window.document.location.hash == '#form') { jQuery('#message_body').focus(); } 
+  });
 </script>

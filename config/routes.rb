@@ -3,6 +3,7 @@ tlog_settings = lambda do |tlog|
   tlog.page 'page/:page', :action => 'index', :page => /\d+/
 
   tlog.publish 'publish/:action/:id', :controller => 'publish'
+  tlog.publish_mentions 'publish/mentions', :controller => 'publish', :action => 'mentions'
   tlog.settings_social 'settings/social/:action', :controller => 'settings/social'
   tlog.settings_sidebar 'settings/sidebar/:action/:id', :controller => 'settings/sidebar'
   tlog.settings_mobile 'settings/mobile/:action/:id', :controller => 'settings/mobile'
@@ -17,7 +18,9 @@ tlog_settings = lambda do |tlog|
   tlog.connect 'convos', :controller => 'conversations', :action => 'legacy_index'
   tlog.connect 'convos/new', :controller => 'conversations', :action => 'legacy_new'
   tlog.connect 'convos/new/:url', :controller => 'conversations', :action => 'legacy_named_new'
+  tlog.connect 'convos/new/:url/mentions', :controller => 'conversations', :action => 'mentions'
   tlog.connect 'convos/:id', :controller => 'conversations', :action => 'legacy_show'
+  tlog.connect 'convos/:id/mentions', :controller => 'conversations', :action => 'mentions'
 
   # 'static' files
   tlog.style 'style/:revision.css', :action => 'style', :requirements => { :revision => /\d+/ }  
@@ -55,6 +58,7 @@ www_settings = lambda do |www|
   www.last 'main/last/:rating/:kind', :controller => 'main', :action => 'last', :rating => 'default', :kind => 'default'
   www.hot 'main/hot/:kind', :controller => 'main', :action => 'hot', :kind => 'default'
   www.anonymous 'main/anonymous/:action/:id', :controller => 'anonymous'
+  www.anonymous_mentions 'main/anonymous/show/:id/mentions', :controller => 'anonymous', :action => 'mentions'
   www.connect 'main/:action/:page', :controller => 'main', :page => /\d+/
   www.main 'main/:action', :controller => 'main'
   www.robots 'robots.txt', :controller => 'main', :action => 'robots'
@@ -90,11 +94,12 @@ www_settings = lambda do |www|
   www.resources :feedbacks, :controller => 'feedbacks', :member => { :publish => :post, :discard => :post }
 
   www.emailer 'emailer/:method_name/:action', :controller => 'emailer', :defaults => { :action => 'index' } if Rails.env.development?
+
+  www.api 'api/', :controller => 'api', :action => 'index'
 end
 
 ActionController::Routing::Routes.draw do |map|
   map.vote 'vote/:entry_id/:action', :controller => 'vote'
-  map.mentions 'mentions/:entry_id', :controller => 'mentions', :action => 'in_comments'
   map.global_fave 'global/fave/:id', :controller => 'faves', :action => 'create'
   map.global 'global/:action.:format', :controller => 'global'
   

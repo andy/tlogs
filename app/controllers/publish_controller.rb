@@ -77,6 +77,11 @@ class PublishController < ApplicationController
   def anonymous
     process_entry_request 'AnonymousEntry'
   end
+
+  def mentions
+    @mentions = current_user.public_friends+current_user.friends
+    render :template => 'mentions/index'
+  end
   
   private
     # страница для произвольной записи
@@ -91,8 +96,6 @@ class PublishController < ApplicationController
         render :action => 'limit_exceeded'
         return
       end
-
-      @friends = current_user.public_friends+current_user.friends
       
       # запрашивается уже существующая запись
       if params[:id]

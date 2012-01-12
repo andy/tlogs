@@ -37,4 +37,11 @@
 		<%= image_tag 'ajax-small-loader.gif', :size => '15x15', :style => 'display: none;', :id => @entry.dom_id(:ajax_spinner) %>
 	<% end %>
 </div>
+<script type="text/javascript">
+	jQuery(function(){
+		jQuery('#comment_comment').bind('keydown', 'Shift+@', function(){
+			Tasty.mentions.load('#comment_comment', '/main/anonymous/show/<%=params[:id]%>/mentions');
+		});
+	});
+</script>
 <% end %>

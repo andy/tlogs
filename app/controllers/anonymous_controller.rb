@@ -47,6 +47,15 @@ class AnonymousController < ApplicationController
     @last_comment_viewed = current_user ? CommentViews.view(@entry, current_user) : 0    
   end
   
+  def mentions
+    @entry = Entry.find_by_id params[:id]
+    @mentions = []
+    if @entry
+      user_ids = Comment.find(:all, :select => "user_id", :conditions => "entry_id = #{params[:id]}").map(&:user_id).reject { |id| id == current_user.id || id == @entry.user_id }.uniq
+      @mentions += User.find(user_ids).reject { |u| !u.email_comments? } if user_ids.any?
+    end
+    render :template => 'mentions/index'
+  end
   
   # удаляем комментарий
   def comment_destroy

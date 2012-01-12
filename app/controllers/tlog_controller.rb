@@ -98,6 +98,13 @@ class TlogController < ApplicationController
     @last_comment_viewed  = current_user ? CommentViews.view(@entry, current_user) : 0
     @time                 = @entry.created_at
   end
+
+  def mentions
+    @mentions = []
+    user_ids = Comment.find(:all, :select => "user_id", :conditions => "entry_id = #{params[:id]}").map(&:user_id).reject { |id| id == current_user.id }.uniq
+    @mentions += User.find(user_ids).reject { |u| !u.email_comments? } if user_ids.any?
+    render :template => 'mentions/index'
+  end
   
   #
   # Helper and AJAX methods
