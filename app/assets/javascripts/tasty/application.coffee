@@ -172,6 +172,7 @@ Tasty =
 
     options:
       infid: 1
+      bufferPx: 400
       navSelector: '.entry_pagination'
       nextSelector: 'div.entry_pagination a.entry_paginate_prev'
       itemSelector: 'div.post_body'
