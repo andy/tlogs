@@ -59,9 +59,9 @@
 <% end %>
 
 <% content_for :sidebar_right_below do %>
-	<h2><span>Все пользователи</span></h2>
+	<h2><span>Тейстяне</span></h2>
 	<div class='users_mosaic' id='users_mosaic'>
-    <% User.active_for(current_user, :limit => 16).each do |user| %>
+    <% User.active_for(current_user, :limit => 32).each do |user| %>
       <% content_tag :div, :class => 'image', :title => h(user.url) do %>
         <%= link_to userpic_tag(user, :width => 32, :height => 32), user_url(user) %>
       <% end %>
@@ -77,9 +77,9 @@
     jQuery(document).ready(function() {
       var mosaic = jQuery('#users_mosaic');
       mosaic.imagesLoaded(function() {
-        mosaic.find('.image[title]').twipsy({ delayIn: 1000 })
+        mosaic.find('.image[title]').twipsy({ delayIn: 1000 });
         mosaic.fadeIn();
-        mosaic.masonry({ itemSelector: '.image' });
+        mosaic.masonry({ itemSelector: '.image', columnWidth: 20 });
       });
     });
   </script>
