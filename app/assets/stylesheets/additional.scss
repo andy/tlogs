@@ -1218,3 +1218,11 @@ input.placeholder, textarea.placeholder {
 .center_data_big_form .form_eula {
   font-size: 13px;
 }
+
+.users_mosaic {
+  display: none;
+  .image {
+    float: left;
+    margin: 1px;
+  }
+}

@@ -164,7 +164,7 @@ END
   end
   
   def application_title
-    content_tag(:title, [h(current_site ? h(current_site.url) : current_service.name), strip_tags(@title)].reject(&:blank?).join(' – ')) if @title
+    content_tag(:title, [strip_tags(@title), h(current_site ? h(current_site.url) : current_service.name)].reject(&:blank?).join(' – ')) if @title
   end
   
   def link_to_tlog(user, options = {}, html_options = nil)

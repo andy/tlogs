@@ -20,12 +20,22 @@
 <% end if false && current_user %>
 <% content_for :sidebar_right_below do %>
   <h2><span>Интересные люди</span></h2>
-  <div class='users'>
-    <% User.active_for(current_user, :limit => 6).each do |user| %>
-      <div>
-        <%= link_to_tlog(user, :link => :userpic, :empty => :blank) %>
-        <p><%= link_to_tlog(user) %></p>
-      </div>
+  <div class='users_mosaic' id='users_mosaic'>
+    <% User.active_for(current_user, :limit => 16).each do |user| %>
+      <% content_tag :div, :class => 'image', :title => h(user.url) do %>
+        <%= link_to userpic_tag(user, :width => 32), user_url(user) %>
+      <% end %>
     <% end %>
   </div>
+  
+  <script type='text/javascript'>
+    jQuery(document).ready(function() {
+      var mosaic = jQuery('#users_mosaic');
+      mosaic.imagesLoaded(function() {
+        mosaic.find('.image[title]').twipsy({ delayIn: 1000 })
+        mosaic.fadeIn();
+        mosaic.masonry({ itemSelector: '.image' });
+      });
+    });
+  </script>
 <% end if is_admin? %>
