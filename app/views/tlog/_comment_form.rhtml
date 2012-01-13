@@ -30,4 +30,9 @@
 			<%= image_tag 'ajax-small-loader.gif', :size => '15x15', :style => 'display: none;', :id => @entry.dom_id(:ajax_spinner) %>
 		<% end %>
 	</div>
+	<script type="text/javascript">
+		jQuery(function(){
+			Tasty.mentions.onkeydown('#comment_comment', 'Shift+@', '<%= user_url(current_site, mentions_entry_path(@entry)) %>');
+		});
+	</script>
 <% end %>

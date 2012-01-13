@@ -1,51 +1,18 @@
 class ApiController < ApplicationController
+  before_filter :require_api_permissions
 
-  include ApplicationHelper
-  include ActionView::Helpers::AssetTagHelper
+  ALLOWED_API_HOSTS = %w(92.38.229.197)
 
-  # error codes
-  # 1 - неправильный ключ
-  # 2 - передан несуществующий метод
+  helper :userpic
 
-  # ключ subscribe me
-  # md5(92.38.229.197) = 7affe8c8390109795c4793ec2a2571b3
-
-  def index
-    error = 0
-    error_descr = ''
-    result = []
-    if params[:k] == '7affe8c8390109795c4793ec2a2571b3'
-      case params[:m]
-        when 'make_user_details'
-          if !params[:u]
-            error = 3
-            error_descr = 'bad username'
-          else
-            result = make_user_details(params[:u])
-            if !result
-              result = []
-              error = 4
-              error_descr = 'username not found'
-            end
-          end
-
-        else
-          error = 2
-          error_descr = 'bad method name'
-      end
-    else
-      error = 1
-      error_descr = 'bad key'
-    end
-
-    render :json => { :error => error, :error_descr => error_descr, :result => result }
+  def user_details
+    render :json => make_user_details(params[:url])
   end
 
-  private
-    def make_user_details(user_name)
-      Rails.cache.fetch("subscribeme:resolve:#{user_name}", :expires_in => 3.hour) do
-        user = User.find_by_url(user_name)
-        return false if !user 
+  protected
+    def make_user_details(url)
+      Rails.cache.fetch("subscribeme:resolve:#{url}", :expires_in => 1.hour) do
+        user = User.find_by_url(url) || raise(ActiveRecord::RecordNotFound)
         size = userpic_dimensions(user, :width => 32)
         
         userpic = user.userpic? ? user.userpic.url(:thumb32) : (user.avatar ? user.avatar.public_filename : nil)
@@ -60,5 +27,9 @@ class ApiController < ApplicationController
           :userpic_height    => userpic ? size.height : 0
         }
       end
+    end
+
+    def require_api_permissions
+      render :nothing => true and return false unless ALLOWED_API_HOSTS.include?(request.remote_ip)
     end
 end

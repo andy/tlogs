@@ -71,10 +71,8 @@
 <% end %>
 <script type='text/javascript'>
   jQuery(function() {
-  	jQuery('#entry_data_part_1, #entry_data_part_2').bind('keydown', 'Shift+@', function(){
-  		Tasty.mentions.load('#entry_data_part_1', '/publish/mentions');
-  		Tasty.mentions.load('#entry_data_part_2', '/publish/mentions');
-  	});
+  	Tasty.mentions.onkeydown('#entry_data_part_1', 'Shift+@', '<%= publish_url(:action => "mentions") %>');
+  	Tasty.mentions.onkeydown('#entry_data_part_2', 'Shift+@', '<%= publish_url(:action => "mentions") %>');
 
     if(jQuery('#entry_visibility').val() == 'mainpageable' || jQuery('#entry_visibility').val() == 'voteable') {
       jQuery('#entry_nsfw_holder').show();

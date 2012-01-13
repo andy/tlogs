@@ -73,9 +73,7 @@
 <script type='text/javascript'>
 
   jQuery(function() {
-    jQuery('#message_body').bind('keydown', 'Shift+@', function(){
-      Tasty.mentions.load('#message_body', '/convos/new/<%=params[:url]%>/mentions');
-    });
+    Tasty.mentions.onkeydown('#message_body', 'Shift+@', '/convos/mentions');
 
     jQuery('#subscribe_link').twipsy({ placement: 'below' });
     jQuery('#unsubscribe_link').twipsy({ placement: 'below' });

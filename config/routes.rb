@@ -3,7 +3,6 @@ tlog_settings = lambda do |tlog|
   tlog.page 'page/:page', :action => 'index', :page => /\d+/
 
   tlog.publish 'publish/:action/:id', :controller => 'publish'
-  tlog.publish_mentions 'publish/mentions', :controller => 'publish', :action => 'mentions'
   tlog.settings_social 'settings/social/:action', :controller => 'settings/social'
   tlog.settings_sidebar 'settings/sidebar/:action/:id', :controller => 'settings/sidebar'
   tlog.settings_mobile 'settings/mobile/:action/:id', :controller => 'settings/mobile'
@@ -18,9 +17,7 @@ tlog_settings = lambda do |tlog|
   tlog.connect 'convos', :controller => 'conversations', :action => 'legacy_index'
   tlog.connect 'convos/new', :controller => 'conversations', :action => 'legacy_new'
   tlog.connect 'convos/new/:url', :controller => 'conversations', :action => 'legacy_named_new'
-  tlog.connect 'convos/new/:url/mentions', :controller => 'conversations', :action => 'mentions'
   tlog.connect 'convos/:id', :controller => 'conversations', :action => 'legacy_show'
-  tlog.connect 'convos/:id/mentions', :controller => 'conversations', :action => 'mentions'
 
   # 'static' files
   tlog.style 'style/:revision.css', :action => 'style', :requirements => { :revision => /\d+/ }  
@@ -38,7 +35,7 @@ tlog_settings = lambda do |tlog|
   tlog.private_entries 'private', :action => 'private'
   tlog.anonymous_entries 'anonymous', :action => 'anonymous'
 
-  tlog.resources :entries, :member => { :subscribe => :post, :unsubscribe => :post, :metadata => :get }, :collection => { :tags => :get, :relationship => :post } do |entry|
+  tlog.resources :entries, :member => { :subscribe => :post, :unsubscribe => :post, :metadata => :get, :mentions => :get }, :collection => { :tags => :get, :relationship => :post } do |entry|
     entry.resources :comments, :new => { :preview => :post }
     entry.resources :tags, :controller => 'entry_tags'
   end
@@ -58,14 +55,14 @@ www_settings = lambda do |www|
   www.last 'main/last/:rating/:kind', :controller => 'main', :action => 'last', :rating => 'default', :kind => 'default'
   www.hot 'main/hot/:kind', :controller => 'main', :action => 'hot', :kind => 'default'
   www.anonymous 'main/anonymous/:action/:id', :controller => 'anonymous'
-  www.anonymous_mentions 'main/anonymous/show/:id/mentions', :controller => 'anonymous', :action => 'mentions'
   www.connect 'main/:action/:page', :controller => 'main', :page => /\d+/
   www.main 'main/:action', :controller => 'main'
   www.robots 'robots.txt', :controller => 'main', :action => 'robots'
 
   # conversations
   www.resources :messages, :controller => 'messages'
-  www.resources :conversations, :as => 'convos', :controller => 'conversations', :collection => { :unreplied => :get, :unviewed => :get, :search => :get, :verify_recipient => :post }, :member => { :subscribe => :post, :unsubscribe => :post, :mav => :post }
+  www.mentions_conversations 'convos/mentions', :controller => 'conversations', :action => 'mentions'
+  www.resources :conversations, :as => 'convos', :controller => 'conversations', :collection => { :unreplied => :get, :unviewed => :get, :search => :get, :verify_recipient => :post }, :member => { :subscribe => :post, :unsubscribe => :post, :mav => :post, :mentions => :get }
   www.named_new_conversation 'convos/new/:url', :controller => 'conversations', :action => 'new', :requirements => { :url => /[a-z0-9]([a-z0-9\-]{1,20})?/i }
 
   # billing processing
@@ -95,7 +92,7 @@ www_settings = lambda do |www|
 
   www.emailer 'emailer/:method_name/:action', :controller => 'emailer', :defaults => { :action => 'index' } if Rails.env.development?
 
-  www.api 'api/', :controller => 'api', :action => 'index'
+  www.api 'api/:action/:id', :controller => 'api'
 end
 
 ActionController::Routing::Routes.draw do |map|

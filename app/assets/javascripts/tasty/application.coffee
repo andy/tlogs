@@ -367,6 +367,11 @@ Tasty =
       escaped: false,
       scrollbar_size: -1,
       suggest_el_height: 22
+    
+    onkeydown: (selector, key, url) ->
+      jQuery(selector).bind 'keydown', key, () -> Tasty.mentions.load(selector, url)
+
+      true
 
     load: (selector, url = false) ->
       if !Tasty.mentions.options.list_loaded && url && selector.length

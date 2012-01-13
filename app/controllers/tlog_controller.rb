@@ -1,6 +1,6 @@
 class TlogController < ApplicationController
   before_filter :require_current_site, :require_confirmed_current_user, :require_confirmed_current_site
-  before_filter :find_entry, :only => [:show, :metadata, :subscribe, :unsubscribe, :destroy]
+  before_filter :find_entry, :only => [:show, :metadata, :subscribe, :unsubscribe, :destroy, :mentions]
   before_filter :require_owner, :only => [:destroy, :private, :anonymous]
 
   # 1 - protect global tlog index
@@ -13,7 +13,7 @@ class TlogController < ApplicationController
   before_filter :taken_but_empty, :only => [:index, :daylog, :show]
 
   # 3 - protect each entry individually
-  before_filter :check_if_entry_can_be_viewed, :only => [:show]
+  before_filter :check_if_entry_can_be_viewed, :only => [:show, :mentions]
 
   # 4 - we know it is visible - so mark as viewed
   before_filter :mark_as_viewed, :only => [:index, :daylog, :show]
@@ -100,9 +100,10 @@ class TlogController < ApplicationController
   end
 
   def mentions
-    @mentions = []
-    user_ids = Comment.find(:all, :select => "user_id", :conditions => "entry_id = #{params[:id]}").map(&:user_id).reject { |id| id == current_user.id }.uniq
-    @mentions += User.find(user_ids).reject { |u| !u.email_comments? } if user_ids.any?
+    user_ids = Comment.find(:all, :select => "user_id", :conditions => "entry_id = #{@entry.id}").map(&:user_id).reject { |id| id == current_user.id }.uniq
+    @mentions = User.find(user_ids).reject { |u| !u.email_comments? } if user_ids.any?
+    @mentions = [] if !@mentions
+    
     render :template => 'mentions/index'
   end
   

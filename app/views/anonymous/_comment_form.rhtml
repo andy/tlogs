@@ -39,9 +39,7 @@
 </div>
 <script type="text/javascript">
 	jQuery(function(){
-		jQuery('#comment_comment').bind('keydown', 'Shift+@', function(){
-			Tasty.mentions.load('#comment_comment', '/main/anonymous/show/<%=params[:id]%>/mentions');
-		});
+		Tasty.mentions.onkeydown('#comment_comment', 'Shift+@', '<%= anonymous_path(:action => "mentions", :id => @entry.id) %>');
 	});
 </script>
 <% end %>
