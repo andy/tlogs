@@ -1164,7 +1164,7 @@ div.post_comment_avatar {
 	outline: none;
 }
 
-.post_comment_time {
+.t-post-comment a.post_comment_time {
 	font-size:88%;
 	color:#999;
 	font-style:italic;
@@ -1172,6 +1172,11 @@ div.post_comment_avatar {
 	position:relative;
 	top:-15px;
 	z-index: 200;
+	text-decoration: none;
+}
+
+.t-post-comment a.post_comment_time:hover {
+  text-decoration: underline;
 }
 
 .comment_string {

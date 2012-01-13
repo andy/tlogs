@@ -27,8 +27,8 @@ a, div.sidebar p, div.sidebar span, .messages_other, #message_is_private_label {
 }
 /* link */
 .onair a, div.post_link_entry a.big_link {
-     color:#FF5300!important;
-     border-color:#FF5300!important;
+     color:#FF5300;
+     border-color:#FF5300;
 
 }
 .post_comment_author .highlight, .entry_metadata_link {

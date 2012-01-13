@@ -92,8 +92,8 @@ a, div.sidebar p, div.sidebar span, .messages_other, #message_is_private_label<%
 <% unless @design.color_link.blank? %>
 /* link */
 .onair a, div.post_link_entry a.big_link {
-	color:#<%= @design.color_link %>!important;
-	border-color:#<%= @design.color_link %>!important;
+	color:#<%= @design.color_link %>;
+	border-color:#<%= @design.color_link %>;
 }
 .post_comment_author .highlight, .entry_metadata_link, .convos .highlight {
 	background-color:#<%= @design.color_link %>!important;
