@@ -1,8 +1,8 @@
 !!! 5
-<!--[if lt IE 7 ]> <html class="no-js ie6" lang="ru"> <![endif]-->
-<!--[if IE 7 ]>    <html class="no-js ie7" lang="ru"> <![endif]-->
-<!--[if IE 8 ]>    <html class="no-js ie8" lang="ru"> <![endif]-->
-<!--[if (gte IE 9)|!(IE)]><!--> <html class="no-js" lang="ru"> <!--<![endif]-->
+<!--[if lt IE 7 ]> <html class="ie6" lang="ru"> <![endif]-->
+<!--[if IE 7 ]>    <html class="ie7" lang="ru"> <![endif]-->
+<!--[if IE 8 ]>    <html class="ie8" lang="ru"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--> <html lang="ru"> <!--<![endif]-->
 %head
   = render :partial => 'globals/head'
   - if is_premium? && current_user.tlog_settings.main_background?
