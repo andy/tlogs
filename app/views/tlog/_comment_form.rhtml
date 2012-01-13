@@ -17,6 +17,7 @@
 				:complete => "$('#{@entry.dom_id(:ajax_spinner)}').hide(); remote_request_finished('comment_submit_button', 'Отправить комментарий');",
 				:html => { :class => 'small', :id => @entry.dom_id(:form) } do |f| %>
 			<input type='hidden' name='reply_to' id='comment_reply_to' value='' />
+			<input type='hidden' name='utf8' value='✓' />
 			<% if current_user %>
 				<div id='post_comment_form_greeting'>Что скажете, <%= link_to_tlog(current_user) %>?</div>
 			<% end %>

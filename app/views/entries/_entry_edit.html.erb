@@ -1,38 +1,39 @@
 <% @title = (@new_record ? 'новая запись – ' : 'редактирование записи – ') + @entry.to_russian %>
 <div class='center_data_big_form'>
 
-	<div id='preview_holder'>
-		<%= render(:partial => 'preview') unless @new_record %>
-	</div>
+  <div id='preview_holder'>
+    <%= render(:partial => 'preview') unless @new_record %>
+  </div>
 
-	<form method='post' name='entry_edit_form' action='<%= user_url(current_user, publish_path(empty_bookmarklet_url_options(:action => @entry[:type].underscore.split(/_/)[0], :bm => in_bookmarklet? ? true : nil))) %>' id='entry_edit_form' enctype="multipart/form-data" class='post'>
-	  <%= tag :input, :type => 'hidden', :name => 'authenticity_token', :value => form_authenticity_token %>
-		<%= hidden_field('entry', :id, :style => 'display: none') unless @new_record -%>
-		<%= hidden_field 'entry', :type, :style => 'display: none' %>
-		<%= render :partial => 'entries/edit/' + entry.class.to_s.underscore, :locals => { :entry => @entry } %>
-		<% unless @entry.is_anonymous? %>
-			<div id='entry_options_toggle'>
-				<% if @new_record %>
-					<%#= link_to_function 'Дополнительно ...', 'new Effect.toggle("entry_options", "blind", { duration: 0.3 })' %>
-				<% end %>
-		
-				<div id='entry_options' <%#= ' style="display: none"' if @new_record %>>
-					<div id='entry_visibility_div'>
-						<% if entry.visibility != 'voteable' || @new_record %>
-							<label for='entry_visibility'>Тип записи:</label><br/>
-							<%= select :entry, :visibility, @new_record ? entry_visibility_new(current_site) : entry_visibility_edit(current_site, @entry) %>
-							<%#= debug current_site.visibility_limit %>
-							<%
-							  limit = current_site.visibility_limit
-							  if limit[:mainpageable_entries]
-							%>
-							<div class='visibility_comments'><b>Важно!</b> Вы можете публиковать не более <%= limit[:mainpageable_entries] %> <%= Russian.p(limit[:mainpageable_entries], 'записи', 'записей', 'записей') %> в прямой эфир, и не более <%= limit[:voteable_entries] %> <%= Russian.p(limit[:voteable_entries], 'записи', 'записей', 'записей') %> с голосованием в течение 24-х часов. Публикации в личный тлог <b>никак не ограничиваются</b>. Снять ограничения можно <%= link_to 'оплатив сервис &rarr;', user_url(current_site, settings_premium_path) %></div>
-							<% else %>
-							  <div class='visibility_comments'><b>Жизнь удалась.</b> Вы никак не ограничены в количестве публикаций в прямой эфир.</div>
-						  <% end %>
-						<% end %>
-					</div>
-					
+  <form method='post' name='entry_edit_form' action='<%= user_url(current_user, publish_path(empty_bookmarklet_url_options(:action => @entry[:type].underscore.split(/_/)[0], :bm => in_bookmarklet? ? true : nil))) %>' id='entry_edit_form' enctype="multipart/form-data" class='post'>
+    <%= tag :input, :type => 'hidden', :name => 'authenticity_token', :value => form_authenticity_token %>
+    <%= tag :input, :type => 'hidden', :name => 'utf8', :value => '✓' %>
+    <%= hidden_field('entry', :id, :style => 'display: none') unless @new_record -%>
+    <%= hidden_field 'entry', :type, :style => 'display: none' %>
+    <%= render :partial => 'entries/edit/' + entry.class.to_s.underscore, :locals => { :entry => @entry } %>
+    <% unless @entry.is_anonymous? %>
+      <div id='entry_options_toggle'>
+        <% if @new_record %>
+          <%#= link_to_function 'Дополнительно ...', 'new Effect.toggle("entry_options", "blind", { duration: 0.3 })' %>
+        <% end %>
+    
+        <div id='entry_options' <%#= ' style="display: none"' if @new_record %>>
+          <div id='entry_visibility_div'>
+            <% if entry.visibility != 'voteable' || @new_record %>
+              <label for='entry_visibility'>Тип записи:</label><br/>
+              <%= select :entry, :visibility, @new_record ? entry_visibility_new(current_site) : entry_visibility_edit(current_site, @entry) %>
+              <%#= debug current_site.visibility_limit %>
+              <%
+                limit = current_site.visibility_limit
+                if limit[:mainpageable_entries]
+              %>
+              <div class='visibility_comments'><b>Важно!</b> Вы можете публиковать не более <%= limit[:mainpageable_entries] %> <%= Russian.p(limit[:mainpageable_entries], 'записи', 'записей', 'записей') %> в прямой эфир, и не более <%= limit[:voteable_entries] %> <%= Russian.p(limit[:voteable_entries], 'записи', 'записей', 'записей') %> с голосованием в течение 24-х часов. Публикации в личный тлог <b>никак не ограничиваются</b>. Снять ограничения можно <%= link_to 'оплатив сервис &rarr;', user_url(current_site, settings_premium_path) %></div>
+              <% else %>
+                <div class='visibility_comments'><b>Жизнь удалась.</b> Вы никак не ограничены в количестве публикаций в прямой эфир.</div>
+              <% end %>
+            <% end %>
+          </div>
+          
           <!-- <div id='entry_nsfw_holder'>
             <div id='entry_nsfw_holder_checkbox'>
               <%= check_box :entry, :nsfw, :class => 'checkbox' %>
@@ -42,42 +43,42 @@
               <div id='entry_nsfw_holder_comments'>Поставьте эту галочку, если ваша запись содержит нецензурные выражения, является оскорбительной или содержит порнографические материалы.</div>
             </div>
           </div> -->
-			
-					<div id='entry_tags'>
-						<label for='entry_tag_list'>Теги: </label><br/>
-						<%= text_field 'entry', 'tag_list', { :id => 'entry_tag_list' } %>
-						<%= tasty_error_message_on 'entry', 'tag_list' %>
-						<div class='tags_comments'>Указывайте теги через запятую. Вы можете указать до 10 тегов.</div>
-					</div>
-				</div>
-			</div>
-		<% end %>
-		
-		<%= submit_to_remote "button", "Предпросмотр", :url => user_url(current_site, url_for(:action => :preview)), :before => 'remote_request_started("generate_preview", "Подготавливаем ...");', :loaded => 'remote_request_finished("generate_preview", "Предпросмотр");', :html => { :id => 'generate_preview', :class => 'button' } %>&nbsp;
-		<%= submit_tag 'Сохранить', :class => 'button', :id => 'submit_button' %>
-		<div class='form_submit_return'>
-			или
-			<% if params[:back] && params[:back] == 'to_entry_page' %>
-				<%= link_to 'вернуться обратно', tlog_url_for_entry(@entry, :fragment => @entry.dom_id) %>
-			<% else %>
-				<%= link_to 'вернуться обратно', user_url(current_user, publish_path(bookmarklet_url_options)) %>
-			<% end %>
-		</div>
-	</form>	
+      
+          <div id='entry_tags'>
+            <label for='entry_tag_list'>Теги: </label><br/>
+            <%= text_field 'entry', 'tag_list', { :id => 'entry_tag_list' } %>
+            <%= tasty_error_message_on 'entry', 'tag_list' %>
+            <div class='tags_comments'>Указывайте теги через запятую. Вы можете указать до 10 тегов.</div>
+          </div>
+        </div>
+      </div>
+    <% end %>
+    
+    <%= submit_to_remote "button", "Предпросмотр", :url => user_url(current_site, url_for(:action => :preview)), :before => 'remote_request_started("generate_preview", "Подготавливаем ...");', :loaded => 'remote_request_finished("generate_preview", "Предпросмотр");', :html => { :id => 'generate_preview', :class => 'button' } %>&nbsp;
+    <%= submit_tag 'Сохранить', :class => 'button', :id => 'submit_button' %>
+    <div class='form_submit_return'>
+      или
+      <% if params[:back] && params[:back] == 'to_entry_page' %>
+        <%= link_to 'вернуться обратно', tlog_url_for_entry(@entry, :fragment => @entry.dom_id) %>
+      <% else %>
+        <%= link_to 'вернуться обратно', user_url(current_user, publish_path(bookmarklet_url_options)) %>
+      <% end %>
+    </div>
+  </form> 
 </div>
 
 <% if in_bookmarklet? && params[:bm][:autosave] == 'true' %>
 <script type='text/javascript'>$('entry_edit_form').submit();</script>
 <% end %>
 <%
-	mentions = []
+  mentions = []
   @friends.each do |friend|
     mentions.push({ 'pic' => userpic_src(friend, { :style => :thumb64 }), 'url' => friend.url }) if friend.url
   end
 %>
 <script type='text/javascript'>
   jQuery(function() {
-	  Tasty.mentions.ready('<%= mentions.to_json %>', '#entry_data_part_1, #entry_data_part_2');
+    Tasty.mentions.ready('<%= mentions.to_json %>', '#entry_data_part_1, #entry_data_part_2');
 
     if(jQuery('#entry_visibility').val() == 'mainpageable' || jQuery('#entry_visibility').val() == 'voteable') {
       jQuery('#entry_nsfw_holder').show();
