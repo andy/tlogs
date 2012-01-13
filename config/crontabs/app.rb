@@ -1,6 +1,7 @@
 env :MAILTO, 'servers@mmm-tasty.ru'
+env :PATH, '/usr/local/bin:/usr/bin:/bin:/var/lib/gems/1.8/bin:/usr/local/node/bin:/var/lib/gems/1.8/bin:/usr/local/node/bin'
 
-job_type :bundle, "cd :path && RAILS_ENV=:environment bin/bundle exec :task :output"
+job_type :bundle, "cd :path && source .reerc && RAILS_ENV=:environment bundle exec :task :output"
 
 # Remove rack uploads trash
 every 1.day do
