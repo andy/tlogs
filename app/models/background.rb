@@ -1,3 +1,23 @@
+# == Schema Information
+# Schema version: 20111213165134
+#
+# Table name: backgrounds
+#
+#  id               :integer(4)      not null, primary key
+#  user_id          :integer(4)      not null, indexed
+#  image_file_name  :string(255)     not null
+#  image_updated_at :datetime
+#  image_meta       :text
+#  is_public        :boolean(1)      default(FALSE), not null
+#  created_at       :datetime
+#  updated_at       :datetime
+#  gray_logo        :boolean(1)      default(FALSE), not null
+#
+# Indexes
+#
+#  index_backgrounds_on_user_id  (user_id)
+#
+
 class Background < ActiveRecord::Base
   ## included modules & attr_*
   ## associations
