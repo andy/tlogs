@@ -35,7 +35,7 @@ tlog_settings = lambda do |tlog|
   tlog.private_entries 'private', :action => 'private'
   tlog.anonymous_entries 'anonymous', :action => 'anonymous'
 
-  tlog.resources :entries, :member => { :subscribe => :post, :unsubscribe => :post, :metadata => :get }, :collection => { :tags => :get, :relationship => :post } do |entry|
+  tlog.resources :entries, :member => { :subscribe => :post, :unsubscribe => :post, :metadata => :get, :mentions => :get }, :collection => { :tags => :get, :relationship => :post } do |entry|
     entry.resources :comments, :new => { :preview => :post }
     entry.resources :tags, :controller => 'entry_tags'
   end
@@ -64,7 +64,8 @@ www_settings = lambda do |www|
 
   # conversations
   www.resources :messages, :controller => 'messages'
-  www.resources :conversations, :as => 'convos', :controller => 'conversations', :collection => { :unreplied => :get, :unviewed => :get, :search => :get, :verify_recipient => :post }, :member => { :subscribe => :post, :unsubscribe => :post, :mav => :post }
+  www.mentions_conversations 'convos/mentions', :controller => 'conversations', :action => 'mentions'
+  www.resources :conversations, :as => 'convos', :controller => 'conversations', :collection => { :unreplied => :get, :unviewed => :get, :search => :get, :verify_recipient => :post }, :member => { :subscribe => :post, :unsubscribe => :post, :mav => :post, :mentions => :get }
   www.named_new_conversation 'convos/new/:url', :controller => 'conversations', :action => 'new', :requirements => { :url => /[a-z0-9]([a-z0-9\-]{1,20})?/i }
 
   # billing processing
@@ -93,11 +94,12 @@ www_settings = lambda do |www|
   www.resources :feedbacks, :controller => 'feedbacks', :member => { :publish => :post, :discard => :post }
 
   www.emailer 'emailer/:method_name/:action', :controller => 'emailer', :defaults => { :action => 'index' } if Rails.env.development?
+
+  www.api 'api/:action/:id', :controller => 'api'
 end
 
 ActionController::Routing::Routes.draw do |map|
   map.vote 'vote/:entry_id/:action', :controller => 'vote'
-  map.mentions 'mentions/:entry_id', :controller => 'mentions', :action => 'in_comments'
   map.global_fave 'global/fave/:id', :controller => 'faves', :action => 'create'
   map.global 'global/:action.:format', :controller => 'global'
   

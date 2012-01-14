@@ -74,6 +74,8 @@
 <script type='text/javascript'>
 
   jQuery(function() {
+    Tasty.mentions.onkeydown('#message_body', 'Shift+@', '/convos/mentions');
+
     jQuery('#subscribe_link').twipsy({ placement: 'below' });
     jQuery('#unsubscribe_link').twipsy({ placement: 'below' });
   });

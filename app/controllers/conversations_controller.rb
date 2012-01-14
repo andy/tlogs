@@ -81,6 +81,11 @@ class ConversationsController < ApplicationController
       wants.js # render destroy.rjs
     end
   end
+
+  def mentions
+    @mentions = current_user.public_friends+current_user.friends
+    render :template => 'mentions/index'
+  end
   
   # Legacy
   def legacy_index

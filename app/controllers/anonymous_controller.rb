@@ -2,12 +2,12 @@ class AnonymousController < ApplicationController
   before_filter :require_current_user, :only => [:subscribe, :unsubscribe, :comment, :comment_destroy]
   before_filter :require_confirmed_current_user, :only => [:subscribe, :unsubscribe, :comment_destroy, :comment]
   
-  before_filter :preload_entry, :only => [:show, :preview, :toggle, :comment, :subscribe, :unsubscribe]
-  before_filter :require_commentable_entry, :only => [:comment, :subscribe, :unsubscribe]
+  before_filter :preload_entry, :only => [:show, :preview, :toggle, :comment, :subscribe, :unsubscribe, :mentions]
+  before_filter :require_commentable_entry, :only => [:comment, :subscribe, :unsubscribe, :mentions]
 
   before_filter :require_post_request, :only => [:preview, :comment, :toggle, :subscribe, :unsubscribe, :ban_ac]
 
-  before_filter :require_not_ac_banned, :only => [:preview, :comment, :comment_destroy]
+  before_filter :require_not_ac_banned, :only => [:preview, :comment, :comment_destroy, :mentions]
 
   before_filter :require_moderator, :only => [:toggle, :ban_ac]
   
@@ -47,6 +47,13 @@ class AnonymousController < ApplicationController
     @last_comment_viewed = current_user ? CommentViews.view(@entry, current_user) : 0    
   end
   
+  def mentions
+    user_ids = Comment.find(:all, :select => "user_id", :conditions => "entry_id = #{@entry.id}").map(&:user_id).reject { |id| id == current_user.id || id == @entry.user_id }.uniq
+    @mentions = User.find(user_ids).reject { |u| !u.email_comments? } if user_ids.any?
+    @mentions = [] if !@mentions
+    
+    render :template => 'mentions/index'
+  end
   
   # удаляем комментарий
   def comment_destroy

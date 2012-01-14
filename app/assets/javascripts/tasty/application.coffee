@@ -461,20 +461,23 @@ Tasty =
       escaped: false,
       scrollbar_size: -1,
       suggest_el_height: 22
+    
+    onkeydown: (selector, key, url) ->
+      jQuery(selector).bind 'keydown', key, () -> Tasty.mentions.load(selector, url)
 
-    load: (selector, eid = false) ->
-      if !Tasty.mentions.options.list_loaded && eid && selector.length
+      true
+
+    load: (selector, url = false) ->
+      if !Tasty.mentions.options.list_loaded && url && selector.length
         jQuery('body').append('<div id="mentions_loader" class="t-mentions-holder" style="display:block;width:16px;height:16px;"><img src="/images/ajax-smaller-loader.gif" width="16" height="16" alt="загружаем список"/></div>')
         pos = Tasty.mentions.caret.get_xy(jQuery(selector))
         jQuery('#mentions_loader').css({ 'left': pos.x, 'top': pos.y })
         jQuery.ajax
-          url: "/mentions/#{eid}"
+          url: "#{url}"
           dataType: 'json'
           data:
             authenticity_token: 
               window._token
-            entry_id:
-              eid
           type: 'get'
           success: (data) =>
             jQuery('#mentions_loader').remove()
@@ -482,6 +485,8 @@ Tasty =
               Tasty.mentions.ready(data.list, selector, true)
 
         Tasty.mentions.options.list_loaded = true
+      else
+        Tasty.mentions.bind_events(selector)
 
       true
 
@@ -515,6 +520,13 @@ Tasty =
 
       true
 
+    object_value: (obj) ->
+      tag = jQuery(obj)[0].tagName
+      if tag == 'INPUT' || tag == 'TEXTAREA'
+        return jQuery(obj).val()
+
+      return jQuery(obj).html()
+
     complete: (s = false) ->
       if !s
         obj = this
@@ -523,7 +535,7 @@ Tasty =
           obj = Tasty.mentions.options.current_obj
 
       if obj
-        t = jQuery(obj).val()
+        t = Tasty.mentions.object_value(obj)
         last_mention = Tasty.mentions.last_mention(obj)
         friend = ''
         if Tasty.mentions.options.suggest_list.length == 1
@@ -541,7 +553,11 @@ Tasty =
           if last_mention.length
             m_length = last_mention.length
           c += t.substr(Tasty.mentions.options.dog+1+m_length, t.length)
-          jQuery(obj).val(c)
+          tag = jQuery(obj)[0].tagName
+          if tag == 'INPUT' || tag == 'TEXTAREA'
+            jQuery(obj).val(c)
+          else
+            jQuery(obj).html(c)
           Tasty.mentions.caret.set(obj, Tasty.mentions.options.dog+1+friend.length+1)
           Tasty.mentions.suggest.hide()
           Tasty.mentions.options.dog = -1
@@ -551,7 +567,7 @@ Tasty =
       true
 
     last_mention: (obj) ->
-      t = jQuery(obj).val()
+      t = Tasty.mentions.object_value(obj)
       last_dog = t.lastIndexOf('@', Tasty.mentions.caret.get(obj))
       last_word = /^[a-zA-Z0-9\-]+/.exec(t.substr(last_dog+1, Tasty.mentions.caret.get(obj)-last_dog))
       lw_index = t.indexOf(last_word, last_dog)
@@ -572,17 +588,20 @@ Tasty =
         return false
 
       Tasty.mentions.suggest.hide()
-      t = jQuery(this).val()
+      t = Tasty.mentions.object_value(this)
       if !/^[a-zA-Z0-9\-\@]$/.test(t.charAt(Tasty.mentions.caret.get(this))) && Tasty.mentions.options.dog > -1
         Tasty.mentions.options.dog = -1
 
         return false
       else
-        if t.charAt(Tasty.mentions.caret.get(this)) == '@'
+        if t.charAt(Tasty.mentions.caret.get(this)) == '@' && !/^[A-Za-z0-9\-\_]$/.test(t.charAt(Tasty.mentions.caret.get(this)-1))
           Tasty.mentions.options.dog = Tasty.mentions.caret.get(this)
           Tasty.mentions.options.suggest = ''
         else
-          suggest = Tasty.mentions.last_mention(this)
+          if !/^[A-Za-z0-9\-\_]$/.test(t.charAt(Tasty.mentions.options.dog-1))
+            suggest = Tasty.mentions.last_mention(this)
+          else
+            Tasty.mentions.options.dog = -1
       
       if Tasty.mentions.options.dog > -1
         Tasty.mentions.options.suggest = ''

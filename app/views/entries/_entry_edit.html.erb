@@ -70,15 +70,10 @@
 <% if in_bookmarklet? && params[:bm][:autosave] == 'true' %>
 <script type='text/javascript'>$('entry_edit_form').submit();</script>
 <% end %>
-<%
-  mentions = []
-  @friends.each do |friend|
-    mentions.push({ 'pic' => userpic_src(friend, { :style => :thumb64 }), 'url' => friend.url }) if friend.url
-  end
-%>
 <script type='text/javascript'>
   jQuery(function() {
-    Tasty.mentions.ready('<%= mentions.to_json %>', '#entry_data_part_1, #entry_data_part_2');
+  	Tasty.mentions.onkeydown('#entry_data_part_1', 'Shift+@', '<%= publish_url(:action => "mentions") %>');
+  	Tasty.mentions.onkeydown('#entry_data_part_2', 'Shift+@', '<%= publish_url(:action => "mentions") %>');
 
     if(jQuery('#entry_visibility').val() == 'mainpageable' || jQuery('#entry_visibility').val() == 'voteable') {
       jQuery('#entry_nsfw_holder').show();
