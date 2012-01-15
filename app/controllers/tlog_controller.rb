@@ -104,7 +104,7 @@ class TlogController < ApplicationController
     @mentions = User.find(user_ids).reject { |u| !u.email_comments? } if user_ids.any?
     @mentions = [] if !@mentions
     
-    render :template => 'mentions/index'
+    render :json => export_mentions(@mentions)
   end
   
   #

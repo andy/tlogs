@@ -82,7 +82,7 @@ class ConversationsController < ApplicationController
 
   def mentions
     @mentions = current_user.public_friends+current_user.friends
-    render :template => 'mentions/index'
+    render :json => export_mentions(@mentions)
   end
   
   # Legacy

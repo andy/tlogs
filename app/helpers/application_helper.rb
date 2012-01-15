@@ -68,18 +68,6 @@ module ApplicationHelper
     
     OpenStruct.new :width => width, :height => height
   end
-
-  # src-path for userpic
-  def userpic_src(user, options = {})
-    if !user.userpic? then
-      return image_path(user.avatar.public_filename) if user.avatar
-    else
-      style = options[:style] || false
-      style = :thumb64 if !style
-      return image_path(user.userpic.url(style))
-    end
-    image_path('noavatar.gif')
-  end
   
   # new way to embed userpics (succeeds avatar_tag)
   def userpic_tag(user, options = {})

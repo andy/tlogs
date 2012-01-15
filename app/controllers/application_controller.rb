@@ -262,4 +262,5 @@ class ApplicationController < ActionController::Base
     end    
     
     include UrlHelper
+    include ApiHelper
 end
