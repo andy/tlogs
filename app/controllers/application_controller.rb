@@ -11,7 +11,7 @@ class ApplicationController < ActionController::Base
                             'webos|amoi|novarra|cdm|alcatel|pocket|ipad|iphone|mobileexplorer|' +
                             'mobile'
   
-  helper :white_list, :url, :userpic, :assets
+  helper :white_list, :url, :userpic
 
   # MAIN FILTERS
   attr_accessor   :is_private
@@ -44,6 +44,10 @@ class ApplicationController < ActionController::Base
   # after_filter  :log_memory_usage if Rails.env.production?
   
   protected
+    def tag_helper
+      AssetTagHelper.instance
+    end
+  
     def log_memory_usage
       begin
         if File.exists?("/proc/#{$$}/status")
@@ -184,9 +188,6 @@ class ApplicationController < ActionController::Base
         redirect_to service_url(login_path) and return false if current_user.is_disabled?
         return true
       end
-      
-      Rails.logger.debug "user not logged in"
-      pp session
       
       flash[:notice] = 'Вам необходимо зайти чтобы выполнить запрос'
       if request.get?

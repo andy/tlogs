@@ -96,7 +96,7 @@ class NewyearController < ApplicationController
         
         userpic = user.userpic? ? user.userpic.url(:thumb32) : (user.avatar ? user.avatar.public_filename : nil)
 
-        { :url => user.url, :userpic => userpic, :userpic_width => size.width, :userpic_height => size.height }
+        { :url => user.url, :userpic => userpic ? tag_helper.image_path(userpic) : nil, :userpic_width => size.width, :userpic_height => size.height }
       end
     end
 end
