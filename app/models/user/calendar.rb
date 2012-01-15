@@ -37,7 +37,7 @@ class User
       start_at += 1.day
     end
     
-    result
+    result.sort_by { |m, d| ("%04d%02d" % [d.first.year, d.first.month]).to_i }
   end
 
   ## private methods

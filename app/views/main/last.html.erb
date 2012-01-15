@@ -15,7 +15,7 @@
 		<h2><span>Лучшее за день</span></h2>
     <%-
       prev_year = nil
-      User.calendar(@time).sort_by { |m, d| ("%04d%02d" % [d.first.year, d.first.month]).to_i }.each do |month, days| -%><%=
+      User.calendar(@time).each do |month, days| -%><%=
         content_tag :span, days.first.year, :class => 'year' unless days.first.year == prev_year %><%-
         prev_year = days.first.year 
         -%> <span class='month'><%= month.to_rmonth_s.capitalize %></span> <%
