@@ -11,7 +11,7 @@ class ApplicationController < ActionController::Base
                             'webos|amoi|novarra|cdm|alcatel|pocket|ipad|iphone|mobileexplorer|' +
                             'mobile'
   
-  helper :white_list, :url, :userpic
+  helper :white_list, :url, :userpic, :assets
 
   # MAIN FILTERS
   attr_accessor   :is_private
