@@ -16,6 +16,15 @@
 * last_rating
 * last_personalized_keys
 
+== Используемые ключи в Redis
+* u:<id>:q — персональная очередь постов пользователя
+* n:<id> — соседи по постам
+* q:<id> — личная очередь пользователя (Моё)
+* e:ping — pub/sub в который попадают новые записи
+* e:queue:<key> — какой-либо из эфиров (прямой, лучшее и т.п.)
+* chat:... — используется для чата
+* ping — для уведомления яндекса о новых постах
+
 == Annotate
 
  bundle exec annotate -p before -m -i -s --exclude tests,fixtures

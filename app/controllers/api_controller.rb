@@ -1,9 +1,10 @@
 class ApiController < ApplicationController
-  before_filter :require_api_permissions
+  # before_filter :require_api_permissions
 
   ALLOWED_API_HOSTS = %w(92.38.229.197 127.0.0.1)
 
   helper :userpic
+
 
   def user_details
     render :json => make_user_details(params[:url])
@@ -11,7 +12,7 @@ class ApiController < ApplicationController
 
   protected
     def make_user_details(url)
-      Rails.cache.fetch("subscribeme:resolve:#{url}", :expires_in => 1.hour) do
+      Rails.cache.fetch("api:mud:#{url}", :expires_in => 1.hour) do
         user = User.find_by_url(url) || raise(ActiveRecord::RecordNotFound)
         size = userpic_dimensions(user, :width => 32)
         
