@@ -100,11 +100,11 @@ class TlogController < ApplicationController
   end
 
   def mentions
-    user_ids = Comment.find(:all, :select => "user_id", :conditions => "entry_id = #{@entry.id}").map(&:user_id).reject { |id| id == current_user.id }.uniq
-    @mentions = User.find(user_ids).reject { |u| !u.email_comments? } if user_ids.any?
-    @mentions = [] if !@mentions
+    user_ids    = Comment.find(:all, :select => "user_id", :conditions => "entry_id = #{@entry.id}").map(&:user_id).reject { |id| id == current_user.id }.uniq
+    @mentions   = User.find(user_ids, :include => :avatar) if user_ids.any?
+    @mentions ||= []
     
-    render :template => 'mentions/index'
+    render :template => 'mentions/index', :content_type => Mime::JSON
   end
   
   #

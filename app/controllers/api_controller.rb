@@ -1,7 +1,7 @@
 class ApiController < ApplicationController
   before_filter :require_api_permissions
 
-  ALLOWED_API_HOSTS = %w(92.38.229.197)
+  ALLOWED_API_HOSTS = %w(92.38.229.197 127.0.0.1)
 
   helper :userpic
 

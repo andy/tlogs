@@ -65,7 +65,7 @@ www_settings = lambda do |www|
   # conversations
   www.resources :messages, :controller => 'messages'
   www.mentions_conversations 'convos/mentions', :controller => 'conversations', :action => 'mentions'
-  www.resources :conversations, :as => 'convos', :controller => 'conversations', :collection => { :unreplied => :get, :unviewed => :get, :search => :get, :verify_recipient => :post }, :member => { :subscribe => :post, :unsubscribe => :post, :mav => :post, :mentions => :get }
+  www.resources :conversations, :as => 'convos', :controller => 'conversations', :collection => { :unreplied => :get, :unviewed => :get, :search => :get, :verify_recipient => :post }, :member => { :subscribe => :post, :unsubscribe => :post, :mav => :post }
   www.named_new_conversation 'convos/new/:url', :controller => 'conversations', :action => 'new', :requirements => { :url => /[a-z0-9]([a-z0-9\-]{1,20})?/i }
 
   # billing processing

@@ -79,8 +79,10 @@ class PublishController < ApplicationController
   end
 
   def mentions
-    @mentions = User.find(current_user.all_friend_ids, :select => 'id, url, userpic_file_name, userpic_updated_at, userpic_meta', :include => :avatar)
-    render :template => 'mentions/index'
+    @mentions   = User.find(current_user.all_friend_ids, :select => 'id, url, userpic_file_name, userpic_updated_at, userpic_meta', :include => :avatar)
+    @mentions ||= []
+
+    render :template => 'mentions/index', :content_type => Mime::JSON
   end
   
   private
