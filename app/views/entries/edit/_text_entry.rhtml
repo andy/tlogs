@@ -9,3 +9,43 @@
 	<%= text_area 'entry', 'data_part_1', :rows => 6, :class => 'resizable' %>
 	<%= tasty_error_message_on 'entry', 'data_part_1' %>
 </div>
+
+<!-- <script type='text/javascript' charset='utf-8'>
+  WysiHat.Commands.promptLinkSelection = function() {
+    if (this.linkSelected()) {
+      if (confirm("Remove link?"))
+        this.unlinkSelection();
+    } else {
+      var value = prompt("Enter a URL", "http://www.google.com/");
+      if (value)
+        this.linkSelection(value);
+    }
+  }
+
+  document.on("dom:loaded", function() {
+    var editor = WysiHat.Editor.attach('entry_data_part_1');
+    var toolbar = new WysiHat.Toolbar(editor);
+    toolbar.addButtonSet(WysiHat.Toolbar.ButtonSets.Basic);
+    
+    toolbar.addButton({
+      label: "Ordered List",
+      handler: function(editor) { return editor.toggleOrderedList(); }
+    });
+
+    toolbar.addButton({
+      label: "Unordered List",
+      handler: function(editor) { return editor.toggleUnorderedList(); }
+    });
+    
+    toolbar.addButton({
+      label: "Link",
+      handler: function(editor) { return editor.promptLinkSelection(); }
+    });
+
+    editor.on('field:change', function() {
+      $('entry_data_part_1').setValue(WysiHat.Formatting.getApplicationMarkupFrom(editor));
+    });
+    // Tasty.mentions.bind_events('#' + editor.id);
+    
+  });
+</script> -->

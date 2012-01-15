@@ -26,7 +26,7 @@ render :partial => 'entries/entry_datetime', :locals => { :entry => entry } if s
 	  
 	  # has comments
 		if entry.comments_enabled? || entry.comments_count > 0
-	    -%><div class='service_comments<%= ' has_comments' unless entry.comments_count.zero? %>'><div class="comment_cloud<%= ' has_comments' unless entry.comments_count.zero? %>"><a href="<%= user_url(entry.author, entry_path(entry)) + '#new' %>" title='комментарии' target='_blank'><span id='entry_comments_count_<%= entry.id %>'><%= comment_views ? updated_comments_count(entry, comment_views) : entry.comments_count %></span></a></div></div><%-
+	    -%><div class='service_comments<%= ' has_comments' unless entry.comments_count.zero? %>'><div class="comment_cloud<%= ' has_comments' unless entry.comments_count.zero? %>"><a href="<%= user_url(entry.author, entry_path(entry)) + '#new' %>" title='комментарии'<%= " target='_blank'" unless request.host.downcase.starts_with?(entry.author.url.downcase + '.') %>><span id='entry_comments_count_<%= entry.id %>'><%= comment_views ? updated_comments_count(entry, comment_views) : entry.comments_count %></span></a></div></div><%-
 	    
 	  # no comments
 		else

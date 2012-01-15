@@ -92,6 +92,7 @@ class User < ActiveRecord::Base
     :url    => '/assets/userpic/:sha1_partition/:id_:style.:extension',
     :path   => ':rails_root/public:url',
     :use_timestamp => false,
+    :convert_options => { :all => '-strip' },
     :styles => {
       :large    => '800x800>',
       :thumb128 => '128x128>',
@@ -144,6 +145,24 @@ class User < ActiveRecord::Base
 
 
   ## class methods
+  def self.active_for(user, options = {})
+    options.reverse_merge!(:limit => 6, :popularity => 2)
+    
+    user_ids = Rails.cache.fetch("users::active", :expires_in => 10.minutes) do
+      Relationship.find(:all, :select => 'user_id', :order => 'id desc', :limit => 1000).map(&:user_id)
+    end
+    
+    user_ids =  user_ids.sort.                        # sort numerically
+                group_by { |x| x }.                   # group the same accounts together
+                sort_by { |k, v| v.length }.          # sort by popularity
+                select { |k, v| v.length >= options[:popularity] }.  # but select only people who have at least more active subscribers
+                map(&:first).                         # keep only ids
+                reverse
+
+    User.find_all_by_id(user_ids.shuffle[0...(options[:limit] * 2)], :include => [:avatar, :tlog_settings]).select { |u| u.can_be_viewed_by?(user) }[0..options[:limit]]
+  end
+
+  
   ## public methods
 
   # Пример: <%= user.gender("он", "она") %>

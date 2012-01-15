@@ -3,6 +3,8 @@ class SearchController < ApplicationController
   
   before_filter :check_if_can_be_viewed
   
+  before_filter :enable_shortcut
+  
   helper :main
   layout 'main'
 
@@ -31,8 +33,11 @@ class SearchController < ApplicationController
         options[:with][:is_private] = 0
       end
     else
+      options[:with][:is_mainpageable] = 1
       options[:with][:is_private] = 0
     end
+    
+    Rails.logger.debug options.inspect
 
     @entries = Entry.search params[:query], options
     

@@ -14,12 +14,14 @@ module AssetGluer
     
     def self.process(contents)
       # uglifier requires special care, disabled
-      # contents = self.process_with_uglifier(contents) if Rails.env.production?
+      contents = self.process_with_uglifier(contents) if Rails.env.production?
       
       contents
     end
 
     def self.process_with_uglifier(contents)
+      require 'uglifier'
+
       Uglifier.compile contents, TASTY_ASSETS[:compressor_options].symbolize_keys!
     end
     

@@ -11,6 +11,7 @@ Tasty =
     jQuery('.t-controller-settings-social a.t-act-social-edit').live "click", Tasty.social.edit
     Tasty.shortcut.ready() if jQuery('#t-act-shortcut')
     Tasty.iscroll.ready() if jQuery('.t-iscrollable')
+    Tasty.comments.ready() if jQuery('.t-post-comments')
 
     true
     
@@ -22,6 +23,98 @@ Tasty =
       form.submit()
     
     false
+  
+  comments:
+    ready: ->
+      jQuery('.t-post-comments .t-act-comment-destroy').live "click", Tasty.comments.destroy
+      jQuery('.t-post-comments .t-act-comment-reply').live "click", Tasty.comments.reply
+      jQuery('.t-post-comments .t-act-comment-blacklist').live "click", Tasty.comments.blacklist
+      jQuery('.t-post-comments .t-act-comment-restore').live "click", Tasty.comments.restore
+      jQuery('.t-post-comments .t-post-comment-destroy').twipsy({ offset: 5, delayIn: 2000 });
+      jQuery('.t-post-comments .t-post-comment-reply').twipsy({ offset: 5, delayIn: 2000 });
+      jQuery('.t-post-comments .post_comment_time').twipsy({ offset: 5, delayIn: 3000 });
+    
+    destroy: (event) ->
+      return false unless confirm('Действительно удалить этот комментарий?')
+
+      Tasty.analytics.event 'Сomment Destroy', jQuery(this).data('url'), _user.url
+      
+      jQuery(this).hide()
+
+      jQuery.ajax
+        url: jQuery(this).data('url')
+        dataType: 'json'
+        data:
+          authenticity_token:
+            window._token
+          '_method': 'delete'
+        type: 'post'
+        success: (data) =>
+          cn = jQuery('#top_comment_number')
+          cn.text(parseInt(cn.text()) - 1) if parseInt(cn.text()) > 0
+          
+          comment = jQuery(this).closest('.t-post-comment')
+          # hide deleted comment elements
+          comment.find('.post_comment_avatar').css({ opacity: 0.1 })
+          comment.find('.comment_text').css({ opacity: 0.1, zIndex: 1 })
+          comment.find('.t-act-comment-reply').hide()
+          comment.find('.t-act-comment-destroy').hide()
+          Tasty.flash.hide(comment)
+          comment.prepend('<div class="t-post-comment-destroyed"><p>Комментарий был удален.</p></div>')
+          
+          # data.blacklistable property is not yet supported
+          # data.recoverable property is not yet supported
+        
+      false
+    
+    blacklist: (event) ->
+      console.log "blacklist on #{this}"
+      
+      false
+    
+    replied: new Array()
+    
+    reply: (event) ->
+      cid = jQuery(this).closest('.t-post-comment').attr('id')
+
+      if jQuery(this).data('replied')
+        jQuery(this).removeClass('t-post-comment-replied').removeData('replied')
+        Tasty.comments.replied = Tasty.comments.replied.without(cid) if cid in Tasty.comments.replied
+      else
+        jQuery(this).addClass('t-post-comment-replied').data('replied', true)
+        Tasty.comments.replied.push(cid) unless cid in Tasty.comments.replied
+
+      Tasty.comments.update_textarea()
+      
+      false
+    
+    update_textarea: ->
+      comment = jQuery('#comment_comment');
+      val = comment.val()
+
+      if Tasty.comments.replied.length > 0
+        names = for cid in Tasty.comments.replied
+          jQuery('#' + cid).find('.post_comment_author a').text()
+        str = "<b>#{names.join(', ')}:</b>"
+
+        if val.match(/^<b>.*:<\/b>/)
+          val = val.replace(/^<b>.*:<\/b>/i, str)
+        else
+          val = str + ' ' + val
+        comment.val val
+
+      else if val.match(/^<b>.*:<\/b>/)
+        comment.val val.replace(/^<b>.*:<\/b>/i, '')
+
+      ids = for cid in Tasty.comments.replied
+        cid.replace 'comment_', ''
+      jQuery('#comment_reply_to').val ids.join(',')
+            
+      
+    restore: (event) ->
+      console.log "restore clicked for #{this}"
+      
+      false
     
   analytics:
     hit: (url, title = null, referer = null) ->
@@ -79,6 +172,7 @@ Tasty =
 
     options:
       infid: 1
+      bufferPx: 400
       navSelector: '.entry_pagination'
       nextSelector: 'div.entry_pagination a.entry_paginate_prev'
       itemSelector: 'div.post_body'
@@ -133,15 +227,15 @@ Tasty =
         true
 
   flash:
-    hide: ->
-      Tasty.flash.toggle 'hidden'
+    hide: (context = document) ->
+      Tasty.flash.toggle 'hidden', context
       
-    show: ->
-      Tasty.flash.toggle 'visible'
+    show: (context = document) ->
+      Tasty.flash.toggle 'visible', context
         
-    toggle: (visibility) ->
+    toggle: (visibility, context = document) ->
       for tag in ['embed', 'object', 'iframe']
-        jQuery("#{tag}:visible").css { visibility }
+        jQuery("#{tag}:visible", context).css { visibility }
 
   social:
     del: (event) ->
@@ -227,7 +321,7 @@ Tasty =
       Tasty.fastforward.e.twipsy('hide')
 
     click: (event) ->
-      Tasty.analytics.event 'Userbar', 'flash forward', _user.url
+      Tasty.analytics.event 'Userbar', 'Fast Forward', _user.url
 
       jQuery.when(Tasty.fastforward.fetch()).then ->
         window.location.href = Tasty.fastforward.data.href if Tasty.fastforward.data?.href

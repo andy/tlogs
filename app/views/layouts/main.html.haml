@@ -1,31 +1,29 @@
 - content_for :sidebar_right do
   = render :partial => 'layouts/main_sidebar_right'
 !!! 5
-<!--[if lt IE 7 ]> <html class="no-js ie6" lang="ru"> <![endif]-->
-<!--[if IE 7 ]>    <html class="no-js ie7" lang="ru"> <![endif]-->
-<!--[if IE 8 ]>    <html class="no-js ie8" lang="ru"> <![endif]-->
-<!--[if (gte IE 9)|!(IE)]><!--> <html class="no-js" lang="ru"> <!--<![endif]-->
+<!--[if lt IE 7 ]> <html class="ie6" lang="ru"> <![endif]-->
+<!--[if IE 7 ]>    <html class="ie7" lang="ru"> <![endif]-->
+<!--[if IE 8 ]>    <html class="ie8" lang="ru"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--> <html lang="ru"> <!--<![endif]-->
 %head
   = render :partial => 'globals/head'
-  = render :partial => 'globals/dfp_head'  
+  = render :partial => 'globals/dfp_head'
+  - logo_is_gray = true
   - if is_premium? && current_user.tlog_settings.background
+    - logo_is_gray = current_user.tlog_settings.background.gray_logo
     :css
       body.main_page { background:url(#{current_user.tlog_settings.background.image.url}) fixed; }
 
 %body.main_page
   .logo
-    - bg = Background.find(current_user.tlog_settings.background_id, :conditions => "is_public = 1 OR user_id = #{current_user.id}") if is_premium? && current_user.tlog_settings.background_id
-    - if bg
-      - if bg.gray_logo
-        - gray_logo = current_service.logo
-    = link_to_if((params[:controller] != 'main' || params[:action] != 'index'), image_tag (gray_logo ? gray_logo : current_service.logo(:white), :alt => current_service.name, :class => 'logo_img'), service_url, :class => 'logo_link')
+    = link_to_if((params[:controller] != 'main' || params[:action] != 'index'), image_tag (current_service.logo(logo_is_gray ? nil : :white), :alt => current_service.name, :class => 'logo_img'), service_url, :class => 'logo_link')
 
   .register_enter
-    %div{ :class => classes('top_hello', ['gray', gray_logo]) }
+    %div{ :class => classes('top_hello', ['gray', logo_is_gray]) }
       - if current_user
         Будьте собой, #{link_to_tlog(current_user, :link => :username)}!
       - else
-        Хватит быть никем, #{link_to 'зарегистрируйтесь', service_url(login_path)}.
+        Присоединяйтесь к нам, #{link_to 'зарегистрируйтесь', service_url(login_path)}.
 
     .top_menu
       %ul
@@ -37,7 +35,11 @@
         = menu_item 'Анонимки', :anonymous, %w(anonymous/*)
         = menu_item "Моё#{"<sup>+#{current_user.unviewed_conversations_count}" unless current_user.unviewed_conversations_count.zero?}", :my, %w(main/my main/last_personalized conversations/index conversations/show conversations/new conversations/search) if current_user
         = menu_item 'Прямой эфир', :live
-        = menu_item "День из жизни", :random
+        =# menu_item "#{image_tag 'specials/newyear/fa_ico.gif', :alt => 'Форэверэлон', :style => 'position: relative; top: 3px;'}+#{image_tag 'specials/newyear/hat_ico.gif', :alt => 'Шапка', :style => 'position: relative; top: 4px;'} = Forever Alone чат", 'http://www.mmm-tasty.ru/specials/newyear'
+        - if Rails.env.development? || (Time.parse("2012-01-16 06:00:00 MSD") < Time.now && Time.parse("2012-01-31 06:00:00 MSD") > Time.now)
+          = menu_item "#{image_tag 'specials/surfingbird/put_a_bird_on_it.png', :size => '29x25', :alt => 'Surfingbird', :style => 'position: relative; top: 7px; margin: -7px 0 0 0;'} Surfingbird", 'http://www.mmm-tasty.ru/specials/surfingbird'
+        - else
+          = menu_item "День из жизни", :random
 
   #wrapper
     - sidebar_left = capture do
@@ -67,7 +69,7 @@
   = render :partial => 'globals/top_nav'
   
   - if @enable_shortcut
-    %div{ :id => 't-act-shortcut', :class => classes(['gray', gray_logo]) } &uarr; Наверх
+    %div{ :id => 't-act-shortcut', :class => classes(['gray', logo_is_gray]) } &uarr; Наверх
   
   = render :partial => 'globals/reformal' if Rails.env.production?
 </html>

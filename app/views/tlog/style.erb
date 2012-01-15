@@ -33,9 +33,14 @@ case @design.date_style
 	span.bg_text_date { text-decoration: none; font-size: 26pt; }
 	span.blue { text-decoration: none; font-size: 13pt; }
 <% end %>
-<% unless @design.background_url.blank? %>
+<% if !@design.background_url.blank? %>
 /* new background */
-div.tlog { background: transparent url(<%= h @design.background_url %>) <%= @design.background_fixed? ? 'fixed' : 'repeat' %>!important; }
+body { background: transparent url(<%= @design.background_url.starts_with?('/') ? image_path(h(@design.background_url)) : h(@design.background_url) %>) <%= @design.background_fixed? ? 'fixed' : 'repeat' %>!important; }
+<% elsif !@design.color_bg.blank? %>
+/* background color */
+body { background:#<%= @design.color_bg %>!important; }
+<% else %>
+body { background: #acacac url(<%= image_path 'images/background.gif' %>); }
 <% end %>
 <% unless @design.color_tlog_text.blank? %>
 /* text of tlog */
@@ -53,10 +58,6 @@ div.tlog { background: transparent url(<%= h @design.background_url %>) <%= @des
 		background:#<%= @design.color_tlog_bg %>!important;
 	<%- end -%>
 }
-<% end %>
-<% unless @design.color_bg.blank? %>
-/* background color */
-.tlog { background:#<%= @design.color_bg %>!important; }
 <% end %>
 <% unless @design.color_sidebar_text.blank? %>
 /* sidebar text */
@@ -91,8 +92,8 @@ a, div.sidebar p, div.sidebar span, .messages_other, #message_is_private_label<%
 <% unless @design.color_link.blank? %>
 /* link */
 .onair a, div.post_link_entry a.big_link {
-	color:#<%= @design.color_link %>!important;
-	border-color:#<%= @design.color_link %>!important;
+	color:#<%= @design.color_link %>;
+	border-color:#<%= @design.color_link %>;
 }
 .post_comment_author .highlight, .entry_metadata_link, .convos .highlight {
 	background-color:#<%= @design.color_link %>!important;

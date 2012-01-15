@@ -3,7 +3,11 @@
 </div>
 
 <% if entry.new_record? || entry.attachments.empty? %>
-	<% display_link = entry.new_record? || !entry.data_part_1.blank? %>
+	<%
+	  display_link = false
+	  display_link = true unless entry.new_record?
+	  display_link = true if !entry.new_record? && entry.data_part_1.present?
+	%>
 	<div class='upload_method'<%= ' style="display: none"' unless display_link %>>
 		<label for='entry_data_part_1'>Ссылка на файл с картинкой <em>(должна начинаться с http://)</em>:</label><br/>
 		<%= text_field 'entry', 'data_part_1' %>

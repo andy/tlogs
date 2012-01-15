@@ -3,10 +3,13 @@
 # package_path: packages
 # javascript_compressor: uglifier
 compressor_options:
-  mangle: true
+  mangle: false
   
 
 javascripts:
+  headjs:
+    - app/assets/javascripts/headjs/head.min.js
+
   modernizr:
     - app/assets/javascripts/html5/modernizr.min.js
 
@@ -19,16 +22,8 @@ javascripts:
   highcharts:
     - app/assets/javascripts/highcharts/highcharts.js
 
-  wymeditor:
-    - app/assets/javascripts/wymeditor/jquery.wymeditor.js
-    - app/assets/javascripts/wymeditor/en.js
-    - app/assets/javascripts/wymeditor/ru.js
-    - app/assets/javascripts/wymeditor/plugins/hovertools/jquery.wymeditor.hovertools.js
-    - app/assets/javascripts/wymeditor/plugins/embed/jquery.wymeditor.embed.js
-    - app/assets/javascripts/wymeditor/plugins/resizable/jquery.wymeditor.resizable.js
-    - app/assets/javascripts/wymeditor/application.js
-  
   extended:
+    - app/assets/javascripts/wysihat.js
     - app/assets/javascripts/prototype/dragdrop.min.js
     # flash: swfobject & swfupload
     - app/assets/javascripts/swf/swfobject.min.js
@@ -36,29 +31,44 @@ javascripts:
     # - app/assets/javascripts/swf/swfupload.cookies.min.js
     - app/assets/javascripts/swf/swfupload.speed.min.js
     - app/assets/javascripts/tasty/uploader.js
+  
+  specials:
+    - app/assets/javascripts/jquery/jquery-1.7.1.min.js
+    - app/assets/javascripts/jquery/jquery.noconflict.js
+    - app/assets/javascripts/jquery/jquery.hotkeys.min.js
+    - app/assets/javascripts/jquery/jquery.autoresize.min.js
+    - app/assets/javascripts/jquery/jquery.infinitescroll.min.js
+    # - app/assets/javascripts/jquery/jquery.fancybox-1.3.4.pack.js
+    - app/assets/javascripts/jquery/jquery.timeago.min.js
+    - app/assets/javascripts/jquery/jquery.timeago.ru.min.js
+    - app/assets/javascripts/jquery/jquery.popupWindow.min.js
+    - app/assets/javascripts/jquery/jquery.placeholder.min.js
+    - app/assets/javascripts/bootstrap-twipsy.min.js
 
   application:
     # prototype setup and plugins
-    - app/assets/javascripts/prototype/prototype.1.7.0.0.js
+    - app/assets/javascripts/prototype/prototype.1.7.0.0.min.js
     - app/assets/javascripts/prototype/effects.min.js
     # jquery setup & plugins
-    - app/assets/javascripts/jquery/jquery-1.6.4.min.js
+    - app/assets/javascripts/jquery/jquery-1.7.1.min.js
     - app/assets/javascripts/jquery/jquery.noconflict.js
-    - app/assets/javascripts/jquery/jquery.hotkeys.js
+    - app/assets/javascripts/jquery/jquery.hotkeys.min.js
     - app/assets/javascripts/jquery/jquery.autoresize.min.js
     - app/assets/javascripts/jquery/jquery.infinitescroll.min.js
     # - app/assets/javascripts/jquery/jquery.easing-1.3.pack.js
     - app/assets/javascripts/jquery/jquery.fancybox-1.3.4.pack.js
-    - app/assets/javascripts/jquery/jquery.timeago.js
-    - app/assets/javascripts/jquery/jquery.timeago.ru.js
-    - app/assets/javascripts/jquery/jquery.popupWindow.js
+    - app/assets/javascripts/jquery/jquery.timeago.min.js
+    - app/assets/javascripts/jquery/jquery.timeago.ru.min.js
+    - app/assets/javascripts/jquery/jquery.popupWindow.min.js
     - app/assets/javascripts/jquery/jquery.placeholder.min.js
-    - app/assets/javascripts/jquery/jquery.mousewheel-3.0.4.pack.js
-    - app/assets/javascripts/jquery/jquery.antiscroll.js
+    - app/assets/javascripts/jquery/jquery.mousewheel-3.0.6.pack.js
+    - app/assets/javascripts/jquery/jquery.antiscroll.min.js
+    - app/assets/javascripts/jquery/jquery.imageLoaded.js
+    - app/assets/javascripts/jquery/jquery.masonry.min.js
     # - app/assets/javascripts/slides/slides.min.jquery.js
     # - app/assets/javascripts/slides/slides.configuration.js
     # application code
-    - app/assets/javascripts/bootstrap-twipsy.js
+    - app/assets/javascripts/bootstrap-twipsy.min.js
     - app/assets/javascripts/tasty/hotkeys.js
     - app/assets/javascripts/tasty/button.js
     - app/assets/javascripts/tasty/autoresize.js
@@ -71,15 +81,37 @@ javascripts:
     - app/assets/javascripts/tasty/application.coffee
 
   mobile:
-    - app/assets/javascripts/jquery/jquery-1.6.4.min.js
+    - app/assets/javascripts/jquery/jquery-1.7.1.min.js
     - app/assets/javascripts/mobile.coffee
     - app/assets/javascripts/jquery/jquery.mobile-1.0.min.js
-    - app/assets/javascripts/jquery/jquery.timeago.js
-    - app/assets/javascripts/jquery/jquery.timeago.ru.js
+    - app/assets/javascripts/jquery/jquery.timeago.min.js
+    - app/assets/javascripts/jquery/jquery.timeago.ru.min.js
     - app/assets/javascripts/tasty/google-analytics.js
 
+  chat:
+    # assets
+    - app/assets/javascripts/jquery/jquery-1.7.1.min.js
+    - app/assets/javascripts/jquery/jquery.noconflict.js
+    - app/assets/javascripts/jquery/jquery.hotkeys.min.js
+    #- app/assets/javascripts/jquery/jquery.autoresize.min.js
+    #- app/assets/javascripts/jquery/jquery.infinitescroll.min.js
+    - app/assets/javascripts/jquery/jquery.timeago.min.js
+    - app/assets/javascripts/jquery/jquery.timeago.ru.min.js
+    - app/assets/javascripts/jquery/jquery.mousewheel-3.0.6.pack.js
+    - app/assets/javascripts/jquery/jquery.autoSuggest.js
+    #- app/assets/javascripts/jquery/jquery.popupWindow.min.js
+    #- app/assets/javascripts/jquery/jquery.placeholder.min.js
+    - app/assets/javascripts/fancybox/jquery.fancybox.pack.js
+    - app/assets/javascripts/bootstrap-twipsy.min.js
+    - app/assets/javascripts/chat/mustache.min.js
+    - app/assets/javascripts/chat/jquery.tinyscrollbar.min.js
+    - app/assets/javascripts/chat/jquery.formalize.js
+    - app/assets/javascripts/chat/spin.min.js
+    - app/assets/javascripts/chat/spin.init.js
+    - app/assets/javascripts/chat/chat.coffee
+
   tastyradio:
-    - app/assets/javascripts/jquery/jquery-1.6.4.min.js
+    - app/assets/javascripts/jquery/jquery-1.7.1.min.js
     - app/assets/javascripts/soundmanager/soundmanager2.js
     - app/assets/javascripts/soundmanager/egych-player.js
   
@@ -94,6 +126,14 @@ stylesheets:
     - app/assets/stylesheets/jquery.slides.css
     - app/assets/stylesheets/html5closing.css
     - app/assets/stylesheets/antiscroll.css
+  
+  chat:
+    - app/assets/stylesheets/chat/scrollbar.css
+    - app/assets/stylesheets/chat/formalize.css
+    - app/assets/stylesheets/twipsy.css
+    - app/assets/stylesheets/fancybox/jquery.fancybox.css
+    - app/assets/stylesheets/jquery.autoSuggest.css
+    - app/assets/stylesheets/chat/chat.css
 
   tlog:
     - app/assets/stylesheets/tlog.css

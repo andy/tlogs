@@ -140,16 +140,25 @@ class AccountController < ApplicationController
       end
     end
   end
+  
+  def eula
+    @title = 'Пользовательское соглашение с сервисом Тейсти'
+  end
 
   # регистрация, для новичков
   def signup
-    # @allow_by_remote_addr = false
-
     # look up remote address
-    # @ipinfo = Ipgeobase.lookup(request.remote_ip)
-    # @allow_by_remote_addr = true if @ipinfo && %w(Пермь пермь Тверь тверь).include?(@ipinfo[:city])
+    @ipinfo = Ipgeobase.lookup(request.remote_ip)
+    @allow_by_remote_addr = false
+    @allow_by_remote_addr = true if @ipinfo && %w(Пермь пермь Тверь тверь).include?(@ipinfo[:city])
     
-    if false # @allow_by_remote_addr || ([6,0].include?(Date.today.wday) && [22, 23, 24].include?(Time.now.hour)) || ([1,0].include?(Date.today.wday) && [0, 1, 2, 3, 4].include?(Time.now.hour))
+    # check wether date allows signups
+    @allow_by_date = ([6,0].include?(Date.today.wday) && [22, 23, 24].include?(Time.now.hour)) || ([1,0].include?(Date.today.wday) && [0, 1, 2, 3, 4].include?(Time.now.hour))
+    
+    # check wether a secret signup code is known
+    @allow_by_code = params[:code] && params[:code] == 'welcome'
+    
+    if Rails.env.development? || @allow_by_remote_addr || @allow_by_date || @allow_by_code
       if request.post?
         email_or_openid = params[:user][:email]
         if email_or_openid.is_openid?
@@ -157,7 +166,7 @@ class AccountController < ApplicationController
           session[:user_url] = params[:user][:url]
           login_with_openid email_or_openid
         else
-          @user = User.new :email => email_or_openid, :password => params[:user][:password], :url => params[:user][:url], :openid => nil
+          @user = User.new :email => email_or_openid, :password => params[:user][:password], :url => params[:user][:url], :openid => nil, :eula => params[:user][:eula]
         
           # проверяем на левые емейл адреса
           @user.errors.add(:email, 'извините, но выбранный вами почтовый сервис находится в черном списке') if @user.email.any? && Disposable::is_disposable_email?(@user.email)

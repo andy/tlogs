@@ -20,7 +20,7 @@
 		</p>
 		
 		<p style="font-family:Trebuchet MS, Arial, sans serif; font-size:0.95em; width:600px; color:#404040; padding-bottom: 2em;">
-      <%- convo_link = user_url(@user, conversation_path(@message.conversation)) -%>
+      <%- convo_link = service_url(conversation_path(@message.conversation)) -%>
       <%= link_to convo_link, convo_link, :class => 'action-link read-link reply-link' %>
 		</p>
 		

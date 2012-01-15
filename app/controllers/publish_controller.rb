@@ -79,7 +79,9 @@ class PublishController < ApplicationController
   end
 
   def mentions
-    @mentions = current_user.public_friends+current_user.friends
+    @mentions   = User.find(current_user.all_friend_ids, :select => 'id, url, userpic_file_name, userpic_updated_at, userpic_meta', :include => :avatar)
+    @mentions ||= []
+
     render :json => export_mentions(@mentions)
   end
   

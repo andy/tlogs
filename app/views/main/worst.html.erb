@@ -1,0 +1,21 @@
+<% @title = 'Отвратительная фигня, которая никому не понравилась' %>
+
+<% if @entry_ratings.blank? %>
+	<p class='last_is_empty_note'>
+		По вашему запросу не было найдено ни одной записи.
+	</p>
+<% else %>
+	<div class='onair'>
+		<% @entry_ratings.each do |entry_rating| %>
+			<%= render :partial => 'entries/entry_display', :locals => { :entry => entry_rating.entry, :show_comments_bubble => true, :show_username => true, :show_tags => false, :show_nsfw_sticker => true } %>
+		<% end %>
+
+		<%= paginate @entry_ratings, :url_options => { :kind => @kind } %>	
+	</div>
+	
+	<script type='text/javascript'>
+  // <[!CDATA[
+  	<%= "var comments_views_update = #{@comment_views.to_json(:only => [:id, :comments_count], :methods => [:last_comment_viewed])}" if @comment_views %>
+  //	]]>
+  </script>
+<% end %>

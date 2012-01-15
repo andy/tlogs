@@ -1,6 +1,8 @@
 class User
   ## included modules & attr_*
   USER_AND_RELATIONSHIP_COLUMNS = 'u.*,r.title,r.friendship_status,r.read_count,r.comment_count,r.position,r.last_viewed_entries_count,r.last_viewed_at,r.id AS relationship_id'
+  
+  REQUIRED_RELATIONSHIP_METHODS = %w(public_friends friends all_friends all_friend_r blacklist listed_me_as_all_friend_light)
 
 
   ## associations
@@ -18,16 +20,24 @@ class User
   }.each do |name, params|
     param_filter    = params[:filter] ? " AND r.friendship_status #{params[:filter]}" : ''
     param_order     = params[:order] ? " ORDER BY #{params[:order]}" : ''
+    
+    has_many name.to_sym, :class_name => 'User', :finder_sql => "SELECT #{USER_AND_RELATIONSHIP_COLUMNS} FROM relationships AS r LEFT JOIN users AS u ON u.id = r.user_id WHERE r.reader_id = \#{id} #{param_filter} #{param_order}" if REQUIRED_RELATIONSHIP_METHODS.include?(name.to_s)
 
-    has_many name.to_sym, :class_name => 'User', :finder_sql => "SELECT #{USER_AND_RELATIONSHIP_COLUMNS} FROM relationships AS r LEFT JOIN users AS u ON u.id = r.user_id WHERE r.reader_id = \#{id} #{param_filter} #{param_order}"
     # e.g. public_friend_r (- relationship model)
-    has_many "#{name.to_s.singularize}_r".to_sym, :class_name => 'Relationship', :finder_sql => "SELECT r.* FROM relationships AS r WHERE r.reader_id = \#{id} #{param_filter}"        
+    str = "#{name.to_s.singularize}_r"
+    has_many str.to_sym, :class_name => 'Relationship', :finder_sql => "SELECT r.* FROM relationships AS r WHERE r.reader_id = \#{id} #{param_filter}" if REQUIRED_RELATIONSHIP_METHODS.include?(str)
+
     # e.g. listed_me_as_public_friend (which means - get me my readers that have me listed as public friend)
-    has_many "listed_me_as_#{name.to_s.singularize}".to_sym, :class_name => 'User', :finder_sql => "SELECT #{USER_AND_RELATIONSHIP_COLUMNS} FROM relationships AS r LEFT JOIN users AS u ON u.id = r.reader_id WHERE r.user_id = \#{id} #{param_filter} #{param_order}"
+    str = "listed_me_as_#{name.to_s.singularize}"
+    has_many str.to_sym, :class_name => 'User', :finder_sql => "SELECT #{USER_AND_RELATIONSHIP_COLUMNS} FROM relationships AS r LEFT JOIN users AS u ON u.id = r.reader_id WHERE r.user_id = \#{id} #{param_filter} #{param_order}" if REQUIRED_RELATIONSHIP_METHODS.include?(str)
+
     # same as previous, but only return ids
-    has_many "listed_me_as_#{name.to_s.singularize}_light".to_sym, :class_name => 'User', :finder_sql => "SELECT u.id FROM relationships AS r LEFT JOIN users AS u ON u.id = r.reader_id WHERE r.user_id = \#{id} #{param_filter} #{param_order}"
+    str = "listed_me_as_#{name.to_s.singularize}_light"
+    has_many str.to_sym, :class_name => 'User', :finder_sql => "SELECT u.id FROM relationships AS r LEFT JOIN users AS u ON u.id = r.reader_id WHERE r.user_id = \#{id} #{param_filter} #{param_order}" if REQUIRED_RELATIONSHIP_METHODS.include?(str)
+
     # same as previous, but only a relationship model which is much lighter as it fetches only from relationships table and does not include User
-    has_many "listed_me_as_#{name.to_s.singularize}_r".to_sym, :class_name => 'Relationship', :finder_sql => "SELECT r.* FROM relationships AS r WHERE r.user_id = \#{id} #{param_filter}"
+    str = "listed_me_as_#{name.to_s.singularize}_r"
+    has_many str.to_sym, :class_name => 'Relationship', :finder_sql => "SELECT r.* FROM relationships AS r WHERE r.user_id = \#{id} #{param_filter}" if REQUIRED_RELATIONSHIP_METHODS.include?(str)
   end
 
 

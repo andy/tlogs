@@ -68,25 +68,15 @@ class CommentsController < ApplicationController
   def destroy
     render :nothing => true and return unless (request.post? || request.delete?)
 
-    # пока что мы позволяем удалять комменатрии только зарегистрированным пользователям
-    if current_user
-      @comment = Comment.find_by_id_and_entry_id(params[:id], @entry.id)
-      @comment.destroy if @comment && @comment.is_owner?(current_user)
-    end
+    render :json => false and return unless current_user
 
-    respond_to do |wants|
-      wants.html { flash[:good] = 'Комментарий был удален'; redirect_to user_url(@entry.author, entry_path(@entry)) }
-      wants.js {
-        render :update do |page|
-          page.replace_html 'top_comment_number', @entry.comments.size - 1
-          if @comment
-            page.visual_effect(:highlight, dom_id(@comment), :duration => 0.1, :endcolor => '"#eb7979"' )
-            page.visual_effect(:fade, dom_id(@comment))
-          end
-        end
-      }
-    end
+    @comment = Comment.find_by_id_and_entry_id(params[:id], @entry.id)
     
+    render :json => false and return unless @comment
+
+    @comment.destroy if @comment && @comment.is_owner?(current_user)
+    
+    render :json => { :restorable => false, :blacklistable => @comment.suggest_author_blacklisting_by?(current_user) }
   end
   
   private

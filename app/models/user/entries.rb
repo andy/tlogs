@@ -9,14 +9,6 @@ class User
   ## validations
   ## callbacks
   ## class methods
-  def self.popular(limit = 6)
-    user_ids = Entry.find(:all, :limit => 20, :select => 'user_id', :order => 'id desc').map(&:user_id).uniq
-    
-    # user_ids = Rails.cache.fetch('Users.popular', :expires_in => 1.day) { User.find_by_sql("SELECT user_id AS id,count(*) AS c FROM relationships WHERE friendship_status > 0 GROUP BY user_id ORDER BY c DESC LIMIT 100") }
-    User.find_all_by_id(user_ids.shuffle[0...limit], :include => [:avatar, :tlog_settings])
-  end
-
-
   ## public methods
   
   # количество записей для пользователя user. либо entries_count, либо public_entries_count
@@ -39,9 +31,15 @@ class User
   end
   
   # время когда была написана последняя запись
+  # TODO: добавить кеширование только для случаев, когда есть публичные записи (public_entries_count.nonzero?)
   def last_public_entry_at
-    # self.entries.public.last.created_at - the same?
     @last_public_entry_at ||= Entry.find_by_sql("SELECT id, created_at FROM entries WHERE user_id = #{self.id} AND is_private = 0 ORDER BY entries.id DESC LIMIT 1").first.created_at rescue Time.now
+  end
+  
+  # время, когда была написана первая запись
+  # TODO: добавить кеширование только для случаев, когда есть публичные записи (public_entries_count.nonzero?)
+  def first_public_entry_at
+    @first_public_entry_at ||= Entry.find_by_sql("SELECT id, created_at FROM entries WHERE user_id = #{self.id} AND is_private = 0 ORDER BY entries.id ASC LIMIT 1").first.created_at rescue Time.now
   end
   
   # возвращает список текущих записей для пользователя, возможные параметры:

@@ -294,7 +294,7 @@ div.avatar_holder {
 }
 /* JUST */
 div.tlog {
-	background:#acacac url("/images/background.gif");
+/*  background:#acacac;*/
 	min-height:100%;
 	position:relative;
 	bottom:0;
@@ -1164,13 +1164,19 @@ div.post_comment_avatar {
 	outline: none;
 }
 
-.post_comment_time {
+.t-post-comment a.post_comment_time {
 	font-size:88%;
 	color:#999;
 	font-style:italic;
 	float:right;
 	position:relative;
 	top:-15px;
+	z-index: 200;
+	text-decoration: none;
+}
+
+.t-post-comment a.post_comment_time:hover {
+  text-decoration: underline;
 }
 
 .comment_string {
@@ -1269,7 +1275,59 @@ form.post input, form.post textarea {
 	font-size:150%;
 	margin-bottom:15px;
 	padding:2px 4px;
-/*	font-family:Trebuchet MS, Arial, Helvetica, sans-serif; */
+}
+
+form.post input:focus, form.post textarea:focus {
+  outline: none;
+  border: 1px solid #8F8319;
+}
+
+/* wysihat editor */
+form.post .editor {
+	background:#f7f3d1;
+	border:1px solid #333;
+	border-collapse:collapse;
+	display:block;
+	width:500px;
+	margin-bottom:15px;
+	padding:2px 4px;
+	min-height: 9em;
+	outline: none;
+}
+
+form.post .editor p {
+  margin: 0;
+}
+
+form.post .editor:focus {
+  border: 1px solid #8F8319;
+}
+
+form.post .editor_toolbar {
+  min-height: 1.6em;
+}
+form.post .editor_toolbar .button {
+  float: left;
+  display: block;
+  margin: 2px 3px;
+  background-color: #EDEDED;
+  padding: 2px 4px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  font-size: 11px;
+  text-decoration: none;
+  color: #1D1D1D;
+  font-family: 'Courier New', Courier, monospace, sans-serif;
+}
+
+form.post .editor_toolbar .button:hover {
+  background-color: #CDCDCD;
+}
+
+form.post .editor_toolbar .selected {
+  background-color: #CDCDCD;
+  font-weight: bold;
 }
 
 form.post input.checkbox {
@@ -1965,12 +2023,12 @@ div.service_date span{
 /* MAIN PAGE */
 
 div.main_page {
-	/*background:url("/assets/bgs/53/25/3_original.jpg");*/
+	/*background:url("/assets/bgs/f7/49/5_original.jpg");*/
 	min-height:100%;
 }
 
 * html div.main_page {
-	background:url("/assets/bgs/53/25/3_original.jpg");
+	background:url("/assets/bgs/f7/49/5_original.jpg");
 	height:100%;
 }
 
@@ -2035,7 +2093,7 @@ div.popular a {
 
 
 body.main_page {
-	background:url("/assets/bgs/53/25/3_original.jpg") fixed;
+	background:url("/assets/bgs/f7/49/5_original.jpg") fixed;
 }
 
 .main_rounded_holder {
@@ -2375,31 +2433,12 @@ a {
 	border-left:3px solid #404040;
 	padding:0 0 0 15px!important;
 }
-.comment_delete {
-	position:relative; 
-	left:319px;
-	position:relative;
-	top:-4px;
-	visibility:hidden;
-}
 .post_comment_controls {
  height:24px;
 }
 .users_nav a {
 	background:white;
 } 
-.img_reply {
-	position:relative;
-	top:-3px;
-	left:-36px;
-	visibility:hidden;
-}
-.img_reply_active {
-	visibility:visible!important;
-	position:relative;
-	top:-3px;
-	left:-33px;
-}
 .post_body:hover div.service_comments, .post_body:hover div.service_link, .post_body:hover div.service_edit, .hover div.service_comments, .hover div.service_link, .hover div.service_edit {
 	display:block;
 }

@@ -23,6 +23,7 @@
   <% content_tag_for :div, @message do %>
     <% remote_form_for :message, @message, :url => service_url(messages_path).downcase, :before => 'submit_started()', :complete => 'jQuery("#submitting").hide()', :failure => 'submit_failure()' do |f| %>
       <input type='hidden' id='message_send_notifications' name='message[send_notifications]' value='<%= @send_notifications ? '1' : '0' %>' />
+      <input type='hidden' name='utf8' value='✓' />
 
       <div class='message_recipient_block'>
         <label for='message_recipient_url'>Кому:</label>

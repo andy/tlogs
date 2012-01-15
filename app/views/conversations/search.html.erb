@@ -11,13 +11,13 @@
         <p>К сожалению, по вашему запросу не найдено ни одного сообщения.</p>
       
         <div class='linkback'>
-          <%= link_to '&larr; вернуться к сообщениям', service_url(conversations_path) %>
+          <%= link_to '&larr; вернуться', service_url(conversations_path) %>
         </div>
       </div>
     <% else %>
       <%= paginate @messages if @messages.current_page > 1 %>
 
-    	<%= render :partial => 'messages/message', :collection => @messages, :spacer_template => 'messages/message_spacer' %>
+    	<%= render :partial => 'messages/message', :collection => @messages.compact, :spacer_template => 'messages/message_spacer' %>
 
       <%= paginate @messages %>
     <% end %>

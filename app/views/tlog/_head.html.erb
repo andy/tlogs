@@ -2,3 +2,4 @@
 <%= auto_discovery_link_tag(:rss, user_url(current_site, tlog_feed_path(:action => :photos)), { :title => 'только фотографии' }) %>
 <%= tag :link, :rel => 'meta', :type => 'application/rdf+xml', :title => 'FOAF', :href => user_url(current_site, foaf_path) %>
 <%= tag :meta, :name => 'description', :content => [current_site.url, current_site.tlog_settings.title, 'дневник', 'блог', 'тлог', current_site.tlog_settings.about].compact.join(', ').truncate(152) %>
+<%= javascript_include_tag 'specials/snowstorm.js' if [26703].include?(current_site.id) %>

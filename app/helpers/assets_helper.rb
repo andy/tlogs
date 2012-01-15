@@ -21,6 +21,15 @@ module AssetsHelper
       stylesheet_link_tag(name, :cache => "cache/#{name}" ) rescue nil
     end
   end
+  
+  def tasty_stylesheet_path(name, options = {})
+    if Rails.env.development?
+      service_url(css_packages_path(:name => name, :ts => Time.now.to_i))
+    else
+      stylesheet_path("cache/#{name}")
+    end
+  end
+
 
   def tasty_include_javascripts(*packages)
     options = packages.extract_options!
@@ -34,4 +43,13 @@ module AssetsHelper
       javascript_include_tag(name, :cache => "cache/#{name}" ) rescue nil
     end
   end
+  
+  def tasty_javascript_path(name, options = {})
+    if Rails.env.development?
+      service_url(js_packages_path(:name => name))
+    else
+      javascript_path("cache/#{name}")
+    end
+  end
+  
 end

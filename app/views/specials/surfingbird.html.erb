@@ -1,0 +1,153 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <%= application_title %>
+    <meta name="robots" content="index,follow">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+
+    <%= stylesheet_link_tag 'specials/surfingbird/general.css' %>
+    <!--[if IE]><%= stylesheet_link_tag 'specials/surfingbird/ie.css' %><![endif]-->
+    <!--[if gte IE 8]><%= stylesheet_link_tag 'specials/surfingbird/ielast.css' %><![endif]-->
+    <%= tasty_include_javascripts :specials %>
+    <%= javascript_include_tag 'specials/surfingbird/surfingbird.js' %>
+    <%= render :partial => 'globals/gajs' %>
+</head>
+<body>
+<!--Wrapper-->
+<div id="wrapper">
+    <!--Top-->
+    <div class="top">
+        <div class="btm-sh-top"></div>
+        <div class="top-i">
+            <!--B-who-->
+            <% if current_user %>
+              <div class="b-who"><%= link_to_tlog current_user %></div>
+            <% end %>
+            <!--B-who-->
+            <!--B-logotype-->
+            <div class="b-logotype">
+                <a href='/'><img src="/images/specials/surfingbird/mmm_tasty_logotype.png" width="163" height="29" alt="MMM...Tasty" /></a>
+            </div>
+            <!--/B-logotype-->
+            <!--B-navigation-->
+            <ul class="b-navigation">
+                <li><a href="/main/about" title="О проекте">О проекте</a></li>
+                <li><a href="/main/news" title="Новости">Новости</a></li>
+                <li><a href="/main/last" title="Лучшее">Лучшее</a></li>
+                <li><a href="/main/anonymous" title="Анонимки">Анонимки</a></li>
+                <% if current_user %>
+                  <li><a href="/main/my" title="Моё">Моё</a></li>
+                <% end %>
+                <li><a href="/main/live" title="Прямой эфир">Прямой эфир</a></li>
+                <li><a href="/main/random" title="День из жизни">День из жизни</a></li>
+            </ul>
+            <!--/B-navigation-->
+        </div>
+    </div>
+    <!--/Top-->
+    <!--Middle-->
+    <div class="middle">
+        <!--B-main-->
+        <div class="b-main">
+            <div class="w-outer">
+                <div class="b-company-logotype">
+                    <a href="#" title="Surfingbird"><img src="/images/specials/surfingbird/surfingbird_logotype.png" width="343" height="103" alt="Surfingbird" /></a>
+                </div>
+                <div class="b-image">
+                    <i class="lighting-img"><!-- --></i>
+                    <img src="/images/specials/surfingbird/sites.png" width="564" height="353" alt="Сайты" />
+                </div>
+                <h2>Мы подбираем интересные страницы, фото и<br /> видео на основе рекомендаций людей, которым<br /> нравится то же, что и тебе.</h2>
+                <div class="see-examples">
+                    <a class="button button-grey-1" href="#examples" title="Посмотреть примеры" rel="to-anchor">
+                        <span>
+                            <span>
+                                <i class="ico i-arr i-arr-b"><!-- --></i>
+                                <img class="txt-see-examples" src="/images/specials/surfingbird/1x1.gif" alt="Посмотреть примеры" />
+                            </span>
+                        </span>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <!--/B-main-->
+        <!--B-reasons-->
+        <div class="b-reasons">
+            <div class="w-outer">
+                <!--B-reasons-list-->
+                <ul class="b-reasons-list">
+                    <li class="b-reasons-item-1">
+                        <div class="img">
+                            <i class="lighting-img"><!-- --></i>
+                            <img src="/images/specials/surfingbird/reason_img_1.png" width="186" height="155" alt="Персональный поиск" />
+                        </div>
+                        <div class="description">
+                            <h3>Персональный поиск</h3>
+                            <p>Мы&nbsp;стараемся найти интересные сайты персонально для тебя. Чем больше ты&nbsp;пользуешься Surfingbird, тем лучше мы&nbsp;понимаем твои предпочтения, и&nbsp;когда ты&nbsp;снова нажмешь кнопку &laquo;Серф!&raquo;, мы&nbsp;постараемся приятно удивить тебя. Снова и&nbsp;снова:)</p>
+                        </div>
+                    </li>
+                    <li class="b-reasons-item-2">
+                        <div class="img">
+                            <i class="lighting-img"><!-- --></i>
+                            <img src="/images/specials/surfingbird/reason_img_2.png" width="140" height="155" alt="Не перегружайся" />
+                        </div>
+                        <div class="description">
+                            <h3>Не перегружайся</h3>
+                            <p>Тебе больше не&nbsp;нужно перегружать себя лишней и&nbsp;бесполезной информацией. Surfingbird помогает не&nbsp;думать над тем, что надо вбить в&nbsp;поисковик, чтобы увидеть действительно &laquo;интересные фото&raquo; или &laquo;смешное видео&raquo;.</p>
+                        </div>
+                    </li>
+                    <li class="b-reasons-item-3">
+                        <div class="img">
+                            <i class="lighting-img"><!-- --></i>
+                            <img src="/images/specials/surfingbird/reason_img_3.png" width="143" height="155" alt="Помни все" />
+                        </div>
+                        <div class="description">
+                            <h3>Помни все</h3>
+                            <p>Интернет очень большой и&nbsp;в&nbsp;нем много интересных, нужных и&nbsp;полезных страниц. Проблема в&nbsp;том, что все их&nbsp;очень сложно запомнить. Мы&nbsp;поможем тебе не&nbsp;потерять найденное. Surfingbird можно использовать как инструмент социальных закладок.</p>
+                        </div>
+                    </li>
+                </ul>
+                <!--/B-reasons-list-->
+            </div>
+        </div>
+        <!--/B-reasons-->
+        <div class="b-items">
+            <div class="w-outer">
+                <h1>Мы подобрали сайты, соответствующие<br /> вашим интересам, посмотрите<br /> и присоединяйтесь к серфингу!</h1>
+                <!--B-items-list-->
+                <div class="b-items-list" id="examples">
+                    <% @items.each do |item| %>
+                      <div class="b-item">
+                        <div class="b-item-i">
+                          <%= link_to image_tag(item.image, :size => '380x240', :alt => item.title), item.url, :title => item.title, :target => '_blank' %>
+                          <div class='caption'>
+                            <span><%= link_to item.title, item.url, :title => item.title, :target => '_blank' %></span>
+                          </div>
+                        </div>
+                      </div>
+
+                    <% end %>                    
+                </div>
+                <!--/B-items-list-->
+                <div class="start-surfing">
+                    <a class="button button-grey-1" href="http://surfingbird.ru/" title="">
+                        <span>
+                            <span>
+                                <i class="ico i-arr i-arr-r"><!-- --></i>
+                                <img class="txt-start-surfing" src="/images/specials/surfingbird/1x1.gif" alt="Начать серфинг" />
+                            </span>
+                        </span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--/Middle-->
+</div>
+<!--/Wrapper-->
+<%= render :partial => 'globals/counters' if Rails.env.production? %>
+</body>
+</html>

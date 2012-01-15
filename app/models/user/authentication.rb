@@ -1,16 +1,21 @@
 class User
   ## included modules & attr_*
-  RESERVED = %w( mmm-tasty mobile rest blog blogs www support help ftp http ed2k smtp pop pop3 adm mail admin test password restore backup sys system dev account register signup web wwww ww w mmm info ad archive status logs log guest debug demo podcast info tools guide preview svn example google yandex rambler goog googl goggle gugl assets assets0 assets1 assets2 assets3 asset asset0 asset1 asset2 asset3 asset4 unreplied unread mail verify_recipient resque tumblr viewy m )
+  RESERVED = %w( mmm-tasty mobile rest blog blogs www support help ftp http ed2k smtp pop pop3 adm mail admin test password restore backup sys system dev account register signup web wwww ww w mmm info ad archive status logs log guest debug demo podcast info tools guide preview svn example google yandex rambler goog googl goggle gugl assets assets0 assets1 assets2 assets3 asset asset0 asset1 asset2 asset3 asset4 unreplied unread mail verify_recipient resque tumblr viewy m mentions convo convos conference)
   SIGNATURE_SECRET = 'kab00mmm, tasty!'
 
   attr_accessor :password
-  attr_accessible :openid, :email, :url, :password
+  attr_accessor :eula
+  attr_accessible :openid, :email, :url, :password, :eula
 
 
   ## associations
   ## plugins
   ## named_scopes
   ## validations
+  validates_acceptance_of     :eula,
+                              :on => :create,
+                              :message => "вы должны принять и прочесть пользовательское соглашение"
+
 	validates_presence_of       :url,
 	                            :message => "это обязательное поле"
 
@@ -67,7 +72,11 @@ class User
     
     if openid.blank? && !email.blank? && password.nil? && crypted_password.blank?
       errors.add(:password, 'необходимо выбрать пароль')
-    end    
+    end
+    
+    if !url.blank? && User::RESERVED.include?(url.downcase)
+      errors.add(:url, 'к сожалению, этот адрес уже занят')
+    end
   end  
 
 

@@ -11,7 +11,7 @@ class ApplicationController < ActionController::Base
                             'webos|amoi|novarra|cdm|alcatel|pocket|ipad|iphone|mobileexplorer|' +
                             'mobile'
   
-  helper :white_list, :url, :assets
+  helper :white_list, :url, :userpic, :assets
 
   # MAIN FILTERS
   attr_accessor   :is_private
@@ -40,8 +40,36 @@ class ApplicationController < ActionController::Base
   before_filter :preload_current_service
   before_filter :preload_current_site # loads @current_site
   before_filter :preload_current_user # loads @current_user
+
+  # after_filter  :log_memory_usage if Rails.env.production?
   
   protected
+    def log_memory_usage
+      begin
+        if File.exists?("/proc/#{$$}/status")
+          require 'csv'
+
+          contents  = File.read("/proc/#{$$}/status")
+          vmsize    = contents.match(/^VmSize:\s+(\d+\s+\w+)$/)[1]
+          rssize    = contents.match(/^VmRSS:\s+(\d+\s+\w+)$/)[1]
+        
+          perf_dir  = File.join(Rails.root, 'log', 'perf') 
+          begin
+            Dir.mkdir(perf_dir) unless File.exists?(perf_dir)
+          rescue Errno::EEXIST
+          end
+        
+          perf = File.new(File.join(perf_dir, $$.to_s), 'a')
+          perf.write CSV.generate_line([Time.now.to_i, request.method, request.url, vmsize, rssize]) + "\n"
+          perf.close
+        end
+      rescue => ex
+        Rails.logger.error "* log_memory_usage failed with exception #{ex.to_s}"
+      end
+      
+      true
+    end
+
     def should_xhr?
       request.xhr? && request.format != :mobile
     end
@@ -263,4 +291,5 @@ class ApplicationController < ActionController::Base
     
     include UrlHelper
     include ApiHelper
+    include UserpicHelper
 end

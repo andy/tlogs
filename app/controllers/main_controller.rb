@@ -1,7 +1,9 @@
 class MainController < ApplicationController
   skip_before_filter :require_confirmation_on_current_user
   
-  before_filter :enable_shortcut, :only => [:news, :hot, :last, :hot, :live, :my, :last_personalized, :random]
+  before_filter :require_current_user, :only => [:worst]
+  
+  before_filter :enable_shortcut, :only => [:news, :hot, :last, :hot, :live, :my, :worst, :tagged, :last_personalized, :random]
   
 
   def index
@@ -97,6 +99,16 @@ class MainController < ApplicationController
     render :layout => false if should_xhr?
   end
   
+  def worst
+    sql_conditions = "entry_ratings.value < -5"
+    
+    @entry_ratings = EntryRating.paginate :all, :page => current_page, :per_page => Entry::PAGE_SIZE, :include => { :entry => [ :attachments, :author, :rating ] }, :order => 'entry_ratings.id DESC', :conditions => sql_conditions
+
+    @comment_views = User::entries_with_views_for(@entry_ratings.map(&:entry_id), current_user)
+    
+    render :layout => false if should_xhr?
+  end
+  
   def hot
     # подгружаем
     @kind = params[:kind] || 'default'
@@ -125,6 +137,29 @@ class MainController < ApplicationController
     render :layout => false if should_xhr?
   end
   
+  def tagged
+    total = Entry.count_tagged_with(params[:tag], :is_mainpageable => true)
+
+    @page = params[:page].to_i rescue 1
+    @page = 1 if @page.zero?
+
+    # grab id-s only, this is an mysql optimization
+    @entries = WillPaginate::Collection.create(@page, Entry::PAGE_SIZE, total) do |pager|
+      result = Entry.paginate_by_category(params[:tag], { :total => total, :page => pager.current_page }, { :is_mainpageable => true })
+    
+      pager.replace(result.to_a)
+    
+      pager.total_entries = total unless pager.total_entries
+    end
+    
+    popular_tag_ids = Tagging.all(:limit => 1000, :order => 'id desc').group_by(&:tag_id).sort_by { |k, v| -v.length }[0..20].map(&:first)
+    @popular_tags = Tag.find_all_by_id(popular_tag_ids).sort_by { |tag| popular_tag_ids.index(tag.id) }
+    
+    @comment_views = User::entries_with_views_for(@entries.map(&:id), current_user)
+    
+    render :layout => false if should_xhr?
+  end
+  
   def my
     @title = 'моё'
 
@@ -142,6 +177,15 @@ class MainController < ApplicationController
     end
     
     @comment_views = User::entries_with_views_for(@entries.map(&:id), current_user)
+    
+    @stats = Rails.cache.fetch(["main", "my", "stats", current_user.id].join(':'), :expires_in => 15.minutes) do
+      result              = OpenStruct.new
+      result.days         = (Time.now - current_user.created_at).to_i / 1.day
+      result.faves_count  = Fave.count(:conditions => "entry_user_id = #{current_user.id} AND created_at > '#{24.hours.ago.to_time.to_s(:db)}'")
+      
+      result
+    end
+    
     
     render :layout => false if should_xhr?
   end
@@ -167,7 +211,7 @@ class MainController < ApplicationController
   end
   
   def users
-    @users = User.popular(20).shuffle
+    @users = User.active_for(current_user, :limit => 20, :popularity => 2)
     @title = 'пользователи в абсолютно случайной последовательности'
   end
   

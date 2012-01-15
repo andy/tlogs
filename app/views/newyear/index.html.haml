@@ -1,0 +1,78 @@
+!!! 5
+%html{:lang => 'ru'}
+  %head
+    = application_title
+    %meta{:charset => 'utf8'}
+    %meta{:robots => 'index,follow'}
+    %meta{'http-equiv' => 'imagetoolbar', :content => 'no'}
+    %link{:rel => 'shortcut icon', :href => '/images/specials/newyear/favicon.ico'}
+    
+    = tasty_include_stylesheets :chat
+    = tasty_include_javascripts :chat
+    = render :partial => 'globals/gajs'
+    
+    :javascript
+      var current_user = #{current_user ? current_user.id : 0};
+      var current_site = #{current_site ? current_site.url.downcase.to_json : 'www'.to_json};
+      var _user = #{ {
+            :id       => current_user.id,
+            :url      => current_user.url,
+            :premium  => current_user.is_premium?
+            # :sid  => cookies[ActionController::Base.session_options[:key]]
+          }.to_json };
+      
+      window._is_private = #{is_private?.to_json};
+      window._token = #{form_authenticity_token.to_json};  
+      
+      jQuery(document).ready(function() {
+        Chat.ready(#{ { :autojoin => @autojoin }.to_json });
+      });
+      
+
+  %body
+  
+    #wrapper
+      .top
+        .btm-sh-top
+        .top-i
+          - if current_user
+            .b-who= link_to_tlog current_user
+
+          .b-logotype
+            = link_to image_tag('specials/newyear/tasty.png', :alt => 'Mmm... Tasty') + image_tag('specials/newyear/hat_ico.gif', :id => 'hat_ico'), '/'
+
+          %ul.b-navigation
+            %li
+              %a{:href => '/main/about'} О проекте
+            %li
+              %a{:href => '/main/news'} Новости
+            %li
+              %a{:href => '/main/last'} Лучшее
+            %li
+              %a{:href => '/main/anonymous'} Анонимки
+            - if current_user
+              %li
+                %a{:href => '/main/my'} Моё
+            %li
+              %a{:href => '/main/live'} Прямой эфир
+            %li
+              %a{:href => '/main/random'} День из жизни
+
+      .middle
+        #chat
+          #channels
+            .list.clearfix
+              // %a.join.fancybox{:rel => 'twipsy', :type => 'ajax', :href => '/specials/newyear/choose', :title => 'Подключиться к новому каналу или создать его', :data => { :placement => 'below', :offset => 5 } } +
+            
+            .content
+
+          
+          #compose
+            .userpic= userpic_tag(current_user, :width => 32)
+            %form
+              %textarea{:placeholder => 'Введите текст сообщения ...', :maxlength => 250}
+              %input#submit{:type => 'submit', :value => 'Отправить'}
+              #submit_spinner
+              #chat_errors Знаете, #{current_user.url}, у нас тут какие-то проблемы. Вобщем, нужно обновить страницу.
+  
+    = render :partial => 'globals/counters' if Rails.env.production?
