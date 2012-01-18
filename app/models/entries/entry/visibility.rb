@@ -73,7 +73,8 @@ class Entry
       'liveinternet.ru',
       'radikal.ru',
       'apikabu.ru',
-      '9gag.com'
+      '9gag.com',
+      'futubra.com'
       ]
     
     bads.find { |bad| contents.include?(bad) } ? true : false    
