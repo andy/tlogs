@@ -152,9 +152,9 @@
   jQuery(document).ready(function() {
     function sb_ga_log(action, label, value) {
       if(typeof _gaq != 'undefined') {
-    		_gaq.push(['_trackEvent', 'Surfingbird', action, label, value]);
-    	}
-    	return true;
+        _gaq.push(['_trackEvent', 'Surfingbird', action, label, value]);
+      }
+      return true;
     }
     
     jQuery('.sb-item-click').click(function() { sb_ga_log('Item', jQuery(this).attr('href'), 1); });
