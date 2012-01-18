@@ -54,7 +54,7 @@
         <div class="b-main">
             <div class="w-outer">
                 <div class="b-company-logotype">
-                    <a href="#" title="Surfingbird"><img src="/images/specials/surfingbird/surfingbird_logotype.png" width="343" height="103" alt="Surfingbird" /></a>
+                    <a href="http://surfingbird.ru/aloha/tasty" title="Surfingbird" class='sb-logo-click'><img src="/images/specials/surfingbird/surfingbird_logotype.png" width="343" height="103" alt="Surfingbird" /></a>
                 </div>
                 <div class="b-image">
                     <i class="lighting-img"><!-- --></i>
@@ -122,9 +122,9 @@
                     <% @items.each do |item| %>
                       <div class="b-item">
                         <div class="b-item-i">
-                          <%= link_to image_tag(item.image, :size => '380x240', :alt => item.title), item.url, :title => item.title, :target => '_blank' %>
+                          <%= link_to image_tag(item.image, :size => '380x240', :alt => item.title), item.url, :title => item.title, :target => '_blank', :class => 'sb-item-click' %>
                           <div class='caption'>
-                            <span><%= link_to item.title, item.url, :title => item.title, :target => '_blank' %></span>
+                            <span><%= link_to item.title, item.url, :title => item.title, :class => 'sb-item-click', :target => '_blank' %></span>
                           </div>
                         </div>
                       </div>
@@ -133,7 +133,7 @@
                 </div>
                 <!--/B-items-list-->
                 <div class="start-surfing">
-                    <a class="button button-grey-1" href="http://surfingbird.ru/" title="">
+                    <a class="button button-grey-1 sb-site-click" href="http://surfingbird.ru/aloha/tasty" title="">
                         <span>
                             <span>
                                 <i class="ico i-arr i-arr-r"><!-- --></i>
@@ -148,6 +148,20 @@
     <!--/Middle-->
 </div>
 <!--/Wrapper-->
+<script type='text/javascript'>
+  jQuery(document).ready(function() {
+    function sb_ga_log(action, label, value) {
+      if(typeof _gaq != 'undefined') {
+    		_gaq.push(['_trackEvent', 'Surfingbird', action, label, value]);
+    	}
+    	return true;
+    }
+    
+    jQuery('.sb-item-click').click(function() { sb_ga_log('Item', jQuery(this).attr('href'), 1); });
+    jQuery('.sb-logo-click').click(function() { sb_ga_log('Logo', null, 1); });
+    jQuery('.sb-site-click').click(function() { sb_ga_log('Start', null, 1); });
+  });
+</script>
 <%= render :partial => 'globals/counters' if Rails.env.production? %>
 </body>
 </html>
