@@ -94,7 +94,7 @@ Tasty =
 
       if Tasty.comments.replied.length > 0
         names = for cid in Tasty.comments.replied
-          jQuery('#' + cid).find('.post_comment_author a').text()
+          jQuery('#' + cid).find('.post_comment_author a').text() || 'аноним'
         str = "<b>#{names.join(', ')}:</b>"
 
         if val.match(/^<b>.*:<\/b>/)
