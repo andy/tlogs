@@ -7,4 +7,4 @@ rescue
   exit
 end
 
-$redis = Redis.new(redis_opts)
+$redis = Redis.new(redis_opts.merge(:logger => Rails.logger))

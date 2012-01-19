@@ -62,7 +62,7 @@ class Entry < ActiveRecord::Base
 	                            :class_name => 'User',
 	                            :foreign_key => 'user_id',
 	                            :counter_cache => true
-                          
+	
 	has_many                    :comments,
 	                            :dependent => :destroy,
 	                            :order => 'comments.id'
@@ -129,6 +129,10 @@ class Entry < ActiveRecord::Base
   before_validation :reset_data_parts_if_blank
   before_create :set_default_metadata
 
+  after_create    :enqueue
+  after_update    :requeue
+  after_destroy   :dequeue
+  
   before_destroy do |entry|
     entry.unlink!
   end
@@ -311,5 +315,24 @@ class Entry < ActiveRecord::Base
   	    self.metadata = {}
       end
   	  true
-    end    
+    end
+    
+
+    def enqueue
+      EntryQueue.new('live').push(id) if is_mainpageable?
+      
+      true
+    end
+    
+    def dequeue
+      EntryQueue.new('live').delete(id)
+      
+      true
+    end
+    
+    def requeue
+      EntryQueue.new('live').toggle(id, is_mainpageable?)
+
+      true
+    end
 end

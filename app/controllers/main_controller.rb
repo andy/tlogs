@@ -125,12 +125,17 @@ class MainController < ApplicationController
   
   def live
     @title     = 'прямой эфир как он есть'
-
+    queue      = EntryQueue.new('live')
+    
     entry_id   = params[:page].to_i if params[:page]
-    entry_id ||= Entry.mainpageable.last.id + 1
+    if entry_id && entry_id > 0
+      entry_ids = queue.after(entry_id)
+    else
+      entry_ids = queue.page(1)
+    end
 
-    entry_ids = Entry.mainpageable.find(:all, :select => 'entries.id', :conditions => "entries.id < #{entry_id}", :order => 'entries.id DESC', :limit => Entry::PAGE_SIZE).map(&:id)
-    @entries = Entry.find_all_by_id(entry_ids, :include => [:author, :rating, :attachments]).sort_by { |entry| entry_ids.index(entry.id) }
+    # entry_ids = Entry.mainpageable.find(:all, :select => 'entries.id', :conditions => "entries.id < #{entry_id}", :order => 'entries.id DESC', :limit => Entry::PAGE_SIZE).map(&:id)
+    @entries = Entry.find_all_by_id(entry_ids, :include => [:author, :rating, { :attachments => :thumbnails }]).sort_by { |entry| entry_ids.index(entry.id) }
 
     @comment_views = User::entries_with_views_for(@entries.map(&:id), current_user)
     

@@ -5,7 +5,7 @@ class Entry
 
   ## class methods
   def self.enqueue_key
-    "e:q"
+    "e:ping"
   end
 
 

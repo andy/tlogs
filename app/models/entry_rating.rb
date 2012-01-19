@@ -47,7 +47,10 @@ class EntryRating < ActiveRecord::Base
   before_save :update_filter_value
   
   before_save :update_hotness
-
+  
+  after_create  :enqueue
+  after_destroy :dequeue
+  after_update  :requeue
   
   protected
     def update_filter_value
@@ -79,5 +82,43 @@ class EntryRating < ActiveRecord::Base
       self.hotness = BigDecimal.new((order + (sign * self.entry_id / DAY_LIMIT)).to_s).round(7).to_f
       
       true
-    end    
+    end
+    
+    def worst?
+      self.value < -5
+    end
+    
+    def type_queue(name)
+      [name, entry_type.underscore].join(':')
+    end
+    
+    def enqueue
+      EntryQueue.new('everything').push(entry_id)
+      EntryQueue.new(type_queue('everything')).push(entry_id)
+
+      true
+    end
+    
+    def dequeue
+      %w(everything good great worst).each do |name|
+        EntryQueue.new(name).delete(entry_id)
+        EntryQueue.new(type_queue(name)).delete(entry_id)
+      end
+      
+      true
+    end
+    
+    def requeue
+      %w(great good everything).each do |name|
+        next unless changes.keys.include?("is_#{name}")
+        
+        should_present = send("is_#{name}?")
+        EntryQueue.new(name).toggle(entry_id, should_present)
+        EntryQueue.new(type_queue(name)).toggle(entry_id, should_present)
+      end
+      
+      EntryQueue.new('worst').toggle(entry_id, worst?)
+      
+      true
+    end
 end
