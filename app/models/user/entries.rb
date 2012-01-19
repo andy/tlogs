@@ -66,7 +66,7 @@ class User
     conditions << "entries.type = '#{options[:type]}'" if options[:type]
     conditions = conditions.blank? ? nil : conditions.join(' AND ')
 
-    find_options = { :order => 'entries.id DESC', :include => [:author, :attachments, :rating], :conditions => conditions }
+    find_options = { :order => 'entries.id DESC', :include => [:author, :rating, { :attachments => :thumbnails }], :conditions => conditions }
     # find_options[:page] = { :current => options[:page], :size => options[:page_size], :count => e_count } unless options[:time]
 
     WillPaginate::Collection.create(options[:page], options[:per_page] || Entry::PAGE_SIZE, e_count.zero? ? nil : e_count) do |pager|
