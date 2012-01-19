@@ -1,0 +1,6 @@
+#!/usr/bin/env script/runner
+
+qlive = EntryQueue.new 'live'
+Entry.find(:all, :select => 'id', :conditions => 'is_mainpageable = 1', :order => 'id DESC', :limit => qlive.length_limit).map(&:id).reverse.each do |id|
+  qlive.push(id)
+end
