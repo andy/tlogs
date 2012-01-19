@@ -88,10 +88,9 @@ class Entry
       # enqueue for all watchers ...
       $redis.multi do
         # push this to every watcher personally
-      
-        self.watcher_ids.each do |user_id|
-          $redis.zadd(User::personal_queue_key(user_id), self.updated_at.to_i, self.id)
-        end
+        
+        args = self.watcher_ids.map { |user_id| [self.updated_at.to_i, user_id] }.flatten
+        $redis.client.call [:zadd, User::personal_queue_key(user_id), *args]
       
         # push this as a key to all neighbors sharing same h00d
         # BUT update this entry only if marked as mainpageable - all non public entries pop up only
@@ -110,9 +109,7 @@ class Entry
     # remove entry from all queues where it could have been enqueued
     def destroy_watchers
       $redis.multi do
-        self.watcher_ids.each do |user_id|
-          $redis.zrem(User::personal_queue_key(user_id), self.id)
-        end
+        $redis.client.call [:zrem, User::personal_queue_key(user_id), *self.watcher_ids]
       
         $redis.zrem(User::neighborhood_queue_key(self.author.id), self.id)
       end
