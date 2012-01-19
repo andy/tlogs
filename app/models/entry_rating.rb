@@ -108,9 +108,9 @@ class EntryRating < ActiveRecord::Base
       true
     end
     
-    def requeue
+    def requeue(force = false)
       %w(great good everything).each do |name|
-        next unless changes.keys.include?("is_#{name}")
+        next unless changes.keys.include?("is_#{name}") || force
         
         should_present = send("is_#{name}?")
         EntryQueue.new(name).toggle(entry_id, should_present)

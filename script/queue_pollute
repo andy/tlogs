@@ -4,3 +4,9 @@ qlive = EntryQueue.new 'live'
 Entry.find(:all, :select => 'id', :conditions => 'is_mainpageable = 1', :order => 'id DESC', :limit => qlive.length_limit).map(&:id).reverse.each do |id|
   qlive.push(id)
 end
+
+300.times do |page|
+  EntryRating.paginate(:order => 'id DESC', :page => page + 1, :per_page => 100).each do |er|
+    er.send :requeue, true
+  end
+end
