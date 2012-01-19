@@ -16,7 +16,7 @@
 #
 
 class EntryQueue
-  QUEUE_LIMIT = 2000
+  QUEUE_LIMIT = 6000
   QUEUE_STEP  = 0.01
   PER_PAGE    = 15
 
