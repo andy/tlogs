@@ -35,11 +35,9 @@ class EntryQueue
   end
   
   def push(id)
-    @redis.multi do
-      @redis.zadd key, id, id
-    
-      @redis.zremrangebyrank(key, 0, -self.length_limit) if self.length > self.length_limit
-    end
+    @redis.zadd key, id, id
+  
+    @redis.zremrangebyrank(key, 0, -length_limit) if length > length_limit
   end
   
   def delete(id)
