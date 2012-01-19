@@ -35,9 +35,11 @@ class EntryQueue
   end
   
   def push(id)
-    @redis.zadd key, id, id
+    @redis.multi do
+      @redis.zadd key, id, id
     
-    @redis.zremrangebyrank(key, 0, -length_limit) if length > length_limit
+      @redis.zremrangebyrank(key, 0, -length_limit) if length > length_limit
+    end
   end
   
   def delete(id)
@@ -76,6 +78,10 @@ class EntryQueue
   
   def length
     @redis.zcard key
+  end
+  
+  def destroy
+    @redis.del key
   end
   
   def length_limit

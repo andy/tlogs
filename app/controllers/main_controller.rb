@@ -89,9 +89,9 @@ class MainController < ApplicationController
     if params[:year]
       @time = [params[:year], params[:month], params[:day]].join('-').to_date.to_time rescue Date.today
       sql_conditions += " AND entry_ratings.created_at BETWEEN '#{@time.strftime("%Y-%m-%d")}' AND '#{@time.tomorrow.strftime("%Y-%m-%d")}'"
-      @entry_ratings = EntryRating.paginate :all, :page => page, :per_page => Entry::PAGE_SIZE, :include => { :entry => [ :attachments, :author, :rating ] }, :order => 'entry_ratings.hotness DESC, entry_ratings.id DESC', :conditions => sql_conditions
+      @entry_ratings = EntryRating.paginate :all, :page => page, :per_page => Entry::PAGE_SIZE, :include => { :entry => [ :author, :rating, { :attachments => :thumbnails } ] }, :order => 'entry_ratings.hotness DESC, entry_ratings.id DESC', :conditions => sql_conditions
     else
-      @entry_ratings = EntryRating.paginate :all, :page => page, :per_page => Entry::PAGE_SIZE, :include => { :entry => [ :attachments, :author, :rating ] }, :order => 'entry_ratings.id DESC', :conditions => sql_conditions
+      @entry_ratings = EntryRating.paginate :all, :page => page, :per_page => Entry::PAGE_SIZE, :include => { :entry => [ :author, :rating, { :attachments => :thumbnails } ] }, :order => 'entry_ratings.id DESC', :conditions => sql_conditions
     end
     
     @comment_views = User::entries_with_views_for(@entry_ratings.map(&:entry_id), current_user)
@@ -102,7 +102,7 @@ class MainController < ApplicationController
   def worst
     sql_conditions = "entry_ratings.value < -5"
     
-    @entry_ratings = EntryRating.paginate :all, :page => current_page, :per_page => Entry::PAGE_SIZE, :include => { :entry => [ :attachments, :author, :rating ] }, :order => 'entry_ratings.id DESC', :conditions => sql_conditions
+    @entry_ratings = EntryRating.paginate :all, :page => current_page, :per_page => Entry::PAGE_SIZE, :include => { :entry => [ :author, :rating, { :attachments => :thumbnails } ] }, :order => 'entry_ratings.id DESC', :conditions => sql_conditions
 
     @comment_views = User::entries_with_views_for(@entry_ratings.map(&:entry_id), current_user)
     
@@ -116,7 +116,7 @@ class MainController < ApplicationController
 
     sql_conditions = Entry::KINDS[@kind.to_sym][:filter]
 
-    @entry_ratings = EntryRating.paginate :all, :page => current_page, :per_page => Entry::PAGE_SIZE, :include => { :entry => [ :attachments, :author, :rating ] }, :order => 'entry_ratings.hotness DESC, entry_ratings.id DESC', :conditions => sql_conditions
+    @entry_ratings = EntryRating.paginate :all, :page => current_page, :per_page => Entry::PAGE_SIZE, :include => { :entry => [ :author, :rating, { :attachments => :thumbnails } ] }, :order => 'entry_ratings.hotness DESC, entry_ratings.id DESC', :conditions => sql_conditions
     
     @comment_views = User::entries_with_views_for(@entry_ratings.map(&:entry_id), current_user)
     
@@ -174,7 +174,7 @@ class MainController < ApplicationController
 
     @entries = WillPaginate::Collection.create(@page, Entry::PAGE_SIZE, current_user.my_entries_queue_length) do |pager|
       entry_ids = current_user.my_entries_queue(pager.offset, pager.per_page)
-      result = Entry.find_all_by_id(entry_ids, :include => [:author, :rating, :attachments]).sort_by { |entry| entry_ids.index(entry.id) }
+      result = Entry.find_all_by_id(entry_ids, :include => [:author, :rating, { :attachments => :thumbnails }]).sort_by { |entry| entry_ids.index(entry.id) }
       
       pager.replace(result.to_a)
       
@@ -207,7 +207,7 @@ class MainController < ApplicationController
     unless friend_ids.blank?
       # еще мы тут обманываем с количеством страниц... потому что считать тяжело
       @entry_ids  = Entry.paginate :all, :select => 'entries.id', :conditions => "entries.user_id IN (#{friend_ids.join(',')}) AND entries.is_private = 0", :order => 'entries.id DESC', :page => @page, :per_page => Entry::PAGE_SIZE
-      @entries    = Entry.find_all_by_id @entry_ids.map(&:id), :include => [:rating, :attachments, :author], :order => 'entries.id DESC'
+      @entries    = Entry.find_all_by_id @entry_ids.map(&:id), :include => [:rating, :author, { :attachments => :thumbnails }], :order => 'entries.id DESC'
       
       @comment_views = User::entries_with_views_for(@entries.map(&:id), current_user)
     end
