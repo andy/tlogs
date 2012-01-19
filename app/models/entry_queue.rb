@@ -38,7 +38,7 @@ class EntryQueue
     @redis.multi do
       @redis.zadd key, id, id
     
-      @redis.zremrangebyrank(key, 0, -length_limit) if (length || 0) > length_limit
+      @redis.zremrangebyrank(key, 0, -self.length_limit) if self.length > self.length_limit
     end
   end
   

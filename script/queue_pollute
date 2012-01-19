@@ -5,8 +5,11 @@ Entry.find(:all, :select => 'id', :conditions => 'is_mainpageable = 1', :order =
   qlive.push(id)
 end
 
-300.times do |page|
+1000.times do |page|
+  $stdout.print "#{page}: "
   EntryRating.paginate(:order => 'id DESC', :page => page + 1, :per_page => 100).each do |er|
     er.send :requeue, true
+    $stdout.print "."
   end
+  $stdout.print "\n"
 end
