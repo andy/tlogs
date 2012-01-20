@@ -17,22 +17,20 @@ class MainFeedController < ApplicationController
     kind = 'any' unless Entry::KINDS.include?(kind.to_sym)
     rating = 'good' unless EntryRating::RATINGS.include?(rating.to_sym)
 
-    @filter = Struct.new(:kind, :rating).new(kind, rating)
-    @entry_ratings = EntryRating.find :all, :include => { :entry => [:attachments, :author]}, :limit => 15, :order => 'entry_ratings.id DESC', :conditions => "#{EntryRating::RATINGS[@filter.rating.to_sym][:filter]} AND #{Entry::KINDS[@filter.kind.to_sym][:filter]}"
-    @entries = @entry_ratings.map { |er| er.entry }
+    @filter   = Struct.new(:kind, :rating).new(kind, rating)
+    
+    qkey      = [rating, kind == 'any' ? nil : "#{kind}_entry"].compact.join(':')
+    entry_ids = EntryQueue.new(qkey).page(current_page)
+
+    @entries  = Entry.find_all_by_id(entry_ids, :include => [:author, :rating, { :attachments => :thumbnails }]).sort_by { |entry| entry_ids.index(entry.id) }
 
     response.headers['Content-Type'] = 'application/rss+xml'
   end
   
   def live
-    queue      = EntryQueue.new('live')
-    
-    entry_id   = params[:entry_id].to_i if params[:entry_id]
-    if entry_id && entry_id > 0
-      entry_ids = queue.after(entry_id)
-    else
-      entry_ids = queue.page(1)
-    end
+    queue       = EntryQueue.new('live')
+    entry_id    = params[:page].to_i if params[:page]
+    entry_ids   = (entry_id && entry_id > 0) ? queue.after(entry_id) : queue.page(1)
     
     @entries = Entry.find_all_by_id(entry_ids, :include => [:author, :rating, { :attachments => :thumbnails }]).sort_by { |entry| entry_ids.index(entry.id) }
     

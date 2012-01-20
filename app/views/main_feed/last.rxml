@@ -9,6 +9,7 @@ xml.rss :version => '2.0', 'xmlns:ya' => "http://blogs.yandex.ru/schema/rss", 'x
     xml.pubDate @entries.first.created_at.to_s(:rfc822) if @entries.first
     xml.generator current_service.domain
     xml.tag!('ya:more', service_url(main_feed_path(:action => :live, :entry_id => @entries.last.id))) if params[:action] == 'live'
+    xml.tag!('ya:more', service_url(main_feed_last_path(:rating => @filter.rating, :kind => @filter.kind, :page => current_page + 1))) if params[:action] == 'last'
     xml.ttl 5
   
     @entries.each do |entry|
