@@ -1,10 +1,14 @@
 class MainController < ApplicationController
   skip_before_filter :require_confirmation_on_current_user
   
-  before_filter :require_current_user, :only => [:worst]
+  before_filter :require_current_user, :only => [:worst, :demote]
+  
+  before_filter :require_moderator, :only => [:demote]
   
   before_filter :enable_shortcut, :only => [:news, :hot, :last, :hot, :live, :my, :worst, :tagged, :last_personalized, :random]
   
+  protect_from_forgery :only => :demote
+
 
   def index
   end
@@ -108,6 +112,19 @@ class MainController < ApplicationController
     @comment_views = User::entries_with_views_for(entry_ids, current_user)
     
     render :layout => false if should_xhr?
+  end
+  
+  def demote
+    @entry = Entry.find(params[:id])
+    
+    @entry.rating.send(:dequeue)
+    
+    queue = EntryQueue.new('demoted')
+    queue.push @entry.id
+    
+    $redis.hmset [queue.key, 'comments'].join(':'), @entry.id, params[:comment]
+    
+    render :json => true
   end
   
   def worst

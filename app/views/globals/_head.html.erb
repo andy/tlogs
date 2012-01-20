@@ -45,6 +45,9 @@
         :premium  => current_user.is_premium?
         # :sid  => cookies[ActionController::Base.session_options[:key]]
       }.to_json %>;
+    <%- if is_admin? -%>
+      var is_admin = true;
+    <%- end -%>
   <%- end -%>
   window._is_private = <%= is_private?.to_json %>;
   window._token = "<%= form_authenticity_token %>";  

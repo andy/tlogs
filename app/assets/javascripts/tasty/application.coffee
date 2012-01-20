@@ -12,7 +12,8 @@ Tasty =
     Tasty.shortcut.ready() if jQuery('#t-act-shortcut')
     Tasty.iscroll.ready() if jQuery('.t-iscrollable')
     Tasty.comments.ready() if jQuery('.t-post-comments')
-
+    Tasty.admin.ready() if is_admin? && is_admin && current_site && current_site == 'www'
+  
     true
     
   logout: (event) ->
@@ -24,6 +25,36 @@ Tasty =
     
     false
   
+  admin:
+    ready: ->
+      Tasty.iscroll.callbacks.add Tasty.admin.add_demote
+      Tasty.admin.add_demote()
+  
+      jQuery('a.t-act-demote').live "click", Tasty.admin.demote
+      
+    add_demote: (scope = document) ->
+      jQuery(scope).find('.service_comments').filter (index) ->
+        jQuery(this).closest('.post_body').find('.service_rating').length > 0
+      .after("<div class='service_edit'><a href='#' class='t-act-demote' title='Удалить эту запись ко всем чертям'>✂</a></div>")
+
+    demote: ->
+      entry_id  = jQuery(this).closest('.post_body').data('entry-id')
+      comment   = prompt("Почему, собственно, удаляем?");
+      
+      if comment? && comment.length > 0
+        jQuery.ajax
+          url: '/main/demote'
+          dataType: 'json'
+          data:
+            authenticity_token: window._token
+            comment: comment
+            id: entry_id
+          type: 'post'
+          success: (data) =>
+            jQuery(this).closest('.post_body').fadeOut('fast');
+      
+      false
+
   comments:
     ready: ->
       jQuery('.t-post-comments .t-act-comment-destroy').live "click", Tasty.comments.destroy
@@ -161,6 +192,8 @@ Tasty =
       Tasty.analytics.hit(Tasty.iscroll.path, document.title)
       
       Tasty.fancybox.scoped(items)
+      
+      Tasty.iscroll.callbacks.fire(items)
     
     next: null
     
@@ -169,6 +202,8 @@ Tasty =
     path: null
     
     visible: []
+    
+    callbacks: jQuery.Callbacks()
 
     options:
       infid: 1
