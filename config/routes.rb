@@ -49,7 +49,7 @@ www_settings = lambda do |www|
   www.connect 'premium', :controller => 'main', :action => 'premium'
   www.connect 'settings', :controller => 'main', :action => 'settings'
   www.connect 'publish/:type', :controller => 'main', :action => 'publish'
-  www.main_feed_last 'main/feed/last/:rating/:kind.xml', :controller => 'main_feed', :action => 'last', :rating => 'default', :kind => 'default', :requirements => { :rating => /[a-z]{3,20}/ }
+  www.main_feed_last 'main/feed/last/:rating/:kind.xml', :controller => 'main_feed', :action => 'last', :requirements => { :rating => /[a-z]{3,20}/ }
   www.main_feed 'main/feed/:action.xml', :controller => 'main_feed'
   www.last_day 'main/last/:year/:month/:day/:rating/:kind', :controller => 'main', :action => 'last', :rating => 'default', :kind => 'default', :requirements => { :year => /\d{4}/, :month => /\d{1,2}/, :day => /\d{1,2}/ }
   www.last 'main/last/:rating/:kind', :controller => 'main', :action => 'last', :rating => 'default', :kind => 'default'

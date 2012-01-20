@@ -138,7 +138,7 @@ class MainController < ApplicationController
   def live
     @title      = 'прямой эфир как он есть'
     
-    queue       = EntryQueue.new('live')    
+    queue       = EntryQueue.new('live')
     entry_id    = params[:page].to_i if params[:page]
     entry_ids   = (entry_id && entry_id > 0) ? queue.after(entry_id) : queue.page(1)
     

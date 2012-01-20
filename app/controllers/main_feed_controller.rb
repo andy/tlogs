@@ -1,7 +1,7 @@
 class MainFeedController < ApplicationController
   skip_before_filter :require_confirmation_on_current_user
   layout nil
-  caches_action :live, :last, :photos, :cache_path => Proc.new { |c| c.url_for(:expiring => (Time.now.to_i / 1.minute).to_i, :page => c.params[:page]) }
+  caches_action :live, :last, :cache_path => Proc.new { |c| c.url_for(:expiring => (Time.now.to_i / 1.minute).to_i, :page => c.params[:page]) }
 
   def last
     ### такая же штука определена в main_controller.rb
@@ -38,10 +38,12 @@ class MainFeedController < ApplicationController
     render :action => 'last'
   end
   
-  def photos
-    @entries = Entry.find :all, :conditions => "entries.is_private = 0 AND entries.is_mainpageable = 1 AND entries.type = 'ImageEntry'", :page => { :current => current_page, :size => 50, :count => ((current_page + 1) * 50) }, :order => 'entries.id DESC', :include => [:author, :attachments]
-
-    response.headers['Content-Type'] = 'application/rss+xml'
-    render :template => 'tlog_feed/media'
-  end
+  # def photos
+  #   entry_ids = EntryQueue.new('good:image_entry').page(current_page)
+  #   
+  #   @entries = Entry.find_all_by_id(entry_ids, :include => [:author, :rating, { :attachments => :thumbnails }]).sort_by { |entry| entry_ids.index(entry.id) }
+  # 
+  #   response.headers['Content-Type'] = 'application/rss+xml'
+  #   render :template => 'tlog_feed/media'
+  # end
 end
