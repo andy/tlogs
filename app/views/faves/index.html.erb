@@ -1,0 +1,32 @@
+<% @title = "#{current_site.gender('его', 'её')} избранное#{", страница #{current_page}" if current_page > 1}" %>
+
+<% if current_site.faves.size.zero? %>
+  <div class='filter'>
+    <p>В <%= current_site.gender('его', 'её') %> <span class='highlight large'>избранном</span> пока что совсем пусто.</p>
+  </div>
+<% else %>
+  <div class='filter'>
+    <p><%= current_site.gender('Его', 'Её') %> <span class='highlight large'>избранное</span></p>
+  </div>
+  <div class='t-iscrollable' data-iscroll-name='faves'>
+    <% cache @cache_key, :expires_in => 1.day do %>
+      <% @entries.each do |entry| %>
+        <% next if entry.nil? %>
+        <%= render :partial => 'entries/entry_display', :locals => { :entry => entry, :show_comments_bubble => true, :show_username => true, :comment_views => @comment_views } %>
+      <% end %>
+      
+      <%= paginate @pager %>
+    <% end %>
+    <script type='text/javascript'>
+    // <[!CDATA[
+      <%= "var comments_views_update = #{@comment_views.to_json(:only => [:id, :comments_count], :methods => [:last_comment_viewed])}" if @comment_views %>
+    //  ]]>
+    </script>
+  </div>
+<% end %>
+
+<%  %>
+
+<div class='return_from_permalink'>
+  <%= link_to "&#x2190; обратно в #{current_site.gender("его", "её")} тлог", user_path(current_site) %>
+</div>

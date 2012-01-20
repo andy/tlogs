@@ -17,9 +17,17 @@ class FavesController < ApplicationController
     faves_count = current_site.faves.size
     faves_count = current_site.faves.count if faves_count < 0
     
-    @faves = Fave.paginate :all, :page => current_page, :per_page => 15, :include => { :entry => [:attachments, :author, :rating] }, :order => 'faves.id DESC', :conditions => { :user_id => current_site.id }
+    @pager        = current_site.faves.paginate(:all, :page => current_page, :per_page => 15, :select => 'entry_id')
+    entry_ids     = @pager.map(&:entry_id)
+
+    entry_ids_key = Digest::SHA1.hexdigest(entry_ids.join(','))[0..8]
+
+    @cache_key    = ['tlog', 'faves', current_service.domain, current_site.id, current_site.url, current_page, is_owner?, current_site.entries_updated_at.to_i, entry_ids_key].join(':')
+    Rails.logger.debug "* cache key is #{@cache_key}"
     
-    @comment_views = User::entries_with_views_for(@faves.map(&:entry_id), current_user)
+    @entries      = Entry.find_all_by_id(entry_ids, :include => [:author, :rating, { :attachments => :thumbnails }]).sort_by { |entry| entry_ids.index(entry.id) } unless Rails.cache.exist? "views/#{@cache_key}"
+    
+    @comment_views = User::entries_with_views_for(entry_ids, current_user)
     
     render :layout => false if request.xhr?
   end

@@ -4,14 +4,14 @@
   = link_to 'Обновить', '', 'data-icon' => 'refresh', 'data-iconpos' => 'notext', 'data-refresh-url' => service_url(main_path(:action => :last))
 
 %div{:data => {:role => 'content', :theme => 'd'}}
-  - if @entry_ratings.blank?
+  - if @entries.blank?
     %p.last_is_empty_note По вашему запросу не было найдено ни одной записи.
   - else
     .t-entries
-      - @entry_ratings.each do |entry_rating|
-        = render :partial => 'entries/entry_display', :locals => { :entry => entry_rating.entry }
+      - @entries.each do |entry|
+        = render :partial => 'entries/entry_display', :locals => { :entry => entry }
 
 %div{:data => {:role => 'footer'}}
   %div{:data => {:role => 'navbar'}}
     %ul
-      %li= link_to 'далее', service_url(last_path(:page => @entry_ratings.next_page, :kind => @filter.kind, :rating => @filter.rating)), 'data-icon' => 'arrow-r', 'data-iconpos' => 'top'
+      %li= link_to 'далее', service_url(last_path(:page => @pager.next_page, :kind => @filter.kind, :rating => @filter.rating)), 'data-icon' => 'arrow-r', 'data-iconpos' => 'top'
