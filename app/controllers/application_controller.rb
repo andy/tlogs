@@ -121,7 +121,7 @@ class ApplicationController < ActionController::Base
         redirect_to "#{request.protocol}www.mmm-tasty.ru#{request.port == 80 ? '' : ":#{request.port}"}" and return false if request.host.starts_with?('www.') && request.host != 'www.mmm-tasty.ru'
         
         
-        url = request.subdomains.first
+        url = request.subdomains.join('.')
         
         # перенаправляем на сайт сервиса, если адрес запрещенный
         redirect_to "#{request.protocol}www.mmm-tasty.ru#{request.port == 80 ? '' : ":#{request.port}"}" and return false if User::RESERVED.include?(url) && url != 'www'
@@ -129,7 +129,7 @@ class ApplicationController < ActionController::Base
         # ban www.subdomain requests
         redirect_to "#{request.protocol}www.tasty.showoff.io#{request.port == 80 ? '' : ":#{request.port}"}" and return false if request.host.starts_with?('www.') && request.host != 'www.tasty.showoff.io'
 
-        url = request.subdomains.first
+        url = request.subdomains.join('.')
         url = nil if url && url == 'tasty'
 
         # перенаправляем на сайт сервиса, если адрес запрещенный
@@ -138,7 +138,7 @@ class ApplicationController < ActionController::Base
           # ban www.subdomain requests
           redirect_to "#{request.protocol}www.tasty.dev#{request.port == 80 ? '' : ":#{request.port}"}" and return false if request.host.starts_with?('www.') && request.host != 'www.tasty.dev'
 
-          url = request.subdomains.first
+          url = request.subdomains.join('.')
 
           # перенаправляем на сайт сервиса, если адрес запрещенный
           redirect_to "#{request.protocol}www.tasty.dev#{request.port == 80 ? '' : ":#{request.port}"}" and return false if User::RESERVED.include?(url) && url != 'www'      
