@@ -103,7 +103,7 @@ class MainController < ApplicationController
       entry_ids = @pager
     end
 
-    @entries  = 
+    @entries  = Entry.find_all_by_id(entry_ids, :include => [:author, :rating, { :attachments => :thumbnails }]).sort_by { |entry| entry_ids.index(entry.id) }
     
     @comment_views = User::entries_with_views_for(entry_ids, current_user)
     
