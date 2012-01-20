@@ -17,7 +17,7 @@ class FavesController < ApplicationController
     faves_count = current_site.faves.size
     faves_count = current_site.faves.count if faves_count < 0
     
-    @pager        = current_site.faves.paginate(:all, :page => current_page, :per_page => 15, :select => 'entry_id')
+    @pager        = current_site.faves.paginate(:all, :page => current_page, :per_page => 15, :select => 'entry_id', :order => 'faves.id DESC')
     entry_ids     = @pager.map(&:entry_id)
 
     entry_ids_key = Digest::SHA1.hexdigest(entry_ids.join(','))[0..8]
