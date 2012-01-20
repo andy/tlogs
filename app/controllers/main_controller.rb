@@ -76,35 +76,47 @@ class MainController < ApplicationController
   
     kind = 'any' unless Entry::KINDS.include?(kind.to_sym)
     rating = 'good' unless EntryRating::RATINGS.include?(rating.to_sym)
-
+    
     @filter = Struct.new(:kind, :rating).new(kind, rating)
-    sql_conditions = "#{EntryRating::RATINGS[@filter.rating.to_sym][:filter]} AND #{Entry::KINDS[@filter.kind.to_sym][:filter]}"
     
     @time = Date.today
-    # высчитываем общее число записей и запоминаем в кеше
-    # total = Rails.cache.fetch("entry_ratings_count_#{kind}_#{rating}", :expires_in => 1.minute) { EntryRating.count :conditions => sql_conditions }
 
     page = current_page
     
     if params[:year]
+      sql_conditions = [EntryRating::RATINGS[@filter.rating.to_sym][:filter], Entry::KINDS[@filter.kind.to_sym][:filter]].join(' AND ')
+      
       @time = [params[:year], params[:month], params[:day]].join('-').to_date.to_time rescue Date.today
       sql_conditions += " AND entry_ratings.created_at BETWEEN '#{@time.strftime("%Y-%m-%d")}' AND '#{@time.tomorrow.strftime("%Y-%m-%d")}'"
-      @entry_ratings = EntryRating.paginate :all, :page => page, :per_page => Entry::PAGE_SIZE, :include => { :entry => [ :author, :rating, { :attachments => :thumbnails } ] }, :order => 'entry_ratings.hotness DESC, entry_ratings.id DESC', :conditions => sql_conditions
+
+      @pager = EntryRating.paginate(:all,
+                              :select     => 'entry_ratings.entry_id',
+                              :page       => page,
+                              :per_page   => Entry::PAGE_SIZE,
+                              :order      => 'entry_ratings.hotness DESC, entry_ratings.id DESC',
+                              :conditions => sql_conditions
+                            )
+      entry_ids = @pager.map(&:entry_id)
     else
-      @entry_ratings = EntryRating.paginate :all, :page => page, :per_page => Entry::PAGE_SIZE, :include => { :entry => [ :author, :rating, { :attachments => :thumbnails } ] }, :order => 'entry_ratings.id DESC', :conditions => sql_conditions
+      qkey      = [rating, kind == 'any' ? nil : "#{kind}_entry"].compact.join(':')
+      @pager    = EntryQueue.new(qkey).paginate(:page => page)
+      entry_ids = @pager
     end
+
+    @entries  = 
     
-    @comment_views = User::entries_with_views_for(@entry_ratings.map(&:entry_id), current_user)
+    @comment_views = User::entries_with_views_for(entry_ids, current_user)
     
     render :layout => false if should_xhr?
   end
   
   def worst
-    sql_conditions = "entry_ratings.value < -5"
-    
-    @entry_ratings = EntryRating.paginate :all, :page => current_page, :per_page => Entry::PAGE_SIZE, :include => { :entry => [ :author, :rating, { :attachments => :thumbnails } ] }, :order => 'entry_ratings.id DESC', :conditions => sql_conditions
+    @pager    = EntryQueue.new('worst').paginate(:page => current_page)
+    entry_ids = @pager
 
-    @comment_views = User::entries_with_views_for(@entry_ratings.map(&:entry_id), current_user)
+    @entries = Entry.find_all_by_id(entry_ids, :include => [:author, :rating, { :attachments => :thumbnails }]).sort_by { |entry| entry_ids.index(entry.id) }
+
+    @comment_views = User::entries_with_views_for(entry_ids, current_user)
     
     render :layout => false if should_xhr?
   end
@@ -169,11 +181,11 @@ class MainController < ApplicationController
 
     @entries = WillPaginate::Collection.create(@page, Entry::PAGE_SIZE, current_user.my_entries_queue_length) do |pager|
       entry_ids = current_user.my_entries_queue(pager.offset, pager.per_page)
-      result = Entry.find_all_by_id(entry_ids, :include => [:author, :rating, { :attachments => :thumbnails }]).sort_by { |entry| entry_ids.index(entry.id) }
+      result    = Entry.find_all_by_id(entry_ids, :include => [:author, :rating, { :attachments => :thumbnails }]).sort_by { |entry| entry_ids.index(entry.id) }
       
       pager.replace(result.to_a)
       
-      pager.total_entries = $redis.zcount unless pager.total_entries
+      pager.total_entries = $redis.zcard(current_user.queue_key) unless pager.total_entries
     end
     
     @comment_views = User::entries_with_views_for(@entries.map(&:id), current_user)

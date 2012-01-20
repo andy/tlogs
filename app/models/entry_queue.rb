@@ -82,6 +82,17 @@ class EntryQueue
     @redis.del key
   end
   
+  def paginate(options = {})
+    raise ArgumentError, "parameter hash expected (got #{options.inspect})" unless Hash === options
+    page     = options[:page] || 1
+    per_page = options[:per_page] || PER_PAGE
+    total    = options[:total_entries] || self.length
+
+    WillPaginate::Collection.create(page, per_page, total) do |pager|
+      pager.replace self.page(pager.current_page, pager.per_page)
+    end
+  end
+  
   def length_limit
     @queue_limit + @queue_step
   end

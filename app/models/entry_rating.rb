@@ -34,9 +34,9 @@ class EntryRating < ActiveRecord::Base
   DAY_LIMIT = 2000.0
   
   RATINGS = {
-    :great => { :select => 'Великолепное (+15 и круче)', :header => 'Самое прекрасное!!!@#$%!', :filter => 'entry_ratings.is_great = 1', :order => 1 },
-    :good => { :select => 'Интересное (+5 и выше)', :header => 'Интересное на тейсти', :filter => 'entry_ratings.is_good = 1', :order => 2 },
-    :everything => { :select => 'Всё подряд (-5 и больше)', :header => 'Всё подряд на тейсти', :filter => 'entry_ratings.is_everything = 1', :order => 3 }
+    :great => { :select => 'Прекрасное (+15 и круче)', :header => 'Самое прекрасное', :filter => 'entry_ratings.is_great = 1', :order => 1 },
+    :good => { :select => 'Интересное (+5 и выше)', :header => 'Интересное', :filter => 'entry_ratings.is_good = 1', :order => 2 },
+    :everything => { :select => 'Всё подряд (-5 и больше)', :header => 'Всё подряд', :filter => 'entry_ratings.is_everything = 1', :order => 3 }
   }
   RATINGS_FOR_SELECT = RATINGS.sort_by { |obj| obj[1][:order] }.map { |k,v| [v[:select], k.to_s] }
 
@@ -84,10 +84,6 @@ class EntryRating < ActiveRecord::Base
       true
     end
     
-    def worst?
-      self.value < -5
-    end
-    
     def type_queue(name)
       [name, entry_type.underscore].join(':')
     end
@@ -100,9 +96,11 @@ class EntryRating < ActiveRecord::Base
     end
     
     def dequeue
-      %w(everything good great worst).each do |name|
+      %w(everything good great).each do |name|
         EntryQueue.new(name).delete(entry_id)
         EntryQueue.new(type_queue(name)).delete(entry_id)
+        
+        EntryQueue.new('worst').delete(entry_id) if name == 'everything'
       end
       
       true
@@ -115,9 +113,9 @@ class EntryRating < ActiveRecord::Base
         should_present = send("is_#{name}?")
         EntryQueue.new(name).toggle(entry_id, should_present)
         EntryQueue.new(type_queue(name)).toggle(entry_id, should_present)
+                
+        EntryQueue.new('worst').toggle(entry_id, !should_present) if name == 'everything'
       end
-      
-      EntryQueue.new('worst').toggle(entry_id, worst?)
       
       true
     end
