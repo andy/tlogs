@@ -1,3 +1,4 @@
+# encoding: utf-8
 #
 # r = Redis.new :host => $redis.client.host, :port => $redis.client.port, :logger => Logger.new(STDOUT)
 # q = EntryQueue.new 'test', :redis => r, :queue_limit => 7, :queue_step => 3, :per_page => 3

@@ -1,3 +1,4 @@
+# encoding: utf-8
 class User
   ## included modules & attr_*
   attr_accessible :entries_updated_at
@@ -5,7 +6,7 @@ class User
 
   ## associations
   ## plugins
-  ## named_scopes
+  ## scopes
   ## validations
   ## callbacks
   ## class methods

@@ -1,3 +1,4 @@
+# encoding: utf-8
 # == Schema Information
 # Schema version: 20110816190509
 #
@@ -37,7 +38,7 @@ class Attachment < ActiveRecord::Base
   validates_as_attachment
 
 
-  ## named_scopes
+  ## scopes
   ## validations
   validates_presence_of :entry_id
   validates_presence_of :user_id

@@ -1,3 +1,4 @@
+# encoding: utf-8
 # == Schema Information
 # Schema version: 20110816190509
 #
@@ -15,11 +16,11 @@
 class RadioSchedule < ActiveRecord::Base
   belongs_to :user
   
-  default_scope :order => 'air_at DESC'
+  default_scope order('air_at DESC')
 
   attr_accessor :duration
   
-  named_scope :onair, { :conditions => "end_at >= NOW()", :order => 'air_at ASC', :limit => 3 }
+  scope :onair, where('end_at >= NOW()').order('air_at ASC').limit(3)
 
   validates_presence_of :air_at
   

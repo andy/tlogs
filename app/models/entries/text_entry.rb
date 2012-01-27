@@ -1,3 +1,4 @@
+# encoding: utf-8
 # == Schema Information
 # Schema version: 20110816190509
 #
@@ -37,6 +38,8 @@
 # Текстовая запись
 #   data_part_1 - текст
 #   data_part_2 - заголовок
+require 'entries/entry'
+
 class TextEntry < Entry
   validates_presence_of :data_part_1, :on => :save
   validates_length_of :data_part_1, :within => 1..ENTRY_MAX_LENGTH, :on => :save, :too_long => 'это поле слишком длинное', :too_short => 'это поле не может быть пустым'

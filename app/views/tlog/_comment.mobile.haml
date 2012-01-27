@@ -6,7 +6,7 @@
 
 %div{:class => ['t-comment', @last_comment_viewed <= (@comments || @entry.comments).index(comment) && 't-comment-new', is_anonymous_author && 't-comment-by-anonymous'], :id => dom_id(comment)}
   .t-comment-avatar
-    = link_to(userpic_tag(comment.user, :width => 32, :height => 32, :blank => true), user_url(comment.user)) if !is_anonymous_author && !comment.user.nil? && comment.user.avatar
+    = link_to(userpic_tag(comment.user, :width => 32, :height => 32, :blank => true), user_url(comment.user)) if !is_anonymous_author && !comment.user.nil? && comment.user.userpic?
 
   .t-comment-body
     .t-comment-meta

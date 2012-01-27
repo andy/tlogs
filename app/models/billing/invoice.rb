@@ -29,18 +29,14 @@ class Invoice < ActiveRecord::Base
   belongs_to :user
   
   
-  ## named scopes
-  named_scope     :for_user,
-                  lambda { |user| { :conditions => "user_id = #{user.id}" } }
+  ## scopes
+  def self.for_user(user)
+    where(:user_id => user.id)
+  end
 
-  named_scope     :pending,
-                  :conditions => { :state => 'pending' }
-
-  named_scope     :successful,
-                  :conditions => { :state => 'successful' }
-
-  named_scope     :failed,
-                  :conditions => { :state => 'failed' }
+  scope :pending, where(:state => 'pending')
+  scope :successful, where(:state => 'successful')
+  scope :failed, where(:state => 'failed')
 
   
   ## validations

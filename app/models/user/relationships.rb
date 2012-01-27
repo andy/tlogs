@@ -1,3 +1,4 @@
+# encoding: utf-8
 class User
   ## included modules & attr_*
   USER_AND_RELATIONSHIP_COLUMNS = 'u.*,r.title,r.friendship_status,r.read_count,r.comment_count,r.position,r.last_viewed_entries_count,r.last_viewed_at,r.id AS relationship_id'
@@ -42,7 +43,7 @@ class User
 
 
   ## plugins
-  ## named_scopes
+  ## scopes
   ## validations
   ## callbacks
   ## class methods

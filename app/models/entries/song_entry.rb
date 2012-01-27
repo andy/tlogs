@@ -1,3 +1,4 @@
+# encoding: utf-8
 # == Schema Information
 # Schema version: 20110816190509
 #
@@ -34,6 +35,8 @@
 #
 
 # Песня
+require 'entries/entry'
+
 class SongEntry < Entry
   validates_presence_of :data_part_1, :if => :no_attachment, :message => 'это обязательное поле'
   validates_format_of :data_part_1, :with => Format::HTTP_LINK, :if => :no_attachment, :message => 'ссылка должна быть на веб-сайт, т.е. начинаться с http://'

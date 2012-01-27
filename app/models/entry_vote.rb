@@ -1,3 +1,4 @@
+# encoding: utf-8
 # == Schema Information
 # Schema version: 20110816190509
 #
@@ -21,6 +22,6 @@ class EntryVote < ActiveRecord::Base
   validates_presence_of :user_id
   validates_presence_of :entry_id
   
-  named_scope :positive, { :conditions => 'value > 0' }
-  named_scope :negative, { :conditions => 'value < 0' }  
+  scope :positive, where('entry_votes.value > 0')
+  scope :negative, where('entry_votes.value < 0')
 end

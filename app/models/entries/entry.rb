@@ -1,3 +1,4 @@
+# encoding: utf-8
 # == Schema Information
 # Schema version: 20110816190509
 #
@@ -114,12 +115,14 @@ class Entry < ActiveRecord::Base
   end  
 
 
-  ## named_scopes
-  named_scope :anonymous, :conditions => { :type => 'AnonymousEntry' }
-  named_scope :for_view, :include => [:author, :attachments, :rating], :order => 'entries.id DESC'
-  named_scope :private, :conditions => 'entries.is_private = 1 AND entries.type != "AnonymousEntry"'
-  named_scope :for_user, lambda { |u| { :conditions => "user_id = #{u.id}" } }
-  named_scope :mainpageable, :conditions => 'entries.is_mainpageable = 1'
+  ## scopes
+  def self.for_user user
+    where(:user_id => user.id)
+  end
+  scope :anonymous, where(:type => 'AnonymousEntry')
+  scope :for_view, includes(:author, :attachments, :rating).order('entries.id DESC')
+  scope :private, where(:is_private => true).where('AND entries.type != "AnonymousEntry"')
+  scope :mainpageable, where(:is_mainpageable => true)
 
   ## validations
 	validates_presence_of :author

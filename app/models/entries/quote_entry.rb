@@ -1,3 +1,4 @@
+# encoding: utf-8
 # == Schema Information
 # Schema version: 20110816190509
 #
@@ -37,6 +38,9 @@
 # Цитата
 #   data_part_1 - текст цитаты (обяз)
 #   data_part_2 - автор / источник
+#
+require 'entries/entry'
+
 class QuoteEntry < Entry
   validates_presence_of :data_part_1, :on => :save
   validates_length_of :data_part_1, :within => 1..ENTRY_MAX_LENGTH, :on => :save, :too_long => 'это поле слишком длинное'

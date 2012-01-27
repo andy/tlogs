@@ -49,7 +49,7 @@ class AnonymousController < ApplicationController
   
   def mentions
     user_ids    = Comment.find(:all, :select => "user_id", :conditions => "entry_id = #{@entry.id}").map(&:user_id).reject { |id| id == current_user.id || id == @entry.user_id }.uniq
-    @mentions   = User.find(user_ids, :include => :avatar) if user_ids.any?
+    @mentions   = User.find(user_ids) if user_ids.any?
     @mentions ||= []
     
     render :template => 'mentions/index', :content_type => Mime::JSON.to_s

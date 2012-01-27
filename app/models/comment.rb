@@ -1,3 +1,4 @@
+# encoding: utf-8
 # == Schema Information
 # Schema version: 20110816190509
 #
@@ -31,9 +32,9 @@ class Comment < ActiveRecord::Base
 
 
   ## plugins
-  ## named_scopes
-  named_scope                   :enabled,   :conditions => 'is_disabled = 0'
-  named_scope                   :disabled,  :conditions => 'is_disabled = 1'
+  ## scopes
+  scope :enabled, where(:is_disabled => false)
+  scope :disabled, where(:is_disabled => true)
   
   
   ## validations

@@ -1,3 +1,4 @@
+# encoding: utf-8
 class Emailer < ActionMailer::Base
   helper :application, :comments, :url, :white_list
 

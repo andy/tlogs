@@ -1,3 +1,4 @@
+# encoding: utf-8
 class SidebarSweeper < ActionController::Caching::Sweeper
   observe SidebarElement, SidebarSection
   

@@ -3,7 +3,6 @@
 	  <%# FIXME: man, what the hell is this? it has to be optimized / refactored or something ... %>
 	  <% if current_site.userpic? %>
 	    <% style = current_site.tlog_design_settings.large_userpic? ? :thumb128 : :thumb64 %>
-	    <%#= content_tag(:div, 'pro', :class => 't-avatar-badge-pro') %>
 	    <%= link_to image_tag(current_site.userpic.url(style), :size => current_site.userpic.image_size(style), :alt => current_site.url, :title => current_site.url, :class => 'avatar'), image_path(current_site.userpic.url(:large)), :class => 'fancybox', :rel => 'follow', :title => current_site.url %>
 	  <% else %>
 			<%= userpic_tag(current_site) %>

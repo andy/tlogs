@@ -19,7 +19,7 @@ class ApiController < ApplicationController
     def make_user_details(user)
       Rails.cache.fetch("api:mud:#{user.id}", :expires_in => 1.hour) do
         size              = userpic_dimensions(user, :width => 32)
-        userpic           = user.userpic? ? user.userpic.url(:thumb32) : (user.avatar ? user.avatar.public_filename : nil)
+        userpic           = user.userpic? ? user.userpic.url(:thumb32) : nil
         subscribers_count = user.listed_me_as_all_friend_light_ids.length
 
         return {

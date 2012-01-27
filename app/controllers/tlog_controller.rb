@@ -92,7 +92,7 @@ class TlogController < ApplicationController
     cache_key = "tlog:show:e#{@entry.id}:c#{@entry.comments_count}:u#{@entry.updated_at.to_i}"
 
     @comments = Rails.cache.fetch(cache_key, :expires_in => 1.day) do
-      @entry.comments.all(:include => { :user => :avatar }, :order => 'comments.id').reject { |comment| comment.user.nil? } 
+      @entry.comments.all(:include => :user, :order => 'comments.id').reject { |comment| comment.user.nil? } 
     end
 
     @last_comment_viewed  = current_user ? CommentViews.view(@entry, current_user) : 0
@@ -101,7 +101,7 @@ class TlogController < ApplicationController
 
   def mentions
     user_ids    = Comment.find(:all, :select => "user_id", :conditions => "entry_id = #{@entry.id}").map(&:user_id).reject { |id| id == current_user.id }.uniq
-    @mentions   = User.find(user_ids, :include => :avatar) if user_ids.any?
+    @mentions   = User.find(user_ids) if user_ids.any?
     @mentions ||= []
     
     render :template => 'mentions/index', :content_type => Mime::JSON

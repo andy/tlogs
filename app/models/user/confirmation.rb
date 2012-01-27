@@ -1,3 +1,4 @@
+# encoding: utf-8
 class User
   ## included modules & attr_*
   EMAIL_SIGNATURE_SECRET = 'YO SHALL NOT KNOW EVER!@@@#!'
@@ -5,7 +6,7 @@ class User
 
   ## associations
   ## plugins
-  ## named_scopes
+  ## scopes
   ## validations
   ## callbacks
   ## class methods

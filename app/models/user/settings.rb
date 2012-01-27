@@ -1,3 +1,4 @@
+# encoding: utf-8
 class User
   ## included modules & attr_*
 	serialize :settings
@@ -5,7 +6,7 @@ class User
 
   ## associations
   ## plugins
-  ## named_scopes
+  ## scopes
   ## validations
   ## callbacks
 	before_create :set_default_settings

@@ -9,8 +9,8 @@ xml.rss :version => '2.0' do
     xml.pubDate @entries.first.created_at.to_s(:rfc822) if @entries && @entries.first
     xml.generator current_service.domain
     xml.ttl 5
-    if current_site.userpic? || current_site.avatar
-      userpic_url = current_site.userpic? ? current_site.userpic.url(:thumb64) : current_site.avatar.public_filename
+    if current_site.userpic?
+      userpic_url = current_site.userpic.url(:thumb64)
       xml.image do
         xml.url image_path(userpic_url)
         xml.title { xml.cdata!("Ваш личный прямой эфир, #{current_site.url}") }

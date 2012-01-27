@@ -1,3 +1,4 @@
+# encoding: utf-8
 # == Schema Information
 # Schema version: 20110816190509
 #
@@ -46,10 +47,10 @@
 
 class User < ActiveRecord::Base
   ## included modules & attr_*
+  
   ## associations
-	has_many      :entries, :dependent => :destroy
-	has_many      :anonymous_entries, :class_name => 'AnonymousEntry'
-	has_one       :avatar, :dependent => :destroy
+  has_many      :entries, :dependent => :destroy
+  has_many      :anonymous_entries, :class_name => 'AnonymousEntry'
   has_one       :tlog_settings, :dependent => :destroy
   has_one       :tlog_design_settings, :dependent => :destroy
   has_one       :mobile_settings, :dependent => :destroy  
@@ -75,7 +76,7 @@ class User < ActiveRecord::Base
                   :entries_queue,
                   :ban
   
-	define_index do
+  define_index do
     indexes :url
     indexes :username
     
@@ -94,26 +95,27 @@ class User < ActiveRecord::Base
     :use_timestamp => false,
     :convert_options => { :all => '-strip' },
     :styles => {
-      :large    => '800x800>',
-      :thumb128 => '128x128>',
-      :thumb64  => '64x64>',
-      :thumb32  => '32x32>',
-      :thumb16  => '16x16>',
-      :touch    => ['114x114#', :png]
+      :large      => '800x800>',
+      :thumb128   => '128x128>',
+      :thumb64    => '64x64>',
+      :thumb32    => '32x32>',
+      :thumb16    => '16x16>',
+      :square128  => '128x128#',
+      :square64   => '64x64#',
+      :square32   => '32x32#',
+      :square16   => '16x16#',
+      :touch      => ['114x114#', :png]
     },
     :default_style => :thumb64
   
-  # validates_attachment_size :userpic, :less_than => 5.megabytes
-  # validates_attachment_content_type :userpic, :content_type => ['image/jpeg', 'image/png', 'image/gif']
 
-
-  ## named_scopes
-  named_scope   :confirmed, :conditions => 'is_confirmed = 1'
-  named_scope   :unconfirmed, :conditions => 'is_confirmed = 0'
-  named_scope   :active, :conditions => 'is_disabled = 0'
-  named_scope   :disabled, :conditions => 'is_disabled = 1'
-  named_scope   :expired, :conditions => 'is_disabled = 1 AND disabled_at < DATE_SUB(CURDATE(), INTERVAL 1 MONTH)'
-  named_scope   :premium, :conditions => 'premium_till IS NOT NULL AND premium_till > CURDATE()'
+  ## scopes
+  scope :confirmed, where(:is_confirmed => true)
+  scope :unconfirmed, where(:is_confirmed => false)
+  scope :active, where(:is_disabled => false)
+  scope :disabled, where(:is_disabled => true)
+  scope :expired, disabled.where('users.disabled_at < DATE_SUB(CURDATE(), INTERVAL 1 MONTH)')
+  scope :premium, where('users.premium_till IS NOT NULL AND users.premium_till > CURDATE()')
 
   
   ## validations
@@ -159,7 +161,8 @@ class User < ActiveRecord::Base
                 map(&:first).                         # keep only ids
                 reverse
 
-    User.find_all_by_id(user_ids.sort_by({ rand })[0...(options[:limit] * 2)], :include => [:avatar, :tlog_settings]).select { |u| u.can_be_viewed_by?(user) }[0..options[:limit]]
+    user_ids = user_ids.sort_by { rand }[0...(options[:limit] * 2)]
+    User.find_all_by_id(user_ids, :include => [:tlog_settings]).select { |u| u.can_be_viewed_by?(user) }[0..options[:limit]]
   end
 
   
@@ -235,7 +238,7 @@ class User < ActiveRecord::Base
 
     self.conversations.map(&:destroy)
 
-    self.shade_conversations.map(&:destroy)    
+    self.shade_conversations.map(&:destroy)
   end
   
   # отключаем друзей от пользователя

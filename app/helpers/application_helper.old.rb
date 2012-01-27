@@ -96,7 +96,6 @@ module ApplicationHelper
       height = ratio < 1 ? (height * ratio).to_i : height
     end
 
-    # content_tag(:div, 'pro', :class => 't-avatar-badge-pro') + 
     image_tag(image_path(user.userpic.url(style)),
         :class  => classes('avatar', [options[:class], options[:class]]),
         :style  => options[:style],

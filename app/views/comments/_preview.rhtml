@@ -5,7 +5,7 @@
 	<div class="post_comment post_comment_new" id="<%= dom_id(@comment) %>">				
 		<div class='rel'>
 			<div class='post_comment_avatar'>
-				<% if !@comment.user.nil? && (@comment.user.userpic? || @comment.user.avatar) %>
+				<% if !@comment.user.nil? && @comment.user.userpic? %>
 					<%= link_to userpic_tag(@comment.user), user_url(@comment.user) %>
 				<% end %>
 			</div>

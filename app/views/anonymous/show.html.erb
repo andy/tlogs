@@ -29,7 +29,7 @@
   		
   		<% end %>
 
-			<%= render :partial => 'tlog/comment', :collection => Comment.find(:all, :conditions => ['comments.entry_id = ?', @entry.id], :include => { :user => :avatar }, :order => 'comments.id').reject { |c| c.user.nil? } if @entry.comments.size %>
+			<%= render :partial => 'tlog/comment', :collection => Comment.find(:all, :conditions => ['comments.entry_id = ?', @entry.id], :include => :user, :order => 'comments.id').reject { |c| c.user.nil? } if @entry.comments.size %>
 
 			<% if @entry.comments_enabled? %>
 				<%= render :partial => 'comment_form' %>

@@ -1,3 +1,4 @@
+# encoding: utf-8
 # == Schema Information
 # Schema version: 20111213165134
 #
@@ -34,8 +35,8 @@ class Background < ActiveRecord::Base
     :use_timestamp    => false
 
   
-  ## named_scopes
-  named_scope :public, :conditions => { :is_public => true }
+  ## scopes
+  scope :public, where(:is_public => true)
 
 
   ## validations

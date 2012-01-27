@@ -1,3 +1,4 @@
+# encoding: utf-8
 # == Schema Information
 # Schema version: 20110816190509
 #
@@ -33,16 +34,14 @@ class Conversation < ActiveRecord::Base
   has_many :messages, :dependent => :destroy
 
   belongs_to :last_message, :class_name => 'Message'
-  
-  named_scope :unreplied, :conditions => 'is_replied = 0'
-  
-  named_scope :unviewed, :conditions => 'is_viewed = 0'
-  
-  named_scope :with, lambda { |user| { :conditions => ['recipient_id = ?', user.id] } }
 
-  named_scope :active, :conditions => 'is_disabled = 0'
-  
-  named_scope :disabled, :conditions => 'is_disabled = 1'
+  def self.with user
+    where(:recipient_id => user.id)
+  end
+  scope :unreplied, where(:is_replied => false)
+  scope :unviewed, where(:is_viewed => false)
+  scope :active, where(:is_disabled => false)
+  scope :disabled, where(:is_disabled => true)
 
 
   before_create do |record|

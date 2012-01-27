@@ -11,11 +11,11 @@ xml.rss :version => '2.0', 'xmlns:ya' => "http://blogs.yandex.ru/schema/rss", 'x
     xml.ttl 30
     # xml.tag!('wfw:commentRss', user_url(current_site, tlog_feed_path(:action => 'comments')))
     xml.tag!('ya:more', user_url(current_site, tlog_feed_path(:action => 'rss', :page => @entries.next_page)))
-    if current_site.userpic? || current_site.avatar
-      avatar_url = current_site.userpic? ? current_site.userpic.url(:thumb64) : current_site.avatar.public_filename
+    if current_site.userpic?
+      userpic_url = current_site.userpic.url(:thumb64)
       
       xml.image do
-        xml.url image_path(avatar_url)
+        xml.url image_path(userpic_url)
         xml.title h(current_site.url)
         xml.link user_url(current_site)
       end

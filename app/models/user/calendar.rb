@@ -1,8 +1,9 @@
+# encoding: utf-8
 class User
   ## included modules & attr_*
   ## associations
   ## plugins
-  ## named_scopes
+  ## scopes
   ## validations
   ## callbacks
   ## class methods

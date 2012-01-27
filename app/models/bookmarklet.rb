@@ -1,3 +1,4 @@
+# encoding: utf-8
 # == Schema Information
 # Schema version: 20110816190509
 #
@@ -18,6 +19,7 @@
 #  index_bookmarklets_on_user_id_and_created_at    (user_id,created_at)
 #  index_bookmarklets_on_is_public_and_created_at  (is_public,created_at)
 #
+require 'entries/entry'
 
 class Bookmarklet < ActiveRecord::Base
   ## included modules & attr_*
@@ -29,8 +31,8 @@ class Bookmarklet < ActiveRecord::Base
 
 
   ## plugins
-  ## named_scopes
-  named_scope         :public, :conditions => 'is_public = 1'
+  ## scopes
+  scope         :public, where(:is_public => true)
 
 
   ## validations

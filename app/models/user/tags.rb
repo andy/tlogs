@@ -1,3 +1,4 @@
+# encoding: utf-8
 class User
   ## included modules & attr_*
   DEFAULT_CATEGORY_OPTIONS = {:include_private => false, :max_rows => 10}.freeze
@@ -6,7 +7,7 @@ class User
 
   ## associations
   ## plugins
-  ## named_scopes
+  ## scopes
   ## validations
   ## callbacks
   ## class methods
@@ -99,6 +100,4 @@ class User
 
 
   ## private methods  
-
-
 end

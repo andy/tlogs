@@ -1,3 +1,4 @@
+# encoding: utf-8
 class User
   BAN_AC_DURATIONS = {
     'unban'   => 0,

@@ -1,3 +1,4 @@
+# encoding: utf-8
 # = Schema Information
 #
 # Table name: *entries*
@@ -24,6 +25,8 @@
 #   data_part_1 - ссылка, если нет аттачмента
 #   data_part_2 - описание
 #   data_part_3 - ссылка под фотографией
+require 'entries/entry'
+
 class ImageEntry < Entry
   validates_presence_of :data_part_1, :on => :save, :if => :no_attachment, :message => 'это обязательное поле'
   validates_format_of :data_part_1, :with => Format::HTTP_LINK, :if => :no_attachment, :message => 'ссылка должна быть на веб-сайт, т.е. начинаться с http://'

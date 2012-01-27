@@ -1,3 +1,4 @@
+# encoding: utf-8
 # == Schema Information
 # Schema version: 20110816190509
 #
@@ -36,6 +37,8 @@
 # Встроенное видео, вроде youtube
 #   data_part_1 - link / embed код
 #   data_part_2 - описание
+require 'entries/entry'
+
 class VideoEntry < Entry
   validates_presence_of :data_part_1, :message => 'это обязательное поле'
 #  validates_format_of :data_part_1, :with => Format::HTTP_LINK, :message => 'ссылка должна быть на веб-сайт, т.е. начинаться с http://'  

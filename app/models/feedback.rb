@@ -1,3 +1,4 @@
+# encoding: utf-8
 # == Schema Information
 # Schema version: 20110816190509
 #
@@ -22,9 +23,9 @@ class Feedback < ActiveRecord::Base
   belongs_to :user
   
   # отзывы, ожидающие модерации
-  named_scope :pending, :conditions => { :is_moderated => false }
-  named_scope :published, :conditions => { :is_public => true }
-  named_scope :random, :order => 'RAND()'
+  scope :pending, where(:is_moderated => false)
+  scope :published, where(:is_public => true)
+  scope :random, order('RAND()')
   
   def publish!
     self.update_attributes(:is_public => true, :is_moderated => true)

@@ -1,3 +1,4 @@
+# encoding: utf-8
 # == Schema Information
 # Schema version: 20110816190509
 #
@@ -38,6 +39,8 @@
 #   data_part_1 - адрес ссылки (обяз)
 #   data_part_2 - заголовок для ссылки
 #   data_part_3 - дополнительное описание
+require 'entries/entry'
+
 class LinkEntry < Entry
   validates_presence_of :data_part_1, :on => :save, :message => 'это обязательное поле'
   validates_format_of :data_part_1, :with => Format::LINK, :message => 'неопознанный формат ссылки'
