@@ -25,7 +25,7 @@
 	<div class='users'>
 		<% User.find([2, 1]).each do |user| %>
 			<div>
-				<%= link_to_tlog user, :link => :userpic, :empty => :blank %>
+				<%= link_to_tlog user, :link => :userpic, :blank => true %>
 				<p><%= link_to_tlog user %></p>
 			</div>
 		<% end %>
@@ -34,7 +34,7 @@
 	<div class='users'>
 		<% User.find([7]).each do |user| %>
 			<div>
-				<%= link_to_tlog user, :link => :userpic, :empty => :blank %>
+				<%= link_to_tlog user, :link => :userpic, :blank => true %>
 				<p><%= link_to_tlog user %></p>
 			</div>
 		<% end %>

@@ -1,7 +1,6 @@
 require 'tempfile'
 
 $LOAD_PATH.unshift File.join(File.expand_path(File.dirname(__FILE__)), 'lib')
-puts $LOAD_PATH
 require 'technoweenie/attachment_fu'
 
 Tempfile.class_eval do
