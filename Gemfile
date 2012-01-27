@@ -1,66 +1,38 @@
-source "http://rubygems.org"
+source 'https://rubygems.org'
 
-gem 'rails', '2.3.14'
+gem 'rails', '3.2.0'
 
-gem 'whenever', :require => false
+# Bundle edge Rails instead:
+# gem 'rails', :git => 'git://github.com/rails/rails.git'
 
-group :production do
-  gem 'newrelic_rpm'
-  gem 'hoptoad_notifier'
-  gem 'unicorn', :require => false
+gem 'sqlite3'
+
+
+# Gems used only for assets and not required
+# in production environments by default.
+group :assets do
+  gem 'sass-rails',   '~> 3.2.3'
+  gem 'coffee-rails', '~> 3.2.1'
+
+  # See https://github.com/sstephenson/execjs#readme for more supported runtimes
+  # gem 'therubyracer'
+
+  gem 'uglifier', '>= 1.0.3'
 end
 
-# databases
+gem 'jquery-rails'
 
-gem 'mysql'
+# To use ActiveModel has_secure_password
+# gem 'bcrypt-ruby', '~> 3.0.0'
 
-gem 'memcache-client', :require => 'memcache'
+# To use Jbuilder templates for JSON
+# gem 'jbuilder'
 
-gem 'hiredis', '~> 0.4.0'
-gem 'redis', '>= 2.2.0', :require => ["redis/connection/hiredis", "redis"]
+# Use unicorn as the web server
+# gem 'unicorn'
 
+# Deploy with Capistrano
+# gem 'capistrano'
 
-# extra
-
-gem 'mime-types'
-gem 'rake'
-gem 'rdoc'
-gem 'system_timer'
-gem 'will_paginate', '~> 2.3.16'
-gem 'coderay'
-gem 'ruby-openid', :require => 'openid'
-gem 'hpricot'
-gem 'russian'
-
-gem 'json'
-
-
-# search
-
-gem 'thinking-sphinx', :require => 'thinking_sphinx'
-gem 'ts-datetime-delta', '>= 1.0.0', :require => 'thinking_sphinx/deltas/datetime_delta'
-
-gem 'savon', '0.7.9', :require => false
-
-
-# image assets
-
-gem 'mini_magick'
-gem 'paperclip', '= 2.3.9'
-gem 'paperclip-meta'
-
-
-# templates
-
-gem 'therubyracer', :require => false
-gem 'sass', :require => false
-gem 'haml'
-gem 'compass', :require => false
-gem 'uglifier', :require => false
-
-gem 'resque'
-gem 'resque-lock'
-
-group :development do
-	gem 'annotate'
-end
+# To use debugger
+# gem 'ruby-debug19', :require => 'ruby-debug'

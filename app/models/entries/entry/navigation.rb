@@ -3,7 +3,7 @@ class Entry
   def page_for(user = nil, zero_if_last = true, options = {})
     is_daylog = options.delete(:is_daylog) || false
     if self.new_record?
-      zero_if_last ? 0 : self.author.entries_count_for(user).to_pages
+      zero_if_last ? 0 : (self.author.entries_count_for(user) / 15.0).ceil
     else
       conditions = "id >= #{self.id}"
       conditions += " AND user_id = #{self.user_id}"
@@ -16,8 +16,8 @@ class Entry
         end
       # conditions += " AND is_private = 0" unless (user && user.id == self.user_id)
       entry_offset = Entry.count(:conditions => conditions)
-      total_pages = self.author.entries_count_for(user).to_pages
-      entry_page = ((entry_offset / Entry::PAGE_SIZE.to_f).floor + 1).reverse_page(total_pages)
+      total_pages = (self.author.entries_count_for(user) / 15.0).ceil
+      entry_page = ((entry_offset / Entry::PAGE_SIZE.to_f).floor + 1)
       (zero_if_last && entry_page == total_pages) ? 0 : entry_page
     end
   end

@@ -1,0 +1,24 @@
+# Environments
+development:
+  adapter: mysql
+  database: tlogs_development
+  username: root
+  password:
+  encoding: UTF8
+  host: localhost
+
+test:
+  adapter: mysql
+  database: tlogs_test 
+  username: root
+  password:
+  encoding: UTF8
+  host: localhost
+
+production:
+  adapter: mysql
+  database: tlogs_development
+  username: root
+  password: 
+  encoding: UTF8
+  host: localhost

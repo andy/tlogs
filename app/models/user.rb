@@ -159,7 +159,7 @@ class User < ActiveRecord::Base
                 map(&:first).                         # keep only ids
                 reverse
 
-    User.find_all_by_id(user_ids.shuffle[0...(options[:limit] * 2)], :include => [:avatar, :tlog_settings]).select { |u| u.can_be_viewed_by?(user) }[0..options[:limit]]
+    User.find_all_by_id(user_ids.sort_by({ rand })[0...(options[:limit] * 2)], :include => [:avatar, :tlog_settings]).select { |u| u.can_be_viewed_by?(user) }[0..options[:limit]]
   end
 
   
