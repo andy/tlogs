@@ -1,6 +1,0 @@
-
-==
-
-Add to your config/environments/development.rb:
-
-  config.middleware.use Rack::AssetProxy, :asset_path => /^\/(assets|uc)\//, :asset_uri => 'http://assets0.mmm-tasty.ru'

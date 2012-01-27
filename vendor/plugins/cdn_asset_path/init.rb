@@ -1,1 +1,0 @@
-require File.join(File.dirname(__FILE__), 'lib/asset_tag_helper.rb') # if RAILS_ENV == 'production'
