@@ -4,4 +4,4 @@
 
 require File.expand_path('../config/application', __FILE__)
 
-TlogsGit::Application.load_tasks
+Tasty::Application.load_tasks

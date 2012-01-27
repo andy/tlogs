@@ -6,7 +6,7 @@ module Tlogs
       include Singleton
 
       def initialize
-        @domains = YAML.load_file(File.join(RAILS_ROOT, 'config/tlogs/domains.yml')) rescue {}
+        @domains = YAML.load_file(File.join(Rails.root, 'config/tlogs/domains.yml')) rescue {}
       end
     
       def options_for(name, request)

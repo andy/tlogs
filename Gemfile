@@ -1,12 +1,13 @@
 source 'https://rubygems.org'
 
-gem 'rails', '3.2.0'
+gem 'rails', '3.2.1'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
-gem 'sqlite3'
-
+group :development do
+	gem 'annotate'
+end
 
 # Gems used only for assets and not required
 # in production environments by default.
@@ -36,3 +37,31 @@ gem 'jquery-rails'
 
 # To use debugger
 # gem 'ruby-debug19', :require => 'ruby-debug'
+
+gem 'airbrake'
+
+gem 'acts_as_list'
+gem 'acts-as-taggable-on', '~> 2.2.2'
+
+gem 'mini_magick'
+gem 'paperclip', '~> 2.0'
+gem 'paperclip-meta'
+
+gem 'whenever', :require => false
+
+gem 'mysql2'
+
+gem 'hiredis', '~> 0.4.0'
+gem 'redis', '>= 2.2.0', :require => ["redis/connection/hiredis", "redis"]
+
+gem 'will_paginate'
+
+gem 'settingslogic'
+
+gem 'coderay'
+gem 'hpricot'
+
+gem 'thinking-sphinx'
+
+gem 'resque'
+gem 'resque-lock'

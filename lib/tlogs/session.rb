@@ -11,7 +11,7 @@ module Tlogs
     
     def initialize
       @config = DEFAULT_SESSION_OPTIONS.dup
-      @config.merge! YAML.load_file(File.join(RAILS_ROOT, 'config', 'tlogs', 'session.yml'))
+      @config.merge! YAML.load_file(File.join(Rails.root, 'config', 'tlogs', 'session.yml'))
     end
 
     def key

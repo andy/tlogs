@@ -1,3 +1,4 @@
+# encoding: utf-8
 namespace :assets do
   desc "Переклеить стили и скрипты и положить их во временную папку"
   task :glue => :environment do

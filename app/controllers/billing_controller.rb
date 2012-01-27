@@ -47,7 +47,7 @@ class BillingController < ApplicationController
     render :text => "utf=неверный запрос" and return unless request.post?
 
     unless Rails.env.development? || SmsonlineInvoice.settings['servers'].include?(request.remote_ip)
-      HoptoadNotifier.notify(
+      Airbrake.notify(
         :error_class    => 'SmsonlineInvoice',
         :error_message  => "SmsonlineInvoice: invalid remote address (#{request.remote_ip})",
         :parameters     => params
@@ -73,14 +73,14 @@ class BillingController < ApplicationController
 
         render :text => "utf=Премиум-доступ продлен до #{@invoice.user.premium_strftime}. Mmm-tasty.ru, т. 424-00-12"
       elsif @invoice.errors.on(:user)
-        HoptoadNotifier.notify(
+        Airbrake.notify(
           :error_class    => 'SmsonlineInvoice',
           :error_message  => "SmsonlineInvoice: user not found (#{params[:txt]})",
           :parameters     => params
         )
         render :text => "utf=Ошибка, пользователь не найден."
       else
-        HoptoadNotifier.notify(
+        Airbrake.notify(
           :error_class    => 'SmsonlineInvoice',
           :error_message  => "SmsonlineInvoice: other error (#{@invoice.errors.full_messages.join(', ')})",
           :parameters     => params
@@ -163,7 +163,7 @@ class BillingController < ApplicationController
 EOF
 
       if code != QiwiInvoice::SUCCESS
-        HoptoadNotifier.notify(
+        Airbrake.notify(
           :error_class    => 'QiwiInvoice',
           :error_message  => "QiwiInvoice: erronous request (code: #{code})",
           :parameters     => params

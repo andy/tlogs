@@ -1,3 +1,4 @@
+# encoding: utf-8
 module WhiteListHelper
 
   def simple_tasty_format(text)
@@ -35,7 +36,7 @@ module WhiteListHelper
     begin
       white_list_html(html, options)
     rescue Exception => ex
-      HoptoadNotifier.notify(
+      Airbrake.notify(
         :error_class    => 'WhiteListHtml Error',
         :error_message  => "WhiteListHtml: #{ex.message}",
         :backtrace      => ex.backtrace,
@@ -486,7 +487,7 @@ module WhiteListHelper
     domain = URI.parse(url).try(:host).to_s.split(".").reverse[0,2].reverse.join(".") rescue nil
     return false unless domain
     
-    flash_whitelist_file = File.join(RAILS_ROOT, 'config', 'flash_whitelist.yml')
+    flash_whitelist_file = File.join(Rails.root, 'config', 'flash_whitelist.yml')
     flash_whitelist = YAML.parse_file(flash_whitelist_file).children.map(&:value)
     flash_whitelist.is_a?(Array) && flash_whitelist.include?(domain)
   end

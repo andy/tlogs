@@ -10,13 +10,13 @@ require 'daemon'
 require 'net/pop'
 
 class MailFetcher < Daemon::Base
-  @config = YAML.load(IO.read("#{RAILS_ROOT}/config/mail_fetcher.yml"))
+  @config = YAML.load(IO.read("#{Rails.root}/config/mail_fetcher.yml"))
   unless @config[RAILS_ENV]
     puts "Error: no configuration found for '#{RAILS_ENV}' environment in config/mail_fetcher.yml"
     exit
   end
   @config = @config[RAILS_ENV].to_options
-  @logger = Logger.new("#{RAILS_ROOT}/log/#{RAILS_ENV}-fetcher.log")
+  @logger = Logger.new("#{Rails.root}/log/#{RAILS_ENV}-fetcher.log")
 
   def self.start
     puts "Starting Mail Fetcher Daemon (environment: #{RAILS_ENV})"

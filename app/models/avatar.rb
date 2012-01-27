@@ -41,7 +41,7 @@ class Avatar < ActiveRecord::Base
   ## public methods
   def full_filename(thumbnail = nil)
     file_system_path = (thumbnail ? thumbnail_class : self).attachment_options[:file_system_path]
-    File.join(RAILS_ROOT, file_system_path, tasty_attachment_path(filename), "#{id}_#{user_id}_" + thumbnail_name_for(thumbnail))
+    File.join(Rails.root, file_system_path, tasty_attachment_path(filename), "#{id}_#{user_id}_" + thumbnail_name_for(thumbnail))
   end
   
   def tasty_attachment_path(filename)

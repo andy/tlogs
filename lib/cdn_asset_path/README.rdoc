@@ -1,0 +1,20 @@
+= Content Delivery Network Assets Paths
+
+== 1. Install rack middleware
+
+Put provided rack middleware into your RAILS_ROOT/config.ru. For example:
+
+$ cat config.ru
+#!/usr/bin/env ruby
+require "config/environment"
+
+use Rails::Rack::LogTailer
+use Rack::AssetPath
+use Rails::Rack::Static
+run ActionController::Dispatcher.new
+$
+
+To work properly, Rails::Rack::Static must be included *after* Rack::AssetPath
+
+
+== 2.
