@@ -1,0 +1,2 @@
+module Tlog::IndexHelper
+end

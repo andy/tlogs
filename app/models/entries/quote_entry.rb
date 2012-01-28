@@ -39,7 +39,6 @@
 #   data_part_1 - текст цитаты (обяз)
 #   data_part_2 - автор / источник
 #
-require 'entries/entry'
 
 class QuoteEntry < Entry
   validates_presence_of :data_part_1, :on => :save

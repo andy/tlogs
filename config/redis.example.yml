@@ -1,8 +1,0 @@
-# Redis server-specific options, passed as hash to Redis.new
----
-host: 127.0.0.1
-port: 6379
-password:
-db: 0
-# Enable thread-safe, mandatory for production environments
-thread_safe: true  

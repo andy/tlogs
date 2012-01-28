@@ -25,7 +25,6 @@
 #   data_part_1 - ссылка, если нет аттачмента
 #   data_part_2 - описание
 #   data_part_3 - ссылка под фотографией
-require 'entries/entry'
 
 class ImageEntry < Entry
   validates_presence_of :data_part_1, :on => :save, :if => :no_attachment, :message => 'это обязательное поле'

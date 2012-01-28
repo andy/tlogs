@@ -37,7 +37,6 @@
 # Встроенное видео, вроде youtube
 #   data_part_1 - link / embed код
 #   data_part_2 - описание
-require 'entries/entry'
 
 class VideoEntry < Entry
   validates_presence_of :data_part_1, :message => 'это обязательное поле'

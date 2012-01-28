@@ -36,7 +36,7 @@ class Background < ActiveRecord::Base
 
   
   ## scopes
-  scope :public, where(:is_public => true)
+  # scope :public, where(:is_public => true)
 
 
   ## validations

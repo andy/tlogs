@@ -35,7 +35,6 @@
 #
 
 # Песня
-require 'entries/entry'
 
 class SongEntry < Entry
   validates_presence_of :data_part_1, :if => :no_attachment, :message => 'это обязательное поле'

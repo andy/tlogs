@@ -38,7 +38,7 @@
 # Анонимная текстовая запись
 #   data_part_1 - текст
 #   data_part_2 - заголовок
-require 'entries/entry'
+
 class AnonymousEntry < Entry
   ANONYMOUS_COMMENTS_DEPLOY_TIME = Time.parse("Tue Jul 07 10:30:00 +0400 2009")
   

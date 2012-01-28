@@ -1,0 +1,54 @@
+defaults: &defaults
+  domains:
+    #
+    # Matching URIS will be routed into our Main website application
+    # which holds main and personal feeds, authentication and rest of 
+    # the our global stuff
+    #
+    # All non-matching URIs (including mobile / sub categories) will be
+    # redirected to the first entry here.
+    #
+    # If site is accessed with www prefix, be sure to include that too
+    #
+    main:
+      - tasty.dev
+    #
+    # Matching address will be displayed as mobile web-site
+    # NOTE: this is currently disabled
+    #
+    mobile:
+      - m.tasty.dev
+    #
+    # API domains that will serve and process API request
+    #
+    api:
+      - api.tasty.dev
+    #
+    #
+    # This specifies list of automatic url-to-tlog subdomains, e.g.
+    #   andy.<domains.sub>
+    #   genue.<domains.sub>
+    #
+    sub:
+      - tasty.dev
+  
+  #
+  # Redis configuration, this is passed directly on to Redis.new
+  # see more options at https://github.com/ezmobius/redis-rb
+  #
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    password:
+    db: 0
+    logger: <%= Rails.logger %>
+    thread_safe: true
+
+development:
+  <<: *defaults
+
+test:
+  <<: *defaults
+
+production:
+  <<: *defaults

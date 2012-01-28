@@ -33,7 +33,6 @@
 #  index_entries_on_uid_pvt_cat             (user_id,is_private,created_at)
 #  index_entries_on_is_mainpageable_and_id  (is_mainpageable,id)
 #
-require 'entries/entry'
 
 class CodeEntry < Entry
   validates_presence_of :data_part_1, :message => 'это обязательное поле'

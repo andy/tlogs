@@ -39,7 +39,6 @@
 #   data_part_1 - адрес ссылки (обяз)
 #   data_part_2 - заголовок для ссылки
 #   data_part_3 - дополнительное описание
-require 'entries/entry'
 
 class LinkEntry < Entry
   validates_presence_of :data_part_1, :on => :save, :message => 'это обязательное поле'

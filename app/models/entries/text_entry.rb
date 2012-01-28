@@ -38,7 +38,6 @@
 # Текстовая запись
 #   data_part_1 - текст
 #   data_part_2 - заголовок
-require 'entries/entry'
 
 class TextEntry < Entry
   validates_presence_of :data_part_1, :on => :save

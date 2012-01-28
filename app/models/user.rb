@@ -65,17 +65,17 @@ class User < ActiveRecord::Base
   
 
   ## plugins
-  concerned_with :authentication,
-                  :relationships,
-                  :settings,
-                  :tags,
-                  :confirmation,
-                  :entries,
-                  :permissions,
-                  :calendar,
-                  :entries_queue,
-                  :ban
-  
+  include UserExtensions::Authentication
+  include UserExtensions::Relationships
+  include UserExtensions::Settings
+  include UserExtensions::Tags
+  include UserExtensions::Confirmation
+  include UserExtensions::Entries
+  include UserExtensions::Permissions
+  include UserExtensions::Calendar
+  include UserExtensions::EntriesQueue
+  include UserExtensions::Ban
+
   define_index do
     indexes :url
     indexes :username
