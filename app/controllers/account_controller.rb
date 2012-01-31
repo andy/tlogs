@@ -35,7 +35,7 @@ class AccountController < ApplicationController
             :expires => 1.year.from_now,
             :domain => current_service.cookie_domain
           }
-        login_user @user, :remember => @user.email
+        login_user @user, { :remember => @user.email, :redirect_to => service_path(params[:ref]) }
       end
     else
       @user = User.new :email => cookies[:l]
