@@ -193,7 +193,7 @@ class ApplicationController < ActionController::Base
       if request.get?
         session[:r] = "#{request.protocol}#{request.host_with_port}#{request.request_uri}"
       end
-      redirect_to service_url(login_path)
+      redirect_to service_url(login_path+"?ref=#{URI.escape(request.request_uri, Regexp.new("[^#{URI::PATTERN::UNRESERVED}]"))}")
       false
     end
     
