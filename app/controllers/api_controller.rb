@@ -1,8 +1,6 @@
-require 'md5'
-
 class ApiController < ApplicationController
   # before_filter :require_api_permissions
-  before_filter :require_current_user, :require_sm_auth_code, :only => 'smauth'
+  before_filter :require_current_user, :require_sm_auth_code, :only => [:smauth]
   
   rescue_from ActiveRecord::RecordNotFound, :with => :api_error_not_found
 
@@ -21,7 +19,7 @@ class ApiController < ApplicationController
     # http://subscribeme.ru/register
     url  = params[:back_url]
     url += '?auth=1&code='+Digest::MD5.hexdigest(sm_auth_sig(params[:code], current_user.url))
-    url += random_str(10)
+    url += SecureRandom.hex(5)
     url += '&name='+current_user.url
     url += '&id='+current_user.id.to_s
 
@@ -60,10 +58,6 @@ class ApiController < ApplicationController
       out_str
     end
 
-    def random_str(length)
-      rand(36**length).to_s(36)
-    end
-    
     def api_error(code, message = 'Internal API error')
       render :json => { :status => :error, :code => code, :message => message }, :status => code
     end
