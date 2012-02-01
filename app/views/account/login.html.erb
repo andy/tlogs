@@ -5,9 +5,7 @@
 
 		<%= render :partial => 'login_and_signup_form', :locals => { :f => f } %>
 
-		<% if params[:ref] %>
-		<input type="hidden" name="ref" value="<%= params[:ref] %>" />
-		<% end %>
+		<%= hidden_field_tag 'ref', params[:ref] if params[:ref] %>
 
 		<input type="submit" value="Войти" class='button' />
 		<div class='options_togo'>
