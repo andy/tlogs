@@ -36,7 +36,7 @@
         = menu_item "Моё#{"<sup>+#{current_user.unviewed_conversations_count}" unless current_user.unviewed_conversations_count.zero?}", :my, %w(main/my main/last_personalized conversations/index conversations/show conversations/new conversations/search) if current_user
         = menu_item 'Прямой эфир', :live
         =# menu_item "#{image_tag 'specials/newyear/fa_ico.gif', :alt => 'Форэверэлон', :style => 'position: relative; top: 3px;'}+#{image_tag 'specials/newyear/hat_ico.gif', :alt => 'Шапка', :style => 'position: relative; top: 4px;'} = Forever Alone чат", 'http://www.mmm-tasty.ru/specials/newyear'
-        - if Rails.env.development? || (Time.parse("2012-01-16 06:00:00 MSD") < Time.now && Time.parse("2012-02-06 06:00:00 MSD") > Time.now)
+        - if Rails.env.development? || (Time.parse("2012-01-16 06:00:00 MSD") < Time.now && Time.parse("2012-02-03 06:00:00 MSD") > Time.now)
           = menu_item "#{image_tag 'specials/surfingbird/put_a_bird_on_it.png', :size => '29x25', :alt => 'Surfingbird', :style => 'position: relative; top: 7px; margin: -7px 0 0 0;'} Surfingbird", 'http://www.mmm-tasty.ru/specials/surfingbird'
           :javascript
             jQuery(document).ready(function() {
