@@ -2033,7 +2033,6 @@ div.main_page {
 }
 
 .text {
-	font-family:/*Trebuchet MS, Times New Roman!important;*/
 	text-align:left;
 	padding:0 40px;
 }
@@ -2045,7 +2044,7 @@ div.main_page {
 }
 
 .main_about_quotes, .main_about_quotes span, .main_about_quotes div {
-	font-family:Trebuche MS, Arial, serif;
+	font-family:Trebuchet MS, Arial, serif;
 	font-size:0.94em!important;
 	letter-spacing:0!important;
 	font-weight:normal!important;
