@@ -257,7 +257,7 @@ class ApplicationController < ActionController::Base
     
     def require_confirmed_current_site
       if !current_site.is_confirmed?          
-        render_tasty_404("Этот имя занято, но пользователь еще не подтвердил свою регистрацию.<br/>Загляните, пожалуйста, позже.<br/><br/><a href='#{service_url}' rel='follow'>&#x2190; вернуться на главную</a>")
+        render_tasty_404("Это имя занято, но пользователь еще не подтвердил свою регистрацию.<br/>Загляните, пожалуйста, позже.<br/><br/><a href='#{service_url}' rel='follow'>&#x2190; вернуться на главную</a>")
         return false
       end
       

@@ -239,7 +239,7 @@ class TlogController < ApplicationController
   
     # protect empty or private tlogs with no public entries from being visited
     def taken_but_empty
-      render_tasty_404("Этот имя занято, но пользователь еще не сделал ни одной записи.<br/>Загляните, пожалуйста, позже.<br/><br/><a href='#{current_service.url}'>&#x2190; вернуться на главную</a>") and return false if current_site.entries_count_for(current_user).zero? && !is_owner?
+      render_tasty_404("Это имя занято, но пользователь еще не сделал ни одной записи.<br/>Загляните, пожалуйста, позже.<br/><br/><a href='#{current_service.url}'>&#x2190; вернуться на главную</a>") and return false if current_site.entries_count_for(current_user).zero? && !is_owner?
       
       true      
     end
