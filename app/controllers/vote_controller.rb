@@ -1,5 +1,5 @@
 class VoteController < ApplicationController
-  before_filter :require_current_user, :require_voteable_entry_id
+  before_filter :require_current_user, :require_confirmed_current_user, :require_voteable_entry_id
   
   protect_from_forgery
 

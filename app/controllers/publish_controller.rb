@@ -1,5 +1,5 @@
 class PublishController < ApplicationController
-  before_filter :require_current_user, :require_owner, :filter_entry
+  before_filter :require_current_user, :require_confirmed_current_user, :require_owner, :filter_entry
   
   # protect_from_forgery :except => [:index]
 

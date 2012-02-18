@@ -1,5 +1,5 @@
 class CommentsController < ApplicationController
-  before_filter :require_current_site, :find_entry
+  before_filter :require_current_site, :require_confirmed_current_user, :find_entry
   
   before_filter :check_if_can_be_viewed
 
@@ -26,11 +26,6 @@ class CommentsController < ApplicationController
   end
 
   # POST /entry/:entry_id/comments
-  # Есть три типа пользователей которые могут оставлять комментарии:
-  #  1- анонимные
-  #  2- зарегистрированные анонимно, но для которых выставляется current_user (ограничения такие же как у 1.)
-  #  3- зарегистрированные (индивидуальные ограничения)
-  # у каждого из них имеются свои ограничения
   def create
     render :nothing => true and return unless request.post?
     
