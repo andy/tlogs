@@ -16,7 +16,7 @@
 
 %body.main_page
   .logo
-    = link_to_if((params[:controller] != 'main' || params[:action] != 'index'), image_tag (current_service.logo(logo_is_gray ? nil : :white), :alt => current_service.name, :class => 'logo_img'), service_url, :class => 'logo_link')
+    = link_to_if((params[:controller] != 'main' || params[:action] != 'index'), image_tag(current_service.logo(logo_is_gray ? nil : :white), :alt => current_service.name, :class => 'logo_img'), service_url, :class => 'logo_link')
 
   .register_enter
     %div{ :class => classes('top_hello', ['gray', logo_is_gray]) }
