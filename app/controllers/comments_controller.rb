@@ -1,7 +1,8 @@
 class CommentsController < ApplicationController
   before_filter :require_current_site, :require_confirmed_current_user, :find_entry
   
-  before_filter :check_if_can_be_viewed
+  before_filter :check_if_entry_can_be_viewed
+
 
   def preview
     render :nothing => true and return unless request.post?
@@ -96,6 +97,10 @@ class CommentsController < ApplicationController
     end
     
     def check_if_can_be_viewed
-      render(:text => 'sorry, you cant post comments here') and return false unless current_site.can_be_viewed_by?(current_user)
+      render(:text => 'sorry, you cant post comments here', :status => 403) and return false unless current_site.can_be_viewed_by?(current_user)
+    end
+    
+    def check_if_entry_can_be_viewed
+      render(:text => 'sorry, you cant post comments here', :status => 403) and return false unless @entry.can_be_viewed_by?(current_user)
     end
 end
