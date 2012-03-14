@@ -2,7 +2,7 @@
   %span Размещение рекламы
 
 .users_nav
-  = link_to 'общая информация', service_url(main_path(:action => 'adv')), :class => (params[:action] == 'adv') ? 'highlight' : nil
+  = link_to 'реклама на сайте', service_url(main_path(:action => 'adv')), :class => (params[:action] == 'adv') ? 'highlight' : nil
   %br
   = link_to 'статистика', service_url(main_path(:action => 'stats')), :class => (params[:action] == 'stats') ? 'highlight' : nil
 %br
