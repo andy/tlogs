@@ -8,7 +8,7 @@ class TastyradioController < ApplicationController
   layout 'main'
 
 
-  def index    
+  def index
     render :layout => 'tastyradio'
   end
   
