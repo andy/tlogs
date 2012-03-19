@@ -8,6 +8,7 @@ require 'uri'
 require 'json'
 
 DISPOSABLE_DOMAINS = %w(
+  2ch.so
   shitmail.me
   mailforspam.com
   mailinator.com
