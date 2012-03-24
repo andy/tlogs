@@ -9,16 +9,20 @@ class TastyradioController < ApplicationController
 
 
   def index
-    render :layout => 'tastyradio'
+    render :status => 404, :text => 'not found'
+
+    # render :layout => 'tastyradio'
   end
   
   def data
-    @data = Rails.cache.fetch("tr:data", :expires_in => 5.seconds) { TastyradioData.fetch }.dup
-    
-    @air = RadioSchedule.onair.first
-    @data[:song] = @air.body if @air && @air.onair?
-    
-    render :json => @data
+    render :json => false, :status => 404
+
+    # @data = Rails.cache.fetch("tr:data", :expires_in => 5.seconds) { TastyradioData.fetch }.dup
+    # 
+    # @air = RadioSchedule.onair.first
+    # @data[:song] = @air.body if @air && @air.onair?
+    # 
+    # render :json => @data
   end
   
   def all
