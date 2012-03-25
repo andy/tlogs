@@ -8,6 +8,7 @@ require 'uri'
 require 'json'
 
 DISPOSABLE_DOMAINS = %w(
+  maillses.allowed.org
   mails.twilightparadox.com
   amail.shop.tm
   tradermail.info
