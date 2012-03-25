@@ -74,7 +74,9 @@ class Entry
       'radikal.ru',
       'apikabu.ru',
       '9gag.com',
-      'futubra.com'
+      'futubra.com',
+      'caricatura.ru',
+      '77.120.199.195'
       ]
     
     bads.find { |bad| contents.include?(bad) } ? true : false    
