@@ -8,6 +8,7 @@ require 'uri'
 require 'json'
 
 DISPOSABLE_DOMAINS = %w(
+  tradermail.info
   2ch.so
   shitmail.me
   mailforspam.com
