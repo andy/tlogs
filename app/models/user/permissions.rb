@@ -133,25 +133,31 @@ class User
         # анонимки можно создавать только раз в неделю
         # logger.debug "self = #{self.inspect}"
         # logger.debug "klass = #{klass.inspect}"
+        
+        if self.ban_ac_till && self.ban_ac_till > Time.now
+          reason = Reason.new "Персональный запрет"
+          reason.expires_at = self.ban_ac_till
+        else
 
-        entry = Entry.anonymous.for_user(self).last
-        if entry
-          if entry.is_disabled?
-            if entry.created_at > 2.month.ago
-              reason = Reason.new "Ваша последняя анонимка была удалена меньше двух месяцев назад."
-              # reason.premium    = "Премиум пользователи банятся <b>на две недели</b>, вместо двух месяцев." unless self.is_premium?
-              reason.expires_at = entry.created_at + 2.month
+          entry = Entry.anonymous.for_user(self).last
+          if entry
+            if entry.is_disabled?
+              if entry.created_at > 2.month.ago
+                reason = Reason.new "Ваша последняя анонимка была удалена меньше двух месяцев назад."
+                # reason.premium    = "Премиум пользователи банятся <b>на две недели</b>, вместо двух месяцев." unless self.is_premium?
+                reason.expires_at = entry.created_at + 2.month
+              end
+            elsif entry.created_at > (self.is_premium? ? 2.weeks.ago : 1.month.ago)
+              reason = Reason.new "Анонимки можно писать не чаще одного раза в #{self.is_premium? ? "месяц" : "две недели"}."
+              reason.premium    = "Премиум пользователи могут писать анонимки <b>раз в две недели</b>." unless self.is_premium?
+              reason.expires_at = entry.created_at + (self.is_premium? ? 2.week : 1.month)
             end
-          elsif entry.created_at > (self.is_premium? ? 2.weeks.ago : 1.month.ago)
-            reason = Reason.new "Анонимки можно писать не чаще одного раза в #{self.is_premium? ? "месяц" : "две недели"}."
-            reason.premium    = "Премиум пользователи могут писать анонимки <b>раз в две недели</b>." unless self.is_premium?
-            reason.expires_at = entry.created_at + (self.is_premium? ? 2.week : 1.month)
+          # и только спустя месяц после регистрации
+          elsif self.created_at > 6.months.ago && !self.is_premium?
+            reason = Reason.new "Анонимки можно писать только спустя шесть месяцев после регистрации."
+            reason.premium    = "Премиум пользователи могут писать анонимки <b>сразу после регистрации</b>."
+            reason.expires_at = self.created_at + 6.months
           end
-        # и только спустя месяц после регистрации
-        elsif self.created_at > 6.months.ago && !self.is_premium?
-          reason = Reason.new "Анонимки можно писать только спустя шесть месяцев после регистрации."
-          reason.premium    = "Премиум пользователи могут писать анонимки <b>сразу после регистрации</b>."
-          reason.expires_at = self.created_at + 6.months
         end
     end
     
