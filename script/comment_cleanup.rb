@@ -1,7 +1,7 @@
 #!/usr/bin/env script/runner
 
-user_id = 120372
-c = Comment.find_by_user_id user_id
+user_id = 38591
+c = Comment.find_by_user_id user_id, :order => 'id desc'
 if c.nil?
   puts "+ nothing"
   exit
