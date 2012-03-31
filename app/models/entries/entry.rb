@@ -221,6 +221,12 @@ class Entry < ActiveRecord::Base
     self.author.can_be_viewed_by?(user)
   end
   
+  def can_be_commented_by?(user)
+    return false if $redis.sismember(['comments', 'blacklist'].join(':'), user.id)
+    
+    true
+  end
+  
   # русское написание
   def to_russian(key=:who)
     entry_russian_dict[key]
