@@ -222,9 +222,15 @@ class Entry < ActiveRecord::Base
   end
   
   def can_be_commented_by?(user)
-    return false if $redis.sismember(['comments', 'blacklist'].join(':'), user.id)
+    bl_key = ['comments', 'blacklist'].join(':')
     
-    true
+    # allow comments unless blacklisted
+    return true unless $redis.sismember(bl_key, user.id)
+
+    # allow comments if blacklisted person tries to comment on another blacklisted guy
+    return true if $redis.sismember(bl_key, self.author.id)
+    
+    false      
   end
   
   # русское написание
