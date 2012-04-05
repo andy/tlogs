@@ -160,8 +160,8 @@ class AccountController < ApplicationController
     
     @just_allow = true
     
-    # if Rails.env.development? || @allow_by_remote_addr || @allow_by_date || @allow_by_code || @just_allow
-    if false
+    if Rails.env.development? || @allow_by_remote_addr || @allow_by_date || @allow_by_code || @just_allow
+    # if false
       if request.post?
         email_or_openid = params[:user][:email]
         if email_or_openid.is_openid?
