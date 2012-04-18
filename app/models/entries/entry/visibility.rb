@@ -76,7 +76,8 @@ class Entry
       '9gag.com',
       'futubra.com',
       'caricatura.ru',
-      '77.120.199.195'
+      '77.120.199.195',
+      'mainnika loves afeena'
       ]
     
     bads.find { |bad| contents.include?(bad) } ? true : false    
