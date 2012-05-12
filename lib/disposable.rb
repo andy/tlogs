@@ -13,6 +13,8 @@ DISPOSABLE_DOMAINS = %w(
   spamfree24.org
   tempemail.net
   yopmail.com
+  yopmail.net
+  yopmail.fr
   sharklasers.com
   guerrillamailblock.com
   guerrillamail.com
@@ -21,6 +23,9 @@ DISPOSABLE_DOMAINS = %w(
   guerrillamail.org
   guerrillamail.de
   rtrtr.com
+  fr.nf
+  1s.fr
+  zik.dj
   10minutemail.com
   rppkn.com
   mytempemail.com
@@ -191,6 +196,23 @@ DISPOSABLE_DOMAINS = %w(
   epac.to
   dynamic-dns.net
   temporamail.com
+)
+
+WHITELIST_DOMAINS = %w(
+  mail.ru
+  inbox.ru
+  bk.ru
+  list.ru
+  yandex.ru
+  ya.ru
+  gmail.com
+  qip.ru
+  pochta.ru
+  fromru.com
+  front.ru
+  hotmail.com
+  yahoo.com
+  krovatka.su
 )
 
 module Disposable
