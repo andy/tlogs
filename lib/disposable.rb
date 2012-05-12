@@ -15,6 +15,17 @@ DISPOSABLE_DOMAINS = %w(
   yopmail.com
   yopmail.net
   yopmail.fr
+  cool.fr.nf
+  jetable.fr.nf
+  nospam.ze.tc
+  nomail.xl.cx
+  mega.zik.dj
+  speed.1s.fr
+  courriel.fr.nf
+  moncourrier.fr.nf
+  monemail.fr.nf
+  monmail.fr.nf
+  mail.mezimages.net
   sharklasers.com
   guerrillamailblock.com
   guerrillamail.com
@@ -23,9 +34,6 @@ DISPOSABLE_DOMAINS = %w(
   guerrillamail.org
   guerrillamail.de
   rtrtr.com
-  fr.nf
-  1s.fr
-  zik.dj
   10minutemail.com
   rppkn.com
   mytempemail.com
