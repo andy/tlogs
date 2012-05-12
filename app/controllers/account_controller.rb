@@ -158,7 +158,7 @@ class AccountController < ApplicationController
     # check wether a secret signup code is known
     @allow_by_code = params[:code] && params[:code] == 'welcome'
     
-    @just_allow = true
+    @just_allow = false
     
     if Rails.env.development? || @allow_by_remote_addr || @allow_by_date || @allow_by_code || @just_allow
     # if false
