@@ -22,7 +22,11 @@ DISPOSABLE_DOMAINS = %w(
   guerrillamail.de
   rtrtr.com
   10minutemail.com
-  rppkn.com  
+  rppkn.com
+  mytempemail.com
+  notsharingmy.info
+  tempemail.co.za
+  12minutemail.com  
   mailcatch.com
   maillses.allowed.org
   mails.twilightparadox.com
