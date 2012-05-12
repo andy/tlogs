@@ -8,6 +8,21 @@ require 'uri'
 require 'json'
 
 DISPOSABLE_DOMAINS = %w(
+  mailspeed.ru
+  jetable.org
+  spamfree24.org
+  tempemail.net
+  yopmail.com
+  sharklasers.com
+  guerrillamailblock.com
+  guerrillamail.com
+  guerrillamail.net
+  guerrillamail.biz
+  guerrillamail.org
+  guerrillamail.de
+  rtrtr.com
+  10minutemail.com  
+  mailcatch.com
   maillses.allowed.org
   mails.twilightparadox.com
   amail.shop.tm

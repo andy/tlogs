@@ -53,6 +53,19 @@ class EntryRating < ActiveRecord::Base
   after_update  :requeue
   
   protected
+    def rebuild
+      # console version
+      # r.ups = r.entry.votes.positive.reject { |v| v.user.nil? || v.user.is_disabled? }.length
+      # r.downs = r.entry.votes.negative.reject { |v| v.user.nil? || v.user.is_disabled? }.length
+      # r.value = r.entry.votes.reject { |v| v.user.nil? || v.user.is_disabled? }.sum(&:value)
+      # r.save
+      self.ups    = self.entry.votes.positive.reject { |v| v.user.nil? || v.user.is_disabled? }.length
+      self.downs  = self.entry.votes.negative.reject { |v| v.user.nil? || v.user.is_disabled? }.length
+      self.value  = self.entry.votes.reject { |v| v.user.nil? || v.user.is_disabled? }.sum(&:value)
+
+      self.save
+    end
+  
     def update_filter_value
       if self.entry.is_mainpageable?
         self.is_great       = self.value >= 15
