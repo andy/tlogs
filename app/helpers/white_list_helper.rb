@@ -236,8 +236,9 @@ module WhiteListHelper
         else
           embed_params['allowscriptaccess'] = 'never' 
           embed_params['allowfullscreen'] = 'false'
-          embed_params['wmode'] = 'opaque'
         end
+        
+        embed_params['wmode'] ||= 'opaque'
 
         # scale height?
         scale_height = true
