@@ -4,7 +4,7 @@
 		<div>теги:</div>
 		<% entry.tags.each_with_index do |tag, index| %>
 			<span class='emd_tag' id='<%= "t#{tag.id}e#{entry.id}" %>'>
-				<%= link_to tag.name, user_url(current_site, tag_view_path(:tags => tag.name)), :id => "t#{tag.id}e#{entry.id}_a" %>
+				<%= link_to h(tag.name), user_url(current_site, tag_view_path(:tags => tag.name)), :id => "t#{tag.id}e#{entry.id}_a" %>
 				<% if current_user && current_site && current_user.id == current_site.id %>
 					<%= link_to_remote image_tag('delete.gif', :alt => '-', :title => 'удалить этот тег из этой записи', :class => 'emd_delete_tag'), :url => user_url(current_site, entry_tag_path(entry, tag)), :method => :delete %>
 				<% end %>
