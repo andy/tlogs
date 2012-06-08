@@ -31,6 +31,12 @@ class User
     self.is_confirmed? && !self.email.blank? && !self.is_disabled?
   end
   
+  def can_create_comments?
+    bl_key = ['comments', 'blacklist'].join(':')
+
+    $redis.sismember(bl_key, self.id) ? false : true
+  end
+  
   # checks wether current user has user blacklisted
   def is_blacklisted_for?(user)
     return false if user && user.id == self.id
