@@ -76,7 +76,7 @@ class MainController < ApplicationController
     
     # выставляем значения по-умолчанию
     kind = (current_user && current_user.settings[:last_kind]) || 'any' if kind == 'default'
-    rating = (current_user && current_user.settings[:last_rating]) || 'good' if rating == 'default'
+    rating = (current_user && current_user.settings[:last_rating]) || 'great' if rating == 'default'
   
     kind = 'any' unless Entry::KINDS.include?(kind.to_sym)
     rating = 'good' unless EntryRating::RATINGS.include?(rating.to_sym)

@@ -34,8 +34,8 @@ class EntryRating < ActiveRecord::Base
   DAY_LIMIT = 2000.0
   
   RATINGS = {
-    :great => { :select => 'Прекрасное (+15 и круче)', :header => 'Самое прекрасное', :filter => 'entry_ratings.is_great = 1', :order => 1 },
-    :good => { :select => 'Интересное (+5 и выше)', :header => 'Интересное', :filter => 'entry_ratings.is_good = 1', :order => 2 },
+    :great => { :select => 'Прекрасное (+35 и круче)', :header => 'Самое прекрасное', :filter => 'entry_ratings.is_great = 1', :order => 1 },
+    :good => { :select => 'Интересное (+15 и выше)', :header => 'Интересное', :filter => 'entry_ratings.is_good = 1', :order => 2 },
     :everything => { :select => 'Всё подряд (-5 и больше)', :header => 'Всё подряд', :filter => 'entry_ratings.is_everything = 1', :order => 3 }
   }
   RATINGS_FOR_SELECT = RATINGS.sort_by { |obj| obj[1][:order] }.map { |k,v| [v[:select], k.to_s] }
@@ -68,8 +68,8 @@ class EntryRating < ActiveRecord::Base
   
     def update_filter_value
       if self.entry.is_mainpageable?
-        self.is_great       = self.value >= 15
-        self.is_good        = self.value >= 5
+        self.is_great       = self.value >= 35
+        self.is_good        = self.value >= 15
         self.is_everything  = self.value >= -5
       else
         self.is_great = self.is_good = self.is_everything = false
