@@ -147,50 +147,36 @@ class AccountController < ApplicationController
 
   # регистрация, для новичков
   def signup
-    # look up remote address
-    @ipinfo = Ipgeobase.lookup(request.remote_ip)
-    @allow_by_remote_addr = false
-    # @allow_by_remote_addr = true if @ipinfo && %w(Пермь пермь Тверь тверь).include?(@ipinfo[:city])
+    @invitation = Invitation.revokable.find_by_code params[:code]
     
-    # check wether date allows signups
-    @allow_by_date = false # ([6,0].include?(Date.today.wday) && [22, 23, 24].include?(Time.now.hour)) || ([1,0].include?(Date.today.wday) && [0, 1, 2, 3, 4].include?(Time.now.hour))
+    render :action => 'signup_disabled' and return unless @invitation
     
-    # check wether a secret signup code is known
-    @allow_by_code = params[:code] && params[:code] == 'welcome'
+    if request.post?
+      @user = User.new :email => @invitation.email, :password => params[:user][:password], :url => params[:user][:url], :openid => nil, :eula => params[:user][:eula]
     
-    @just_allow = false
-    
-    if Rails.env.development? || @allow_by_remote_addr || @allow_by_date || @allow_by_code || @just_allow
-    # if false
-      if request.post?
-        email_or_openid = params[:user][:email]
-        if email_or_openid.is_openid?
-          # запоминаем сайт который он выбрал и подтверждаем openid
-          session[:user_url] = params[:user][:url]
-          login_with_openid email_or_openid
-        else
-          @user = User.new :email => email_or_openid, :password => params[:user][:password], :url => params[:user][:url], :openid => nil, :eula => params[:user][:eula]
-        
-          # проверяем на левые емейл адреса
-          @user.errors.add(:email, 'извините, но выбранный вами почтовый сервис находится в черном списке') if @user.email.any? && Disposable::is_disposable_email?(@user.email)
-    
-          @user.settings = {}
-          @user.is_confirmed = false
-          @user.update_confirmation!(@user.email)
-          @user.save if @user.errors.empty?
-          if @user.errors.empty?
-            Emailer.deliver_signup(current_service, @user)
-            login_user @user, :remember => @user.email, :redirect_to => service_url(confirm_path(:action => :required))
-          else
-            flash[:bad] = 'При регистрации произошли какие-то ошибки'
-          end
-        end
+      # проверяем на левые емейл адреса
+      @user.errors.add(:email, 'извините, но выбранный вами почтовый сервис находится в черном списке') if @user.email.any? && Disposable::is_disposable_email?(@user.email)
+
+      @user.settings = {}
+      @user.is_confirmed = true
+      # @user.update_confirmation!(@user.email)
+      @user.save if @user.errors.empty?
+      if @user.errors.empty?
+        Emailer.deliver_signup(current_service, @user)
+        @invitation.update_attribute(:invitee_id, @user.id)
+
+        cookies[:t] = {
+            :value => [@user.id, @user.signature].pack('LZ*').to_a.pack('m').chop,
+            :expires => 1.year.from_now,
+            :domain => current_service.cookie_domain
+          }
+
+        login_user @user, :remember => @user.email, :redirect_to => user_url(@user)
       else
-        @user = User.new
-        @user.email = params[:openid] if params[:openid]
+        flash[:bad] = 'При регистрации произошли какие-то ошибки'
       end
     else
-      render :action => 'signup_disabled'
+      @user = User.new :email => @invitation.email
     end
   end  
   

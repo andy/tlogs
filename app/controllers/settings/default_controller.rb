@@ -25,6 +25,64 @@ class Settings::DefaultController < ApplicationController
       end
     end
   end
+  
+  def invitations
+    if request.post? && params[:invitation] && params[:invitation][:email]
+      
+      if current_user.invitations_left.nonzero?
+        User.transaction do
+          @invitation = current_user.invitations.build :email => params[:invitation][:email], :code => SecureRandom.hex(10)
+          if @invitation.valid?
+            @invitation.save && current_user.decrement!(:invitations_left)
+
+            Emailer.deliver_invitation(current_service, current_user, @invitation)
+            flash[:good] = 'Прекрасно, мы отправили приглашение. Кажется, нас станет еще больше.'
+            
+            redirect_to settings_path(:action => :invitations)
+          else
+            flash[:bad] = 'Что-то пошло не так'
+          end          
+        end
+      else
+        flash[:bad] = 'К сожалению, у вас закончились приглашения'
+        
+        redirect_to settings_path(:action => :invitations)
+      end
+    end
+
+    @invitation ||= current_user.invitations.build
+    @invitations = current_user.invitations.reload
+  end
+  
+  def revoke_invitation
+    User.transaction do
+      @invitation = current_user.invitations.find_by_id(params[:id])
+    
+      if @invitation.invitee_id.nil?
+        @invitation.destroy
+      
+        current_user.increment!(:invitations_left)
+      end
+    end
+    
+    render :update do |page|
+      page.visual_effect :highlight, dom_id(@invitation), :duration => 0.5
+      page.visual_effect :fade, dom_id(@invitation), :duration => 0.5
+      
+      page.show 'invitations_send_form'
+      page.hide 'invitations_required'
+      
+      page.delay(0.6) do
+        page.remove dom_id(@invitation)
+
+        page << "
+          if(jQuery('.invitation').length == 0) {
+            jQuery('#invitations_revokable_form').hide();
+          }
+        "
+      end
+    end
+  end
 
   # общие настройки пользователя
   def user_common

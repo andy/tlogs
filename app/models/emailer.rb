@@ -1,6 +1,14 @@
 class Emailer < ActionMailer::Base
   helper :application, :comments, :url, :white_list
 
+  def invitation(current_service, sender, invitation)
+    setup     current_service,
+                :subj => 'ммм... приглашение',
+                :from => '"Ммм... тейсти" <noreply@mmm-tasty.ru>',
+                :email => invitation.email,
+                :body => { :sender => sender, :invitation => invitation }
+  end
+
   def signup(current_service, user)
     setup     current_service,
                 :subj => 'ммм... регистрация',

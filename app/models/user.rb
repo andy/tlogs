@@ -61,6 +61,7 @@ class User < ActiveRecord::Base
   has_many      :faves, :dependent => :destroy
   has_many      :invoices
   has_many      :backgrounds, :dependent => :destroy
+  has_many      :invitations, :dependent => :destroy
   
 
   ## plugins

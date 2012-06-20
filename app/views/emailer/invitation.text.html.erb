@@ -1,0 +1,26 @@
+<!DOCTYPE>
+<html>
+	<body lang="ru" style="padding: 30px 20px 50px 30px; margin: 0; background-color: #ffffff;">
+    <p style="font-family: Trebuchet MS, Arial, sans serif; font-size:0.95em; width:600px; color:#404040; padding-bottom: 2em;">
+      <b>Здравствуйте!</b>
+    </p>
+		
+		<p style="font-family:Trebuchet MS, Arial, sans serif; font-size:0.95em; width:600px; color:#404040; padding-bottom: 1em;">
+		  Пользователь <%= link_to_tlog(@sender) %> приглашает вас зарегистрироваться на тейсти.
+		</p>
+		
+		<p style="font-style:italic; font-family:Trebuchet MS, Arial, sans serif; font-size:0.95em; width:600px; color:#404040; padding-bottom: 1em;">
+		  <b>Чтобы создать аккаунт, пройдите, пожалуйста, по ссылке:<b>
+		  <br/>
+		  <%= link_to service_url(signup_path(:code => @invitation.code)), service_url(signup_path(:code => @invitation.code)) %> 
+		</p>
+		
+		<p style="font-family:Trebuchet MS, Arial, sans serif; font-size:0.95em; width:600px; color:#404040; padding-bottom: 1em;">
+		  Спасибо!
+		</p>
+
+		<p style="font-family:Trebuchet MS, Arial, sans serif; font-size:0.95em; width:600px; color:#404040; text-align:right;">
+		  C уважением, <a href="<%= service_url %>" target="_blank" style="border: 0px;"><img src="<%= service_url %>images/letter-logo.gif" width='101' height='27' style="position:relative; bottom:-6px;	margin-left:4px;" /></a>
+		</p>
+	</body>
+</html>

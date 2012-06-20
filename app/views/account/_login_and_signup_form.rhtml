@@ -1,6 +1,6 @@
 <div class='form_string'>
 	<label for="user_email">e-mail или openid <em>(http://)</em>:
-		<%= f.text_field :email %>
+		<%= f.text_field :email, :disabled => local_assigns.include?(:disabled) ? 'disabled' : nil %>
 		<%= tasty_error_message_on('user', 'email') %>
 	</label>
 </div>

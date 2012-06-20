@@ -2,9 +2,6 @@
 
  Вы успешно зарегистрировались на сайте Mmm...tasty! (<%= service_url %>)!
 
- Завершите регистрацию пройдя по этой ссылке:
- <%= service_url(confirm_code_path(:code => @user.read_confirmation_code)) %>
-
  Дополнительно, ваши регистрационные данные:
    Логин: <%= @user.url %>
    Адрес вашего тлога: <%= user_url(@user) %>

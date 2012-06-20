@@ -1,0 +1,59 @@
+<% @title = 'Приглашения' %>
+<% content_for :header do %>
+	приглашения
+<% end %>
+
+
+<% if current_user.invitations.revokable.any? %>
+  <div id='invitations_revokable_form'>
+    <h2>Недавно отправленные</h2>
+
+    <% current_user.invitations.revokable.each do |invitation| %>
+      <% div_for invitation, :style => 'font-size: 12px' do %>
+        <%= content_tag :span, h(invitation.email) %>
+        &nbsp;
+        <%= link_to_remote '[x]', :url => settings_path(:action => :revoke_invitation, :id => invitation.id), :method => :delete %>
+      <% end %>
+    <% end %>
+  </div>
+<% end %>
+
+
+<h2>Пригласить</h2>
+
+<% content_tag :p, :id => 'invitations_required', :style => (current_user.invitations_left.nonzero? ? 'display: none' : nil) do %>
+  К сожалению, на данный момент у вас <span class='highlight'>нет приглашений</span>
+<% end %>
+
+<% content_tag :div, :id => 'invitations_send_form', :style => (current_user.invitations_left.zero? ? 'display: none' : nil) do %>
+  
+
+  <p>Пожалуйста, будьте осторожны к тому, кого приглашаете. Не приглашайте незнакомых вам людей, тех кто выпросил у вас приглашение через интернет и тех, кого вы никогда не видели. И учтите, что <span class='highlight'>вы в ответе за тех, кого пригласили</span>.</p>
+
+  <% if current_user.invitations_left > 1 %>
+    <p>У вас осталось <span class='highlight'><%= current_user.invitations_left.pluralize('приглашение', 'приглашения', 'приглашений', true) %></span>, включая это.</p>
+  <% else %>
+    <p>Это ваше <span class='highlight'>последнее</span> приглашение.</p>
+  <% end %>
+
+  <% form_for @invitation, :url => settings_path(:action => :invitations), :html => { :method => 'post', :class => 'small' } do |f| %>
+    <%= tag :input, :type => 'hidden', :name => 'authenticity_token', :value => form_authenticity_token %>
+  
+    <table class='form'>
+  		<tr>
+  			<td class='label'><label for='invitation_email'>Емейл друга:</label></td>
+  			<td class='input'>
+  				<%= f.text_field :email %>
+  				<%= tasty_error_message_on 'invitation', 'email' %>
+  				<div class='input_note'>
+  					мы отправим приглашение на этот адрес
+  				</div>
+  			</td>
+  		</tr>
+  	</table>
+	
+  	<div class='submit_button'>
+  		<input type='submit' value='Отправить' class='button' />
+  	</div>
+  <% end %>
+<% end %>
