@@ -14,6 +14,7 @@ DISPOSABLE_DOMAINS = %w(
   tempemail.net
   yopmail.com
   yopmail.net
+  kinro.in
   yopmail.fr
   cool.fr.nf
   jetable.fr.nf
