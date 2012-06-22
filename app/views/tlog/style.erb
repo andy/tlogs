@@ -40,7 +40,7 @@ body { background: transparent url(<%= @design.background_url.starts_with?('/') 
 /* background color */
 body { background:#<%= @design.color_bg %>!important; }
 <% else %>
-body { background: #acacac url(<%= image_path 'images/background.gif' %>); }
+body { background: #acacac url(<%= image_path 'bg_bg_new.gif' %>); }
 <% end %>
 <% unless @design.color_tlog_text.blank? %>
 /* text of tlog */
