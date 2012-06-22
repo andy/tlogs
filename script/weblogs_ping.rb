@@ -36,7 +36,7 @@ def yaping(user, entry)
     result = server.call('weblogUpdates.ping', desc, "http://#{user.url}.mmm-tasty.ru/feed/rss.xml")
   rescue Exception => ex
     puts "- ping failed: #{ex.class.name}: #{ex.message}"
-    next
+    return
   end
 
   if result && result['flerror']
