@@ -55,32 +55,40 @@ class Settings::DefaultController < ApplicationController
   end
   
   def revoke_invitation
+    success = false
+
     User.transaction do
       @invitation = current_user.invitations.find_by_id(params[:id])
     
-      if @invitation.invitee_id.nil?
+      if @invitation && @invitation.invitee_id.nil?
         @invitation.destroy
+        
+        success = true
       
         current_user.increment!(:invitations_left)
       end
     end
     
-    render :update do |page|
-      page.visual_effect :highlight, dom_id(@invitation), :duration => 0.5
-      page.visual_effect :fade, dom_id(@invitation), :duration => 0.5
+    if success
+      render :update do |page|
+        page.visual_effect :highlight, dom_id(@invitation), :duration => 0.5
+        page.visual_effect :fade, dom_id(@invitation), :duration => 0.5
       
-      page.show 'invitations_send_form'
-      page.hide 'invitations_required'
+        page.show 'invitations_send_form'
+        page.hide 'invitations_required'
       
-      page.delay(0.6) do
-        page.remove dom_id(@invitation)
+        page.delay(0.6) do
+          page.remove dom_id(@invitation)
 
-        page << "
-          if(jQuery('.invitation').length == 0) {
-            jQuery('#invitations_revokable_form').hide();
-          }
-        "
+          page << "
+            if(jQuery('.invitation').length == 0) {
+              jQuery('#invitations_revokable_form').hide();
+            }
+          "
+        end
       end
+    else
+      render :json => false
     end
   end
 
