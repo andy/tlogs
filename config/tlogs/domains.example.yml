@@ -1,7 +1,12 @@
 # Домены
 mmm-tasty.ru:
   name: ммм...тейсти
-  
+
+m.mmm-tasty.ru:
+  name: ммм...тейсти
+  mobile: true
+  users: inline
+
 tlogs.ru:
   name: tlogs.ru
   users: inline

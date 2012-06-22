@@ -33,7 +33,7 @@ javascripts:
     - app/assets/javascripts/tasty/uploader.js
   
   specials:
-    - app/assets/javascripts/jquery/jquery-1.7.1.min.js
+    - app/assets/javascripts/jquery/jquery-1.7.2.min.js
     - app/assets/javascripts/jquery/jquery.noconflict.js
     - app/assets/javascripts/jquery/jquery.hotkeys.min.js
     - app/assets/javascripts/jquery/jquery.autoresize.min.js
@@ -50,7 +50,7 @@ javascripts:
     - app/assets/javascripts/prototype/prototype.1.7.0.0.min.js
     - app/assets/javascripts/prototype/effects.min.js
     # jquery setup & plugins
-    - app/assets/javascripts/jquery/jquery-1.7.1.min.js
+    - app/assets/javascripts/jquery/jquery-1.7.2.min.js
     - app/assets/javascripts/jquery/jquery.noconflict.js
     - app/assets/javascripts/jquery/jquery.hotkeys.min.js
     - app/assets/javascripts/jquery/jquery.autoresize.min.js
@@ -81,16 +81,16 @@ javascripts:
     - app/assets/javascripts/tasty/application.coffee
 
   mobile:
-    - app/assets/javascripts/jquery/jquery-1.7.1.min.js
+    - app/assets/javascripts/jquery/jquery-1.7.2.min.js
     - app/assets/javascripts/mobile.coffee
-    - app/assets/javascripts/jquery/jquery.mobile-1.1.0-rc.1.min.js
+    - app/assets/javascripts/jquery/jquery.mobile-1.1.0.min.js
     - app/assets/javascripts/jquery/jquery.timeago.min.js
     - app/assets/javascripts/jquery/jquery.timeago.ru.min.js
     - app/assets/javascripts/tasty/google-analytics.js
 
   chat:
     # assets
-    - app/assets/javascripts/jquery/jquery-1.7.1.min.js
+    - app/assets/javascripts/jquery/jquery-1.7.2.min.js
     - app/assets/javascripts/jquery/jquery.noconflict.js
     - app/assets/javascripts/jquery/jquery.hotkeys.min.js
     #- app/assets/javascripts/jquery/jquery.autoresize.min.js
@@ -111,7 +111,7 @@ javascripts:
     - app/assets/javascripts/chat/chat.coffee
 
   tastyradio:
-    - app/assets/javascripts/jquery/jquery-1.7.1.min.js
+    - app/assets/javascripts/jquery/jquery-1.7.2.min.js
     - app/assets/javascripts/soundmanager/soundmanager2.js
     - app/assets/javascripts/soundmanager/egych-player.js
   
@@ -140,7 +140,7 @@ stylesheets:
 
   mobile:
     - app/assets/stylesheets/html5.css
-    - app/assets/stylesheets/jquery.mobile-1.1.0-rc.1.min.css
+    - app/assets/stylesheets/jquery.mobile-1.1.0.min.css
     - app/assets/stylesheets/mobile-styling.scss
 
   tastyradio:
