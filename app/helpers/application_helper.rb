@@ -54,7 +54,7 @@ module ApplicationHelper
   # src-path for userpic
   def userpic_src(user, options = {})
     if !user.userpic? then
-      return image_path(user.avatar.public_filename) if user.avatar
+      image_path('noavatar.gif')
     else
       style = options[:style] || false
       style = :thumb64 if !style
