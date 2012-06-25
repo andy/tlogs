@@ -1,0 +1,20 @@
+#!/usr/bin/env script/runner
+
+blacklisted = $redis.smembers 'comments:blacklist'
+
+User.active.paginated_each(:per_page => 1000) do |user|
+  if user.ban_ac_till.nil? &&
+     !user.is_disabled? &&
+     user.is_confirmed? &&
+     user.entries_count > 10 &&
+     user.is_mainpageable? && 
+     user.conversations_count >= 1 &&
+     user.created_at < 2.months.ago &&
+     blacklisted.exclude?(user.id) &&
+     user.invitations_left < 3 &&
+     user.listed_me_as_all_friend_light.length > 10
+
+    user.increment!(:invitations_left)
+    puts "+ #{user.url} shall be endowed"
+  end
+end

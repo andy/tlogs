@@ -1,0 +1,31 @@
+#!/usr/bin/env script/runner
+
+i = 0
+Avatar.paginated_each do |avatar|
+	i += 1
+	user = avatar.user
+	if user.nil? || user.is_disabled?
+		puts "- #{i} user #{user.id} (#{user.url}) is disabled, skipping" unless user.nil?
+		next
+	end
+
+	path = File.join(Rails.public_path, avatar.public_filename)
+	if File.exists?(path)
+		if user.userpic?
+			puts "- #{i} already has userpic #{user.id} (#{user.url})"
+		else
+			if User.find_all_by_url(user.url).length > 1
+				puts "? #{i} too many users under url #{user.url} (initiated by #{user.id}), skipping"
+			else
+				puts "+ #{i} modifying for #{user.id} (#{user.url})"
+				User.transaction do
+					user.userpic = File.open(path)
+					user.save!
+					# avatar.destroy
+				end
+			end
+		end
+	else
+		puts "- #{i} missing: #{path}"
+	end
+end

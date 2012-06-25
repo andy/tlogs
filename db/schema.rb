@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110910193124) do
+ActiveRecord::Schema.define(:version => 20120620123133) do
 
   create_table "attachments", :force => true do |t|
     t.integer "entry_id",     :default => 0,  :null => false
@@ -51,6 +51,7 @@ ActiveRecord::Schema.define(:version => 20110910193124) do
     t.boolean  "is_public",        :default => false, :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "gray_logo",        :default => false, :null => false
   end
 
   add_index "backgrounds", ["user_id"], :name => "index_backgrounds_on_user_id"
@@ -246,6 +247,19 @@ ActiveRecord::Schema.define(:version => 20110910193124) do
     t.integer "x"
   end
 
+  create_table "invitations", :force => true do |t|
+    t.integer  "user_id",                  :null => false
+    t.integer  "invitee_id"
+    t.string   "email"
+    t.string   "code",       :limit => 32
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "invitations", ["code"], :name => "index_invitations_on_code", :unique => true
+  add_index "invitations", ["invitee_id"], :name => "index_invitations_on_invitee_id"
+  add_index "invitations", ["user_id"], :name => "index_invitations_on_user_id"
+
   create_table "invoices", :force => true do |t|
     t.integer  "user_id",                     :null => false
     t.string   "state",                       :null => false
@@ -270,6 +284,7 @@ ActiveRecord::Schema.define(:version => 20110910193124) do
     t.integer  "recipient_id",                   :null => false
   end
 
+  add_index "messages", ["conversation_id"], :name => "index_messages_on_conversation_id"
   add_index "messages", ["user_id"], :name => "index_messages_on_user_id"
 
   create_table "mobile_settings", :force => true do |t|
@@ -462,6 +477,7 @@ ActiveRecord::Schema.define(:version => 20110910193124) do
     t.datetime "userpic_updated_at"
     t.text     "userpic_meta"
     t.datetime "premium_till"
+    t.integer  "invitations_left",                      :default => 0,     :null => false
   end
 
   add_index "users", ["domain"], :name => "index_users_on_domain"

@@ -1,0 +1,28 @@
+#!/usr/bin/env script/runner
+# >> e = Entry.last
+# >> e.user_id
+# => 16497
+# >> User::personal_queue_key(e.user_id)
+# => "u:16497:q"
+# >> $redis.zrem User::personal_queue_key(e.user_id), e.watcher_ids[0]
+# => false
+# >> $redis.zrem User::personal_queue_key(e.user_id), e.watcher_ids[1]
+# => false
+#
+
+def fix(eid)
+ e = Entry.find(eid)
+ q = User::personal_queue_key(e.user_id)
+ $stdout.print "#{eid}: "
+ e.watcher_ids.each do |wid|
+  res = $redis.zrem q, wid
+  $stdout.print res ? "+" : "."
+ end
+ $stdout.print "\n"
+end
+
+
+# Entry.find(:all, :select => 'id', :order => 'id DESC', :limit => 10000).map(&:id).each { |eid| fix(eid) }
+
+Comment.find(:all, :select => 'entry_id', :order => 'id DESC', :limit => 5000).map(&:entry_id).uniq.each { |eid| fix(eid) }
+
