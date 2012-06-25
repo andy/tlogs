@@ -1,6 +1,6 @@
 module UserpicHelper
   def avatar_dimensions(user, options = {})
-    avatar    = user.avatar
+    avatar    = nil # user.avatar
     width     = avatar ? avatar.width : 64
     height    = avatar ? avatar.height : 64
 
