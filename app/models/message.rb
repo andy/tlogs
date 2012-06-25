@@ -64,10 +64,12 @@ class Message < ActiveRecord::Base
   after_destroy do |message|
     convo = message.conversation
     
-    convo.update_attributes!(:last_message_id => nil) if convo.last_message_id == message.id
+    if convo
+      convo.update_attributes!(:last_message_id => nil) if convo.last_message_id == message.id
     
-    # <= 1 because counters are decremented after after_destroy
-    convo.destroy if convo.messages_count <= 1
+      # <= 1 because counters are decremented after after_destroy
+      convo.destroy if convo.messages_count <= 1
+    end
 
     true
   end
