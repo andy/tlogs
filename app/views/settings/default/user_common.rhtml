@@ -29,7 +29,7 @@
 		<tr>
 			<td class='label'><label for='user_userpic'>Ваш портрет:</label></td>
 			<td class='input'>
-				<% if current_user.userpic? || current_user.avatar %>
+				<% if current_user.userpic? %>
 					<%= userpic_tag(current_user) %>
 					<%= link_to image_tag('delete.gif'), user_url(current_site, settings_path(:action => :deuserpic)), :title => 'удалить аватар', :method => :delete %>
 					<br/> <br/>
