@@ -13,6 +13,6 @@
       - else
         = "Комментарии (<span id='t-entry-comments-count'>#{@entry.comments_count}</span>):"
 
-    = render :partial => 'tlog/comment', :collection => entry.comments.enabled.all(:include => :user, :order => 'comments.id').reject { |c| c.user.nil? } if @entry.comments_count > 0
+    = render :partial => 'tlog/comment', :collection => @entry.comments.enabled.all(:include => :user, :order => 'comments.id').reject { |c| c.user.nil? } if @entry.comments_count > 0
 
     =# render :partial => 'comment_form'
