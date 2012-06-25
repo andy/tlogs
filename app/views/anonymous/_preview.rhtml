@@ -11,7 +11,7 @@
 	<div class="t-post-comment t-post-comment-new post_comment post_comment_new" id="<%= dom_id(@comment) %>">				
 		<div class='rel'>
 			<div class='post_comment_avatar<%= ' post_comment_avatar_anonymous' if is_anonymous_author %>'>
-				<% if !is_anonymous_author && !@comment.user.nil? && @comment.user.avatar %>
+				<% if !is_anonymous_author && !@comment.user.nil? %>
 					<%= link_to_tlog @comment.user, :link => :userpic %>
 				<% end %>
 			</div>
