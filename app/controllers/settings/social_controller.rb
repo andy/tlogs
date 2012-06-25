@@ -74,7 +74,7 @@ class Settings::SocialController < ApplicationController
       page.call :clear_all_errors
       page.remove "relationship_#{@user.relationship_id}" if move_relationship
       if new_relationship
-        page.insert_html :bottom, (relationship.friendship_status == 2 ? :public_friends : :friends), :partial => 'user'
+        page.insert_html :bottom, (relationship.friendship_status == 2 ? :public_friends : (relationship.friendship_status == -2 ? :blacklisted : :friends)), :partial => 'user'
         page.draggable "relationship_#{@user.relationship_id}", :revert => true
       end
       page.visual_effect :highlight, "relationship_#{@user.relationship_id}"

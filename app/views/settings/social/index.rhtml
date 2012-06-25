@@ -49,7 +49,7 @@
     options['черный список'] = -2 if is_premium?  
   %>
 	<div class='social_manipulator'>
-		Добавить <input id='new_user_url' type='text' name='url' value='' /> в <%= select_tag 'friendship_status', options_for_select(options, 2) %> <input type='submit' value='+' class='button' />
+		Добавить <input id='new_user_url' type='text' autocomplete='off' name='url' value='' /> в <%= select_tag 'friendship_status', options_for_select(options, 2) %> <input type='submit' value='+' class='button' />
 	</div>
 	<%= tasty_error_message_on :new_user, :url %>
 <% end %>
