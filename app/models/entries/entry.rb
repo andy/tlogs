@@ -230,7 +230,19 @@ class Entry < ActiveRecord::Base
     # allow comments if blacklisted person tries to comment on another blacklisted guy
     return true if $redis.sismember(bl_key, self.author.id)
     
-    false      
+    false
+  end
+  
+  def erase_comments_by(user)
+    # do it this way because we might have way too many comments to go through regular select
+    # (e.g. some people have been spammed and have 20k comments on a single entry)
+    self.comments.enabled.find_all_by_user_id(user.id, :select => 'id').map(&:id).each do |comment_id|
+      Comment.find(comment_id).disable!
+    end
+  end
+  
+  def async_erase_comments_by(user)
+    Resque.enqueue(CommentEraseJob, self.id, user.id)
   end
   
   # русское написание

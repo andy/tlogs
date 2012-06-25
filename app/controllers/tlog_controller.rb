@@ -31,7 +31,7 @@ class TlogController < ApplicationController
   
   # When enabled as regular tlog
   def regular
-    @title = current_site.tlog_settings.title
+    @title = current_site.tlog_settings.title || ''
     
     @cache_key = ['tlog', 'regular', current_service.domain, current_site.id, current_site.url, current_page, is_owner? && current_site.tlog_settings.past_disabled?, current_site.entries_updated_at.to_i, Date.today.to_s(:db)].join(':')
     Rails.logger.debug "* cache key is #{@cache_key}"
@@ -84,15 +84,16 @@ class TlogController < ApplicationController
   def anonymous
     @title = 'ваши анонимки'
     @entries = current_site.entries.anonymous.for_view.paginate :page => current_page, :per_page => Entry::PAGE_SIZE
+
     render :action => 'private'
   end
 
   # Вывести текущую запись
   def show
-    cache_key = "tlog:show:e#{@entry.id}:c#{@entry.comments_count}:u#{@entry.updated_at.to_i}"
+    cache_key = "tlog:show:comments:e#{@entry.id}:c#{@entry.comments_count}:u#{@entry.updated_at.to_i}"
 
     @comments = Rails.cache.fetch(cache_key, :expires_in => 1.day) do
-      @entry.comments.all(:include => { :user => :avatar }, :order => 'comments.id').reject { |comment| comment.user.nil? } 
+      @entry.comments.enabled.all(:include => :user, :order => 'comments.id').reject { |comment| comment.user.nil? } 
     end
 
     @last_comment_viewed  = current_user ? CommentViews.view(@entry, current_user) : 0
@@ -100,8 +101,8 @@ class TlogController < ApplicationController
   end
 
   def mentions
-    user_ids    = Comment.find(:all, :select => "user_id", :conditions => "entry_id = #{@entry.id}").map(&:user_id).reject { |id| id == current_user.id }.uniq
-    @mentions   = User.find(user_ids, :include => :avatar) if user_ids.any?
+    user_ids    = @entry.comments.enabled.all(:select => 'user_id').map(&:user_id).uniq.reject { |user_id| user_id == current_user.id }
+    @mentions   = User.find(user_ids) if user_ids.any?
     @mentions ||= []
     
     render :template => 'mentions/index', :content_type => Mime::JSON

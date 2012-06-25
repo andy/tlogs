@@ -28,6 +28,8 @@ class Comment < ActiveRecord::Base
   ## associations
   belongs_to :entry, :counter_cache => :comments_count
   belongs_to :user
+  
+  has_many :reports
 
 
   ## plugins
@@ -51,11 +53,14 @@ class Comment < ActiveRecord::Base
 
   ## callbacks
   after_destroy do |comment|
-    # обновляем счетчик просмотренных комментариев но только для тех, кто уже видел комментарий который сейчас был удален
-    comment.connection.update("UPDATE comment_views SET last_comment_viewed = last_comment_viewed - 1 WHERE entry_id = #{comment.entry.id} AND last_comment_viewed > #{comment.entry.comments.size - 1}")
-    comment.entry.update_attribute(:updated_at, Time.now)
+    # because disable! did this already
+    unless comment.is_disabled?
+      comment.decrement_comment_views! unless comment.is_disabled? 
+
+      comment.entry.update_attribute(:updated_at, Time.now)
+    end
     
-    comment.entry.try_watchers_update
+    comment.entry.try_watchers_update # XXX: what's the purpose of this?
   end
   
   after_create do |comment|
@@ -65,6 +70,18 @@ class Comment < ActiveRecord::Base
 
   ## class methods
   ## public methods
+  
+  # обновляет счетчик просмотренных комментариев, но только для тех, кто еще не видел комментарий, который был восстановлен
+  # (специально для функции restore!)
+  def increment_comment_views!
+    self.connection.update("UPDATE comment_views SET last_comment_viewed = last_comment_viewed + 1 WHERE entry_id = #{self.entry.id} AND last_comment_viewed <= #{self.entry.comments_count}") if self.entry.comments_count > 0
+  end
+  
+  # обновляем счетчик просмотренных комментариев, но только для тех, кто уже видел комментарий который сейчас был удален
+  # (для использования при удалении комменатрия и в функции disable!)
+  def decrement_comment_views!
+    self.connection.update("UPDATE comment_views SET last_comment_viewed = last_comment_viewed - 1 WHERE entry_id = #{self.entry.id} AND last_comment_viewed > #{self.entry.comments_count - 1}") if self.entry.comments_count > 0
+  end
 
   #
   # <%= comment.fetch_cached_or_run_block { |text| white_list_comment text }
@@ -92,12 +109,61 @@ class Comment < ActiveRecord::Base
   # returns true if we might suggest blacklisting comment author by *user* when comment is removed
   # basically, if author is another person and is not in friends with current user then blacklisting might
   # be an option
-  def suggest_author_blacklisting_by?(user)
-    user.id != self.user.id && !user.all_friend_ids.include?(self.user.id)
+  def can_be_blacklisted_by?(user)
+    user && user.id != self.user.id # && !user.all_friend_ids.include?(self.user.id)
+  end
+  
+  # wether this comment can be reported by user
+  def can_be_reported_by?(reporter)
+    reporter && reporter.id != self.user_id
+  end
+
+  def was_reported_by?(reporter)
+    Report.exists? :reporter_id => reporter.id, :content_id => self.id, :content_type => self.class.name
+  end
+    
+  def report!(reporter)
+    Report.create :reporter => reporter, :content => self, :content_owner => self.user
+  end
+  
+  def disable!
+    return false if self.is_disabled?
+
+    self.update_attribute(:is_disabled, true)
+    
+    # clean up view for other people
+    self.decrement_comment_views!
+
+    # emulate counter cache
+    Entry.decrement_counter(:comments_count, self.entry.id)
+    
+    # this will invalidate all caches for the page with the comments
+    self.entry.update_attribute(:updated_at, Time.now)
+  end
+  
+  # comment can only be restored if removed by entry owner
+  def can_be_restored_by?(user)
+    user && self.entry.user_id == user.id
+  end
+  
+  # opposite of disable!
+  def restore!
+    return false unless self.is_disabled?
+    
+    self.update_attribute(:is_disabled, false)
+    
+    # make this not appear as a new comment
+    self.increment_comment_views!
+    
+    Entry.increment_counter(:comments_count, self.entry.id)
+    
+    self.entry.update_attribute(:updated_at, Time.now)
   end
   
   # deliver comment 
   def deliver!(current_service, reply_to)
+    return false if self.is_disabled?
+
     users = []
 
     if !reply_to.blank?

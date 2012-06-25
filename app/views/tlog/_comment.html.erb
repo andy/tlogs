@@ -5,10 +5,10 @@
 %>
 <a name="comment<%= comment.id %>"></a>
 <%= "<a name='new'></a>" if @last_comment_viewed == (@comments || @entry.comments).index(comment) %>
-<div class="t-post-comment post_comment<%= ' post_comment_new t-post-comment-new' if @last_comment_viewed <= (@comments || @entry.comments).index(comment) %><%= ' t-post-anonymous-comment post_comment_by_anonymous' if is_anonymous_author %>" id="<%= dom_id(comment) %>">				
+<div class="t-post-comment post_comment<%= ' post_comment_new t-post-comment-new' if @last_comment_viewed <= (@comments || @entry.comments).index(comment) %><%= ' t-post-anonymous-comment post_comment_by_anonymous' if is_anonymous_author %>" id="<%= dom_id(comment) %>" data-base-url="<%= user_url(@entry.author, entry_comment_path(@entry, comment)).downcase %>" data-comment-id="<%= comment.id %>">
 	<div class='rel'>
 		<div class='post_comment_avatar<%= ' post_comment_avatar_anonymous' if is_anonymous_author %>'>
-			<%= link_to userpic_tag(comment.user), user_url(comment.user) if !is_anonymous_author && !comment.user.nil? && (comment.user.userpic? || comment.user.avatar) %>
+			<%= link_to userpic_tag(comment.user), user_url(comment.user) if !is_anonymous_author && !comment.user.nil? && comment.user.userpic? %>
 		</div>
 		<div class="post_comment_controls">
 		  <div class='t-post-comment-destroy-holder'>
@@ -17,17 +17,22 @@
   			<% else %>
   				<%= image_tag('blank.gif', :size => '9x11', :alt => '', :title => '') %>
   			<% end %>
-  		</div>
-			
+  		</div>			
 			<div class='t-post-comment-reply-holder'>
 			  <%= content_tag :a, '&nbsp;', :class => 't-act-comment-reply t-post-comment-reply', :id => "reply_to_comment_#{comment.id}", :title => "Ответить на #{is_anonymous_author ? "этот" : comment.user.gender('его', 'её')} комментарий" if current_user && !comment.user.nil? && current_user.id != comment.user.id %>
 			</div>
+			<% if comment.can_be_reported_by?(current_user) %>
+  		  <div class='t-post-comment-report-holder'>
+  		    <%= content_tag :a, '&nbsp;', :href => '#', 'data-url' => @entry.is_anonymous? ? nil : user_url(@entry.author, report_entry_comment_path(@entry, comment)).downcase, :class => 't-act-comment-report t-post-comment-report', :title => 'Сообщить о некорректном поведении или спаме' %>
+  		  </div>
+  		<% end %>
+  		
 		</div>
 	</div>
 	<div class='comment_text'>
 		<div class='post_comment_author'><%= is_anonymous_author ? 'аноним' : link_to_comment_author(comment, current_site && comment.user_id == current_site.id) %></div>
 		<%= content_tag :a, comment.created_at.distance_between_in_words(Time.now, ' назад'), :href => "#comment#{comment.id}", :class => 'post_comment_time', :title => comment.created_at.to_timestamp_s %>
-		<div class='post_comment_text'>
+		<div class='post_comment_text' id='t-post-comment-text-<%= comment.id %>'>
 			<%= comment.fetch_cached_or_run_block { |text| white_list_comment text } %>
 		</div>
 		<%= render :partial => 'globals/ban_controls', :locals => { :comment => comment } if @entry.is_anonymous? && is_moderator? %>

@@ -15,6 +15,8 @@ class Entry
   end
   
   def build_watcher_ids
+    return [self.author.id] if self.author.tlog_settings.privacy == 'me'
+    
     ids = [
       # author himself
       self.author.id,
@@ -28,6 +30,8 @@ class Entry
       # tier3 - users who positevely voted for this entry
       # self.votes.positive.map(&:user_id)
     ].flatten.compact.uniq
+    
+    ids -= self.author.blacklist_ids
     
     # respect user's privacy settings
     case self.author.tlog_settings.privacy

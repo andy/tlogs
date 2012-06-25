@@ -36,7 +36,7 @@ tlog_settings = lambda do |tlog|
   tlog.anonymous_entries 'anonymous', :action => 'anonymous'
 
   tlog.resources :entries, :member => { :subscribe => :post, :unsubscribe => :post, :metadata => :get, :mentions => :get }, :collection => { :tags => :get, :relationship => :post } do |entry|
-    entry.resources :comments, :new => { :preview => :post }
+    entry.resources :comments, :member => { :report => :post, :blacklist => :post, :erase => :post, :restore => :post }, :new => { :preview => :post }
     entry.resources :tags, :controller => 'entry_tags'
   end
 

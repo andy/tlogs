@@ -60,7 +60,81 @@ class CommentsController < ApplicationController
           page.call :error_message_on, "comment_#{element}", message
         end
       end
-    end    
+    end
+  end
+  
+  def erase
+    render :nothing => true and return unless request.post?
+    
+    render :json => false, :status => 403 and return unless current_user
+    
+    @comment = Comment.find_by_id_and_entry_id(params[:id], @entry.id)
+
+    render :json => false, :status => 404 and return unless @comment
+    
+    render :json => false, :status => 404 and return unless @comment.is_disabled?
+
+    # only tlog owner can do this
+    render :json => false, :status => 403 and return unless @entry.user_id == current_user.id
+    
+    @entry.async_erase_comments_by(@comment.user)
+    
+    render :json => true
+  end
+  
+  def blacklist
+    render :nothing => true and return unless request.post?
+    
+    render :json => false, :status => 403 and return unless current_user
+    
+    @comment = Comment.find_by_id_and_entry_id(params[:id], @entry.id)
+
+    render :json => false, :status => 404 and return unless @comment
+    
+    render :json => false, :status => 404 and return unless @comment.is_disabled?
+    
+    # only tlog owner can do this
+    render :json => false, :status => 403 and return unless @entry.user_id == current_user.id
+
+    current_user.set_friendship_status_for @comment.user, Relationship::BLACKLISTED
+    
+    suggestErase = !@entry.comments.enabled.find_all_by_user_id(@comment.user_id).count.zero?
+    
+    render :json => { :suggestErase => suggestErase }
+  end
+  
+  def restore
+    render :nothing => true and return unless request.post?
+    
+    render :json => false, :status => 403 and return unless current_user
+    
+    @comment = Comment.find_by_id_and_entry_id(params[:id], @entry.id)
+
+    render :json => false, :status => 404 and return unless @comment
+    
+    render :json => false, :status => 404 and return unless @comment.is_disabled?
+    
+    render :json => false, :status => 403 and return unless @comment.can_be_restored_by?(current_user)
+
+    @comment.restore!
+    
+    render :json => true
+  end
+  
+  def report
+    render :nothing => true and return unless request.post?
+    
+    render :json => false, :status => 403 and return unless current_user
+  
+    @comment = Comment.find_by_id_and_entry_id(params[:id], @entry.id)
+    
+    render :json => false, :status => 404 and return unless @comment
+    
+    render :json => false, :status => 403 and return unless @comment.can_be_reported_by?(current_user)
+    
+    @comment.report!(current_user) unless @comment.was_reported_by?(current_user)
+    
+    render :json => true
   end
   
   def destroy
@@ -71,10 +145,16 @@ class CommentsController < ApplicationController
     @comment = Comment.find_by_id_and_entry_id(params[:id], @entry.id)
     
     render :json => false and return unless @comment
-
-    @comment.destroy if @comment && @comment.is_owner?(current_user)
     
-    render :json => { :restorable => false, :blacklistable => @comment.suggest_author_blacklisting_by?(current_user) }
+    render :json => false and return if @comment.is_disabled?
+
+    @comment.disable! if @comment.is_owner?(current_user)
+    
+    restorable    = @comment.can_be_restored_by?(current_user)
+    reportable    = @comment.can_be_reported_by?(current_user) && !@comment.was_reported_by?(current_user)
+    blacklistable = @comment.can_be_blacklisted_by?(current_user)
+    
+    render :json => { :restorable => restorable, :reportable => reportable, :blacklistable => blacklistable, :is_premium => current_user.is_premium? }
   end
   
   private

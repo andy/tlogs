@@ -61,12 +61,15 @@ Tasty =
       jQuery('.t-post-comments .t-act-comment-reply').live "click", Tasty.comments.reply
       jQuery('.t-post-comments .t-act-comment-blacklist').live "click", Tasty.comments.blacklist
       jQuery('.t-post-comments .t-act-comment-restore').live "click", Tasty.comments.restore
+      jQuery('.t-post-comments .t-act-comment-report').live "click", Tasty.comments.report
+      jQuery('.t-post-comments .t-act-comment-erase-blacklisted').live "click", Tasty.comments.eraseBlacklisted
+      jQuery('.t-post-comments .t-post-comment-report').twipsy({ offset: 5, delayIn: 2000 });
       jQuery('.t-post-comments .t-post-comment-destroy').twipsy({ offset: 5, delayIn: 2000 });
       jQuery('.t-post-comments .t-post-comment-reply').twipsy({ offset: 5, delayIn: 2000 });
       jQuery('.t-post-comments .post_comment_time').twipsy({ offset: 5, delayIn: 3000 });
     
     destroy: (event) ->
-      return false unless confirm('Действительно удалить этот комментарий?')
+      # return false unless confirm('Действительно удалить этот комментарий?')
 
       Tasty.analytics.event 'Сomment Destroy', jQuery(this).data('url'), _user.url
       
@@ -84,25 +87,111 @@ Tasty =
           cn = jQuery('#top_comment_number')
           cn.text(parseInt(cn.text()) - 1) if parseInt(cn.text()) > 0
           
+          Tasty.comments.is_premium = data.is_premium if data? && data.is_premium?
+            
           comment = jQuery(this).closest('.t-post-comment')
           # hide deleted comment elements
           comment.find('.post_comment_avatar').css({ opacity: 0.1 })
           comment.find('.comment_text').css({ opacity: 0.1, zIndex: 1 })
           comment.find('.t-act-comment-reply').hide()
           comment.find('.t-act-comment-destroy').hide()
+          comment.find('.t-act-comment-report').hide()
           Tasty.flash.hide(comment)
           comment.prepend('<div class="t-post-comment-destroyed"><p>Комментарий был удален.</p></div>')
+            
+          if data.restorable? && data.restorable
+            comment.find('.t-post-comment-destroyed p').append(' <a href="#" class="t-act-comment-restore">Отменить</a>.')
+
+          if data.reportable? && data.reportable
+            comment.find('.t-post-comment-destroyed').append('<p><a href="#" class="t-act-comment-report">Сообщить о спаме или некорректном поведении</a>.</p>')
           
-          # data.blacklistable property is not yet supported
-          # data.recoverable property is not yet supported
-        
+          if data.blacklistable? && data.blacklistable
+            comment.find('.t-post-comment-destroyed').append('<p><a href="#" class="t-act-comment-blacklist t-post-comment-blacklist">Добавить ' + comment.find('.post_comment_author a').html() + ' в черный список</a>.</p>')
+                    
       false
     
+    report: (event) ->
+      jQuery(this).hide()
+
+      jQuery.ajax
+        url: jQuery(this).closest('.t-post-comment').data('base-url') + '/report'
+        dataType: 'json'
+        data:
+          authenticity_token:
+            window._token
+        type: 'post'
+        success: (data) =>
+          text_id = "t-post-comment-text-#{jQuery(this).closest('.t-post-comment').data('comment-id')}"
+          new Effect.Highlight text_id, { duration: 0.6 }
+          
+          if jQuery(this).parents('.t-post-comment-destroyed').length > 0
+            jQuery(this).parent().html('Сообщение отправлено, спасибо.').show()
+          else
+            jQuery(this).remove()
+      
+      false
+
     blacklist: (event) ->
-      console.log "blacklist on #{this}"
+      jQuery(this).closest('.t-act-comment-restore').hide()
+
+      if Tasty.comments.is_premium
+        jQuery.ajax
+          url: jQuery(this).closest('.t-post-comment').data('base-url') + '/blacklist'
+          dataType: 'json'
+          data:
+            authenticity_token:
+              window._token
+          type: 'post'
+          success: (data) =>
+            content = jQuery(this).parent().html('Пользователь добавлен в черный список.')
+            if data? && data.suggestErase? && data.suggestErase == true
+              content.append(' <a href="#" class="t-act-comment-erase-blacklisted">Удалить все его другие комментарии к этой записи?</a>')
+      else
+        alert 'Эта опция доступна только премиум-пользователям'
       
       false
     
+    eraseBlacklisted: (event) ->
+      jQuery(this).closest('.t-act-comment-restore').hide()
+
+      jQuery.ajax
+        url: jQuery(this).closest('.t-post-comment').data('base-url') + '/erase'
+        dataType: 'json'
+        data:
+          authenticity_token:
+            window._token
+        type: 'post'
+        success: (data) =>
+          if data? && data == true
+            jQuery(this).parent().html('Остальные комментарии будут удалены в ближайшее время.')
+
+      false
+      
+    restore: (event) ->
+      jQuery.ajax
+        url: jQuery(this).closest('.t-post-comment').data('base-url') + '/restore'
+        dataType: 'json'
+        data:
+          authenticity_token:
+            window._token
+        type: 'post'
+        success: (data) =>
+          cn = jQuery('#top_comment_number')
+          cn.text(parseInt(cn.text()) + 1) if parseInt(cn.text()) >= 0
+          
+          comment = jQuery(this).closest('.t-post-comment')
+          # hide deleted comment elements
+          comment.find('.post_comment_avatar').css({ opacity: 1 })
+          comment.find('.comment_text').css({ opacity: 1, zIndex: 1 })
+          comment.find('.t-act-comment-reply').show()
+          comment.find('.t-act-comment-destroy').show()
+          comment.find('.t-act-comment-report').show()
+          Tasty.flash.show(comment)
+          comment.find('.t-post-comment-destroyed').remove()
+          
+      false      
+    
+    is_premium: false
     replied: new Array()
     
     reply: (event) ->
@@ -140,12 +229,6 @@ Tasty =
       ids = for cid in Tasty.comments.replied
         cid.replace 'comment_', ''
       jQuery('#comment_reply_to').val ids.join(',')
-            
-      
-    restore: (event) ->
-      console.log "restore clicked for #{this}"
-      
-      false
     
   analytics:
     hit: (url, title = null, referer = null) ->

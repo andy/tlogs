@@ -3,13 +3,13 @@
 	<%= render :partial => 'entries/anonymous_entry_display', :locals => { :entry => @entry, :show_datetime => true } %>
 	<a name="comments"></a>
 
-	<% if @entry.comments_enabled? || @entry.comments.size > 0 %>
+	<% if @entry.comments_enabled? || @entry.comments_count > 0 %>
 		<div class="t-post-comments post_comments">
 			<div class="top_comments_text">
-				<% if @entry.comments.size == 0 %>
+				<% if @entry.comments_count.zero? %>
 					Комментариев еще нет
 				<% else %>
-					Комментарии (<span id='top_comment_number'><%= @entry.comments.size %></span>):
+					Комментарии (<span id='top_comment_number'><%= @entry.comments_count %></span>):
 				<% end %>
 			</div>
 
@@ -29,7 +29,7 @@
   		
   		<% end %>
 
-			<%= render :partial => 'tlog/comment', :collection => Comment.find(:all, :conditions => ['comments.entry_id = ?', @entry.id], :include => { :user => :avatar }, :order => 'comments.id').reject { |c| c.user.nil? } if @entry.comments.size %>
+			<%= render :partial => 'tlog/comment', :collection => @comments if @entry.comments_count > 0 %>
 
 			<% if @entry.comments_enabled? %>
 				<%= render :partial => 'comment_form' %>

@@ -62,6 +62,8 @@ class User < ActiveRecord::Base
   has_many      :invoices
   has_many      :backgrounds, :dependent => :destroy
   has_many      :invitations, :dependent => :destroy
+  has_many      :reports, :dependent => :destroy
+  has_many      :reported_content, :class_name => 'Report', :foreign_key => 'content_owner_id', :dependent => :destroy
   
 
   ## plugins

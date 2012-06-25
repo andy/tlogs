@@ -261,9 +261,26 @@ a#new_radio_schedule_showform { font-size: 1.4em; font-family: Tahoma; color: #3
     left: 0px;
     width: 330px;
     font-size: 11px;
-    padding: 20px 100px;
-    text-align: center;
+    padding: 20px 0px 20px 165px;
+    /* text-align: center; */
     z-index: 10;
+  }
+  .t-post-comment-report-holder {
+    position: relative;
+    left: 306px;
+    top: -34px;
+    width: 9px;
+    height: 11px;
+  }
+  .t-post-comment-report {
+    background: url(/images/report.gif) no-repeat;
+    width: 9px;
+    height: 11px;
+    display: block;
+    visibility: hidden;
+    cursor: hand;
+    cursor: pointer;
+    text-decoration: none;
   }
   
   .t-post-comment-reply-holder {
@@ -299,6 +316,9 @@ a#new_radio_schedule_showform { font-size: 1.4em; font-family: Tahoma; color: #3
       }
     }
     .t-post-comment-destroy {
+      visibility: visible;
+    }
+    .t-post-comment-report {
       visibility: visible;
     }
   }

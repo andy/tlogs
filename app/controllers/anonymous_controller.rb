@@ -20,13 +20,10 @@ class AnonymousController < ApplicationController
   # смотрим список записей
   def index
     sql_conditions = 'type="AnonymousEntry" AND is_disabled = 0'
-    
-    # кешируем общее число записей, потому что иначе :page обертка будет вызывать счетчик на каждый показ
-    # total = Rails.cache.fetch('entry_count_anonymous', :expires_in => 10.minutes) { Entry.count :conditions => sql_conditions }
 
     @entry_ids = Entry.paginate :all, :select => 'entries.id', :conditions => sql_conditions, :page => current_page, :per_page => Entry::PAGE_SIZE, :order => 'entries.id DESC'
 
-    @entries = Entry.find_all_by_id @entry_ids.map(&:id), :order => 'entries.id DESC'
+    @entries = Entry.find_all_by_id @entry_ids.map(&:id), :include => :author, :order => 'entries.id DESC'
     
     @comment_views = User::entries_with_views_for(@entries.map(&:id), current_user)
   end
@@ -35,13 +32,13 @@ class AnonymousController < ApplicationController
   # скрывает или показывает запись
   def toggle
     @entry.toggle!(:is_disabled)
-
-    Rails.cache.delete('entry_count_anonymous')
   end
   
   
   # смотрим запись
-  def show
+  def show    
+    @comments = @entry.comments.active.all(:include => :user, :order => 'comments.id').reject { |c| c.user.nil? } if @entry.comments_count > 0
+
     @comment = Comment.new
     
     @last_comment_viewed = current_user ? CommentViews.view(@entry, current_user) : 0    
@@ -49,7 +46,7 @@ class AnonymousController < ApplicationController
   
   def mentions
     user_ids    = Comment.find(:all, :select => "user_id", :conditions => "entry_id = #{@entry.id}").map(&:user_id).reject { |id| id == current_user.id || id == @entry.user_id }.uniq
-    @mentions   = User.find(user_ids, :include => :avatar) if user_ids.any?
+    @mentions   = User.find(user_ids) if user_ids.any?
     @mentions ||= []
     
     render :template => 'mentions/index', :content_type => Mime::JSON.to_s
@@ -65,9 +62,9 @@ class AnonymousController < ApplicationController
     
     render :json => false and return unless @comment
 
-    @comment.destroy if current_user && @comment.is_owner?(current_user) if @comment
+    @comment.disable! if @comment.is_owner?(current_user)
     
-    render :json => { :restorable => false, :blacklistable => @comment.suggest_author_blacklisting_by?(current_user) }
+    render :json => { :restorable => false, :blacklistable => (@comment.is_disabled? ? @comment.suggest_author_blacklisting_by?(current_user) : false) }
   end
   
   
