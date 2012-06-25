@@ -26,7 +26,7 @@ module ApplicationHelper
     empty     = options[:empty] || false
     blank   ||= true if empty && empty.to_sym == :blank
 
-    avatar    = user.avatar
+    avatar    = nil # user.avatar
     width     = avatar ? avatar.width : 64
     height    = avatar ? avatar.height : 64
 
