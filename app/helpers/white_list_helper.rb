@@ -62,13 +62,13 @@ module WhiteListHelper
     media_width = options[:media_width] || 400
     link_target = options[:link_target] || '_blank'
     
-    doc = Hpricot(simple_tasty_format(html), :fixup_tags => true)
+    doc1 = Hpricot(simple_tasty_format(html), :fixup_tags => true)
 
     # Делаем сканирование элементов
     allowed_tags = Set.new(%w(a b i s br img p strong em ul ol li h1 h2 h3 h4 h5 h6 div object iframe param))
     allowed_attributes = Set.new(%w(class id href alt src width height title border tag name value style))
     
-    doc = Hpricot(sanitize(doc.to_html, :tags => allowed_tags, :attributes => allowed_attributes), :fixup_tags => true)
+    doc = Hpricot(sanitize(doc1.to_html, :tags => allowed_tags, :attributes => allowed_attributes), :fixup_tags => true)
 
     # Удаляем пустые параграфы
     # (doc/"//p[text()='']").remove    
@@ -269,12 +269,12 @@ module WhiteListHelper
     html = auto_link(doc.to_html.gsub(/<p>\s*?<\/p>/mi, ''))
 
     if link_target
-      doc = Hpricot(html)
-      (doc/"//a").each do |a|
+      dd = Hpricot(html.to_s)
+      (dd/"//a").each do |a|
         a['target'] = link_target unless a.attributes['href'].blank?
       end
       
-      html = doc.to_html
+      html = dd.to_html
     end
 
     html
