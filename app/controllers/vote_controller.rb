@@ -10,11 +10,7 @@ class VoteController < ApplicationController
     def vote(rating)
       @entry.vote(current_user, rating)
       
-      render :json => @entry.rating.value
-
-      # render :update do |page|
-      #   page.replace_html "entry_rating_#{@entry.id}", "#{@entry.rating.value}"
-      # end
+      render :json => @entry.rating.try(:value) || 0
     end
 
     def require_voteable_entry_id
