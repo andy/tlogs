@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120620123133) do
+ActiveRecord::Schema.define(:version => 20120625150206) do
 
   create_table "attachments", :force => true do |t|
     t.integer "entry_id",     :default => 0,  :null => false
@@ -326,6 +326,20 @@ ActiveRecord::Schema.define(:version => 20120620123133) do
   add_index "relationships", ["reader_id", "votes_value"], :name => "index_relationships_on_reader_id_and_votes_value"
   add_index "relationships", ["user_id", "reader_id", "position"], :name => "index_relationships_on_user_id_and_reader_id_and_position"
   add_index "relationships", ["user_id", "reader_id"], :name => "index_relationships_on_user_id_and_reader_id", :unique => true
+
+  create_table "reports", :force => true do |t|
+    t.integer  "reporter_id",      :null => false
+    t.integer  "content_id",       :null => false
+    t.string   "content_type",     :null => false
+    t.integer  "content_owner_id", :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "reports", ["content_id", "content_type"], :name => "index_reports_on_content_id_and_content_type"
+  add_index "reports", ["content_owner_id"], :name => "index_reports_on_content_owner_id"
+  add_index "reports", ["reporter_id", "content_id", "content_type"], :name => "index_reports_on_reporter_id_and_content_id_and_content_type", :unique => true
+  add_index "reports", ["reporter_id"], :name => "index_reports_on_reporter_id"
 
   create_table "sidebar_elements", :force => true do |t|
     t.integer "sidebar_section_id",               :null => false
