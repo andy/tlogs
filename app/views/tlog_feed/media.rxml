@@ -5,7 +5,7 @@ xml.rss :version => '2.0', 'xmlns:media' => 'http://search.yahoo.com/mrss', 'xml
     userpic_url = nil
     if current_site
       userpic_url   = current_site.userpic.url(:thumb64) if current_site.userpic?
-      userpic_url ||= current_site.avatar.public_filename if current_site.avatar
+      # userpic_url ||= current_site.avatar.public_filename if current_site.avatar
     end
     
     xml.atom :icon, userpic_url ? image_path(userpic_url) : image_path('logo.png')
