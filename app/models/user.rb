@@ -49,7 +49,7 @@ class User < ActiveRecord::Base
   ## associations
 	has_many      :entries, :dependent => :destroy
 	has_many      :anonymous_entries, :class_name => 'AnonymousEntry'
-	has_one       :avatar, :dependent => :destroy
+  # has_one       :avatar, :dependent => :destroy
   has_one       :tlog_settings, :dependent => :destroy
   has_one       :tlog_design_settings, :dependent => :destroy
   has_one       :mobile_settings, :dependent => :destroy  
@@ -162,7 +162,7 @@ class User < ActiveRecord::Base
                 map(&:first).                         # keep only ids
                 reverse
 
-    User.find_all_by_id(user_ids.shuffle[0...(options[:limit] * 2)], :include => [:avatar, :tlog_settings]).select { |u| u.can_be_viewed_by?(user) }[0..options[:limit]]
+    User.find_all_by_id(user_ids.shuffle[0...(options[:limit] * 2)], :include => [:tlog_settings]).select { |u| u.can_be_viewed_by?(user) }[0..options[:limit]]
   end
 
   

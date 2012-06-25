@@ -153,7 +153,7 @@ class ApplicationController < ActionController::Base
       
       Rails.logger.debug "* preload: current_site url is #{url || 'nil'}, subdomain is #{request.subdomains.join('.') || 'nil'}, domain #{request.domain || 'none'}"
       
-      @current_site = User.find_by_url(url, :include => [:tlog_settings, :avatar]) unless url.blank?
+      @current_site = User.find_by_url(url, :include => [:tlog_settings]) unless url.blank?
       
       true
     end

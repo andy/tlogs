@@ -246,7 +246,7 @@ class MainController < ApplicationController
   
   def new_users
     @page  = current_page
-    @users = User.paginate(:page => @page, :per_page => 6, :include => [:avatar, :tlog_settings], :order => 'users.id DESC', :conditions => 'users.is_confirmed = 1 AND users.entries_count > 0')
+    @users = User.paginate(:page => @page, :per_page => 6, :include => [:tlog_settings], :order => 'users.id DESC', :conditions => 'users.is_confirmed = 1 AND users.entries_count > 0')
     @title = 'все пользователи тейсти'
     render :action => 'users'
   end
