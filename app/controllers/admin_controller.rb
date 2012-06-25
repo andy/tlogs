@@ -32,7 +32,7 @@ class AdminController < ApplicationController
         # entry.is_good         = false
         # entry.is_everything   = false
 
-        entry.save!
+        entry.save(false)
       end
     end
 
