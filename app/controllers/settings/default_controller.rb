@@ -112,7 +112,7 @@ class Settings::DefaultController < ApplicationController
       if params[:user][:userpic]
         @user.userpic = params[:user][:userpic]
         # destroy legacy avatar if any
-        current_user.avatar.destroy if current_user.avatar
+        # current_user.avatar.destroy if current_user.avatar
 
         @user.valid?
         if !@user.errors.on(:userpic)
@@ -137,7 +137,7 @@ class Settings::DefaultController < ApplicationController
     render :nothing => true and return unless request.delete?
 
     # destroy legacy avatar
-    current_user.avatar.destroy if current_user.avatar
+    # current_user.avatar.destroy if current_user.avatar
 
     # clear userpic paperclip way
     if current_user.userpic?
