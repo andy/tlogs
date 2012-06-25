@@ -184,8 +184,13 @@ class PublishController < ApplicationController
       #   :backtrace      => ex.backtrace,
       #   :parameters     => params
       # )
-
-      @attachment.valid? unless @attachment.nil? # force error checking
+      
+      begin
+        @attachment.valid? unless @attachment.nil? # force error checking
+      rescue MiniMagick::Error => ex
+        @attachment.errors.add(:uploaded_data, 'плохой файл с картинкой, не удалось распознать')
+      end
+      
       render :action => 'edit'
     rescue Exception => ex
       HoptoadNotifier.notify(
@@ -197,7 +202,11 @@ class PublishController < ApplicationController
       
       raise ex if Rails.env.development?
 
-      @attachment.valid? unless @attachment.nil?
+      begin
+        @attachment.valid? unless @attachment.nil?
+      rescue MiniMagick::Error => ex
+        @attachment.errors.add(:uploaded_data, 'плохой файл с картинкой, не удалось распознать')
+      end
       render :action => 'edit'
     end
 
