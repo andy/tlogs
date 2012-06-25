@@ -247,7 +247,7 @@ class TlogController < ApplicationController
     
     def set_time
       if (1..12).to_a.include?(params[:month].to_i) && (1..31).to_a.include?(params[:day].to_i)
-        @time = [params[:year], params[:month], params[:day]].join('-').to_date.to_time
+        @time = [params[:year], params[:month], params[:day]].join('-').to_date.to_time rescue nil
       end
       redirect_to user_url(current_site) and return if @time.nil?
       
