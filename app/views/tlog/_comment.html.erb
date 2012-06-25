@@ -5,7 +5,7 @@
 %>
 <a name="comment<%= comment.id %>"></a>
 <%= "<a name='new'></a>" if @last_comment_viewed == (@comments || @entry.comments).index(comment) %>
-<div class="t-post-comment post_comment<%= ' post_comment_new t-post-comment-new' if @last_comment_viewed <= (@comments || @entry.comments).index(comment) %><%= ' t-post-anonymous-comment post_comment_by_anonymous' if is_anonymous_author %>" id="<%= dom_id(comment) %>" data-base-url="<%= user_url(@entry.author, entry_comment_path(@entry, comment)).downcase %>" data-comment-id="<%= comment.id %>">
+<div class="t-post-comment post_comment<%= ' post_comment_new t-post-comment-new' if @last_comment_viewed <= (@comments || @entry.comments).index(comment) %><%= ' t-post-anonymous-comment post_comment_by_anonymous' if is_anonymous_author %>" id="<%= dom_id(comment) %>" data-base-url="<%= anonymous_entry ? service_url("/main/anonymous/comment_action/#{comment.id}?action=") : user_url(@entry.author, entry_comment_path(@entry, comment)).downcase %>" data-comment-id="<%= comment.id %>">
 	<div class='rel'>
 		<div class='post_comment_avatar<%= ' post_comment_avatar_anonymous' if is_anonymous_author %>'>
 			<%= link_to userpic_tag(comment.user), user_url(comment.user) if !is_anonymous_author && !comment.user.nil? && comment.user.userpic? %>

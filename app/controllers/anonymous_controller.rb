@@ -1,13 +1,15 @@
 class AnonymousController < ApplicationController
-  before_filter :require_current_user, :only => [:subscribe, :unsubscribe, :comment, :comment_destroy]
-  before_filter :require_confirmed_current_user, :only => [:subscribe, :unsubscribe, :comment_destroy, :comment]
+  before_filter :require_current_user, :only => [:subscribe, :unsubscribe, :comment, :comment_destroy, :comment_action]
+
+  before_filter :require_confirmed_current_user, :only => [:subscribe, :unsubscribe, :comment_destroy, :comment, :comment_action]
   
   before_filter :preload_entry, :only => [:show, :preview, :toggle, :comment, :subscribe, :unsubscribe, :mentions]
+
   before_filter :require_commentable_entry, :only => [:comment, :subscribe, :unsubscribe, :mentions]
 
   before_filter :require_post_request, :only => [:preview, :comment, :toggle, :subscribe, :unsubscribe, :ban_ac]
 
-  before_filter :require_not_ac_banned, :only => [:preview, :comment, :comment_destroy, :mentions]
+  before_filter :require_not_ac_banned, :only => [:preview, :comment, :comment_destroy, :mentions, :comment_action]
 
   before_filter :require_moderator, :only => [:toggle, :ban_ac]
   
@@ -37,7 +39,7 @@ class AnonymousController < ApplicationController
   
   # смотрим запись
   def show    
-    @comments = @entry.comments.active.all(:include => :user, :order => 'comments.id').reject { |c| c.user.nil? } if @entry.comments_count > 0
+    @comments = @entry.comments.enabled.all(:include => :user, :order => 'comments.id').reject { |c| c.user.nil? } if @entry.comments_count > 0
 
     @comment = Comment.new
     
@@ -61,10 +63,14 @@ class AnonymousController < ApplicationController
     @comment = Comment.find_by_id(params[:id])
     
     render :json => false and return unless @comment
+    
+    render :json => false and return if @comment.is_disabled?
 
     @comment.disable! if @comment.is_owner?(current_user)
     
-    render :json => { :restorable => false, :blacklistable => (@comment.is_disabled? ? @comment.suggest_author_blacklisting_by?(current_user) : false) }
+    reportable = @comment.can_be_reported_by?(current_user) && !@comment.was_reported_by?(current_user)
+    
+    render :json => { :reportable => reportable }
   end
   
   
@@ -92,6 +98,23 @@ class AnonymousController < ApplicationController
     end
   end
   
+  def comment_action
+    render :nothing => true and return unless request.post?
+    
+    render :json => false, :status => 403 and return unless current_user
+  
+    @comment = Comment.find params[:id]
+        
+    render :json => false, :status => 404 and return unless @comment
+    
+    render :json => false, :status => 404 and return unless @comment.entry.is_anonymous?
+    
+    render :json => false, :status => 403 and return unless @comment.can_be_reported_by?(current_user)
+    
+    @comment.report!(current_user) unless @comment.was_reported_by?(current_user)
+    
+    render :json => true    
+  end
   
   # предпросматриваем комментарий
   def preview
