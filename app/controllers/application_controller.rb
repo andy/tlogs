@@ -200,7 +200,7 @@ class ApplicationController < ActionController::Base
     def require_current_site
       return true if current_site && current_site.is_a?(User)
 
-      render :template => 'global/tlog_not_found', :content_type => Mime::HTML.to_s, :layout => false, :status => 404
+      render :template => 'global/tlog_not_found', :layout => false, :status => 404
 
       false
     end
