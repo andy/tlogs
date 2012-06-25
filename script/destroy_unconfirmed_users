@@ -1,0 +1,16 @@
+#!/usr/bin/env script/runner
+
+ids = User.all(:select => 'id', :conditions => "is_confirmed = 0 AND created_at < '#{2.weeks.ago.to_s(:db)}'").map(&:id)
+ids.sort.each do |id|
+	u = User.find(id)
+	next if u.openid.present?
+	puts u.id.to_s + ' ' + u.is_confirmed?.to_s + ' ' + u.url + ' ' + u.email
+
+	begin
+		u.destroy
+	rescue ActiveRecord::RecordInvalid
+		u.url = 'kvjlhlwqkjrhlqkwjh'
+		u.save(false)
+		u.destroy
+	end
+end
