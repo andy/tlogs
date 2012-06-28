@@ -73,7 +73,13 @@ class AccountController < ApplicationController
       user   = nil
       user   = User.active.find_by_email params[:email] unless params[:email].blank?
       user ||= User.active.find_by_url params[:url] unless params[:url].blank?
-      if user
+      if user && user.email && user.email.is_confirmed?
+        # бывает когда пароль не установлен и при этом нет openid
+        if user.password.blank?
+          user.password = SecureRandom.hex(8)
+          user.save(false)
+        end        
+        
         if user.crypted_password
           Emailer.deliver_lost_password(current_service, user)
           flash[:lost_user_id] = user.id
@@ -156,6 +162,8 @@ class AccountController < ApplicationController
     
       # проверяем на левые емейл адреса
       @user.errors.add(:email, 'извините, но выбранный вами почтовый сервис находится в черном списке') if @user.email.any? && Disposable::is_disposable_email?(@user.email)
+      
+      @user.errors.add(:password, 'пожалуйста, укажите пароль') if @user.password.blank?
 
       @user.settings = {}
       @user.is_confirmed = true
