@@ -153,7 +153,7 @@ class Entry < ActiveRecord::Base
     true
   end
   
-  after_save do |entry|
+  after_update do |entry|
     # обновляем таймстамп который используется для инвалидации кеша тлоговых страниц, но только в том случае
     #  если меняются штуки отличные от комментариев
     entry.author.update_attributes(:entries_updated_at => Time.now) unless (entry.changes.keys - ['comments_count', 'updated_at']).blank?
