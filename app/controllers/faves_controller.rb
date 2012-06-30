@@ -39,11 +39,13 @@ class FavesController < ApplicationController
     entry = Entry.find params[:id]
     render :text => 'entry not found' and return unless entry
 
-    fave = Fave.find_or_initialize_by_user_id_and_entry_id current_user.id, entry.id
-    if fave.new_record? && !entry.is_private? && entry.user_id != current_user.id
-      fave.entry_type = entry[:type]
-      fave.entry_user_id = entry.user_id
-      fave.save rescue nil
+    Fave.transaction do
+      fave = Fave.find_or_initialize_by_user_id_and_entry_id current_user.id, entry.id
+      if fave.new_record? && !entry.is_private? && entry.user_id != current_user.id
+        fave.entry_type = entry[:type]
+        fave.entry_user_id = entry.user_id
+        fave.save rescue nil
+      end
     end
     
     render :json => true  
@@ -53,8 +55,10 @@ class FavesController < ApplicationController
     entry = Entry.find params[:id]
     render :text => 'entry not found' and return unless entry
 
-    fave = Fave.find_by_user_id_and_entry_id current_site.id, entry.id
-    fave.destroy if fave && fave.is_owner?(current_user)
+    Fave.transaction do
+      fave = Fave.find_by_user_id_and_entry_id current_site.id, entry.id
+      fave.destroy if fave && fave.is_owner?(current_user)
+    end
     
     render :update do |page|
       page.visual_effect :fade, entry.dom_id

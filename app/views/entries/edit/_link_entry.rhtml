@@ -1,12 +1,12 @@
 <div>
 	<label for='entry_data_part_1'>Ссылка: </label><br/>
-	<%= text_field 'entry', 'data_part_1' %>
+	<%= text_field 'entry', 'data_part_1', { :autocomplete => :off } %>
 	<%= tasty_error_message_on 'entry', 'data_part_1' %>
 </div>
 
 <div>
 	<label for='entry_data_part_2'>Текст для ссылки <em>(необязательное поле)</em>: </label><br/>
-	<%= text_field 'entry', 'data_part_2' %>
+	<%= text_field 'entry', 'data_part_2', { :autocomplete => :off } %>
 	<%= tasty_error_message_on 'entry', 'data_part_2' %>
 </div>
 

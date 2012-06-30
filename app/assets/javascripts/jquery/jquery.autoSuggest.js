@@ -60,6 +60,14 @@
 
         function countValidItems(data) { var n = 0; for (k in data) if (data.hasOwnProperty(k)) n++; return n; }
 
+        function getExtraParams() {
+            var params = opts.extraParams;
+            if($.isFunction(params)) {
+                return params();
+            }
+            return params;
+        }
+
         var d_fetcher;
         var request = null;
         if(typeof data == "function") {
@@ -70,7 +78,7 @@
                 if(opts.retrieveLimit){
                     limit = "&limit="+encodeURIComponent(opts.retrieveLimit);
                 }
-                request = $.getJSON(data+"?"+opts.queryParam+"="+encodeURIComponent(query)+limit+opts.extraParams, function(data){
+                request = $.getJSON(data+"?"+opts.queryParam+"="+encodeURIComponent(query)+limit+getExtraParams(), function(data){
                     var new_data = opts.retrieveComplete.call(this, data);
                     next(new_data, query);
                 });
@@ -95,7 +103,7 @@
                     remove: function(value) {
                                 values_input.val(values_input.val().replace(","+value+",",","));
                                 selections_holder.find('li[data-value = "' + value + '"]').remove();
-                            },
+                            }
                 });
                 var input = $(this);
                 input.attr("autocomplete","off").addClass("as-input").attr("id",x_id);

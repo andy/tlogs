@@ -28,9 +28,10 @@ javascripts:
     # flash: swfobject & swfupload
     - app/assets/javascripts/swf/swfobject.min.js
     - app/assets/javascripts/swf/swfupload.min.js
-    # - app/assets/javascripts/swf/swfupload.cookies.min.js
+    #- app/assets/javascripts/swf/swfupload.cookies.min.js
     - app/assets/javascripts/swf/swfupload.speed.min.js
     - app/assets/javascripts/tasty/uploader.js
+    #- app/assets/javascripts/jquery/jquery.autoSuggest.js
   
   specials:
     - app/assets/javascripts/jquery/jquery-1.7.2.min.js
@@ -98,7 +99,7 @@ javascripts:
     - app/assets/javascripts/jquery/jquery.timeago.min.js
     - app/assets/javascripts/jquery/jquery.timeago.ru.min.js
     - app/assets/javascripts/jquery/jquery.mousewheel-3.0.6.pack.js
-    - app/assets/javascripts/jquery/jquery.autoSuggest.js
+    #- app/assets/javascripts/jquery/jquery.autoSuggest.js
     #- app/assets/javascripts/jquery/jquery.popupWindow.min.js
     #- app/assets/javascripts/jquery/jquery.placeholder.min.js
     - app/assets/javascripts/fancybox/jquery.fancybox.pack.js
@@ -126,13 +127,14 @@ stylesheets:
     - app/assets/stylesheets/jquery.slides.css
     - app/assets/stylesheets/html5closing.css
     - app/assets/stylesheets/antiscroll.css
+    #- app/assets/stylesheets/jquery.autoSuggest.css
   
   chat:
     - app/assets/stylesheets/chat/scrollbar.css
     - app/assets/stylesheets/chat/formalize.css
     - app/assets/stylesheets/twipsy.css
     - app/assets/stylesheets/fancybox/jquery.fancybox.css
-    - app/assets/stylesheets/jquery.autoSuggest.css
+    #- app/assets/stylesheets/jquery.autoSuggest.css
     - app/assets/stylesheets/chat/chat.css
 
   tlog:

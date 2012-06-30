@@ -46,9 +46,9 @@
       
           <div id='entry_tags'>
             <label for='entry_tag_list'>Теги: </label><br/>
-            <%= text_field 'entry', 'tag_list', { :id => 'entry_tag_list' } %>
+            <%= text_field 'entry', 'tag_list', { :id => 'entry_tag_list', :autocomplete => 'off' } %>
             <%= tasty_error_message_on 'entry', 'tag_list' %>
-            <div class='tags_comments'>Указывайте теги через запятую. Вы можете указать до 10 тегов.</div>
+            <div class='tags_comments'>Указывайте теги через запятую. Вы можете указать до 20 тегов.</div>
           </div>
         </div>
       </div>
@@ -92,5 +92,9 @@
         jQuery('.visibility_comments').hide(300);
       }
     });
+    
+    // var tags = <%#= current_site.tags.to_json %>;
+    // var current_tags = <%#= @entry.tags.to_json %>;
+    // jQuery('#entry_tag_list').autoSuggest(tags, {selectedItemProp: "name", searchObjProps: "name", preFill: current_tags, matchCase: false, neverSubmit: true, startText: '', selectionLimit: 20, emptyText: 'нажмите tab, чтобы добавить тег' });
   });
 </script>

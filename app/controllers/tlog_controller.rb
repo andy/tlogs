@@ -266,13 +266,15 @@ class TlogController < ApplicationController
       @entry = Entry.find_by_id_and_user_id params[:id], current_site.id
       if @entry.nil? || (@entry.is_anonymous? && !is_owner?)
         respond_to do |format|
+          @title = 'Ошибка. Запрошенная вами запись не найдена.'
           format.html { render_tasty_404("Запрошенная вами запись не найдена.<br/><br/><a href='#{user_url(current_site)}'>&#x2190; вернуться в #{current_site.gender("его", "её")} тлог</a>") }
           format.js { render :text => "record with id #{params[:id].to_i} was not found in this tlog" }
         end
         return false
       elsif @entry.is_private? && !is_owner?
         respond_to do |format|
-          format.html { render :text => "У Вас недостаточно прав для просмотра этой записи.<br/><br/><a href='#{user_url(current_site)}'>&#x2190; вернуться в #{current_site.gender("его", "её")} тлог</a>", :layout => '404', :status => 403 }
+          @title = 'Ошибка. У вас недостаточно прав для просмотра этой записи'
+          format.html { render :text => "У вас недостаточно прав для просмотра этой записи.<br/><br/><a href='#{user_url(current_site)}'>&#x2190; вернуться в #{current_site.gender("его", "её")} тлог</a>", :layout => '404', :status => 403 }
           format.js { render :text => 'this record is private and you have no access to it' }
         end
         return false
