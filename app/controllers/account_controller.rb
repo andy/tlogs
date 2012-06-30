@@ -73,7 +73,7 @@ class AccountController < ApplicationController
       user   = nil
       user   = User.active.find_by_email params[:email] unless params[:email].blank?
       user ||= User.active.find_by_url params[:url] unless params[:url].blank?
-      if user && user.email && user.email.is_confirmed?
+      if user && user.email && user.is_confirmed?
         # бывает когда пароль не установлен и при этом нет openid
         if user.password.blank?
           user.password = SecureRandom.hex(8)
