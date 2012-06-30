@@ -71,9 +71,9 @@ class AccountController < ApplicationController
   def lost_password
     if request.post?
       user   = nil
-      user   = User.active.find_by_email params[:email] unless params[:email].blank?
-      user ||= User.active.find_by_url params[:url] unless params[:url].blank?
-      if user && user.email && user.is_confirmed?
+      user   = User.find_by_email params[:email] unless params[:email].blank?
+      user ||= User.find_by_url params[:url] unless params[:url].blank?
+      if user && user.email && user.is_confirmed? && !user.is_disabled?
         # бывает когда пароль не установлен и при этом нет openid
         if user.password.blank?
           user.password = SecureRandom.hex(8)
@@ -87,6 +87,10 @@ class AccountController < ApplicationController
         else
           flash[:bad] = 'У Вас не установлен пароль'
         end
+      elsif user && user.is_disabled?
+        flash[:bad] = 'Аккаунт, привязанный к этому адресу заморожен или удален. С вопросом о восстановлении обратитесь, пожалуйста, в службу поддержки.'
+      elsif user && !user.is_confirmed?
+        flash[:bad] = 'К сожалению, ваш аккаунт не подтвержден. Обратитесь, пожалуйста, в службу поддержки.'
       else
         flash[:bad] = 'К сожалению мы не смогли найти указанного вами пользователя'
       end
