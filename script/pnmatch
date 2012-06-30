@@ -1,0 +1,88 @@
+#!/usr/bin/env script/runner
+
+raise "- no url specified" unless ARGV[0]
+
+u = User.find_by_url ARGV[0]
+
+raise "- user not found (#{ARGV[0]})" if u.nil?
+  
+
+puts "+ looking up votes for #{u.url}... (might take some time)"
+positive = EntryVote.positive.find_all_by_user_id(u.id, :order => 'id desc', :limit => 50)
+negative = EntryVote.negative.find_all_by_user_id(u.id, :order => 'id desc', :limit => 50)
+
+def show_match ary, msg
+  sorted = ary.sort_by { |k, v| v }.reverse
+  print "  #{msg}: "
+  sorted[0..20].each do |h|
+    print "#{User.find(h[0]).url} (#{h[1]}), "
+  end
+  print "\n"
+end
+
+ppmatch = {}
+pnmatch = {}
+npmatch = {}
+nnmatch = {}
+
+# collect user ids
+puts "+ analyzing positive votes"
+positive.each do |vote|
+  vote.entry.votes.positive.map(&:user_id).each do |pid|
+    next if pid == u.id
+    ppmatch[pid] = (ppmatch[pid] || 0) + 1
+  end
+  
+  vote.entry.votes.negative.map(&:user_id).each do |nid|
+    next if nid == u.id
+    pnmatch[nid] = (pnmatch[nid] || 0) + 1
+  end
+end
+
+# collect user ids
+puts "+ analyzing negative votes"
+negative.each do |vote|
+  vote.entry.votes.positive.map(&:user_id).each do |pid|
+    next if pid == u.id
+    npmatch[pid] = (npmatch[pid] || 0) + 1
+  end
+  
+  vote.entry.votes.negative.map(&:user_id).each do |nid|
+    next if nid == u.id
+    nnmatch[nid] = (nnmatch[nid] || 0) + 1
+  end
+end
+
+show_match ppmatch, "pp"
+show_match pnmatch, "pn"
+
+puts ''
+
+show_match npmatch, "np"
+show_match nnmatch, "nn"
+
+puts ''
+
+overall = {}
+ppmatch.each do |k, v|
+  overall[k]    ||= { :p => 0, :n => 0 }
+  overall[k][:p] += v
+end
+pnmatch.each do |k, v|
+  overall[k]    ||= { :p => 0, :n => 0 }
+  overall[k][:n] += v
+end
+npmatch.each do |k, v|
+  overall[k]    ||= { :p => 0, :n => 0 }
+  overall[k][:n] += v
+end
+nnmatch.each do |k, v|
+  overall[k]    ||= { :p => 0, :n => 0 }
+  overall[k][:p] += v
+end
+
+show_match overall.map { |k, v| [k, v[:p] - v[:n]] }, 'best'
+show_match overall.map { |k, v| [k, v[:n] - v[:p]] }, 'worst'
+
+puts ''
+puts 'Done'
