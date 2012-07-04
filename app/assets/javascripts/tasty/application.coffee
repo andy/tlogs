@@ -12,6 +12,9 @@ Tasty =
     Tasty.shortcut.ready() if jQuery('#t-act-shortcut')
     Tasty.iscroll.ready() if jQuery('.t-iscrollable')
     Tasty.comments.ready() if jQuery('.t-post-comments')
+    jQuery('.main_page .top_menu sup.t-act-goto-convos').live "click", (event) ->
+      window.location.href = '/convos'
+      false
     Tasty.admin.ready() if is_admin? && is_admin && current_site && current_site == 'www'
   
     true
@@ -239,6 +242,9 @@ Tasty =
     event: (category, action, label = null, value = null) ->
       if _gaq?
     	  _gaq.push(['_trackEvent', category, action, label, value])
+
+      if mixpanel?
+        mixpanel.track([category, action, label, value].join(' '));
 
       true
 
