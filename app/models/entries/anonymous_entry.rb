@@ -98,9 +98,9 @@ class AnonymousEntry < Entry
   def entry_russian_dict; { :who => 'анонимка', :whom => 'анонимку' } end
   def excerpt
     if self.data_part_2.to_s.length > 0 
-      self.data_part_2.to_s.truncate(150).to_s
+      self.data_part_2.to_s.gsub(/<object.*?<\/object>/i, ' ').truncate(150).to_s
     else
-      self.data_part_1.to_s.truncate(150).to_s
+      self.data_part_1.to_s.gsub(/<object.*?<\/object>/i, ' ').truncate(150).to_s
     end
   end
   def self.new_from_bm(params)

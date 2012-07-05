@@ -44,7 +44,7 @@ class QuoteEntry < Entry
   
   def entry_russian_dict; { :who => 'цитата', :whom => 'цитату' } end
   def excerpt
-    self.data_part_1.to_s.truncate(150).to_s.gsub("\r", '').gsub("\n", ' ')
+    self.data_part_1.to_s.gsub(/<object.*?<\/object>/i, ' ').truncate(150).to_s.gsub("\r", '').gsub("\n", ' ')
   end
   def self.new_from_bm(params)
     self.new :data_part_1 => params[:c], :data_part_2 => "<a href='#{params[:url]}'>#{params[:title] || params[:url]}</a>"

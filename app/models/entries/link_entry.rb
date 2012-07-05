@@ -48,9 +48,9 @@ class LinkEntry < Entry
   def entry_russian_dict; { :who => 'ссылка', :whom => 'ссылку' } end
   def excerpt
     if self.data_part_2.to_s.length > 0
-      self.data_part_2.to_s.truncate(150).to_s.gsub("\r", '').gsub("\n", ' ')
+      self.data_part_2.to_s.gsub(/<object.*?<\/object>/i, ' ').truncate(150).to_s.gsub("\r", '').gsub("\n", ' ')
     elsif self.data_part_3.to_s.length > 0
-      self.data_part_3.to_s.truncate(150).to_s.gsub("\r", '').gsub("\n", ' ')
+      self.data_part_3.to_s.gsub(/<object.*?<\/object>/i, ' ').truncate(150).to_s.gsub("\r", '').gsub("\n", ' ')
     else
       'Ссылка'
     end

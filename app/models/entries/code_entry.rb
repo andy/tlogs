@@ -40,6 +40,6 @@ class CodeEntry < Entry
   def entry_russian_dict; { :who => 'код', :whom => 'код' } end
   
   def excerpt
-    self.data_part_1.to_s.truncate(150).to_s
+    self.data_part_1.to_s.gsub(/<object.*?<\/object>/i, ' ').truncate(150).to_s
   end
 end

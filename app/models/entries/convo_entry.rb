@@ -40,7 +40,7 @@ class ConvoEntry < Entry
   def entry_russian_dict; { :who => 'диалог', :whom => 'диалог' } end
   
   def excerpt
-    self.data_part_1.to_s.truncate(150).to_s
+    self.data_part_1.to_s.gsub(/<object.*?<\/object>/i, ' ').truncate(150).to_s
   end
   def self.new_from_bm(params)
     self.new :data_part_1 => params[:c], :data_part_2 => params[:title]
