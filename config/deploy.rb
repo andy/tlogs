@@ -24,7 +24,7 @@ set :repository, 'git://github.com/andy/tlogs.git'
 # :primary => true.
 
 role :db, "f1.tlogs.ru", :primary => true
-role :app, 'f1.tlogs.ru', 'f2.tlogs.ru', 'f3.tlogs.ru', 'f4.tlogs.ru'
+role :app, 'f2.tlogs.ru', 'f3.tlogs.ru', 'f4.tlogs.ru'
 role :web, 'f2.tlogs.ru'
 role :redis, 'f1.tlogs.ru'
 role :cache, 'f1.tlogs.ru', 'f2.tlogs.ru'
