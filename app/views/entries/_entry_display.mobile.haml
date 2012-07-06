@@ -12,4 +12,5 @@
     .t-entry-footer-ctl
       = content_tag :span, entry.rating.value > 0 ? "+#{entry.rating.value}" : entry.rating.value, :class => 't-entry-rating' if entry.is_voteable?
       = link_to entry.comments_count.zero? ? 'комментариев нет' : entry.comments_count.pluralize('комментарий', 'комментария', 'комментариев', true), user_url(entry.author, entry_path(entry)) unless hide_comments
+      =# link_to 'edit', user_url(entry.author, entry_path(entry)) if entry.can_delete?(current_user)
       =# link_to 'fave', '#'
