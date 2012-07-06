@@ -77,7 +77,7 @@ module WhiteListHelper
       next if paragraph.children.blank?
 
       paragraph.children.select { |e| e.text? }.each do |text|
-        new_text = auto_link(text.to_html)
+        new_text = auto_link(text.inner_text)
 
         # [andy] -> ссылка на пользователя
         new_text.gsub!(/(\[([a-z0-9_-]{2,20})\])/i) do
