@@ -27,7 +27,7 @@ role :db, "f1.tlogs.ru", :primary => true
 role :app, 'f2.tlogs.ru', 'f3.tlogs.ru', 'f4.tlogs.ru'
 role :web, 'f2.tlogs.ru'
 role :redis, 'f1.tlogs.ru'
-role :cache, 'f1.tlogs.ru', 'f2.tlogs.ru'
+role :cache, 'f3.tlogs.ru', 'f2.tlogs.ru'
 role :sphinx, 'f1.tlogs.ru'
 role :resque, 'f1.tlogs.ru'
 role :tasks, 'f1.tlogs.ru'
