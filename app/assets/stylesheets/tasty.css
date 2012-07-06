@@ -3357,6 +3357,9 @@ img.heart {
 .top_menu ul li a:hover {
 /*	-webkit-box-shadow: rgba(0, 0, 0, 0.199219) 0px 1px 1px;*/
 }
+.top_menu ul li sup a {
+  font-size: 9px;
+}
 
 .pref_link_tlog, .pref_new_entry {
 	font-size:0.67em;

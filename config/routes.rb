@@ -76,7 +76,7 @@ www_settings = lambda do |www|
 
   # account routes, jf helper methods
   www.login 'account/login', :controller => 'account', :action => 'login'
-  www.logout 'account/logout', :controller => 'account', :action => 'logout'
+  www.logout 'account/logout.:format', :controller => 'account', :action => 'logout'
   www.signup 'account/signup', :controller => 'account', :action => 'signup'
   www.lost_password 'account/lost_password', :controller => 'account', :action => 'lost_password'
   www.recover_password 'account/recover_password/:user_id/:secret', :controller => 'account', :action => 'recover_password'

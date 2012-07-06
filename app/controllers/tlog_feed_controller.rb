@@ -2,7 +2,7 @@ class TlogFeedController < ApplicationController
   layout nil
   before_filter :require_current_site, :require_confirmed_current_site
   before_filter :disable_rss_on_private_tlogs, :only => [:rss, :photos]
-  caches_action :photos, :last_personalized, :cache_path => Proc.new { |c| c.url_for(:expiring => (Time.now.to_i / 15.minutes).to_i, :page => c.params[:page]) }
+  caches_action :photos, :last_personalized, :cache_path => Proc.new { |c| c.url_for(:expiring => (Time.now.to_i / 15.minutes).to_i, :page => c.params[:page]) }, :expires_in => 15.minutes, :unless => Proc.new { |c| c.request.params[:cache] == 'false' }
 
   def rss
     @entries = current_site.recent_entries(:page => current_page)

@@ -20,7 +20,7 @@ class TlogController < ApplicationController
 
   # protect_from_forgery :only => [:relationship, :tags, :metadata, :subscribe, :unsubscribe]
 
-  caches_action :style
+  caches_action :style, :expires_in => 1.day
 
   helper :comments
 

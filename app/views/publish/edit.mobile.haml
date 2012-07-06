@@ -1,0 +1,68 @@
+.t-publish-edit
+  %h1
+    = @entry.new_record? ? 'Добавить' : 'Редактировать'
+    = @entry.to_russian :whom
+  
+  %form{ :method => 'post' }
+    %input{ :type => 'hidden', :name => 'entry[authenticity_token]', :value => form_authenticity_token }
+    %input{ :type => 'hidden', :name => 'utf8', :value => '✓' }
+    - unless @new_record
+      %input{ :type => 'hidden', :name => 'entry[id]', :value => @entry.id }
+    %input{ :type => 'hidden', :name => 'entry[type]', :value => @entry.type }
+
+    .ui-hide-label{ :data => { :role => 'fieldcontain' } }
+      %label{ :for => 'entry_data_part_2' } Заголовок
+      %input{ :type => 'text', :name => 'entry[data_part_2]', :id => 'entry_data_part_2', :autocomplete => :off, :value => @entry.data_part_2, :placeholder => 'Заголовок' }
+
+    .ui-hide-label{ :data => { :role => 'fieldcontain' } }
+      %label{ :for => 'entry_data_part_1' } Текст поста
+      %textarea{ :name => 'entry[data_part_1]', :id => 'entry_data_part_1', :placeholder => 'Текст' }= @entry.data_part_2
+    
+    - if @entry.visibility != 'voteable' || @new_record
+      %div{ :data => { :role => 'fieldcontain' } }
+        -# label{ :for => 'entry_visibility' } Тип записи
+        = select :entry, :visibility, @new_record ? entry_visibility_new(current_site) : entry_visibility_edit(current_site, @entry), {}, { 'data-mini' => 'true' }
+        - limit = current_site.visibility_limit
+        - if limit[:mainpageable_entries]
+          .visibility_comments
+            %b Важно!
+            Вы можете публиковать не более
+            = limit[:mainpageable_entries]
+            = Russian.p(limit[:mainpageable_entries], 'записи', 'записей', 'записей')
+            в прямой эфир, и не более
+            = limit[:voteable_entries]
+            = Russian.p(limit[:voteable_entries], 'записи', 'записей', 'записей')
+            с голосованием в течение 24-х часов. Публикации в личный тлог
+            %b никак не ограничиваются.
+            Снять ограничения можно
+            = link_to 'оплатив сервис &rarr;', user_url(current_site, settings_premium_path)
+        - else
+          .visibility_comments
+            %b Жизнь удалась.
+            Вы никак не ограничены в количестве публикаций в прямой эфир.    
+    
+    .ui-hide-label{ :data => { :role => 'fieldcontain' } }
+      %label{ :for => 'entry_tag_list' } Теги
+      %input{ :type => 'text', :name => 'entry[tag_list]', :id => 'entry_tag_list', :autocomplete => :off, :data => { :mini => 'true' }, :value => @entry.tag_list, :placeholder => 'Теги' }    
+  
+    %input{ :type => 'submit', :value => 'Сохранить', :data => { :icon => 'check', :iconpos => 'right' } }
+
+:javascript
+  if(jQuery('#entry_visibility').val() == 'mainpageable' || jQuery('#entry_visibility').val() == 'voteable') {
+    jQuery('#entry_nsfw_holder').show().trigger( 'updatelayout' );
+    jQuery('.visibility_comments').show().trigger( 'updatelayout' );
+  } else {
+    jQuery('#entry_nsfw_holder').hide().trigger( 'updatelayout' );
+    jQuery('.visibility_comments').hide().trigger( 'updatelayout' );
+  }
+  
+  jQuery('#entry_visibility').change(function() {
+    if(jQuery(this).val() == 'mainpageable' || jQuery(this).val() == 'voteable') {
+      jQuery('#entry_nsfw_holder').show(300).trigger( 'updatelayout' );
+      jQuery('.visibility_comments').show(300).trigger( 'updatelayout' );
+    } else {
+      jQuery('#entry_nsfw_holder').hide(300).trigger( 'updatelayout' );
+      jQuery('.visibility_comments').hide(300).trigger( 'updatelayout' );
+    }
+  });
+  

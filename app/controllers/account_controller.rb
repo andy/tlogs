@@ -30,7 +30,8 @@ class AccountController < ApplicationController
           login_with_openid @user.openid
       # иначе, даже если это openid пользователь - авторизуем по емейлу
       else
-        cookies[:t] = {
+        t_key = current_service.is_mobile? ? 'tm' : 't'
+        cookies[t_key.to_sym] = {
             :value => [@user.id, @user.signature].pack('LZ*').to_a.pack('m').chop,
             :expires => 1.year.from_now,
             :domain => current_service.cookie_domain
@@ -127,8 +128,9 @@ class AccountController < ApplicationController
   def logout
     redirect_to service_url and return unless request.post?
 
-    cookies.delete :t, :domain => current_service.cookie_domain
+    cookies.delete current_service.is_mobile? ? :tm : :t, :domain => current_service.cookie_domain
     cookies.delete :s, :domain => current_service.cookie_domain
+    
     reset_session
     
     respond_to do |wants|
@@ -147,6 +149,9 @@ class AccountController < ApplicationController
             page << "window.location.href = #{service_url.to_json};"
           end
         end
+      end
+      wants.mobile do
+        render :json => true
       end
     end
   end
@@ -177,7 +182,8 @@ class AccountController < ApplicationController
         Emailer.deliver_signup(current_service, @user)
         @invitation.update_attribute(:invitee_id, @user.id)
 
-        cookies[:t] = {
+        t_key = current_service.is_mobile? ? 'tm' : 't'
+        cookies[t_key.to_sym] = {
             :value => [@user.id, @user.signature].pack('LZ*').to_a.pack('m').chop,
             :expires => 1.year.from_now,
             :domain => current_service.cookie_domain
@@ -298,7 +304,8 @@ class AccountController < ApplicationController
     end
     
     def login_user(user, options = {})
-      cookies[:l] = {
+      l_key = current_service.is_mobile? ? 'lm' : 'l'
+      cookies[l_key.to_sym] = {
           :value => options[:remember],
           :expires => 1.year.from_now
         } if options[:remember]
@@ -306,13 +313,17 @@ class AccountController < ApplicationController
       session[:u] = user.id
 
       # result redirect
-      redirect = options[:redirect_to]
-      if redirect.blank? && session[:r]
-        redirect = session[:r]
-        redirect = user_url(user, redirect) if redirect && redirect.starts_with?('/')
-        session[:r] = nil
+      if current_service.is_mobile?
+        redirect_to '/'
+      else
+        redirect = options[:redirect_to]
+        if redirect.blank? && session[:r]
+          redirect = session[:r]
+          redirect = user_url(user, redirect) if redirect && redirect.starts_with?('/')
+          session[:r] = nil
+        end
+        redirect_to redirect || user_url(user)
       end
-      redirect_to redirect || user_url(user)
     end
     
     def redirect_home_if_current_user

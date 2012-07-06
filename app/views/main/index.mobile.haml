@@ -1,11 +1,20 @@
 - news = User.find_by_url 'news'
 - news_count = news.new_entries_count_for(current_user)
 - news_count = 15
+
+%div{:data => {:role => 'header', :position => 'inline'}}
+  = link_to 'Refresh', '#', 'data-icon' => 'refresh', 'data-iconpos' => 'notext', 'data-refresh-url' => service_url
+  %h1 Ммм... тейсти
+  - if current_user
+    = link_to 'Выйти', service_url(logout_path), 'data-icon' => 'delete', 'data-iconpos' => 'notext', :class => 'ui-btn-right t-act-logout'
+  - else
+    = link_to 'Войти', service_url(login_path), 'data-icon' => 'home', 'data-iconpos' => 'notext', :class => 'ui-btn-right'
+
 %div{:data => {:role => 'content'}}
   .content-primary
     %center
       %h3= image_tag 'logo.png'
-      %p мобильная версия сайта
+      %p мммобильная версия
   
     %ul{:data => {:role => "listview", :inset => "true"}}
       %li{:data => {:role => 'list-divider'}} Общее
@@ -18,12 +27,12 @@
       - if current_user
         %li= link_to 'Моё', main_url(:action => :my)
         %li= link_to 'Мой тлог', user_url(current_user)
+        %li= link_to 'Написать пост', user_url(current_user, publish_path(:action => :text))
         %li= link_to 'Друзья', main_url(:action => :fl)
       - else
         %li= link_to 'Войти', login_path
 
     %p
-      %em Ваши вопросы и пожелания отправляйте на адрес feedback@mmm-tasty.ru.
-
-- content_for :header_r do
-  = link_to 'Обновить', '', 'data-icon' => 'refresh', 'data-iconpos' => 'notext', :class => 't-btn-refresh-main'
+      %em
+        Ваши вопросы и пожелания отправляйте на адрес
+        = mail_to 'feedback@mmm-tasty.ru', 'feedback@mmm-tasty.ru'

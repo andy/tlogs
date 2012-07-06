@@ -4,25 +4,21 @@
   </div>
   
   <div class='ui-body'>
-  	<% form_for :user, @user do |f| %>
-      <div class='t-account-login-email' data-role="fieldcontain">
+  	<% form_for :user, @user, :html => { :class => 't-form-login' } do |f| %>
+      <div class='t-account-login-email ui-hide-label' data-role="fieldcontain">
       	<label for="user_email">email:</label>
-    		<%= f.text_field :email %>
+    		<%= f.text_field :email, :placeholder => 'email', 'data-mini' => 'true' %>
     		<%= tasty_error_message_on('user', 'email') %>
       </div>
-      <div class='t-account-login-password' data-role="fieldcontain">
+      <div class='t-account-login-password ui-hide-label' data-role="fieldcontain">
       	<label for="user_password">пароль:</label>
-    		<%= f.password_field :password %>
+    		<%= f.password_field :password, :placeholder => 'пароль', 'data-mini' => 'true' %>
     		<%= tasty_error_message_on('user', 'password') %>
       </div>
 
-      <div class='t-account-login-password' data-role="fieldcontain">
-    		<input type="submit" value="Войти" data-role='button' data-icon='arrow-r' data-iconpos='right' />
+      <div>
+    		<input type="submit" value="Войти" data-icon='arrow-r' data-iconpos='right' />
     	</div>
-
-  		<div class='options_togo'>
-  			<%= link_to 'забыли пароль?', lost_password_url %>
-  		</div>		
   	<% end %>
 	</div>
 </div>

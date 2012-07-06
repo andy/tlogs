@@ -24,7 +24,7 @@
 		<% end %>	
 	</div>
 <% end %>
-<% content_for :sidebar_right_below do %>
+<% if false # content_for :sidebar_right_below do %>
 	<h2><span>Тейстяне</span></h2>
 	<div class='users_mosaic' id='users_mosaic'>
     <% User.active_for(current_user, :limit => 32).each do |user| %>

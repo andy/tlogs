@@ -65,7 +65,7 @@ javascripts:
     - app/assets/javascripts/jquery/jquery.mousewheel-3.0.6.pack.js
     - app/assets/javascripts/jquery/jquery.antiscroll.min.js
     - app/assets/javascripts/jquery/jquery.imageLoaded.js
-    - app/assets/javascripts/jquery/jquery.masonry.min.js
+    # - app/assets/javascripts/jquery/jquery.masonry.min.js
     # - app/assets/javascripts/slides/slides.min.jquery.js
     # - app/assets/javascripts/slides/slides.configuration.js
     # application code
