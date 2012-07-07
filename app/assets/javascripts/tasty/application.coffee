@@ -328,6 +328,7 @@ Tasty =
       titleShow: false
       centerOnScroll: true
       autoDimensions: true
+      mouseWheel: false
       hideOnOverlayClick : true
       hideOnContentClick: false
       onStart: ->
@@ -341,6 +342,7 @@ Tasty =
       centerOnScroll: false
       hideOnContentClick: true
       showNavArrows: false
+      mouseWheel: false
       enableKeyboardNav: false
       autoScale: false
       onStart: ->
