@@ -11,7 +11,8 @@ module ActionView::Helpers::AssetTagHelper
     end
 
     def file_mtime(source)
-      if File.exists?(source)
+      fstat = File.stat(source) rescue nil
+      if fstat
         fstat = File.stat(source)
         (Digest::MD5.hexdigest("#{fstat.size}").gsub(/[a-f]*/,'')+"0"*10)[0,10]
         # (Digest::MD5.hexdigest(source).gsub(/[a-f]*/,'')+"0"*10)[0,10]
