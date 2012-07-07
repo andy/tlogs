@@ -1,14 +1,9 @@
-<%
-  background_url = current_site.tlog_design_settings.background_url if current_site
+<%-
+  background_url = current_site.tlog_design_settings.try(:background_url) if current_site
   background_url ||= '/images/bg_bg_2.gif'
-
-%>
-
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-       "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-
+-%>
+<!doctype html>
+<html>
 <head>
   <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
   <title>404 – страница не существует</title>
@@ -31,7 +26,7 @@
   <div class="dialog">
     <h1>Упс! Такой страницы не существует</h1>
     <% if current_site %>
-      <p>похоже что вы перешли по старой ссылке</p>
+      <p>похоже, что вы перешли по старой ссылке</p>
       <p><%= link_to 'вернуться в тлог', user_url(current_site) %></p>
     <% else %>
       <p><%= link_to 'вернуться на главную', current_service.url %></p>
