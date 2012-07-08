@@ -23,6 +23,7 @@ set :repository, 'git://github.com/andy/tlogs.git'
 # be used to single out a specific subset of boxes in a particular role, like
 # :primary => true.
 
+role :all, 'f1.tlogs.ru', 'f2.tlogs.ru', 'f3.tlogs.ru', 'f4.tlogs.ru'
 role :db, "f1.tlogs.ru", :primary => true
 role :app, 'f2.tlogs.ru', 'f3.tlogs.ru', 'f4.tlogs.ru'
 role :web, 'f2.tlogs.ru'
@@ -121,7 +122,7 @@ namespace :deploy do
   
   namespace :git do
     desc "Update sources from git"
-    task :pull, :roles => :app do
+    task :pull, :roles => :all do
       run "cd #{deploy_to} && git checkout db/schema.rb"
       run "cd #{deploy_to} && git pull origin master"
     end
@@ -129,7 +130,7 @@ namespace :deploy do
   
   namespace :sphinx do
     desc "Sphinx conf"
-    task :conf, :roles => :app do
+    task :conf, :roles => :all do
       run "cd #{deploy_to} && RAILS_ENV=production bundle exec rake ts:conf"
     end
     
