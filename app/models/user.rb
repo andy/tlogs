@@ -197,6 +197,13 @@ class User < ActiveRecord::Base
       self.touch(:disabled_at)
     end
   end
+  
+  def restore!
+    self.is_disabled      = false
+    self.is_mainpageable  = true
+
+    self.save(false)
+  end
 
   # блокируем пользователя
   # в основном удаляются вещи которые попадают или могут попадать в ленты других пользователей
@@ -256,6 +263,31 @@ class User < ActiveRecord::Base
     self.connection.delete("DELETE FROM relationships WHERE user_id = #{self.id} OR reader_id = #{self.id}")
     # удаляем все подписки
     self.connection.delete("DELETE FROM entry_subscribers WHERE user_id = #{self.id}")
+  end
+  
+  def mpgrant!
+    self.update_attribute :is_mainpageable, true
+  end
+  
+  def mprevoke!
+    # block user from ever appearing on main page again
+    self.update_attribute :is_mainpageable, false
+
+    # block all old entries from mainpage
+    self.entries.paginated_each do |entry|
+      if entry.is_mainpageable?
+        # remove from mainpage
+        entry.is_mainpageable = false
+
+        entry.save(false)
+      end
+    end
+    
+    true
+  end
+  
+  def async_mprevoke!
+    Resque.enqueue(TlogMprevokeJob, self.id)
   end
   
   def destroy_code

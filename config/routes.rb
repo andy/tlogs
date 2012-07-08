@@ -8,7 +8,6 @@ tlog_settings = lambda do |tlog|
   tlog.settings_mobile 'settings/mobile/:action/:id', :controller => 'settings/mobile'
   tlog.settings_premium 'settings/premium/:action', :controller => 'settings/premium'
   tlog.settings 'settings/:action', :controller => 'settings/default'
-  tlog.admin 'admin/:action', :controller => 'admin'
   tlog.connect 'search/:action', :controller => 'search'
   tlog.connect 'tag/*tags', :controller => 'tags', :action => 'view'
   tlog.connect 'tags/:action/:id', :controller => 'tags'
@@ -89,7 +88,7 @@ www_settings = lambda do |www|
   
   # console, administration controller
   www.namespace :console do |console|
-    console.resources :users
+    console.resources :users, :member => { :disable => :post, :invitations => :post, :mprevoke => :post, :mpgrant => :post, :restore => :post }
     console.resources :reports
     console.index 'index/:action/:id', :controller => 'index'
     console.root :controller => 'index', :action => 'index'

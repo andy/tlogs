@@ -8,9 +8,12 @@
   %meta{:name => 'viewport', :content => 'width=device-width, initial-scale=1.0'}
 
   = application_title
-  <link href='http://fonts.googleapis.com/css?family=PT+Mono&subset=latin,cyrillic-ext,latin-ext,cyrillic' rel='stylesheet' type='text/css'>
+  %link{:href => 'http://fonts.googleapis.com/css?family=PT+Mono&subset=latin,cyrillic-ext,latin-ext,cyrillic', :rel => 'stylesheet', :type => 'text/css'}
   = tasty_include_stylesheets :console
   = tasty_include_javascripts :console
+  :javascript
+    window._token = #{form_authenticity_token.to_json};
+  
   = yield :head
 
 %body

@@ -22,7 +22,7 @@ class Report < ActiveRecord::Base
   def content_excerpt
     case content_type
     when 'Comment'
-      content.comment
+      content.try(:comment) || ''
     else
       'not supported'
     end

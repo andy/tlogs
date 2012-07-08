@@ -39,11 +39,10 @@
 				<ul>
 					<li>Настроить внешний вид тлога, <%= link_to 'здесь', user_url(current_site, settings_path(:action => :design)) %></li>
 					<li>Добавить свой аватар и рассказать что-нибудь о себе, <%= link_to 'здесь', user_url(current_site, settings_path(:action => :user_common)) %></li>
-					<li>Почитать и настроить свой <%= link_to 'прямой эфир', service_url(main_path(:action => :live)) %>, который доступен только зарегистрированным пользователям.</li>
+					<li>Почитать и настроить свой <%= link_to 'прямой эфир', service_url(main_path(:action => :my)) %>, который доступен только зарегистрированным пользователям.</li>
 				</ul>
 			</p>
 			<p>Если у Вас есть какие-то вопросы, пишите нам по адресу <a href='mailto:feedback@<%= current_service.domain %>'>feedback@<%= current_service.domain %></a>, мы постараемся помочь.</p>
-			<p>Спасибо за регистрацию в тейсти!</p>
 		</div>
 	<% else %>
 	  <div class='help_intro'>
