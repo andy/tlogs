@@ -14,7 +14,6 @@
     - @reports.group_by(&:content_owner_id).each do |owner_id, items|
       - owner = User.find(owner_id)
       - items.group_by(&:content_id).each do |content_id, reports|
-        - content = reports.first.content
         %tr
           %td= link_to '@' + owner.url, console_user_path(owner)
           %td
