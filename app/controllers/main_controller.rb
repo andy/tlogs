@@ -79,7 +79,7 @@ class MainController < ApplicationController
     rating = (current_user && current_user.settings[:last_rating]) || 'great' if rating == 'default'
   
     kind = 'any' unless Entry::KINDS.include?(kind.to_sym)
-    rating = 'good' unless EntryRating::RATINGS.include?(rating.to_sym)
+    rating = 'great' unless EntryRating::RATINGS.include?(rating.to_sym)
     
     @filter = Struct.new(:kind, :rating).new(kind, rating)
     

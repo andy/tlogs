@@ -34,9 +34,10 @@ class EntryRating < ActiveRecord::Base
   DAY_LIMIT = 2000.0
   
   RATINGS = {
-    :great => { :select => 'Прекрасное (+35 и круче)', :header => 'Самое прекрасное', :filter => 'entry_ratings.is_great = 1', :order => 1 },
+    :great => { :select => 'Прекрасное (+50 и круче)', :header => 'Прекрасное', :filter => 'entry_ratings.is_great = 1', :order => 1 },
     :good => { :select => 'Интересное (+15 и выше)', :header => 'Интересное', :filter => 'entry_ratings.is_good = 1', :order => 2 },
-    :everything => { :select => 'Всё подряд (-5 и больше)', :header => 'Всё подряд', :filter => 'entry_ratings.is_everything = 1', :order => 3 }
+    :fine => { :select => 'Хорошее (+5 и выше)', :header => 'Хорошее', :filter => 'entry_ratings.is_good = 1', :order => 3 },
+    :everything => { :select => 'Всё подряд (-5 и больше)', :header => 'Всё подряд', :filter => 'entry_ratings.is_everything = 1', :order => 4 }
   }
   RATINGS_FOR_SELECT = RATINGS.sort_by { |obj| obj[1][:order] }.map { |k,v| [v[:select], k.to_s] }
 
@@ -51,6 +52,15 @@ class EntryRating < ActiveRecord::Base
   after_create  :enqueue
   after_destroy :dequeue
   after_update  :requeue
+  
+  
+  def is_fine
+    self.value >= 5
+  end
+  
+  def is_fine?
+    self.is_fine
+  end
   
   protected
     def rebuild
@@ -68,7 +78,7 @@ class EntryRating < ActiveRecord::Base
   
     def update_filter_value
       if self.entry.is_mainpageable?
-        self.is_great       = self.value >= 35
+        self.is_great       = self.value >= 50
         self.is_good        = self.value >= 15
         self.is_everything  = self.value >= -5
       else
@@ -109,7 +119,7 @@ class EntryRating < ActiveRecord::Base
     end
     
     def dequeue
-      %w(everything good great).each do |name|
+      %w(everything fine good great).each do |name|
         EntryQueue.new(name).delete(entry_id)
         EntryQueue.new(type_queue(name)).delete(entry_id)
         
@@ -120,7 +130,7 @@ class EntryRating < ActiveRecord::Base
     end
     
     def requeue(force = false)
-      %w(great good everything).each do |name|
+      %w(great good fine everything).each do |name|
         next unless changes.keys.include?("is_#{name}") || force
         
         should_present = send("is_#{name}?")
