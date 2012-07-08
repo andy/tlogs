@@ -54,14 +54,6 @@ class EntryRating < ActiveRecord::Base
   after_update  :requeue
   
   
-  def is_fine
-    self.value >= 5
-  end
-  
-  def is_fine?
-    self.is_fine
-  end
-  
   protected
     def rebuild
       # console version
@@ -80,9 +72,11 @@ class EntryRating < ActiveRecord::Base
       if self.entry.is_mainpageable?
         self.is_great       = self.value >= 50
         self.is_good        = self.value >= 15
+        self.is_fine        = self.value >= 5
         self.is_everything  = self.value >= -5
+
       else
-        self.is_great = self.is_good = self.is_everything = false
+        self.is_great = self.is_good = self.is_everything = self.is_fine = false
       end
       
       true
@@ -133,7 +127,7 @@ class EntryRating < ActiveRecord::Base
       %w(great good fine everything).each do |name|
         next unless changes.keys.include?("is_#{name}") || force
         
-        should_present = send("is_#{name}?")
+        should_present = entry.is_mainpageable? && send("is_#{name}?")
         EntryQueue.new(name).toggle(entry_id, should_present)
         EntryQueue.new(type_queue(name)).toggle(entry_id, should_present)
                 
