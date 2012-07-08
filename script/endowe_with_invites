@@ -6,12 +6,12 @@ User.active.paginated_each(:per_page => 1000) do |user|
   if user.ban_ac_till.nil? &&
      !user.is_disabled? &&
      user.is_confirmed? &&
-     user.entries_count > 5 &&
+     user.entries_count >= 2 &&
      user.is_mainpageable? && 
      user.created_at < 1.months.ago &&
      blacklisted.exclude?(user.id) &&
      user.invitations_left < 3 &&
-     user.listed_me_as_all_friend_light.length >= 5
+     user.listed_me_as_all_friend_light.length >= 3
      
      # skip this user if any of his already invited friends is guilty...
      next user.invitations.accepted.map(&:invitee).select do |invitee|
