@@ -110,6 +110,11 @@ javascripts:
     - app/assets/javascripts/chat/spin.min.js
     - app/assets/javascripts/chat/spin.init.js
     - app/assets/javascripts/chat/chat.coffee
+  
+  console:
+    - app/assets/javascripts/jquery/jquery-1.7.2.min.js
+    - app/assets/javascripts/bootstrap/bootstrap.min.js
+    
 
   tastyradio:
     - app/assets/javascripts/jquery/jquery-1.7.2.min.js
@@ -149,6 +154,9 @@ stylesheets:
     - app/assets/stylesheets/html5.css
     - app/assets/stylesheets/tastyradio.scss
     - app/assets/stylesheets/html5closing.css
+
+  console:
+    - app/assets/stylesheets/bootstrap/bootstrap.css
 
   light:
     - app/assets/stylesheets/light.css

@@ -87,6 +87,14 @@ www_settings = lambda do |www|
   www.tag_view 'tag/*tags', :controller => 'tags', :action => 'view'
   www.tags 'tags/:action/:id', :controller => 'tags'
   
+  # console, administration controller
+  www.namespace :console do |console|
+    console.resources :users
+    console.resources :reports
+    console.index 'index/:action/:id', :controller => 'index'
+    console.root :controller => 'index', :action => 'index'
+  end
+  
   # www.resources :tastyradio, :controller => 'tastyradio', :collection => { :all => :get, :data => :get }
 
   www.bookmarklet 'bookmarklet/:action', :controller => 'bookmarklet'

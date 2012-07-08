@@ -1,0 +1,32 @@
+.well
+  total users
+  \/ active
+  %span.badge.badge-success= User.active.count
+  \/ disabled
+  %span.badge.badge-info= User.disabled.count
+  
+
+%table.table.table-striped
+  %thead
+    %tr
+      %th id
+      %th url
+      %th email
+      %th extra
+      %th actions
+  %tbody
+    - @users.each do |user|
+      %tr
+        %td= user.id
+        %td= user.url
+        %td= user.email
+        %td
+          - if user.is_premium?
+            %span.label.label-info premium
+          - if user.is_disabled?
+            %span.label.label-warning disabled
+        %td
+          = link_to 'view', console_user_path(user)
+
+= bootstrap_paginate @users
+      

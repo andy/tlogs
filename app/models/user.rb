@@ -62,6 +62,7 @@ class User < ActiveRecord::Base
   has_many      :invoices
   has_many      :backgrounds, :dependent => :destroy
   has_many      :invitations, :dependent => :destroy
+  has_one       :invitation, :foreign_key => :invitee_id, :dependent => :destroy
   has_many      :reports, :dependent => :destroy, :foreign_key => 'reporter_id'
   has_many      :reports_on, :class_name => 'Report', :foreign_key => 'content_owner_id', :dependent => :destroy
   

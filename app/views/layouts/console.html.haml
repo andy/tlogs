@@ -1,0 +1,55 @@
+!!! 5
+<!--[if lt IE 7 ]> <html class="ie6" lang="ru"> <![endif]-->
+<!--[if IE 7 ]>    <html class="ie7" lang="ru"> <![endif]-->
+<!--[if IE 8 ]>    <html class="ie8" lang="ru"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--> <html lang="ru"> <!--<![endif]-->
+%head
+  %meta{:charset => 'utf-8'}
+  %meta{:name => 'viewport', :content => 'width=device-width, initial-scale=1.0'}
+
+  = application_title
+  <link href='http://fonts.googleapis.com/css?family=PT+Mono&subset=latin,cyrillic-ext,latin-ext,cyrillic' rel='stylesheet' type='text/css'>
+  = tasty_include_stylesheets :console
+  = tasty_include_javascripts :console
+  = yield :head
+
+%body
+  .container
+    .row
+      .span12
+        %hr
+    .row
+      .span4
+        %h2
+          = link_to_unless_current 'the console', console_root_path
+
+      .span5
+        %ul.nav.nav-pills
+          %li{:class => request.path.starts_with?(console_users_path) ? 'active' : nil}
+            = link_to 'Users', console_users_path
+          %li{:class => request.path.starts_with?(console_reports_path) ? 'active' : nil}
+            = link_to 'Reports', console_reports_path
+          %li
+            = link_to 'Changelogs', '#'
+
+      .span3.right
+        %form.form-search.form-inline{:method => 'post', :action => console_index_path(:action => 'lookup')}
+          %input.search-query.input-medium{:type => 'search', :name => 'query', :value => params[:value], :placeholder => 'url / email / uid'}
+          %input.btn{:type => 'submit', :value => 'Search'}
+
+    .row
+      .span12
+        %hr
+
+    .row
+      .span12
+        = yield
+
+    .row
+      .span12
+        %hr
+        &copy; 2012 take care,
+        = current_user.url
+        %br
+        %br
+</html>

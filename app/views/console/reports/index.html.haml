@@ -1,0 +1,29 @@
+.well
+  total reports
+  \/ today
+  %span.badge.badge-warning= Report.count(:conditions => "created_at > '#{Date.today.midnight.to_s(:db)}'")
+
+%table.table.table-striped
+  %thead
+    %tr
+      %th suspect
+      %th content
+      %th reported by
+      %th when
+  %tbody
+    - @reports.group_by(&:content_owner_id).each do |owner_id, items|
+      - owner = User.find(owner_id)
+      - items.group_by(&:content_id).each do |content_id, reports|
+        - content = reports.first.content
+        %tr
+          %td= link_to '@' + owner.url, console_user_path(owner)
+          %td
+            = auto_link h(reports.first.content_excerpt), :target => '_blank'
+          %td
+            - reports.each do |report|
+              = link_to '@' + report.reporter.url, console_user_path(report.reporter)
+          %td
+            = time_ago_in_words reports.first.created_at
+            ago
+
+= bootstrap_paginate @reports

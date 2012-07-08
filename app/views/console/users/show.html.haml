@@ -1,0 +1,205 @@
+%h4
+  Profile of
+  = link_to @user.url, user_url(@user)
+  - if @user.is_disabled?
+    %span.label.label-important disabled
+  - if @user.is_premium?
+    %span.label.label-info premium
+%br
+
+.row
+  .span6
+    %h5 basic details
+    %dl.dl-horizontal
+      %dt uid
+      %dd= @user.id
+
+      %dt gender
+      %dd= @user.gender
+
+      %dt username
+      %dd= h @user.username
+
+      %dt email
+      %dd= @user.email
+      
+      %dt registered
+      %dd
+        = @user.created_at.to_s(:db)
+        = surround '(', ')' do
+          = time_ago_in_words @user.created_at
+          ago
+  
+      %dt entries count
+      %dd
+        = @user.entries_count
+        = surround '(', ')' do
+          = @user.private_entries_count
+          private
+  
+      %dt updated at
+      %dd
+        - if @user.entries_updated_at
+          = @user.entries_updated_at.to_s(:db)
+          = surround '(', ')' do
+            = time_ago_in_words @user.entries_updated_at
+            ago
+        - else
+          —
+
+    %h5 premium
+    %dl.dl-horizontal
+      %dt premium?
+      %dd
+        = @user.is_premium?
+        %em
+          %a{:href => '#'} extend by 1 month
+  
+      - if @user.is_premium?
+        %dt till
+        %dd
+          = @user.premium_strftime
+          = surround '(', ')' do
+            = @user.premium_days_left
+            days left
+
+    %h5 invites
+    %dl.dl-horizontal
+      - if @user.invitation
+        %dt invited by
+        %dd= link_to @user.invitation.user.url, console_user_path(@user.invitation.user)
+  
+      %dt invitations
+      %dd
+        %span.badge{:class => @user.invitations_left.zero? ? nil : 'badge-success'}= @user.invitations_left
+        %small
+          %a inc
+          \/
+          %a dec
+  
+      %dt invitees
+      %dd
+        - if @user.invitations.count.nonzero?
+          - @user.invitations.each do |invitation|
+            - if invitation.invitee
+              = link_to '@' + invitation.invitee.url, console_user_path(invitation.invitee)
+            - else
+              = invitation.email
+        - else
+          —  
+
+    %h5 relations
+    %dl.dl-horizontal
+      %dt linked with
+      %dd
+        - if @user.linked_accounts.any?
+          - @user.linked_accounts.each do |user|
+            = link_to '@' + user.url, console_user_path(user)
+        - else
+          —
+
+      %dt subscribed to
+      %dd= @user.all_friend_ids.count
+  
+      %dt subscribers
+      %dd= @user.listed_me_as_all_friend_light_ids.count
+  
+      %dt blacklist
+      %dd
+        -if @user.blacklist.any?
+          - @user.blacklist.each do |user|
+            = link_to '@' + user.url, console_user_path(user)
+        - else
+          —
+  
+      %dt blacklised by
+      %dd
+        -if @user.listed_me_as_blacklist_light.any?
+          - @user.listed_me_as_blacklist_light.each do |uid|
+            - user = User.find(uid)
+            = link_to '@' + user.url, console_user_path(user)
+        - else
+          —
+    
+
+    %h5 status
+    %dl.dl-horizontal
+      %dt confirmed?
+      %dd
+        %span.label{:class => @user.is_confirmed? ? 'label-success' : 'label-warning' }= @user.is_confirmed?
+
+      %dt enabled?
+      %dd
+        %span.label{:class => @user.is_disabled? ? 'label-warning' : 'label-success' }= !@user.is_disabled?
+        - if @user.is_disabled?
+          = surround '(', ')' do
+            = @user.disabled_at.to_s(:db)
+            = time_ago_in_words @user.disabled_at
+    
+
+      %dt mainpageable?
+      %dd
+        %span.label{:class => @user.is_mainpageable? ? 'label-success' : 'label-warning' }= @user.is_mainpageable?
+        %em
+          - if @user.is_mainpageable?
+            %a.c-act-mprevoke{:href => '#'} ban
+          - else
+            %a.c-act-mpgrant{:href => '#'} unban
+
+
+      %dt c clean?
+      %dd
+        - if $redis.sismember('comments:blacklist', @user.id)
+          %span.label.label-important banned
+          %em
+            %a.c-act-cgrant{:href => '#'} unban
+        - else
+          %span.label.label-success true
+          %em
+            %a.c-act-crevoke{:href => '#'} ban
+
+      %dt ac clean?
+      %dd
+        - if @user.ban_ac_till && @user.ban_ac_till > Time.now
+          %span.label.label-important banned
+          = surround '(', ')' do
+            till
+            = @user.ban_ac_till.to_s(:db)
+        - elsif @user.ban_ac_till
+          %span.label.label-warning was banned
+          = surround '(', ')' do
+            = time_ago_in_words @user.ban_ac_till
+            ago
+      
+        - else
+          %span.label.label-success true
+
+  .span6
+    %h5 userpic
+    .well
+      - if @user.userpic?
+        = link_to image_tag(@user.userpic.url(:thumb128)), @user.userpic.url(:original)
+      - else
+        none set
+
+    %h5 history
+    %p not yet implemented
+
+.row
+  .span12
+    %hr
+  
+.row
+  .span10
+    %strong please note
+    that when account is disabled, some things are removed permanently and cannot be restored
+    
+  .span2.pull-right
+    - if @user.is_disabled?
+      %a.btn.btn-success.c-act-enable{:href => '#'}
+        Restore
+        = @user.url
+    - else
+      %a.btn.btn-danger.c-act-disable{:href => '#'}
+        Disable 
+        = @user.url

@@ -2,7 +2,7 @@ class User
   ## included modules & attr_*
   USER_AND_RELATIONSHIP_COLUMNS = 'u.*,r.title,r.friendship_status,r.read_count,r.comment_count,r.position,r.last_viewed_entries_count,r.last_viewed_at,r.id AS relationship_id'
   
-  REQUIRED_RELATIONSHIP_METHODS = %w(public_friends friends all_friends all_friend_r blacklist listed_me_as_all_friend_light)
+  REQUIRED_RELATIONSHIP_METHODS = %w(public_friends friends all_friends all_friend_r blacklist listed_me_as_blacklist_light listed_me_as_all_friend_light)
 
 
   ## associations

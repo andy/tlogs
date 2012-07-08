@@ -13,4 +13,22 @@ class Report < ActiveRecord::Base
   validates_presence_of :content_owner
   
   validates_uniqueness_of :content_id, :scope => [:reporter_id, :content_type]
+  
+  named_scope :comments, :conditions => 'content_type = "Comment"'
+  named_scope :entries, :conditions => 'content_type = "Entry"'
+  
+  named_scope :all_inclusive, :include => [:reporter, :content, :content_owner]
+  
+  def content_uuid
+    content_type + '#' + content_id.to_s
+  end
+  
+  def content_excerpt
+    case content_type
+    when 'Comment'
+      content.comment
+    else
+      'not supported'
+    end
+  end
 end
