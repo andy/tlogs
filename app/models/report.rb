@@ -19,10 +19,6 @@ class Report < ActiveRecord::Base
   
   named_scope :all_inclusive, :include => [:reporter, :content_owner]
   
-  def content_uuid
-    content_type + '#' + content_id.to_s
-  end
-  
   def content_excerpt
     case content_type
     when 'Comment'
