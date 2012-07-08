@@ -29,7 +29,7 @@ class Comment < ActiveRecord::Base
   belongs_to :entry, :counter_cache => :comments_count
   belongs_to :user
   
-  has_many :reports, :as => :content
+  has_many :reports, :as => :content, :dependent => :destroy
 
 
   ## plugins
