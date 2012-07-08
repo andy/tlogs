@@ -52,8 +52,8 @@
       %dt premium?
       %dd
         = @user.is_premium?
-        %em
-          %a{:href => '#'} extend by 1 month
+        -# %em
+        -#   %a{:href => '#'} gift 1 month
   
       - if @user.is_premium?
         %dt till
@@ -71,11 +71,11 @@
   
       %dt invitations
       %dd
-        %span.badge{:class => @user.invitations_left.zero? ? nil : 'badge-success'}= @user.invitations_left
-        %small
-          %a inc
-          \/
-          %a dec
+        %span.badge#c-invitations-cnt{:class => @user.invitations_left.zero? ? nil : 'badge-success'}= @user.invitations_left
+        &mdash;
+        %a.c-act.c-act-invitations-inc{:href => '#', :data => { :id => @user.id }} inc
+        |
+        %a.c-act.c-act-invitations-dec{:href => '#', :data => { :id => @user.id }} dec
   
       %dt invitees
       %dd
@@ -126,25 +126,27 @@
     %dl.dl-horizontal
       %dt confirmed?
       %dd
-        %span.label{:class => @user.is_confirmed? ? 'label-success' : 'label-warning' }= @user.is_confirmed?
+        %span.label{:class => @user.is_confirmed? ? 'label-success' : 'label-important' }= @user.is_confirmed?
 
       %dt enabled?
       %dd
-        %span.label{:class => @user.is_disabled? ? 'label-warning' : 'label-success' }= !@user.is_disabled?
+        %span.label{:class => @user.is_disabled? ? 'label-important' : 'label-success' }= !@user.is_disabled?
         - if @user.is_disabled?
           = surround '(', ')' do
-            = @user.disabled_at.to_s(:db)
+            = succeed ',' do
+              = @user.disabled_at.to_s(:db)
             = time_ago_in_words @user.disabled_at
+            назад
     
 
       %dt mainpageable?
       %dd
-        %span.label{:class => @user.is_mainpageable? ? 'label-success' : 'label-warning' }= @user.is_mainpageable?
+        %span.label{:class => @user.is_mainpageable? ? 'label-success' : 'label-important' }= @user.is_mainpageable?
         %em
           - if @user.is_mainpageable?
-            %a.c-act-mprevoke{:href => '#'} ban
+            %a.c-act.c-act-user-mprevoke{:href => '#', :data => { :id => @user.id }} ban
           - else
-            %a.c-act-mpgrant{:href => '#'} unban
+            %a.c-act.c-act-user-mpgrant{:href => '#', :data => { :id => @user.id }} unban
 
 
       %dt c clean?
@@ -176,6 +178,7 @@
 
   .span6
     %h5 userpic
+    %br
     .well
       - if @user.userpic?
         = link_to image_tag(@user.userpic.url(:thumb128)), @user.userpic.url(:original)
@@ -183,6 +186,7 @@
         none set
 
     %h5 history
+    %br
     %p not yet implemented
 
 .row
@@ -190,16 +194,25 @@
     %hr
   
 .row
-  .span10
-    %strong please note
-    that when account is disabled, some things are removed permanently and cannot be restored
+  - unless @user.is_disabled?
+    .span10
+      %strong Note:
+      disabling usually takes some time. Comments and entries are not removed.
     
-  .span2.pull-right
-    - if @user.is_disabled?
-      %a.btn.btn-success.c-act-enable{:href => '#'}
+    .span2.pull-right
+      %a.btn.btn-danger.c-act-user-disable{:href => '#', :data => { :id => @user.id }}
+        Disable
+        = '@' + @user.url
+  - else
+    .span2
+      %a.btn.btn-success.c-act-user-restore{:href => '#', :data => { :id => @user.id }}
+        %i.icon-repeat.icon-white
         Restore
-        = @user.url
-    - else
-      %a.btn.btn-danger.c-act-disable{:href => '#'}
-        Disable 
-        = @user.url
+      
+    .span8
+      &nbsp;
+    
+    .span2.pull-right
+      %a.btn.btn-danger.c-act-user-destroy.disabled
+        %i.icon-trash.icon-white
+        Remove account

@@ -15,6 +15,7 @@ class Invitation < ActiveRecord::Base
   
   
   named_scope :revokable, :conditions => 'invitee_id IS NULL'
+  named_scope :accepted, :conditions => 'invitee_id IS NOT NULL'
 
 
   def validate

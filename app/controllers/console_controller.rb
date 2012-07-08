@@ -3,6 +3,8 @@ class ConsoleController < ApplicationController
   
   before_filter :require_admin
   
+  protect_from_forgery
+  
   layout 'console'
   
   helper :console
