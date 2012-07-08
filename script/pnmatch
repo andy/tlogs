@@ -15,7 +15,9 @@ def show_match ary, msg
   sorted = ary.sort_by { |k, v| v }.reverse
   print "  #{msg}: "
   sorted[0..20].each do |h|
-    print "#{User.find(h[0]).url} (#{h[1]}), "
+    user = User.find(h[0])
+    next unless user
+    print "#{user.url} (#{h[1]}), "
   end
   print "\n"
 end
