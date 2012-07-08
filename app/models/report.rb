@@ -17,7 +17,7 @@ class Report < ActiveRecord::Base
   named_scope :comments, :conditions => 'content_type = "Comment"'
   named_scope :entries, :conditions => 'content_type = "Entry"'
   
-  named_scope :all_inclusive, :include => [:reporter, :content, :content_owner]
+  named_scope :all_inclusive, :include => [:reporter, :content_owner]
   
   def content_uuid
     content_type + '#' + content_id.to_s
