@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120625150206) do
+ActiveRecord::Schema.define(:version => 20120708123443) do
 
   create_table "attachments", :force => true do |t|
     t.integer "entry_id",     :default => 0,  :null => false
@@ -180,6 +180,7 @@ ActiveRecord::Schema.define(:version => 20120625150206) do
     t.integer  "ups",                                                        :default => 0,           :null => false
     t.integer  "downs",                                                      :default => 0,           :null => false
     t.decimal  "hotness",                    :precision => 32, :scale => 12, :default => 0.0,         :null => false
+    t.boolean  "is_fine",                                                    :default => false,       :null => false
   end
 
   add_index "entry_ratings", ["entry_id"], :name => "index_entry_ratings_on_entry_id", :unique => true
@@ -187,6 +188,7 @@ ActiveRecord::Schema.define(:version => 20120625150206) do
   add_index "entry_ratings", ["hotness"], :name => "index_entry_ratings_on_hotness"
   add_index "entry_ratings", ["is_everything", "entry_type"], :name => "index_entry_ratings_on_is_everything_and_entry_type"
   add_index "entry_ratings", ["is_everything"], :name => "index_entry_ratings_on_is_everything"
+  add_index "entry_ratings", ["is_fine"], :name => "index_entry_ratings_on_is_fine"
   add_index "entry_ratings", ["is_good", "entry_type"], :name => "index_entry_ratings_on_is_good_and_entry_type"
   add_index "entry_ratings", ["is_good"], :name => "index_entry_ratings_on_is_good"
   add_index "entry_ratings", ["is_great", "entry_type"], :name => "index_entry_ratings_on_is_great_and_entry_type"
@@ -390,7 +392,7 @@ ActiveRecord::Schema.define(:version => 20120625150206) do
   add_index "taggings", ["taggable_id", "taggable_type", "tag_id"], :name => "index_taggings_on_taggable_id_and_taggable_type_and_tag_id", :unique => true
 
   create_table "tags", :force => true do |t|
-    t.string "name", :default => "", :null => false
+    t.binary "name", :limit => 255, :null => false
   end
 
   add_index "tags", ["name"], :name => "index_tags_on_name"
