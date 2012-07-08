@@ -220,6 +220,7 @@ ActiveRecord::Schema.define(:version => 20120708123443) do
   end
 
   add_index "faves", ["entry_id"], :name => "index_faves_on_entry_id"
+  add_index "faves", ["entry_user_id", "created_at"], :name => "index_faves_on_entry_user_id_and_created_at"
   add_index "faves", ["user_id", "entry_id"], :name => "index_faves_on_user_id_and_entry_id", :unique => true
   add_index "faves", ["user_id", "entry_type"], :name => "index_faves_on_user_id_and_entry_type"
   add_index "faves", ["user_id", "entry_user_id"], :name => "index_faves_on_user_id_and_entry_user_id"
