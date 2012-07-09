@@ -53,9 +53,12 @@ class Comment < ActiveRecord::Base
 
   ## callbacks
   after_destroy do |comment|
-    # because disable! did this already
-    unless comment.is_disabled?
-      comment.decrement_comment_views! unless comment.is_disabled? 
+    if comment.is_disabled?
+      # disable decremented cunter already, we need to compensat for automatic counter cache
+      Entry.increment_counter(:comments_count, comment.entry.id)
+    else
+      # do this only for not disabled comments, as this has already been done by #disable! otherwise
+      comment.decrement_comment_views!
 
       comment.entry.update_attribute(:updated_at, Time.now)
     end
