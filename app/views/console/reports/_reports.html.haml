@@ -16,6 +16,7 @@
             .wrap.span8
               = report_excerpt(reports.first)
           %td
+            .wrap.span2
             - reports.each do |report|
               = link_to '@' + report.reporter.url, console_user_path(report.reporter)
           %td

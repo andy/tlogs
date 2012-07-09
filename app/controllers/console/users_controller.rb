@@ -10,7 +10,8 @@ class Console::UsersController < ConsoleController
   end
   
   def show
-    @comments_count = @user.comments.count
+    @comments_enabled_count   = @user.comments.enabled.count
+    @comments_disabled_count  = @user.comments.disabled.count
     @suspect_count  = @user.reports_on.comments.count
     @reports_count  = @user.reports.comments.count
 
@@ -18,13 +19,23 @@ class Console::UsersController < ConsoleController
   end
   
   def suspect
+    @title = "Жалобы на #{@user.url}"
     @reports = @user.reports_on.comments.all_inclusive.paginate :page => params[:page], :per_page => 300, :order => 'id desc'    
   end
   
   def reporter
+    @title = "Жалобы от #{@user.url}"
     @reports = @user.reports.comments.all_inclusive.paginate :page => params[:page], :per_page => 300, :order => 'id desc'
 
     render :action => :suspect
+  end
+  
+  def wipeout
+    render :json => false and return unless @user.is_disabled?
+
+    Rails.env.development? ? @user.wipeout! : @user.async_wipeout!
+    
+    render :json => true
   end
   
   def disable
@@ -40,6 +51,8 @@ class Console::UsersController < ConsoleController
   end
   
   def destroy
+    render :json => false and return unless @user.is_disabled?
+
     Rails.env.development? ? @user.destroy : @user.async_destroy!
     
     render :json => true

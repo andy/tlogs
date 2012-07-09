@@ -9,6 +9,7 @@ Console =
   
   user:
     ready: ->
+      $('.c-act-user-wipeout').live 'click', Console.user.wipeout
       $('.c-act-user-disable').live 'click', Console.user.disable
       $('.c-act-user-destroy').live 'click', Console.user.destroy
       $('.c-act-user-restore').live 'click', Console.user.restore
@@ -37,6 +38,20 @@ Console =
         data:
           authenticity_token:
             window._token
+      false
+
+    wipeout: (event) ->
+      $(this).button('loading')
+      $.ajax
+        url: "/console/users/#{$(this).data('id')}/wipeout"
+        type: 'post'
+        dataType: 'json'
+        data:
+          authenticity_token:
+            window._token
+        success: (data) ->
+          window.location.reload()
+
       false
 
     destroy: (event) ->

@@ -189,7 +189,15 @@
       
       %dt comments
       %dd
-        = @comments_count
+        = @comments_enabled_count
+        = surround '(', ')' do
+          = @comments_disabled_count
+          disabled
+        - if @user.is_disabled? && @comments_enabled_count.nonzero?
+          %a.btn.btn-danger.btn-mini{:href => '#wipeout', :data => {:toggle => 'modal'}}
+            %i.icon-trash.icon-white
+            wipe out
+            
       
       %dt suspect
       %dd
@@ -239,6 +247,25 @@
       
 
 - if @user.is_disabled?
+  .modal.hide.fade#wipeout
+    .modal-header
+      %button.close{:type => 'button', :data => {:dismiss => 'modal'}} ×
+      %h3 Confirm comments wipeout
+    
+    .modal-body
+      %p
+        This will disable all comments created by @#{@user.url} during his lifetime.
+      
+      %p
+        In total, we will remove #{@comments_enabled_count} comments, but will start with reported ones first.
+    
+    .modal-footer
+      %a.btn{:href => '#', :data => {:dismiss => 'modal'}} Close
+      %a.btn.btn-danger.c-act-user-wipeout{:href => '#', :data => { :id => @user.id, 'loading-text' => 'Running ...' }}
+        %i.icon-trash.icon-white
+        Confirm wipeout
+    
+
   .modal.hide.fade#removeAccount
     .modal-header
       %button.close{:type => 'button', :data => {:dismiss => 'modal'}} ×

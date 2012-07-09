@@ -291,6 +291,25 @@ class User < ActiveRecord::Base
     Resque.enqueue(TlogMprevokeJob, self.id)
   end
   
+  def wipeout!
+    # remove reported comments first
+    self.reports_on.comments.paginated_each do |report|
+      next unless report.content
+
+      comment = report.content
+      comment.disable! unless comment.is_disabled?
+    end
+    
+    # remove ones that left
+    self.reload.comments.paginated_each do |comment|
+      comment.disable! unless comment.is_disabled?
+    end
+  end
+  
+  def async_wipeout!
+    Resque.enqueue(TlogWipeoutJob, self.id)
+  end
+  
   def destroy_code
     Digest::SHA1.hexdigest("#{self.email}--#{self.url}--#{self.entries_updated_at}")
   end
