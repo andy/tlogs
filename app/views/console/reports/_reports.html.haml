@@ -1,0 +1,27 @@
+%table.table.table-striped
+  %thead
+    %tr
+      %th suspect
+      %th.span8 content
+      %th reported by
+      %th when
+      %th links
+  %tbody
+    - @reports.group_by(&:content_owner_id).each do |owner_id, items|
+      - owner = User.find(owner_id)
+      - items.group_by(&:content_id).each do |content_id, reports|
+        %tr
+          %td= link_to '@' + owner.url, console_user_path(owner)
+          %td
+            .wrap.span8
+              = report_excerpt(reports.first)
+          %td
+            - reports.each do |report|
+              = link_to '@' + report.reporter.url, console_user_path(report.reporter)
+          %td
+            = time_ago_in_words reports.first.created_at
+            ago
+          %td
+            = link_to 'view', go_console_report_path(reports.first)
+
+= bootstrap_paginate @reports

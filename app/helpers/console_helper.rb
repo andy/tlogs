@@ -6,4 +6,12 @@ module ConsoleHelper
       end
     end
   end
+  
+  def hide_email address
+    is_admin? ? address : (address.split('@').first[0..2] + "*****@" + address.split('@').last)
+  end
+  
+  def report_excerpt report
+    auto_link h(report.excerpt)
+  end  
 end

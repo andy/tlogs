@@ -19,7 +19,7 @@ class Report < ActiveRecord::Base
   
   named_scope :all_inclusive, :include => [:reporter, :content_owner]
   
-  def content_excerpt
+  def excerpt
     case content_type
     when 'Comment'
       content.try(:comment) || ''

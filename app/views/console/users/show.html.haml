@@ -21,7 +21,7 @@
       %dd= h @user.username
 
       %dt email
-      %dd= @user.email
+      %dd= hide_email @user.email
       
       %dt registered
       %dd
@@ -29,15 +29,8 @@
         = surround '(', ')' do
           = time_ago_in_words @user.created_at
           ago
-  
-      %dt entries count
-      %dd
-        = @user.entries_count
-        = surround '(', ')' do
-          = @user.private_entries_count
-          private
-  
-      %dt updated at
+    
+      %dt updated
       %dd
         - if @user.entries_updated_at
           = @user.entries_updated_at.to_s(:db)
@@ -185,6 +178,33 @@
       - else
         none set
 
+    %h5 content
+    %dl.dl-horizontal
+      %dt entries
+      %dd
+        = @user.entries_count
+        = surround '(', ')' do
+          = @user.private_entries_count
+          private
+      
+      %dt comments
+      %dd
+        = @comments_count
+      
+      %dt suspect
+      %dd
+        - if @suspect_count.zero?
+          innocent
+        - else
+          = link_to "on #{@suspect_count.pluralize('comment', 'comments', 'comments', true)}", suspect_console_user_path(@user), :class => 'c-act'
+        
+      %dt reporter
+      %dd
+        - if @reports_count.zero?
+          innocent
+        - else
+          = link_to "on #{@reports_count.pluralize('comment', 'comments', 'comments', true)}", reporter_console_user_path(@user), :class => 'c-act' 
+
     %h5 history
     %br
     %p not yet implemented
@@ -200,12 +220,12 @@
       disabling usually takes some time. Comments and entries are not removed.
     
     .span2.pull-right
-      %a.btn.btn-danger.c-act-user-disable{:href => '#', :data => { :id => @user.id }}
+      %a.btn.btn-danger{:href => '#disableAccount', :data => {:toggle => 'modal'}}
         Disable
         = '@' + @user.url
   - else
     .span2
-      %a.btn.btn-success.c-act-user-restore{:href => '#', :data => { :id => @user.id }}
+      %a.btn.btn-success.c-act-user-restore{:href => '#', :data => { :id => @user.id, 'loading-text' => 'Restoring ...' }}
         %i.icon-repeat.icon-white
         Restore
       
@@ -213,6 +233,55 @@
       &nbsp;
     
     .span2.pull-right
-      %a.btn.btn-danger.c-act-user-destroy.disabled
+      %a.btn.btn-danger{:href => '#removeAccount', :data => {:toggle => 'modal'}}
         %i.icon-trash.icon-white
         Remove account
+      
+
+- if @user.is_disabled?
+  .modal.hide.fade#removeAccount
+    .modal-header
+      %button.close{:type => 'button', :data => {:dismiss => 'modal'}} ×
+      %h3 Please, confirm removal
+    
+    .modal-body
+      %p
+        %strong Please note
+        that removing account will destroy everything related to this account without
+        a single change of being restored.
+      
+      %p
+        By clicking "confirm removal" you approve that you understand the consequences of
+        this action and you are sure this user deserves complete removal from our system.
+      
+      %p
+        Amen.
+    
+    .modal-footer
+      %a.btn{:href => '#', :data => {:dismiss => 'modal'}} Close
+      %a.btn.btn-danger.c-act-user-destroy{:href => '#', :data => { :id => @user.id, 'loading-text' => 'Removing ...' }}
+        %i.icon-trash.icon-white
+        Confirm removal
+
+- else
+  .modal.hide.fade#disableAccount
+    .modal-header
+      %button.close{:type => 'button', :data => {:dismiss => 'modal'}} ×
+      %h3 Please, confirm disabling
+    
+    .modal-body
+      %p
+        %strong Please, confirm
+        that you want to disable account of
+        %strong= '@' + @user.url
+        without him being able to restore or complain.
+      
+      %p Note, that no user content is removed during this step.
+        
+      %p All actions here are logged for our own safety.
+    
+    .modal-footer
+      %a.btn{:href => '#', :data => {:dismiss => 'modal'}} Close
+      %a.btn.btn-danger.c-act-user-disable{:href => '#', :data => { :id => @user.id, 'loading-text' => 'Disabling ...' }}
+        %i.icon-trash.icon-white
+        Confirm disable

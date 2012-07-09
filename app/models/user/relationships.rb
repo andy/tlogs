@@ -103,13 +103,13 @@ class User
   end
 
   # Пользователь user комментирует записи другого пользователя
-  def comments(user)
-    return if self.id == user.id
-    relationship = Relationship.find_or_initialize_by_user_id_and_reader_id(user.id, self.id)
-    relationship.increment(:comment_count)
-    relationship.last_comment_at = Time.now
-    relationship.save!
-  end
+  # def comments(user)
+  #   return if self.id == user.id
+  #   relationship = Relationship.find_or_initialize_by_user_id_and_reader_id(user.id, self.id)
+  #   relationship.increment(:comment_count)
+  #   relationship.last_comment_at = Time.now
+  #   relationship.save!
+  # end
   
   # Возвращает user_id пользователей, на тлоги которых подписан текущий пользователь и 
   # которые он может читать (т.е. они не закрытые и т.п.)

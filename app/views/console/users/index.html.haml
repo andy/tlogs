@@ -1,11 +1,10 @@
 .well
   total users
-  \/ active
+  | active
   %span.badge.badge-success= User.active.count
-  \/ disabled
+  | disabled
   %span.badge.badge-info= User.disabled.count
   
-
 %table.table.table-striped
   %thead
     %tr
@@ -19,12 +18,12 @@
       %tr
         %td= user.id
         %td= user.url
-        %td= user.email
+        %td= hide_email user.email
         %td
           - if user.is_premium?
             %span.label.label-info premium
           - if user.is_disabled?
-            %span.label.label-warning disabled
+            %span.label.label-important disabled
         %td
           = link_to 'view', console_user_path(user)
 

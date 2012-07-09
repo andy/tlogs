@@ -5,10 +5,26 @@ class Console::UsersController < ConsoleController
   def index
     @title = 'все пользователи'
     @users = User.paginate :page => params[:page], :per_page => 50, :order => 'id desc'
+    
+    @signups = User.count(:group => 'UNIX_TIMESTAMP(DATE(created_at))', :conditions => "created_at > '#{1.week.ago.midnight.to_s(:db)}'").values
   end
   
   def show
+    @comments_count = @user.comments.count
+    @suspect_count  = @user.reports_on.comments.count
+    @reports_count  = @user.reports.comments.count
+
     @title = @user.url
+  end
+  
+  def suspect
+    @reports = @user.reports_on.comments.all_inclusive.paginate :page => params[:page], :per_page => 300, :order => 'id desc'    
+  end
+  
+  def reporter
+    @reports = @user.reports.comments.all_inclusive.paginate :page => params[:page], :per_page => 300, :order => 'id desc'
+
+    render :action => :suspect
   end
   
   def disable
@@ -51,6 +67,14 @@ class Console::UsersController < ConsoleController
   
   protected
     def preload_user
-      @user = User.find params[:id]
+      @user = User.find_by_id params[:id]
+      
+      if @user.nil?
+        respond_to do |wants|
+          wants.html { redirect_to console_users_path }
+          wants.json { render :json => false, :status => 404 }
+        end
+        false
+      end       
     end
 end

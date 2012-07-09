@@ -65,6 +65,7 @@ class User < ActiveRecord::Base
   has_one       :invitation, :foreign_key => :invitee_id, :dependent => :destroy
   has_many      :reports, :dependent => :destroy, :foreign_key => 'reporter_id'
   has_many      :reports_on, :class_name => 'Report', :foreign_key => 'content_owner_id', :dependent => :destroy
+  has_many      :comments, :dependent => :destroy
   
 
   ## plugins

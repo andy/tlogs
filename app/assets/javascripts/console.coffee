@@ -4,10 +4,13 @@ Console =
     Console.invitations.ready()
     $('.c-act-none').live 'click', (event) ->
       false
+    $('.line').peity 'bar'
+      width: 128
   
   user:
     ready: ->
       $('.c-act-user-disable').live 'click', Console.user.disable
+      $('.c-act-user-destroy').live 'click', Console.user.destroy
       $('.c-act-user-restore').live 'click', Console.user.restore
       $('.c-act-user-mprevoke').live 'click', Console.user.mprevoke
       $('.c-act-user-mpgrant').live 'click', Console.user.mpgrant
@@ -35,10 +38,24 @@ Console =
           authenticity_token:
             window._token
       false
+
+    destroy: (event) ->
+      $(this).button('loading')
+      $.ajax
+        url: "/console/users/#{$(this).data('id')}/destroy"
+        type: 'post'
+        dataType: 'json'
+        data:
+          authenticity_token:
+            window._token
+        success: (data) ->
+          window.location.reload()
+      
+      false
       
     
     disable: (event) ->
-      $(this).addClass('disabled c-act-none').removeClass('c-act-user-disable')
+      $(this).button('loading')
       $.ajax
         url: "/console/users/#{$(this).data('id')}/disable"
         type: 'post'
@@ -52,7 +69,7 @@ Console =
       false
     
     restore: (event) ->
-      $(this).addClass('disabled c-act-none').removeClass('c-act-user-restore')
+      $(this).button('loading')
       $.ajax
         url: "/console/users/#{$(this).data('id')}/restore"
         type: 'post'
