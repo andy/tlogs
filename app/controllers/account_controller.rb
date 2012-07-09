@@ -22,6 +22,8 @@ class AccountController < ApplicationController
         @user = User.new :email => params[:user][:email]
         if params[:user][:email].is_openid?
           flash[:bad] = 'Пользователь с таким адресом не найден'
+        elsif User.find_by_email(params[:user][:email])
+          flash[:bad] = 'Аккаунт заблокирован'
         else
           flash[:bad] = 'Неправильный логин или пароль'
         end
