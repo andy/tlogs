@@ -212,7 +212,7 @@ namespace :deploy do
   
   namespace :bundle do
     desc "Install & Update bundle"
-    task :install, :roles => :app do
+    task :install, :roles => :all do
       run "cd #{deploy_to} && RAILS_ENV=production bundle install --quiet --binstubs --deployment --without development"
     end
   end
