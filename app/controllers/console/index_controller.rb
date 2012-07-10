@@ -9,7 +9,7 @@ class Console::IndexController < ConsoleController
     user ||= User.find_by_email(query) if query =~ /\@/
     user ||= User.find_by_url(query)
     
-    render :action => :not_found, :status => 404 and return
+    render :action => 'not_found', :status => 404 and return unless user
 
     redirect_to console_user_path(user)
   end  

@@ -1,6 +1,5 @@
 %h4
-  Profile of
-  = link_to @user.url, user_url(@user)
+  Profile of #{@user.url}
   - if @user.is_disabled?
     %span.label.label-important disabled
   - if @user.is_premium?
@@ -9,7 +8,10 @@
 
 .row
   .span6
-    %h5 basic details
+    %h5
+      basic details
+      = surround '(', ')' do
+        = link_to 'view tlog', user_url(@user)
     %dl.dl-horizontal
       %dt uid
       %dd= @user.id

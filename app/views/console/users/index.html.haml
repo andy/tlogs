@@ -17,7 +17,7 @@
     - @users.each do |user|
       %tr
         %td= user.id
-        %td= user.url
+        %td= link_to '@' + user.url, console_user_path(user)
         %td= hide_email user.email
         %td
           - if user.is_premium?
@@ -25,7 +25,7 @@
           - if user.is_disabled?
             %span.label.label-important disabled
         %td
-          = link_to 'view', console_user_path(user)
+          = link_to 'view', user_url(user)
 
 = bootstrap_paginate @users
       
