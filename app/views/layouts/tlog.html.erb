@@ -5,7 +5,7 @@
 <!--[if (gte IE 9)|!(IE)]><!--> <html lang="ru"> <!--<![endif]-->
 <head>
 	<%= render :partial => 'globals/head' %>
-	<%= render :partial => 'globals/dfp_head' unless is_private? %>  
+	<%= render :partial => 'tlog/dfp' unless is_private? %>  
 </head>
 <body id='the_tlog_body' class="<%= classes(['is-owner', is_owner?], ['is-not-owner', !is_owner?], ['not-logged-in', !current_user], ['logged-in', current_user]) %>">
 	<div class='tlog'>
