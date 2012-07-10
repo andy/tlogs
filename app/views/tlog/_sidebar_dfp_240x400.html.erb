@@ -1,5 +1,5 @@
 <div class='sidebar_section'>
-  <%= link_to 'Реклама', user_url(current_user, settings_premium_path), :class => 'highlight sidebar_toggle' %>
+  <%= link_to 'Реклама', current_user ? user_url(current_user, settings_premium_path) : '#', :class => 'highlight sidebar_toggle' %>
 
   <div class='sidebar_section_content' style='width: 240px;'>
     <!-- 240x400 -->
