@@ -35,7 +35,7 @@ module WhiteListHelper
     begin
       white_list_html(html, options)
     rescue Exception => ex
-      HoptoadNotifier.notify(
+      Airbrake.notify(
         :error_class    => 'WhiteListHtml Error',
         :error_message  => "WhiteListHtml: #{ex.message}",
         :backtrace      => ex.backtrace,

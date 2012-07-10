@@ -178,7 +178,7 @@ class PublishController < ApplicationController
 
       render :action => 'edit'
     rescue ActiveRecord::RecordInvalid => ex
-      # HoptoadNotifier.notify(
+      # Airbrake.notify(
       #   :error_class    => ex.class.name,
       #   :error_message  => "#{ex.class.name}: #{ex.message}",
       #   :backtrace      => ex.backtrace,
@@ -193,7 +193,7 @@ class PublishController < ApplicationController
       
       render :action => 'edit'
     rescue Exception => ex
-      HoptoadNotifier.notify(
+      Airbrake.notify(
         :error_class    => ex.class.name,
         :error_message  => "#{ex.class.name}: #{ex.message}",
         :backtrace      => ex.backtrace,

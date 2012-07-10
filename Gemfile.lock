@@ -13,6 +13,9 @@ GEM
     activesupport (2.3.14)
     after_commit (1.0.10)
       activerecord (>= 1.15.6, < 3.0.0)
+    airbrake (3.1.2)
+      activesupport
+      builder
     annotate (2.4.0)
     builder (3.0.0)
     chronic (0.6.7)
@@ -28,9 +31,6 @@ GEM
     fssm (0.2.9)
     haml (3.1.6)
     hiredis (0.4.5)
-    hoptoad_notifier (2.4.11)
-      activesupport
-      builder
     hpricot (0.8.6)
     i18n (0.6.0)
     json (1.7.3)
@@ -112,12 +112,12 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  airbrake
   annotate
   coderay
   compass
   haml
   hiredis (~> 0.4.0)
-  hoptoad_notifier
   hpricot
   json
   memcache-client
