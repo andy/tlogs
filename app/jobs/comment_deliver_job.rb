@@ -12,8 +12,8 @@ class CommentDeliverJob
     end
   end
   
-  class << self
-    include NewRelic::Agent::Instrumentation::ControllerInstrumentation
-    add_transaction_tracer :perform, :category => :task
-  end if Rails.env.production?
+  # class << self
+  #   include NewRelic::Agent::Instrumentation::ControllerInstrumentation
+  #   add_transaction_tracer :perform, :category => :task
+  # end if Rails.env.production?
 end
