@@ -11,4 +11,9 @@ class CommentDeliverJob
       comment.deliver!(current_service, reply_to)
     end
   end
+  
+  class << self
+    include NewRelic::Agent::Instrumentation::ControllerInstrumentation
+    add_transaction_tracer :perform, :category => :task
+  end if Rails.env.production?
 end

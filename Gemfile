@@ -5,6 +5,8 @@ gem 'rails', '2.3.14'
 gem 'whenever', :require => false
 
 group :production do
+  gem 'rpm_contrib'
+  gem 'newrelic-redis'
   gem 'newrelic_rpm'
   gem 'hoptoad_notifier'
   gem 'unicorn', :require => false
@@ -52,10 +54,10 @@ gem 'paperclip-meta'
 
 # templates
 
-gem 'therubyracer', :require => false
+# gem 'therubyracer', :require => false
 gem 'sass', :require => false
 gem 'haml'
-gem 'compass', :require => false
+# gem 'compass', :require => false
 gem 'uglifier', :require => false
 
 gem 'resque'
