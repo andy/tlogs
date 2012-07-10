@@ -47,6 +47,7 @@ DISPOSABLE_DOMAINS = %w(
   amail.shop.tm
   tradermail.info
   2ch.so
+  2-ch.so
   shitmail.me
   mailforspam.com
   mailinator.com
