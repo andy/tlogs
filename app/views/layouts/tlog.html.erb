@@ -5,7 +5,17 @@
 <!--[if (gte IE 9)|!(IE)]><!--> <html lang="ru"> <!--<![endif]-->
 <head>
 	<%= render :partial => 'globals/head' %>
-	<%= render :partial => 'tlog/dfp' unless is_private? %>  
+	<%= render :partial => 'tlog/dfp' unless is_private? %>
+	<% if is_admin? || is_moderator? %>
+	  <script type='text/javascript'>
+	    jQuery(document).ready(function($){
+	      $(document).bind('keydown', 'Ctrl+/', function(evt) {
+	        window.location.href = <%= service_url(console_user_path(current_site)).to_json %>;
+          return false;
+        });
+      });
+    </script>
+	<% end %>
 </head>
 <body id='the_tlog_body' class="<%= classes(['is-owner', is_owner?], ['is-not-owner', !is_owner?], ['not-logged-in', !current_user], ['logged-in', current_user]) %>">
 	<div class='tlog'>
