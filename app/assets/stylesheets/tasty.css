@@ -185,7 +185,7 @@ div.post_name a {
 	overflow:hidden;
 	padding-left:0px;
 	text-align:right;
-	width:240px;
+	width:240px; /* change file size */
 }
 .tlog .sidebar_tlog_right .content {
 	text-align:left;
