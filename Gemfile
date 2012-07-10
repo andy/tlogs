@@ -5,9 +5,9 @@ gem 'rails', '2.3.14'
 gem 'whenever', :require => false
 
 group :production do
-  # gem 'rpm_contrib'
-  # gem 'newrelic-redis'
-  gem 'newrelic_rpm', '3.3.0'
+  gem 'rpm_contrib'
+  gem 'newrelic-redis'
+  gem 'newrelic_rpm'
   gem 'hoptoad_notifier'
   gem 'unicorn', :require => false
 end
@@ -19,7 +19,7 @@ gem 'mysql'
 gem 'memcache-client', :require => 'memcache'
 
 gem 'hiredis', '~> 0.4.0'
-gem 'redis', '>= 2.2.0', :require => ["redis/connection/hiredis", "redis"]
+gem 'redis', '~> 2.2.0', :require => ["redis/connection/hiredis", "redis"]
 
 
 # extra
@@ -57,10 +57,10 @@ gem 'paperclip-meta'
 # gem 'therubyracer', :require => false
 gem 'sass', :require => false
 gem 'haml'
-# gem 'compass', :require => false
+gem 'compass', :require => false
 gem 'uglifier', :require => false
 
-gem 'resque'
+gem 'resque', '1.19.0'
 gem 'resque-lock'
 
 group :development do
