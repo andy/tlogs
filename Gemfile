@@ -5,7 +5,7 @@ gem 'rails', '2.3.14'
 gem 'whenever', :require => false
 
 group :production do
-  gem 'rpm_contrib'
+  # gem 'rpm_contrib'
   gem 'newrelic-redis'
   gem 'newrelic_rpm'
   gem 'hoptoad_notifier'
