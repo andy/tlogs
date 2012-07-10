@@ -20,4 +20,7 @@
   
   render :partial => 'tlog/sidebar_messages' unless current_site.tlog_settings.sidebar_hide_messages? || !can_be_viewed %><%=
   
-  render :partial => 'tlog/sidebar_sections' %><div class='sidebar_section' id='sidebar_hide_holder'><%= link_to_function '&#x2190; спрятать', 'new Effect.Move("tlog_sidebar", { x: -216, duration: 0.3, afterFinish: function() { $("show_sidebar").show(); $("tlog_sidebar_content").hide(); new Effect.Move("show_sidebar", { x: 25, duration: 0.2 }) } });', :id => 'sidebar_hide' %></div>
+  render :partial => 'tlog/sidebar_sections' %><%=
+  
+  render :partial => 'tlog/sidebar_dfp_240x400' if false && can_be_viewed && !current_site.is_premium? && (current_user && !current_user.is_premium?) && !is_private? 
+  %><div class='sidebar_section' id='sidebar_hide_holder'><%= link_to_function '&#x2190; спрятать', 'new Effect.Move("tlog_sidebar", { x: -216, duration: 0.3, afterFinish: function() { $("show_sidebar").show(); $("tlog_sidebar_content").hide(); new Effect.Move("show_sidebar", { x: 25, duration: 0.2 }) } });', :id => 'sidebar_hide' %></div>
