@@ -6,7 +6,7 @@ gem 'whenever', :require => false
 
 group :production do
   # gem 'rpm_contrib'
-  gem 'newrelic-redis'
+  # gem 'newrelic-redis'
   gem 'newrelic_rpm'
   gem 'hoptoad_notifier'
   gem 'unicorn', :require => false
