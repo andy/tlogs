@@ -121,6 +121,8 @@
       %dt confirmed?
       %dd
         %span.label{:class => @user.is_confirmed? ? 'label-success' : 'label-important' }= @user.is_confirmed?
+        - unless @user.is_confirmed?
+          %a.c-act{:href => '#confirm', :data => {:toggle => 'modal'}} confirm
 
       %dt enabled?
       %dd
@@ -263,6 +265,31 @@
       %a.btn.btn-danger{:href => '#removeAccount', :data => {:toggle => 'modal'}}
         %i.icon-trash.icon-white
         Remove account
+
+
+.modal.hide.fade#confirm
+  .modal-header
+    %button.close{:type => 'button', :data => {:dismiss => 'modal'}} ×
+    %h3 Подтвердить аккаунт
+  
+  .modal-body
+    %p Пожалуйста, убедитесь, что указанный пользователем емейл — правильный. А когда смените пароль, не забудьте сообщить пользователю его новое значение.
+
+    .alert.alert-error.hide
+      %a.close{:href => '#', :data => {:dismiss => 'alert'}} ×
+      %strong Ошибка.
+      Пароль должен быть не короче 6 символов
+
+    %fieldset.control-group
+      %label{:for => 'confirm-password'} Введите новый пароль:
+
+      %input.span4#confirm-password{:type => 'password'}
+  
+  .modal-footer
+    %a.btn{:href => '#', :data => {:dismiss => 'modal'}} Отменить
+    %a.btn.btn-success.c-act-user-confirm{:href => '#', :data => { :id => @user.id, 'loading-text' => 'Подтверждаем ...' }}
+      %i.icon-ok.icon-white
+      Подтвердить почту
 
 .modal.hide.fade#mprevoke
   .modal-header

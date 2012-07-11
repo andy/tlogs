@@ -19,7 +19,29 @@ Console =
       $('.c-act-user-restore').live 'click', Console.user.restore
       $('.c-act-user-mprevoke').live 'click', Console.user.mprevoke
       $('.c-act-user-mpgrant').live 'click', Console.user.mpgrant
+      $('.c-act-user-confirm').live 'click', Console.user.confirm
     
+    confirm: (event) ->
+      password = $('#confirm-password')
+      if password.val() == '' || password.val().length < 6
+        password.closest('.control-group').addClass('error')
+        password.closest('.modal-body').find('.alert').toggle('show')
+        return false
+      
+      $(this).button('loading')
+      $.ajax
+        url: "/console/users/#{$(this).data('id')}/confirm"
+        type: 'post'
+        dataType: 'json'
+        data:
+          authenticity_token:
+            window._token
+          password: password.val()
+        success: (data) ->
+          window.location.reload()
+
+      false
+      
     mprevoke: (event) ->
       comment = $('#mprevoke-comment')
       if comment.val() == ''

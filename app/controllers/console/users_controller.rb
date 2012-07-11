@@ -38,6 +38,26 @@ class Console::UsersController < ConsoleController
     @changelogs = @user.changelogs.paginate :page => params[:page], :per_page => 50, :order => 'id desc'
   end
   
+  def confirm
+    render :json => false and return if @user.is_confirmed?
+    
+    unless params[:password]
+      respond_to do |wants|
+        wants.html { render :text => 'password required', :status => 403 }
+        wants.json { render :json => false, :status => 403 }
+      end
+    end
+    
+    @user.log current_user, :confirm, 'подтвердил почту и сменил пароль'
+    
+    @user.update_attribute :is_confirmed, true
+    
+    @user.password = params[:password]
+    @user.save(false)
+    
+    render :json => true
+  end
+  
   def wipeout
     render :json => false and return unless @user.is_disabled?
 
