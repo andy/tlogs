@@ -234,10 +234,10 @@ class MainController < ApplicationController
     friend_ids  = current_user.readable_friend_ids
     
     unless friend_ids.blank?
-      @entry_ids  = Fave.paginate :all, :select => 'faves.entry_id AS id', :conditions => "faves.user_id IN (#{friend_ids.join(',')})", :order => 'faves.entry_id DESC', :page => @page, :per_page => Entry::PAGE_SIZE
-      @entries    = Entry.find_all_by_id(@entry_ids.map(&:id), :include => [:rating, :author, { :attachments => :thumbnails }], :order => 'entries.id DESC').sort_by { |entry| @entry_ids.index(entry.id) }
+      @entry_ids  = Fave.paginate(:all, :select => 'faves.entry_id AS id', :conditions => "faves.user_id IN (#{friend_ids.join(',')})", :order => 'faves.id DESC', :page => @page, :per_page => Entry::PAGE_SIZE).map(&:id)
+      @entries    = Entry.find_all_by_id(@entry_ids, :include => [:rating, :author, { :attachments => :thumbnails }]).sort_by { |entry| @entry_ids.index(entry.id) }
 
-      @comment_views = User::entries_with_views_for(@entries.map(&:id), current_user)
+      @comment_views = User::entries_with_views_for(@entry_ids, current_user)
     end
 
     render :layout => false if should_xhr?    
