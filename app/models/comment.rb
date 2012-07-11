@@ -117,8 +117,9 @@ class Comment < ActiveRecord::Base
   end
   
   # wether this comment can be reported by user
-  def can_be_reported_by?(reporter)
-    reporter && reporter.id != self.user_id
+  def can_be_reported_by?(reporter, entry = nil)
+    entry ||= self.entry
+    reporter && reporter.id != self.user_id && (!entry.is_anonymous? || entry.user_id != self.user_id)
   end
 
   def was_reported_by?(reporter)

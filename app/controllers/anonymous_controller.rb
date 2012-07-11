@@ -146,8 +146,10 @@ class AnonymousController < ApplicationController
 
     @comment.user.ban_ac!(@comment.entry, @comment, params[:duration])
     
+    @comment.user.log current_user, :ac_ban, "забанен на #{params[:duration]}", @comment
+    
     render :update do |page|
-      page.replace(dom_id(@comment, :ban), :partial => 'ban_controls', :locals => { :comment => @comment })
+      page.replace(dom_id(@comment, :ban), :partial => 'globals/ban_controls', :locals => { :comment => @comment })
       page.visual_effect :highlight, dom_id(@comment, :ban)
     end
   end

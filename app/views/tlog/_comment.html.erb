@@ -21,9 +21,9 @@
 			<div class='t-post-comment-reply-holder'>
 			  <%= content_tag :a, '&nbsp;', :class => 't-act-comment-reply t-post-comment-reply', :id => "reply_to_comment_#{comment.id}", :title => "Ответить на #{is_anonymous_author ? "этот" : comment.user.gender('его', 'её')} комментарий" if current_user && !comment.user.nil? && current_user.id != comment.user.id %>
 			</div>
-			<% if comment.can_be_reported_by?(current_user) %>
+			<% if comment.can_be_reported_by?(current_user, @entry) %>
   		  <div class='t-post-comment-report-holder'>
-  		    <%= content_tag :a, '&nbsp;', :href => '#', 'data-url' => @entry.is_anonymous? ? nil : user_url(@entry.author, report_entry_comment_path(@entry, comment)).downcase, :class => 't-act-comment-report t-post-comment-report', :title => 'Сообщить о некорректном поведении или спаме' %>
+  		    <%= content_tag :a, '&nbsp;', :href => '#', :class => 't-act-comment-report t-post-comment-report', :title => 'Сообщить о некорректном поведении или спаме' %>
   		  </div>
   		<% end %>
   		

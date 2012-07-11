@@ -160,9 +160,8 @@
       %dd
         - if @user.ban_ac_till && @user.ban_ac_till > Time.now
           %span.label.label-important banned
-          = surround '(', ')' do
-            till
-            = @user.ban_ac_till.to_s(:db)
+          осталось: 
+          %span{:title => @user.ban_ac_till.to_s(:db)}= @user.ac_ban_days_left.pluralize('день', 'дня', 'дней', true)
         - elsif @user.ban_ac_till
           %span.label.label-warning was banned
           = surround '(', ')' do
@@ -171,6 +170,9 @@
       
         - else
           %span.label.label-success true
+        
+        %em
+          %a.c-act{:href => '#ac-change', :data => {:toggle => 'modal'}} change
 
   .span6
     %h5 userpic
@@ -265,6 +267,39 @@
       %a.btn.btn-danger{:href => '#removeAccount', :data => {:toggle => 'modal'}}
         %i.icon-trash.icon-white
         Remove account
+
+
+
+.modal.hide.fade#ac-change
+  .modal-header
+    %button.close{:type => 'button', :data => {:dismiss => 'modal'}} ×
+    %h3 Бан в анонимках
+
+  .modal-body
+    - if @user.is_ac_banned?
+      %p
+        До автоматического снятия бана осталось
+        %strong{:title => @user.ban_ac_till.to_s(:db)}= @user.ac_ban_days_left.pluralize('день', 'дня', 'дней', true)
+    - else
+      %p Пользователь не забанен.
+
+    %fieldset.control-group
+      %label{:for => 'ac-change-duration'} Укажите длительность бана:
+
+      %input.span5#ac-change-duration{:type => 'range', :min => '0', :max => '365', :value => @user.ac_ban_days_left}
+
+    %p
+      Новая длительность бана (с текущего момента):
+      %span.badge#ac-change-duration-value{:class => classes(['badge-success', @user.ac_ban_days_left.zero?], ['badge-important', @user.ac_ban_days_left > 0])}= @user.ac_ban_days_left
+
+  .modal-footer
+    %a.btn{:href => '#', :data => {:dismiss => 'modal'}} Отменить
+    %a.btn.c-act-ac-change{:href => '#', :class => classes(['btn-success', @user.ac_ban_days_left.zero?], ['btn-danger', @user.ac_ban_days_left > 0]), :data => { :id => @user.id, 'loading-text' => 'Сохраняем ...' }}
+      %i.icon-ban-circle.icon-white
+      - if @user.ac_ban_days_left.zero?
+        Снять бан
+      - else
+        Установить
 
 
 .modal.hide.fade#confirm

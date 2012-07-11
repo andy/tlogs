@@ -29,4 +29,11 @@ class User
     false
   end
   
+  def ac_ban_days_left
+    return 0 unless self.is_ac_banned?
+    
+    seconds_left = self.is_ac_banned? ? (self.ban_ac_till - Time.now) : 0
+    ((seconds_left + 1.day) / 1.day).ceil.to_i
+  end
+  
 end
