@@ -173,7 +173,7 @@ class QiwiInvoice < Invoice
   end
   
   def extra_summary
-    "Сервис продлен на #{self.days.pluralize('день', 'дня', 'дней', true)}"
+    "Сервис #{self.is_successful? ? '' : 'не '}продлен на #{self.days.pluralize('день', 'дня', 'дней', true)}"
   end
   
   def pref_key
