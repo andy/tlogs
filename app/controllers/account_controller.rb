@@ -35,7 +35,7 @@ class AccountController < ApplicationController
           login_with_openid @user.openid
       # иначе, даже если это openid пользователь - авторизуем по емейлу
       else
-        @user.log nil, :login, "#{request.remote_ip} авторизовался на сайте"
+        # @user.log nil, :login, "#{request.remote_ip} авторизовался на сайте"
         t_key = current_service.is_mobile? ? 'tm' : 't'
         cookies[t_key.to_sym] = {
             :value => [@user.id, @user.signature].pack('LZ*').to_a.pack('m').chop,
