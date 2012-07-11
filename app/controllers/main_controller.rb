@@ -234,8 +234,8 @@ class MainController < ApplicationController
     friend_ids  = current_user.readable_friend_ids
     
     unless friend_ids.blank?
-      @entry_ids  = Fave.paginate :all, :select => 'faves.entry_id AS id', :conditions => "faves.user_id IN (#{friend_ids.join(',')})",  :group => :entry_id, :order => 'faves.entry_id DESC', :page => @page, :per_page => Entry::PAGE_SIZE
-      @entries    = Entry.find_all_by_id @entry_ids.map(&:id), :include => [:rating, :author, { :attachments => :thumbnails }], :order => 'entries.id DESC'
+      @entry_ids  = Fave.paginate :all, :select => 'faves.entry_id AS id', :conditions => "faves.user_id IN (#{friend_ids.join(',')})", :order => 'faves.entry_id DESC', :page => @page, :per_page => Entry::PAGE_SIZE
+      @entries    = Entry.find_all_by_id(@entry_ids.map(&:id), :include => [:rating, :author, { :attachments => :thumbnails }], :order => 'entries.id DESC').sort_by { |entry| @entry_ids.index(entry.id) }
 
       @comment_views = User::entries_with_views_for(@entries.map(&:id), current_user)
     end
