@@ -11,15 +11,15 @@ User.active.paginated_each(:per_page => 1000) do |user|
      user.invitations_left < 3 &&
      user.listed_me_as_all_friend_light.length >= 3
      
-     # skip this user if any of his already invited friends is guilty...
-     next unless user.invitations.accepted.map(&:invitee).select do |invitee|
-       invitee.is_disabled? || !invitee.is_mainpageable? || blacklisted.include?(invitee.id) || invitee.ban_ac_till
-     end.length.zero?
+    # skip this user if any of his already invited friends is guilty...
+    next unless user.invitations.accepted.map(&:invitee).select do |invitee|
+      invitee.is_disabled? || !invitee.is_mainpageable? || invitee.ban_c_till || invitee.ban_ac_till
+    end.length.zero?
      
-     next unless user.linked_accounts.select(&:is_disabled?).length.zero?
+    next unless user.linked_accounts.select do |linked|
+      linked.is_disabled? || !linked.is_mainpageable? || linked.ban_c_till || linked.ban_ac_till
+    end.length.zero?
      
-     next unless user.linked_accounts.reject { |u| u.ban_ac_till.nil? }.length.zero?
-
     user.increment!(:invitations_left)
     puts "+ #{user.url} shall be endowed"
   end
