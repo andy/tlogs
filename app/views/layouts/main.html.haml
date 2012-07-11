@@ -8,7 +8,7 @@
 %head
   = render :partial => 'globals/head'
   = render :partial => 'globals/dfp_head'
-  - logo_is_gray = true
+  - logo_is_gray = false
   - if is_premium? && current_user.tlog_settings.background
     - logo_is_gray = current_user.tlog_settings.background.gray_logo
     :css
