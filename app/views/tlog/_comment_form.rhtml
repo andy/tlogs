@@ -7,6 +7,13 @@
 	<div class='comments_not_available'>
 		<p>Для того чтобы оставить комменатрий, вам осталось лишь подтвердить свой емейл адрес, <%= h current_user.url %>!</p>
 	</div>
+<% elsif !@entry.can_be_commented_by?(current_user) %>
+  <div class='comments_not_available'>
+    <p>К сожалению, вам нельзя оставлять комментарии к этой записи.</p>
+    <% if current_user.is_c_banned? %>
+    	<p>Бан снимется <b><%= say_time_in_words(current_user.ban_c_till) %></b>.</p>
+    <% end %>
+  </div>
 <% else %>
 	<div id='comment_preview'></div>
 

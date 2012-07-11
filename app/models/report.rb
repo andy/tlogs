@@ -1,3 +1,24 @@
+# == Schema Information
+# Schema version: 20120711194752
+#
+# Table name: reports
+#
+#  id               :integer(4)      not null, primary key
+#  reporter_id      :integer(4)      not null, indexed => [content_id, content_type], indexed
+#  content_id       :integer(4)      not null, indexed => [reporter_id, content_type], indexed => [content_type]
+#  content_type     :string(255)     not null, indexed => [reporter_id, content_id], indexed => [content_id]
+#  content_owner_id :integer(4)      not null, indexed
+#  created_at       :datetime
+#  updated_at       :datetime
+#
+# Indexes
+#
+#  index_reports_on_reporter_id_and_content_id_and_content_type  (reporter_id,content_id,content_type) UNIQUE
+#  index_reports_on_reporter_id                                  (reporter_id)
+#  index_reports_on_content_owner_id                             (content_owner_id)
+#  index_reports_on_content_id_and_content_type                  (content_id,content_type)
+#
+
 class Report < ActiveRecord::Base
   belongs_to :reporter, :class_name => 'User', :foreign_key => 'reporter_id'
   

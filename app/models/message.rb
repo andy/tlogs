@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20110816190509
+# Schema version: 20120711194752
 #
 # Table name: messages
 #
@@ -8,12 +8,13 @@
 #  body            :text            default(""), not null
 #  created_at      :datetime        not null
 #  updated_at      :datetime
-#  conversation_id :integer(4)      not null
+#  conversation_id :integer(4)      not null, indexed
 #  recipient_id    :integer(4)      not null
 #
 # Indexes
 #
-#  index_messages_on_user_id  (user_id)
+#  index_messages_on_user_id          (user_id)
+#  index_messages_on_conversation_id  (conversation_id)
 #
 
 class Message < ActiveRecord::Base

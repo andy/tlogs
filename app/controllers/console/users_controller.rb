@@ -67,6 +67,16 @@ class Console::UsersController < ConsoleController
     
     render :json => true
   end
+
+  def cchange
+    duration = params[:duration].to_i || 0
+
+    @user.log current_user, :c_ban, duration.zero? ? 'снял бан' : "#{@user.is_c_banned? ? 'забанил' : 'изменил'} на #{duration.pluralize('день', 'дня', 'дней', true)}"
+    
+    @user.update_attribute :ban_c_till, duration.zero? ? nil : duration.days.from_now
+    
+    render :json => true
+  end
   
   def wipeout
     render :json => false and return unless @user.is_disabled?

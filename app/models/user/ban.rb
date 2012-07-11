@@ -16,19 +16,18 @@ class User
     self.update_attribute(:ban_ac_till, nil)
   end
   
-  def is_ac_banned?
-    # not banned if empty
-    return false if self.ban_ac_till.nil?
-
-    # banned if not expired
-    return true if self.ban_ac_till > Time.now
-
-    # if expired, clear value
-    unban_ac!
-
-    false
+  def unban_c!
+    self.update_attribute(:ban_c_till, nil)
   end
   
+  def is_ac_banned?
+    ban_ac_till && ban_ac_till > Time.now
+  end
+  
+  def is_c_banned?
+    ban_c_till && ban_c_till > Time.now
+  end
+
   def ac_ban_days_left
     return 0 unless self.is_ac_banned?
     
@@ -36,4 +35,10 @@ class User
     ((seconds_left + 1.day) / 1.day).ceil.to_i
   end
   
+  def c_ban_days_left
+    return 0 unless self.is_c_banned?
+    
+    seconds_left = self.is_c_banned? ? (self.ban_c_till - Time.now) : 0
+    ((seconds_left + 1.day) / 1.day).ceil.to_i
+  end
 end

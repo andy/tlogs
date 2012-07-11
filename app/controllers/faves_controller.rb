@@ -27,6 +27,8 @@ class FavesController < ApplicationController
     
     @entries      = Entry.find_all_by_id(entry_ids, :include => [:author, :rating, { :attachments => :thumbnails }]).sort_by { |entry| entry_ids.index(entry.id) } unless Rails.cache.exist? "views/#{@cache_key}"
     
+    # @entries.reject! { |entry| current_user.blacklist_ids.include?(entry.user_id) } if current_user && current_user.is_premium?
+    
     @comment_views = User::entries_with_views_for(entry_ids, current_user)
     
     render :layout => false if request.xhr?

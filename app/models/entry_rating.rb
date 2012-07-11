@@ -1,31 +1,35 @@
 # == Schema Information
-# Schema version: 20110816190509
+# Schema version: 20120711194752
 #
 # Table name: entry_ratings
 #
 #  id            :integer(4)      not null, primary key
 #  entry_id      :integer(4)      default(0), not null, indexed
-#  entry_type    :string(0)       default("TextEntry"), not null, indexed => [value], indexed, indexed => [is_great]
+#  entry_type    :string(0)       default("TextEntry"), not null, indexed => [value], indexed, indexed => [is_great], indexed => [is_good], indexed => [is_everything]
 #  created_at    :datetime        not null
 #  user_id       :integer(4)      default(0), not null
 #  value         :integer(4)      default(0), not null, indexed => [entry_type]
 #  is_great      :boolean(1)      default(FALSE), not null, indexed, indexed => [entry_type]
-#  is_good       :boolean(1)      default(FALSE), not null, indexed
-#  is_everything :boolean(1)      default(FALSE), not null, indexed
+#  is_good       :boolean(1)      default(FALSE), not null, indexed, indexed => [entry_type]
+#  is_everything :boolean(1)      default(FALSE), not null, indexed, indexed => [entry_type]
 #  ups           :integer(4)      default(0), not null
 #  downs         :integer(4)      default(0), not null
 #  hotness       :decimal(32, 12) default(0.0), not null, indexed
+#  is_fine       :boolean(1)      default(FALSE), not null, indexed
 #
 # Indexes
 #
-#  index_entry_ratings_on_entry_id                 (entry_id) UNIQUE
-#  index_entry_ratings_on_value_and_entry_type     (value,entry_type)
-#  index_entry_ratings_on_entry_type               (entry_type)
-#  index_entry_ratings_on_is_great                 (is_great)
-#  index_entry_ratings_on_is_good                  (is_good)
-#  index_entry_ratings_on_is_everything            (is_everything)
-#  index_entry_ratings_on_is_great_and_entry_type  (is_great,entry_type)
-#  index_entry_ratings_on_hotness                  (hotness)
+#  index_entry_ratings_on_entry_id                      (entry_id) UNIQUE
+#  index_entry_ratings_on_value_and_entry_type          (value,entry_type)
+#  index_entry_ratings_on_entry_type                    (entry_type)
+#  index_entry_ratings_on_is_great                      (is_great)
+#  index_entry_ratings_on_is_good                       (is_good)
+#  index_entry_ratings_on_is_everything                 (is_everything)
+#  index_entry_ratings_on_is_great_and_entry_type       (is_great,entry_type)
+#  index_entry_ratings_on_is_good_and_entry_type        (is_good,entry_type)
+#  index_entry_ratings_on_is_everything_and_entry_type  (is_everything,entry_type)
+#  index_entry_ratings_on_hotness                       (hotness)
+#  index_entry_ratings_on_is_fine                       (is_fine)
 #
 
 class EntryRating < ActiveRecord::Base

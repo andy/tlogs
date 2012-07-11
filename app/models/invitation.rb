@@ -1,3 +1,23 @@
+# == Schema Information
+# Schema version: 20120711194752
+#
+# Table name: invitations
+#
+#  id         :integer(4)      not null, primary key
+#  user_id    :integer(4)      not null, indexed
+#  invitee_id :integer(4)      indexed
+#  email      :string(255)
+#  code       :string(32)      indexed
+#  created_at :datetime
+#  updated_at :datetime
+#
+# Indexes
+#
+#  index_invitations_on_code        (code) UNIQUE
+#  index_invitations_on_user_id     (user_id)
+#  index_invitations_on_invitee_id  (invitee_id)
+#
+
 class Invitation < ActiveRecord::Base
   belongs_to :user
   belongs_to :invitee, :class_name => 'User'

@@ -147,18 +147,25 @@
 
       %dt c clean?
       %dd
-        - if $redis.sismember('comments:blacklist', @user.id)
+        - if @user.is_c_banned?
           %span.label.label-important banned
-          %em
-            %a.c-act-cgrant{:href => '#'} unban
+          осталось: 
+          %span{:title => @user.ban_c_till.to_s(:db)}= @user.c_ban_days_left.pluralize('день', 'дня', 'дней', true)
+        - elsif @user.ban_c_till
+          %span.label.label-warning was banned
+          = surround '(', ')' do
+            = time_ago_in_words @user.ban_c_till
+            ago
+    
         - else
           %span.label.label-success true
-          %em
-            %a.c-act-crevoke{:href => '#'} ban
+      
+        %em
+          %a.c-act{:href => '#c-change', :data => {:toggle => 'modal'}} change
 
       %dt ac clean?
       %dd
-        - if @user.ban_ac_till && @user.ban_ac_till > Time.now
+        - if @user.is_ac_banned?
           %span.label.label-important banned
           осталось: 
           %span{:title => @user.ban_ac_till.to_s(:db)}= @user.ac_ban_days_left.pluralize('день', 'дня', 'дней', true)
@@ -268,6 +275,38 @@
         %i.icon-trash.icon-white
         Remove account
 
+
+.modal.hide.fade#c-change
+  .modal-header
+    %button.close{:type => 'button', :data => {:dismiss => 'modal'}} ×
+    %h3 Запрет на комментирование
+
+  .modal-body
+    - cdl = @user.c_ban_days_left
+    - if @user.is_c_banned?
+      %p
+        До автоматического снятия бана осталось
+        %strong{:title => @user.ban_c_till.to_s(:db)}= cdl.pluralize('день', 'дня', 'дней', true)
+    - else
+      %p Пользователь не забанен.
+
+    %fieldset.control-group
+      %label{:for => 'c-change-duration'} Укажите длительность бана:
+
+      %input.span5#c-change-duration{:type => 'range', :min => '0', :max => '365', :value => cdl}
+
+    %p
+      Новая длительность бана (с текущего момента):
+      %span.badge#c-change-duration-value{:class => classes(['badge-success', cdl.zero?], ['badge-important', cdl > 0])}= cdl
+
+  .modal-footer
+    %a.btn{:href => '#', :data => {:dismiss => 'modal'}} Отменить
+    %a.btn.c-act-c-change{:href => '#', :class => classes(['btn-success', cdl.zero?], ['btn-danger', cdl > 0]), :data => { :id => @user.id, 'loading-text' => 'Сохраняем ...' }}
+      %i.icon-ban-circle.icon-white
+      - if cdl.zero?
+        Снять бан
+      - else
+        Установить
 
 
 .modal.hide.fade#ac-change

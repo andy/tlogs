@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20110816190509
+# Schema version: 20120711194752
 #
 # Table name: users
 #
@@ -13,7 +13,6 @@
 #  created_at              :datetime        not null
 #  entries_count           :integer(4)      default(0), not null, indexed, indexed => [is_confirmed]
 #  updated_at              :datetime
-#  is_anonymous            :boolean(1)      default(FALSE), not null
 #  is_mainpageable         :boolean(1)      default(FALSE), not null
 #  domain                  :string(255)     indexed
 #  private_entries_count   :integer(4)      default(0), not null
@@ -32,6 +31,8 @@
 #  userpic_updated_at      :datetime
 #  userpic_meta            :text
 #  premium_till            :datetime
+#  invitations_left        :integer(4)      default(0), not null
+#  ban_c_till              :datetime
 #
 # Indexes
 #

@@ -9,7 +9,8 @@
 	</div>  
 <% elsif current_user.is_ac_banned? %>
   <div class='comments_not_available'>
-  	<p>К сожалению, вы временно забанены и не можете оставлять комментарии к анонимкам. Бан снимется <%= say_time_in_words(current_user.ban_ac_till) %>.</p>
+  	<p>К сожалению, вы временно забанены и не можете оставлять комментарии к анонимкам.</p>
+  	<p>Бан снимется <b><%= say_time_in_words(current_user.ban_ac_till) %></b>.</p>
   </div>
 <% else %>
 

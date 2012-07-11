@@ -109,6 +109,8 @@ class MainController < ApplicationController
 
     @entries  = Entry.find_all_by_id(entry_ids, :include => [:author, :rating, { :attachments => :thumbnails }]).sort_by { |entry| entry_ids.index(entry.id) }
     
+    @entries.reject! { |entry| current_user.blacklist_ids.include?(entry.user_id) } if current_user && current_user.is_premium?
+    
     @comment_views = User::entries_with_views_for(entry_ids, current_user)
     
     render :layout => false if should_xhr?
@@ -124,8 +126,6 @@ class MainController < ApplicationController
     
     @entry.author.log current_user, :entry_hide, params[:comment], @entry
 
-    # $redis.hmset [queue.key, 'comments'].join(':'), @entry.id, params[:comment]
-    
     render :json => true
   end
   
@@ -134,6 +134,8 @@ class MainController < ApplicationController
     entry_ids = @pager
 
     @entries = Entry.find_all_by_id(entry_ids, :include => [:author, :rating, { :attachments => :thumbnails }]).sort_by { |entry| entry_ids.index(entry.id) }
+    
+    @entries.reject! { |entry| current_user.blacklist_ids.include?(entry.user_id) } if current_user && current_user.is_premium?
 
     @comment_views = User::entries_with_views_for(entry_ids, current_user)
     
@@ -149,6 +151,8 @@ class MainController < ApplicationController
 
     @entry_ratings = EntryRating.paginate :all, :page => current_page, :per_page => Entry::PAGE_SIZE, :include => { :entry => [ :author, :rating, { :attachments => :thumbnails } ] }, :order => 'entry_ratings.hotness DESC, entry_ratings.id DESC', :conditions => sql_conditions
     
+    @entry_ratings.reject! { |rating| current_user.blacklist_ids.include?(rating.entry.user_id) } if current_user && current_user.is_premium?
+    
     @comment_views = User::entries_with_views_for(@entry_ratings.map(&:entry_id), current_user)
     
     render :layout => false if should_xhr?
@@ -162,6 +166,8 @@ class MainController < ApplicationController
     entry_ids   = (entry_id && entry_id > 0) ? queue.after(entry_id) : queue.page(1)
     
     @entries    = Entry.find_all_by_id(entry_ids, :include => [:author, :rating, { :attachments => :thumbnails }]).sort_by { |entry| entry_ids.index(entry.id) }
+    
+    @entries.reject! { |entry| current_user.blacklist_ids.include?(entry.user_id) } if current_user && current_user.is_premium?
     
     @comment_views = User::entries_with_views_for(@entries.map(&:id), current_user)
     

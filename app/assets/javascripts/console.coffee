@@ -20,34 +20,49 @@ Console =
       $('.c-act-user-mprevoke').live 'click', Console.user.mprevoke
       $('.c-act-user-mpgrant').live 'click', Console.user.mpgrant
       $('.c-act-user-confirm').live 'click', Console.user.confirm
-      $('.c-act-ac-change').live 'click', Console.user.acchange
-      $('#ac-change-duration').change (event) ->
-        val = $(this).val()
-        if val > 0
-          $('#ac-change-duration-value').addClass('badge-important').removeClass('badge-success')
-          $('.c-act-ac-change').addClass('btn-danger').removeClass('btn-success').html('<i class="icon-ban-circle icon-white"></i> Установить')
-        else
-          $('#ac-change-duration-value').addClass('badge-success').removeClass('badge-important')
-          $('.c-act-ac-change').addClass('btn-success').removeClass('btn-danger').html('<i class="icon-ban-circle icon-white"></i> Снять бан')
-        
-        $('#ac-change-duration-value').html $(this).val()
-    
-    acchange: (event) ->
-      $(this).button('loading')
+      $('.c-act-ac-change').live 'click', Console.user.acsave
+      $('.c-act-c-change').live 'click', Console.user.csave
+      $('#ac-change-duration').change Console.user.acchange
+      $('#c-change-duration').change Console.user.cchange    
+
+    durationChange: (type, obj) ->
+      val = obj.val()
+      if val > 0
+        $("##{type}-change-duration-value").addClass('badge-important').removeClass('badge-success')
+        $(".c-act-#{type}-change").addClass('btn-danger').removeClass('btn-success').html('<i class="icon-ban-circle icon-white"></i> Установить')
+      else
+        $("##{type}-change-duration-value").addClass('badge-success').removeClass('badge-important')
+        $(".c-act-#{type}-change").addClass('btn-success').removeClass('btn-danger').html('<i class="icon-ban-circle icon-white"></i> Снять бан')
+      
+      $("##{type}-change-duration-value").html val
+      
+    durationSave: (type, obj) ->
+      obj.button('loading')
 
       $.ajax
-        url: "/console/users/#{$(this).data('id')}/acchange"
+        url: "/console/users/#{obj.data('id')}/#{type}change"
         type: 'post'
         dataType: 'json'
         data:
           authenticity_token:
             window._token
-          duration: $('#ac-change-duration').val()
+          duration: $("##{type}-change-duration").val()
         success: (data) ->
           window.location.reload()
 
       false
-      
+    
+    acchange: (event) ->
+      Console.user.durationChange 'ac', $(this)
+
+    cchange: (event) ->
+      Console.user.durationChange 'c', $(this)
+    
+    acsave: (event) ->
+      Console.user.durationSave 'ac', $(this)
+
+    csave: (event) ->
+      Console.user.durationSave 'c', $(this)
       
     confirm: (event) ->
       password = $('#confirm-password')

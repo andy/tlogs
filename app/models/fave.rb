@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20110816190509
+# Schema version: 20120711194752
 #
 # Table name: faves
 #
@@ -7,15 +7,16 @@
 #  user_id       :integer(4)      not null, indexed => [entry_id], indexed => [entry_user_id], indexed => [entry_type]
 #  entry_id      :integer(4)      not null, indexed => [user_id], indexed
 #  entry_type    :string(0)       default("TextEntry"), not null, indexed => [user_id]
-#  entry_user_id :integer(4)      not null, indexed => [user_id]
-#  created_at    :datetime
+#  entry_user_id :integer(4)      not null, indexed => [user_id], indexed => [created_at]
+#  created_at    :datetime        indexed => [entry_user_id]
 #
 # Indexes
 #
-#  index_faves_on_user_id_and_entry_id       (user_id,entry_id) UNIQUE
-#  index_faves_on_user_id_and_entry_user_id  (user_id,entry_user_id)
-#  index_faves_on_user_id_and_entry_type     (user_id,entry_type)
-#  index_faves_on_entry_id                   (entry_id)
+#  index_faves_on_user_id_and_entry_id          (user_id,entry_id) UNIQUE
+#  index_faves_on_user_id_and_entry_user_id     (user_id,entry_user_id)
+#  index_faves_on_user_id_and_entry_type        (user_id,entry_type)
+#  index_faves_on_entry_id                      (entry_id)
+#  index_faves_on_entry_user_id_and_created_at  (entry_user_id,created_at)
 #
 
 class Fave < ActiveRecord::Base
