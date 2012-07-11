@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120711000336) do
+ActiveRecord::Schema.define(:version => 20120711194752) do
 
   create_table "attachments", :force => true do |t|
     t.integer "entry_id",     :default => 0,  :null => false
@@ -492,7 +492,6 @@ ActiveRecord::Schema.define(:version => 20120711000336) do
     t.datetime "created_at",                                               :null => false
     t.integer  "entries_count",                         :default => 0,     :null => false
     t.datetime "updated_at"
-    t.boolean  "is_anonymous",                          :default => false, :null => false
     t.boolean  "is_mainpageable",                       :default => false, :null => false
     t.string   "domain"
     t.integer  "private_entries_count",                 :default => 0,     :null => false
@@ -512,6 +511,7 @@ ActiveRecord::Schema.define(:version => 20120711000336) do
     t.text     "userpic_meta"
     t.datetime "premium_till"
     t.integer  "invitations_left",                      :default => 0,     :null => false
+    t.datetime "ban_c_till"
   end
 
   add_index "users", ["domain"], :name => "index_users_on_domain"
