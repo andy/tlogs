@@ -5,7 +5,7 @@ class MainController < ApplicationController
   
   before_filter :require_moderator, :only => [:demote]
   
-  before_filter :enable_shortcut, :only => [:news, :hot, :last, :hot, :live, :my, :worst, :tagged, :last_personalized, :random]
+  before_filter :enable_shortcut, :only => [:news, :hot, :last, :hot, :live, :my, :worst, :tagged, :last_personalized, :random, :faves]
   
   protect_from_forgery :only => :demote
 
@@ -225,6 +225,22 @@ class MainController < ApplicationController
     
     
     render :layout => false if should_xhr?
+  end
+  
+  def faves
+    @title      = 'избранное друзей'
+    @page       = current_page
+
+    friend_ids  = current_user.readable_friend_ids
+    
+    unless friend_ids.blank?
+      @entry_ids  = Fave.paginate :all, :select => 'faves.entry_id AS id', :conditions => "faves.user_id IN (#{friend_ids.join(',')})",  :group => :entry_id, :order => 'faves.entry_id DESC', :page => @page, :per_page => Entry::PAGE_SIZE
+      @entries    = Entry.find_all_by_id @entry_ids.map(&:id), :include => [:rating, :author, { :attachments => :thumbnails }], :order => 'entries.id DESC'
+
+      @comment_views = User::entries_with_views_for(@entries.map(&:id), current_user)
+    end
+
+    render :layout => false if should_xhr?    
   end
   
   def last_personalized

@@ -11,14 +11,17 @@ class User
   def self.admins
     [1, 2]
   end
+  
+  def self.moderators
+    admins + []
+  end
 
   def is_admin?
-    [1, 2].include?(self.id)
+    User.admins.include?(self.id)
   end
   
-  # moderators (admins + no one yet)
   def is_moderator?
-    is_admin?
+    User.moderators.include?(self.id)
   end
   
   # пользователь выключен, анонимен, либо имеет неподтвержденный емейл адрес

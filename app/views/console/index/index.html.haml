@@ -5,4 +5,7 @@
   %p in moderation we trust
   
   %p
-    %small these people help to keep things clean and smooth: *list admins &amp; mods here*
+    %small
+      these people help to keep things clean and smooth:
+      - User.find(User.moderators).each do |user|
+        = link_to '@' + user.url, console_user_path(user)
