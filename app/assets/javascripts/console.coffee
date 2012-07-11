@@ -2,6 +2,10 @@ Console =
   ready: ->
     Console.user.ready()
     Console.invitations.ready()
+    $(document).bind 'keydown', 'Ctrl+/', (event) ->
+      $('#console-search').focus()
+      false
+
     $('.c-act-none').live 'click', (event) ->
       false
     $('.line').peity 'bar'
@@ -17,8 +21,13 @@ Console =
       $('.c-act-user-mpgrant').live 'click', Console.user.mpgrant
     
     mprevoke: (event) ->
-      $(this).parent().html('<span class="label label-info">done</span>')
+      comment = $('#mprevoke-comment')
+      if comment.val() == ''
+        comment.closest('.control-group').addClass('error')
+        comment.closest('.modal-body').find('.alert').toggle('show')
+        return false
 
+      $(this).button('loading')
       $.ajax
         url: "/console/users/#{$(this).data('id')}/mprevoke"
         type: 'post'
@@ -26,11 +35,20 @@ Console =
         data:
           authenticity_token:
             window._token
+          comment: comment.val()
+        success: (data) ->
+          window.location.reload()
+
       false
     
     mpgrant: (event) ->
-      $(this).parent().html('<span class="label label-info">done</span>')
+      comment = $('#mpgrant-comment')
+      if comment.val() == ''
+        comment.closest('.control-group').addClass('error')
+        comment.closest('.modal-body').find('.alert').toggle('show')
+        return false
 
+      $(this).button('loading')
       $.ajax
         url: "/console/users/#{$(this).data('id')}/mpgrant"
         type: 'post'
@@ -38,9 +56,19 @@ Console =
         data:
           authenticity_token:
             window._token
+          comment: comment.val()
+        success: (data) ->
+          window.location.reload()
+
       false
 
     wipeout: (event) ->
+      comment = $('#wipeout-comment')
+      if comment.val() == ''
+        comment.closest('.control-group').addClass('error')
+        comment.closest('.modal-body').find('.alert').toggle('show')
+        return false
+      
       $(this).button('loading')
       $.ajax
         url: "/console/users/#{$(this).data('id')}/wipeout"
@@ -49,12 +77,19 @@ Console =
         data:
           authenticity_token:
             window._token
+          comment: comment.val()
         success: (data) ->
           window.location.reload()
 
       false
 
     destroy: (event) ->
+      comment = $('#destroyAccount-comment')
+      if comment.val() == ''
+        comment.closest('.control-group').addClass('error')
+        comment.closest('.modal-body').find('.alert').toggle('show')
+        return false
+
       $(this).button('loading')
       $.ajax
         url: "/console/users/#{$(this).data('id')}/destroy"
@@ -63,6 +98,7 @@ Console =
         data:
           authenticity_token:
             window._token
+          comment: comment.val()
         success: (data) ->
           window.location.reload()
       
@@ -70,6 +106,12 @@ Console =
       
     
     disable: (event) ->
+      comment = $('#disableAccount-comment')
+      if comment.val() == ''
+        comment.closest('.control-group').addClass('error')
+        comment.closest('.modal-body').find('.alert').toggle('show')
+        return false
+      
       $(this).button('loading')
       $.ajax
         url: "/console/users/#{$(this).data('id')}/disable"
@@ -78,12 +120,20 @@ Console =
         data:
           authenticity_token:
             window._token
+          comment: comment.val()
+
         success: (data) ->
           window.location.reload()
       
       false
     
     restore: (event) ->
+      comment = $('#restore-comment')
+      if comment.val() == ''
+        comment.closest('.control-group').addClass('error')
+        comment.closest('.modal-body').find('.alert').toggle('show')
+        return false
+
       $(this).button('loading')
       $.ajax
         url: "/console/users/#{$(this).data('id')}/restore"
@@ -92,6 +142,7 @@ Console =
         data:
           authenticity_token:
             window._token
+          comment: comment.val()
         success: (data) ->
           window.location.reload()
       

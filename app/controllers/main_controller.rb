@@ -122,7 +122,9 @@ class MainController < ApplicationController
     queue = EntryQueue.new('demoted')
     queue.push @entry.id
     
-    $redis.hmset [queue.key, 'comments'].join(':'), @entry.id, params[:comment]
+    @entry.author.log current_user, :entry_hide, params[:comment], @entry
+
+    # $redis.hmset [queue.key, 'comments'].join(':'), @entry.id, params[:comment]
     
     render :json => true
   end

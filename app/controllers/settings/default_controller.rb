@@ -256,6 +256,7 @@ class Settings::DefaultController < ApplicationController
             @user.is_confirmed = false
             @user.valid?
             if !@user.errors.on :email
+              @user.log nil, :change_email, "сменил емейл адрес на #{new_email}"
               current_user.update_confirmation!(@user.email)
               Emailer.deliver_confirm(current_service, current_user, @user.email)
               flash[:good] = "Отлично! Мы установили Вам новый емейл адрес, но прежде чем он заработает, вам нужно будет его подтвердить. Поэтому загляните, пожалуйста, в почтовый ящик #{@user.email}, там должно быть письмо с кодом подтверждения"
@@ -298,11 +299,14 @@ class Settings::DefaultController < ApplicationController
       redirect_to user_url(current_user, settings_path(:action => 'destroy'))
     elsif request.post?
       flash[:good] = 'Тлог был успешно удален'
+      
+      @user.log nil, :disable, "#{request.remote_ip} удалил аккаунт"
       @user.async_disable!
       
       # выходим с сайта
-      cookies.delete :t, :domain => request.domain
-      cookies.delete :l, :domain => request.domain
+      cookies.delete :t, :domain => current_service.cookie_domain
+      cookies.delete :l, :domain => current_service.cookie_domain
+      cookies.delete :s, :domain => current_service.cookie_domain
       reset_session
       
       redirect_to service_url      

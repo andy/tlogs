@@ -66,6 +66,7 @@ class User < ActiveRecord::Base
   has_many      :reports, :dependent => :destroy, :foreign_key => 'reporter_id'
   has_many      :reports_on, :class_name => 'Report', :foreign_key => 'content_owner_id', :dependent => :destroy
   has_many      :comments, :dependent => :destroy
+  has_many      :changelogs, :foreign_key => :owner_id # , :dependent => :destroy  keep change longs no matter what
   
 
   ## plugins
@@ -178,6 +179,10 @@ class User < ActiveRecord::Base
 
   def username
     @username ||= read_attribute(:username).blank? ? self.url : read_attribute(:username)
+  end
+  
+  def log actor, action, comment = nil, object = nil
+    self.changelogs.create! :actor => actor, :action => action.to_s, :comment => comment.try(:to_s), :object => object
   end
   
   def unreplied_conversations_count

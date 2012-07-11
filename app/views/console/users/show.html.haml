@@ -10,8 +10,7 @@
   .span6
     %h5
       basic details
-      = surround '(', ')' do
-        = link_to 'view tlog', user_url(@user)
+      = link_to 'view tlog', user_url(@user), :class => 'c-act'
     %dl.dl-horizontal
       %dt uid
       %dd= @user.id
@@ -62,7 +61,7 @@
     %dl.dl-horizontal
       - if @user.invitation
         %dt invited by
-        %dd= link_to @user.invitation.user.url, console_user_path(@user.invitation.user)
+        %dd= link_to '@' + @user.invitation.user.url, console_user_path(@user.invitation.user)
   
       %dt invitations
       %dd
@@ -139,9 +138,9 @@
         %span.label{:class => @user.is_mainpageable? ? 'label-success' : 'label-important' }= @user.is_mainpageable?
         %em
           - if @user.is_mainpageable?
-            %a.c-act.c-act-user-mprevoke{:href => '#', :data => { :id => @user.id }} ban
+            %a.c-act{:href => '#mprevoke', :data => {:toggle => 'modal'}} ban
           - else
-            %a.c-act.c-act-user-mpgrant{:href => '#', :data => { :id => @user.id }} unban
+            %a.c-act{:href => '#mpgrant', :data => {:toggle => 'modal'}} unban
 
 
       %dt c clean?
@@ -174,7 +173,7 @@
   .span6
     %h5 userpic
     %br
-    .well
+    .well.well-small
       - if @user.userpic?
         = link_to image_tag(@user.userpic.url(:thumb128)), @user.userpic.url(:original)
       - else
@@ -215,10 +214,28 @@
         - else
           = link_to "on #{@reports_count.pluralize('comment', 'comments', 'comments', true)}", reporter_console_user_path(@user), :class => 'c-act' 
 
-    %h5 history
+    %h5
+      changelog
+      = link_to 'view all', changelogs_console_user_path(@user), :class => 'c-act'
     %br
-    %p not yet implemented
+    %table.table.table-striped.table-bordered
+      %tbody
+        - @changelogs.each do |changelog|
+          %tr
+            %td= changelog.action
+            %td= h changelog.comment
+            %td
+              - if changelog.actor
+                = link_to '@' + changelog.actor.url, console_user_path(changelog.actor)
+              - else
+                —
+            %td
+              %span{:title => changelog.created_at.to_s(:db)}
+                = time_ago_in_words changelog.created_at, true
+                ago
 
+    %ul.pager
+      %li.next
 .row
   .span12
     %hr
@@ -235,7 +252,7 @@
         = '@' + @user.url
   - else
     .span2
-      %a.btn.btn-success.c-act-user-restore{:href => '#', :data => { :id => @user.id, 'loading-text' => 'Restoring ...' }}
+      %a.btn.btn-success{:href => '#restore', :data => {:toggle => 'modal'}}
         %i.icon-repeat.icon-white
         Restore
       
@@ -246,9 +263,84 @@
       %a.btn.btn-danger{:href => '#removeAccount', :data => {:toggle => 'modal'}}
         %i.icon-trash.icon-white
         Remove account
-      
+
+.modal.hide.fade#mprevoke
+  .modal-header
+    %button.close{:type => 'button', :data => {:dismiss => 'modal'}} ×
+    %h3 Запретить попадать на главную
+
+  .modal-body
+    %p Все существующие посты будут удалены их главных лент сайта, прямого эфира, лучшего и пр.
+    
+    %p Записи пользователя будут видеть только заходящие к нему в тлог или подписанные на него.
+
+    .alert.alert-error.hide
+      %a.close{:href => '#', :data => {:dismiss => 'alert'}} ×
+      %strong Ошибка.
+      Это поле не может быть пустым.
+
+    %fieldset.control-group
+      %label{:for => 'mprevoke-comment'} Пожалуйста, укажите причину:
+
+      %textarea.comment#mprevoke-comment
+
+  .modal-footer
+    %a.btn{:href => '#', :data => {:dismiss => 'modal'}} Отменить
+    %a.btn.btn-danger.c-act-user-mprevoke{:href => '#', :data => { :id => @user.id, 'loading-text' => 'Запрещаем ...' }}
+      %i.icon-remove.icon-white
+      Запретить      
+
+.modal.hide.fade#mpgrant
+  .modal-header
+    %button.close{:type => 'button', :data => {:dismiss => 'modal'}} ×
+    %h3 Вернуть доступ к главной
+
+  .modal-body
+    %p
+      Снимает ограничение на доступ к главной странице
+    
+    %p
+      %strong Важно.
+      Старые посты не будут заново добавлены в ленту и ограничение не будет распространяться только на новые записи.
+
+    .alert.alert-error.hide
+      %a.close{:href => '#', :data => {:dismiss => 'alert'}} ×
+      %strong Ошибка.
+      Это поле не может быть пустым.
+
+    %fieldset.control-group
+      %label{:for => 'mpgrant-comment'} Пожалуйста, укажите причину:
+
+      %textarea.comment#mpgrant-comment
+
+  .modal-footer
+    %a.btn{:href => '#', :data => {:dismiss => 'modal'}} Отменить
+    %a.btn.btn-success.c-act-user-mpgrant{:href => '#', :data => { :id => @user.id, 'loading-text' => 'Снимаем ограничение ...' }}
+      %i.icon-ok.icon-white
+      Снять ограничение      
 
 - if @user.is_disabled?
+  .modal.hide.fade#restore
+    .modal-header
+      %button.close{:type => 'button', :data => {:dismiss => 'modal'}} ×
+      %h3 Confirm restore
+  
+    .modal-body
+      .alert.alert-error.hide
+        %a.close{:href => '#', :data => {:dismiss => 'alert'}} ×
+        %strong You need to type something here.
+
+      %fieldset.control-group
+        %label{:for => 'restore-comment'} Please, provide reason for restoring:
+      
+        %textarea.comment#restore-comment
+  
+    .modal-footer
+      %a.btn{:href => '#', :data => {:dismiss => 'modal'}} Close
+      %a.btn.btn-success.c-act-user-restore{:href => '#', :data => { :id => @user.id, 'loading-text' => 'Restoring ...' }}
+        %i.icon-repeat.icon-white
+        Restore
+
   .modal.hide.fade#wipeout
     .modal-header
       %button.close{:type => 'button', :data => {:dismiss => 'modal'}} ×
@@ -285,6 +377,16 @@
       
       %p
         Amen.
+      
+      .alert.alert-error.hide
+        %a.close{:href => '#', :data => {:dismiss => 'alert'}} ×
+        %strong You need to type something here.
+
+      %fieldset.control-group
+        %label{:for => 'removeAccount-comment'} Please, provide reason for disabling:
+
+        %textarea.comment#removeAccount-comment
+      
     
     .modal-footer
       %a.btn{:href => '#', :data => {:dismiss => 'modal'}} Close
@@ -305,9 +407,17 @@
         %strong= '@' + @user.url
         without him being able to restore or complain.
       
-      %p Note, that no user content is removed during this step.
+      %p Note: no user content is removed during this step.
         
-      %p All actions here are logged for our own safety.
+      .alert.alert-error.hide
+        %a.close{:href => '#', :data => {:dismiss => 'alert'}} ×
+        %strong You need to type something here.
+
+      %fieldset.control-group
+        %label{:for => 'disableAccount-comment'} Please, provide reason for disabling:
+      
+        %textarea.comment#disableAccount-comment
+      
     
     .modal-footer
       %a.btn{:href => '#', :data => {:dismiss => 'modal'}} Close

@@ -88,8 +88,9 @@ www_settings = lambda do |www|
   
   # console, administration controller
   www.namespace :console do |console|
-    console.resources :users, :member => { :disable => :post, :destroy => :post, :invitations => :post, :mprevoke => :post, :mpgrant => :post, :restore => :post, :wipeout => :post, :suspect => :get, :reporter => :get }
+    console.resources :users, :member => { :disable => :post, :destroy => :post, :invitations => :post, :mprevoke => :post, :mpgrant => :post, :restore => :post, :wipeout => :post, :suspect => :get, :reporter => :get, :changelogs => :get }
     console.resources :reports, :member => { :go => :get }
+    console.resources :changelogs
     console.index 'index/:action/:id', :controller => 'index'
     console.root :controller => 'index', :action => 'index'
   end

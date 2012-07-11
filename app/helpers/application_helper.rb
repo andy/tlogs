@@ -167,6 +167,15 @@ END
     content_tag(:title, [strip_tags(@title), h(current_site ? h(current_site.url) : current_service.name)].reject(&:blank?).join(' – ')) if @title
   end
   
+  def show_tlog_ads?
+    # temporarily show in andys tlog
+    return true if current_site.id == 1
+    
+    return false if current_site.is_premium?
+    
+    true
+  end
+  
   def link_to_tlog(user, options = {}, html_options = nil)
     link_to_tlog_if(true, user, options, html_options)
   end

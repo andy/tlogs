@@ -1,0 +1,31 @@
+
+%table.table.table-striped
+  %thead
+    %tr
+      %th Owner
+      %th Action
+      %th Comment
+      %th By
+      %th When
+  %tbody
+    - @changelogs.each do |changelog|
+      %tr
+        %td
+          - if changelog.owner
+            = link_to '@' + changelog.owner.url, console_user_path(changelog.owner)
+          - else
+            = '#' + changelog.owner_id
+            %span.badge.badge-important removed
+        %td= changelog.action
+        %td= h changelog.comment
+        %td
+          - if changelog.actor
+            = link_to '@' + changelog.actor.url, console_user_path(changelog.actor)
+          - else
+            —
+        %td
+          %span{:title => changelog.created_at.to_s(:db)}
+            = time_ago_in_words changelog.created_at, true
+            ago
+
+= bootstrap_paginate @changelogs

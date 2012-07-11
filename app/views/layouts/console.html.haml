@@ -32,12 +32,12 @@
             = link_to 'Users', console_users_path
           %li{:class => request.path.starts_with?(console_reports_path) ? 'active' : nil}
             = link_to 'Reports', console_reports_path
-          %li
-            = link_to 'Changelogs', '#'
+          %li{:class => request.path.starts_with?(console_changelogs_path) ? 'active' : nil}
+            = link_to 'Changelogs', console_changelogs_path
 
       .span3.right
         %form.form-search.form-inline{:method => 'post', :action => console_index_path(:action => 'lookup')}
-          %input.search-query.input-medium{:type => 'search', :name => 'query', :value => params[:value], :placeholder => 'url / email / uid'}
+          %input.search-query.input-medium#console-search{:type => 'search', :name => 'query', :value => params[:value], :placeholder => 'url / email / uid'}
           %input.btn{:type => 'submit', :value => 'Search'}
 
     .row
@@ -47,12 +47,20 @@
     .row
       .span12
         = yield
-
+    
     .row
       .span12
         %hr
-        &copy; 2012 take care,
-        = current_user.url
-        %br
-        %br
+
+    .row
+      .span6
+        &copy;
+        Tasty #{Date.today.year}
+        |
+        = link_to 'Help', console_index_path(:action => :faq)
+      .span6
+        .pull-right
+          %p
+            %small
+              All systems are up
 </html>

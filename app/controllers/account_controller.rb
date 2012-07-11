@@ -35,6 +35,7 @@ class AccountController < ApplicationController
           login_with_openid @user.openid
       # иначе, даже если это openid пользователь - авторизуем по емейлу
       else
+        @user.log nil, :login, "#{request.remote_ip} авторизовался на сайте"
         t_key = current_service.is_mobile? ? 'tm' : 't'
         cookies[t_key.to_sym] = {
             :value => [@user.id, @user.signature].pack('LZ*').to_a.pack('m').chop,
@@ -59,6 +60,8 @@ class AccountController < ApplicationController
       
       if !@user.errors.on("url")
         @user.update_attribute(:url, @user.url)
+        
+        @user.log nil, :rename, "@#{current_user.url} изменил адрес на @#{@user.url}"
         
         @user.rename! if params['remove_subscribers'] && params['remove_subscribers'] == '1'
         
@@ -87,6 +90,7 @@ class AccountController < ApplicationController
         end        
         
         if user.crypted_password
+          user.log nil, :recover_password, "#{request.remote_ip} запросил восстановление пароля"
           Emailer.deliver_lost_password(current_service, user)
           flash[:lost_user_id] = user.id
           redirect_to :action => 'lost_password_sent'
@@ -111,6 +115,7 @@ class AccountController < ApplicationController
       if request.post?
         @user.password = params[:user][:password]
         if !@user.password.blank? && @user.save
+          @user.log nil, :recover_password, "#{request.remote_ip} сменил пароль"
           flash[:good] = 'Ваш пароль был успешно изменен'
           redirect_to service_url(login_path(:noref => true))
         else
@@ -184,6 +189,7 @@ class AccountController < ApplicationController
       # @user.update_confirmation!(@user.email)
       @user.save if @user.errors.empty?
       if @user.errors.empty?
+        @user.log @invitation.user, :signup, "@#{@user.url} зарегистрировался по приглашению"
         Emailer.deliver_signup(current_service, @user)
         @invitation.update_attribute(:invitee_id, @user.id)
 

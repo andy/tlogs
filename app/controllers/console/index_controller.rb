@@ -1,5 +1,6 @@
 class Console::IndexController < ConsoleController
   def index
+    @title = 'консоль модератора'
   end
   
   def lookup
