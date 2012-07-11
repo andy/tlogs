@@ -33,7 +33,7 @@ class User
   
   # checks wether current user has user blacklisted
   def is_blacklisted_for?(user)
-    user && user.id != self.id && self.blacklist_ids.include?(user.id)
+    user && user.id != self.id && self.is_premium? && self.blacklist_ids.include?(user.id)
   end
   
   # checks wether this tlog can be viewed by other users

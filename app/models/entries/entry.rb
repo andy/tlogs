@@ -218,7 +218,7 @@ class Entry < ActiveRecord::Base
     return true if user && user.id == self.user_id
     
     # skip if current user is blacklisted
-    return false if user && author.is_blacklisted_for?(user)
+    return false if user && self.author.is_blacklisted_for?(user)
     
     # as a rule of thumb all mainpageable entries can be viewed by everyone
     return true if self.is_mainpageable?
@@ -230,7 +230,7 @@ class Entry < ActiveRecord::Base
   def can_be_commented_by?(user)
     return true if user.id == self.user_id
 
-    return false if author.is_blacklisted_for?(user)
+    return false if self.author.is_blacklisted_for?(user)
 
     return false if user.is_c_banned?    
 

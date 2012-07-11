@@ -31,7 +31,7 @@ class Entry
       # self.votes.positive.map(&:user_id)
     ].flatten.compact.uniq
     
-    ids -= self.author.blacklist_ids
+    ids -= self.author.blacklist_ids if self.author.is_premium?
     
     # respect user's privacy settings
     case self.author.tlog_settings.privacy
