@@ -199,6 +199,12 @@
           = @user.private_entries_count
           private
       
+      %dt convos
+      %dd= @user.conversations_count
+      
+      %dt faves
+      %dd= @user.faves_count
+      
       %dt comments
       %dd
         = @comments_enabled_count
