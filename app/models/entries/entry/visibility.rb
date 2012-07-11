@@ -77,6 +77,7 @@ class Entry
       'futubra.com',
       'caricatura.ru',
       '77.120.199.195',
+      'twitter.com',
       'mainnika loves afeena'
       ]
     
