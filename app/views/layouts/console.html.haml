@@ -34,6 +34,9 @@
             = link_to 'Reports', console_reports_path
           %li{:class => request.path.starts_with?(console_changelogs_path) ? 'active' : nil}
             = link_to 'Changelogs', console_changelogs_path
+          - if is_admin?
+            %li{:class => request.path.starts_with?(console_bills_path) ? 'active' : nil}
+              = link_to 'Bills', console_bills_path
 
       .span3.right
         %form.form-search.form-inline{:method => 'post', :action => console_index_path(:action => 'lookup')}

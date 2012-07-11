@@ -1,0 +1,25 @@
+
+%table.table.table-striped
+  %thead
+    %tr
+      %th ID
+      %th Кто
+      %th Статус
+      %th Общая информация
+      %th Когда
+      
+  %tbody
+    - @invoices.each do |invoice|
+      %tr
+        %td= invoice.id
+        %td= link_to '@' + invoice.user.url, console_user_path(invoice.user)
+        %td
+          %span.badge= invoice.state
+        %td
+          %p
+            = invoice.summary
+            %small= invoice.extra_summary
+        %td= time_ago_in_words invoice.updated_at, true
+        
+
+= bootstrap_paginate @invoices
