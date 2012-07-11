@@ -2092,7 +2092,7 @@ div.popular a {
 
 
 body.main_page {
-	background:url("/assets/bgs/c0/f3/1_original.gif") fixed;
+	background:url("/assets/bgs/c0/f3/1_original.gif") fixed; /* X*/
 }
 
 .main_rounded_holder {
