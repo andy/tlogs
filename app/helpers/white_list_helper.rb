@@ -61,6 +61,8 @@ module WhiteListHelper
     
     media_width = options[:media_width] || 400
     link_target = options[:link_target] || '_blank'
+    min_width   = options[:min_width] || 100
+    min_height  = options[:min_height] || 30
     
     doc1 = Hpricot(simple_tasty_format(html), :fixup_tags => true)
 
@@ -165,8 +167,13 @@ module WhiteListHelper
         scale_height = false if attrs['src'].include?('prostopleer.com')
         
         width = (attrs['width'] && attrs['width'].ends_with?('%')) ? (media_width * attrs['width'].to_i / 100) : (attrs['width'].to_i || media_width)
+        width = min_width if width < min_width
+
         # width  = attrs['width'].to_i || media_width
-        height = attrs['height'].to_i || media_width
+        height = [attrs['height'].to_i, min_height].max || media_width
+
+        attrs['width'] = width
+        attrs['height'] = height
 
         if width > media_width
           attrs['height'] = scale_height ? ((media_width / width.to_f) * height.to_f).to_i : height
@@ -197,6 +204,9 @@ module WhiteListHelper
 
       # finalize with default
       width ||= media_width
+      
+      # scale to min_width
+      width = min_width if width < min_width
 
 
       height = nil
@@ -215,6 +225,9 @@ module WhiteListHelper
       
       # finalize with default
       height ||= media_width
+      
+      # avoid going to 0
+      height = min_height if height < min_height
 
 
       # параметры по-умолчанию для флеша
