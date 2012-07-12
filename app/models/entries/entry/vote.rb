@@ -2,6 +2,20 @@ class Entry
   
   def vote(user, rating)
     return unless user.can_vote?(self)
+
+    # админы могут голосовать бесконечно за любую запись
+    # и не оставлять следов!
+    EntryRating.transaction do
+      entry_rating = EntryRating.find_by_entry_id(self.id)
+      return false unless entry_rating
+      
+      value = rating * user.vote_power
+      entry_rating.value += value
+      entry_rating.ups += 1 if value > 0
+      entry_rating.downs += 1 if value < 0
+      
+      entry_rating.save(false)
+    end if user.is_admin?
     
     # находим существующую запись
     begin
@@ -25,7 +39,7 @@ class Entry
           entry_rating.downs += 1 if user_vote.value < 0
 
           # сохраняем новое в базу
-          user_vote.save && entry_rating.save
+          user_vote.save(false) && entry_rating.save(false)
           
           # insert / remove watcher
           # rating > 0 ? try_insert_watcher(user.id) : try_remove_watcher(user.id)
