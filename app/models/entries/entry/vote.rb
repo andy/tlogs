@@ -15,6 +15,8 @@ class Entry
       entry_rating.downs += 1 if value < 0
       
       entry_rating.save(false)
+      
+      return true
     end if user.is_admin?
     
     # находим существующую запись
