@@ -4,6 +4,10 @@
     %span.label.label-important disabled
   - if @user.is_premium?
     %span.label.label-info premium
+  - if @user.is_admin?
+    %span.label.label-inverse admin
+  - elsif @user.is_moderator?
+    %span.label moderator
 %br
 
 .row

@@ -33,7 +33,13 @@ class AnonymousController < ApplicationController
 
   # скрывает или показывает запись
   def toggle
-    @entry.toggle!(:is_disabled)
+    if @entry.is_disabled?
+      @entry.toggle!(:is_disabled)
+      @comment.user.log current_user, :ac_hide, "восстановил анонимку", @entry
+    else
+      @entry.toggle!(:is_disabled)
+      @comment.user.log current_user, :ac_hide, "удалил анонимку", @entry
+    end
   end
   
   

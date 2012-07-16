@@ -13,5 +13,9 @@ class Console::IndexController < ConsoleController
     render :action => 'not_found', :status => 404 and return unless user
 
     redirect_to console_user_path(user)
-  end  
+  end
+  
+  def faq
+    render :action => 'not_found', :status => 404
+  end
 end

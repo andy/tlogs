@@ -3,6 +3,8 @@ class Console::UsersController < ConsoleController
   
   before_filter :require_comment, :only => [:disable, :destroy, :restore, :mprevoke, :mpgrant]
   
+  before_filter :check_permissions, :except => [:index]
+  
   
   def index
     @title = 'все пользователи'
@@ -159,6 +161,17 @@ class Console::UsersController < ConsoleController
         end
         false
       end       
+    end
+    
+    # verify that current user is admin in order to view admins page
+    def check_permissions
+      if @user.is_admin? && !current_user.is_admin?
+        respond_to do |wants|
+          wants.html { redirect_to console_users_path }
+          wants.json { render :json => false, :status => 404 }
+        end
+        false
+      end
     end
     
     def require_comment
