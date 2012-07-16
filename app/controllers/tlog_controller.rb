@@ -10,7 +10,7 @@ class TlogController < ApplicationController
   before_filter :set_time, :only => [:daylog, :next_day, :prev_day]
 
   # 2 - check wether that is empty or not
-  before_filter :taken_but_empty, :only => [:index, :daylog, :show]
+  # before_filter :taken_but_empty, :only => [:index, :daylog, :show]
 
   # 3 - protect each entry individually
   before_filter :check_if_entry_can_be_viewed, :only => [:show, :mentions]
