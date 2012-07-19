@@ -39,7 +39,7 @@ class ApiController < ApplicationController
     uri.query = {
       :auth     => 1,
       :stamp    => stamp,
-      :name     => current_user.url,
+      :url      => current_user.url,
       :id       => current_user.id,
       :sig      => _auth_sig(code, [current_user.url, current_user.id.to_s, stamp, request.remote_ip].join(':'))
     }.to_query
