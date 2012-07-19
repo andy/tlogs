@@ -1,10 +1,14 @@
 class ApiController < ApplicationController
-  # before_filter :require_api_permissions
-  before_filter :require_current_user, :require_sm_auth_code, :only => [:smauth]
+  before_filter :require_current_user, :only => [:simple_auth]
   
   rescue_from ActiveRecord::RecordNotFound, :with => :api_error_not_found
 
   ALLOWED_API_HOSTS = %w(31.31.197.29 127.0.0.1)
+
+  API_WHITELIST = {
+    'subscribeme.ru' => '01fd09a535847a61ff5cb229',
+    'tasty.zojl.ru'  => 'acc590704fe4550d4d86e8e8'
+  }
 
   def user_details
     user   = User.active.find_by_url! params[:url] if params[:url]
@@ -15,15 +19,32 @@ class ApiController < ApplicationController
     render :json => make_user_details(user)
   end
 
-  def smauth
-    # http://subscribeme.ru/register
-    url  = params[:back_url]
-    url += '?auth=1&code='+Digest::MD5.hexdigest(sm_auth_sig(params[:code], current_user.url))
-    url += SecureRandom.hex(5)
-    url += '&name='+current_user.url
-    url += '&id='+current_user.id.to_s
+  def simple_auth
+    api_error(400, 'Invalid argument') and return if params[:back_url].blank?
+    api_error(400, 'Request missing') and return if params[:sig].blank?
 
-    redirect_to url
+    uri = URI.parse params[:back_url] rescue nil
+    api_error(403, 'Access denied') and return if !uri || uri.host.blank? || !API_WHITELIST.keys.include?(uri.host)
+
+    code = API_WHITELIST[uri.host]
+    stamp = params[:stamp].to_i rescue 0
+
+    # check that stamp is within 2 minute boundries
+    api_error(403, 'Stamp timeout') and return if 60.seconds.ago.to_i > stamp || 60.seconds.from_now.to_i < stamp
+
+    api_error(403, 'Access denied. Invalid signature.') and return if _auth_sig(code, [params[:back_url], stamp, request.remote_ip].join(':')) != params[:sig]
+
+    stamp = Time.now.to_i
+
+    uri.query = {
+      :auth     => 1,
+      :stamp    => stamp,
+      :name     => current_user.url,
+      :id       => current_user.id,
+      :sig      => _auth_sig(code, [current_user.url, current_user.id.to_s, stamp, request.remote_ip].join(':'))
+    }.to_query
+
+    redirect_to uri.to_s
   end
 
   protected
@@ -44,18 +65,8 @@ class ApiController < ApplicationController
       end
     end
 
-    def sm_auth_sig(in_str, code_str)
-      code_index = 0
-      out_str = ''
-      in_length = in_str.length-1
-
-      for i in 0..in_length
-        out_str += in_str[i].chr + code_str[code_index].chr
-        code_index += 1
-        code_index = 0 if code_index == code_str.length
-      end
-
-      out_str
+    def _auth_sig(code, text)
+      Digest::MD5.hexdigest([code, text].join(':'))
     end
 
     def api_error(code, message = 'Internal API error')
@@ -64,10 +75,6 @@ class ApiController < ApplicationController
     
     def api_error_not_found
       api_error(404, 'Not found')
-    end
-
-    def require_sm_auth_code
-      render :text => '' if !params[:code]
     end
 
     def require_api_permissions
