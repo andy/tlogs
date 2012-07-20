@@ -18,12 +18,12 @@ module ActionControllerExtensions
  
     def set_session_domain
       if @env['HTTP_HOST']
-        # turn "brendan.app.local:3000" to ".app.local"
-        host = @env['HTTP_HOST'].gsub(/:\d+$/, '')
-        
-        unless %w(localhost tlogs.ru).include?(host)
-          domain = host.gsub(/^[^.]*/, '')
-          @env['rack.session.options'] = @env['rack.session.options'].merge(:domain => domain) unless domain.blank?
+        current_service = Tlogs::Domains::CONFIGURATION.options_for @env['HTTP_HOST'], nil
+        cookie_domain   = current_service.cookie_domain
+
+        # check if they match (e.g. virtual host is known to us and we know how to deal with its cookies)
+        if @env['HTTP_HOST'].gsub('.', '').ends_with?(cookie_domain.gsub('.', ''))        
+          @env['rack.session.options'] = @env['rack.session.options'].merge(:domain => cookie_domain)
         end
       end
     end

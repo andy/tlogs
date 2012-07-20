@@ -35,11 +35,6 @@ class GlobalController < ApplicationController
 
       redirect_to service_path(login_path) and return unless current_user.can_be_switched_to?(@user)
 
-      cookies[:t] = {
-          :value => [@user.id, @user.signature].pack('LZ*').to_a.pack('m').chop,
-          :expires => 1.year.from_now,
-          :domain => current_service.cookie_domain
-        }
       session[:r] = nil
       session[:u] = @user.id
 

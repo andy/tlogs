@@ -36,12 +36,6 @@ class AccountController < ApplicationController
       # иначе, даже если это openid пользователь - авторизуем по емейлу
       else
         # @user.log nil, :login, "#{request.remote_ip} авторизовался на сайте"
-        t_key = current_service.is_mobile? ? 'tm' : 't'
-        cookies[t_key.to_sym] = {
-            :value => [@user.id, @user.signature].pack('LZ*').to_a.pack('m').chop,
-            :expires => 1.year.from_now,
-            :domain => current_service.cookie_domain
-          }
         login_user @user, { :remember => @user.email, :redirect_to => service_path(params[:ref]) }
       end
     else
@@ -192,13 +186,6 @@ class AccountController < ApplicationController
         @user.log @invitation.user, :signup, "@#{@user.url} зарегистрировался по приглашению"
         Emailer.deliver_signup(current_service, @user)
         @invitation.update_attribute(:invitee_id, @user.id)
-
-        t_key = current_service.is_mobile? ? 'tm' : 't'
-        cookies[t_key.to_sym] = {
-            :value => [@user.id, @user.signature].pack('LZ*').to_a.pack('m').chop,
-            :expires => 1.year.from_now,
-            :domain => current_service.cookie_domain
-          }
 
         login_user @user, :remember => @user.email, :redirect_to => user_url(@user)
       else

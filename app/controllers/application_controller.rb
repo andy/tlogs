@@ -163,15 +163,6 @@ class ApplicationController < ActionController::Base
 
       # from session
       @current_user = User.active.find_by_id(session[:u], :include => [:tlog_settings]) if session[:u]
-      t_key = current_service.is_mobile? ? :tm : :t
-      unless cookies[t_key].blank?
-        id, sig = cookies[t_key].unpack('m').first.unpack('LZ*')
-        user = User.active.find_by_id(id, :include => [:tlog_settings])
-        if user && user.signature == sig
-          session[:u] = user.id
-          @current_user = user
-        end
-      end
 
       true
     end

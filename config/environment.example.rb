@@ -7,7 +7,7 @@ require File.join(File.dirname(__FILE__), 'boot')
 require File.join(File.dirname(__FILE__), '../lib/tlogs')
 
 Rails::Initializer.run do |config|
-  config.action_controller.session = { :key => Tlogs::SESSION.key, :secret => Tlogs::SESSION.secret }
+  config.action_controller.session = { :expire_after => 315576000, :key => Tlogs::SESSION.key, :secret => Tlogs::SESSION.secret }
 
   config.autoload_paths += %W( 
     #{RAILS_ROOT}/app/models/entries

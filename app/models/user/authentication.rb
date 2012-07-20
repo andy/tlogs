@@ -1,8 +1,7 @@
 class User
   ## included modules & attr_*
   RESERVED = %w( mmm-tasty mobile rest blog blogs www support help ftp http ed2k smtp pop pop3 adm mail admin test password restore backup sys system dev account register signup web wwww ww w mmm info ad archive status logs log guest debug demo podcast info tools guide preview svn example google yandex rambler goog googl goggle gugl assets assets0 assets1 assets2 assets3 asset asset0 asset1 asset2 asset3 asset4 unreplied unread mail verify_recipient resque tumblr viewy m mentions convo convos conference)
-  SIGNATURE_SECRET = 'kab00mmm, tasty!'
-
+  
   attr_accessor :password
   attr_accessor :eula
   attr_accessible :openid, :email, :url, :password, :eula
@@ -118,13 +117,9 @@ class User
 	def is_openid?
     !self.openid.blank?
   end
-  
-  def signature
-    Digest::SHA1.digest([self.id, self.is_openid? ? self.openid : self.email, self.created_at.to_s, SIGNATURE_SECRET].pack('LZ*Z*Z*'))
-  end
-  
+
   def recover_secret
-    Digest::SHA1.hexdigest([self.id, self.email, self.crypted_password, self.created_at.to_s, SIGNATURE_SECRET].pack('LZ*Z*Z*Z*'))
+    Digest::SHA1.hexdigest([self.id, self.email, self.crypted_password, self.created_at.to_i.to_s].join(':'))
   end
   
   def encrypt(password)

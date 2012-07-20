@@ -1,3 +1,14 @@
+<!-- Put this script tag to the <head> of your page -->
+<!-- <script type="text/javascript" src="http://userapi.com/js/api/openapi.js?50"></script> -->
+
+<!-- <script type="text/javascript">
+  VK.init({apiId: 3042407});
+
+  function vk_auth_info ( data )
+  {
+  }
+</script> -->
+
 <% @title = "Вход на сайт #{current_service.domain}" %>
 
 <div class="center_data_big_form">
@@ -6,6 +17,12 @@
 		<%= render :partial => 'login_and_signup_form', :locals => { :f => f } %>
 
 		<%= hidden_field_tag 'ref', params[:ref] if params[:ref] %>
+
+<!--		<div id="vk_login_button" onclick="VK.Auth.login(vk_auth_info, 1);"></div>
+<script type="text/javascript">
+VK.UI.button('vk_login_button');
+// VK.Widgets.Auth("vk_auth", {width: "200px", authUrl: '/account/vk_auth'});
+</script> -->
 
 		<input type="submit" value="Войти" class='button' />
 		<div class='options_togo'>

@@ -19,17 +19,7 @@ class String
     l = length - truncate_string.mb_chars.length
     self.mb_chars.length > length ? self.mb_chars[0...l] + truncate_string : self
   end
-  
-  # Prevents SQL breakage by replacing each single quote with two
-  def sequelize
-    self.gsub("'", "''")
-  end
-  
-  # same as with array
-  # def to_query
-  #   "'#{self.sequelize}'"
-  # end
-  
+    
   def sql_quote
     ActiveRecord::Base.connection.quote(self)
   end
