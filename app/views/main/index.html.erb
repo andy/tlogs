@@ -1,6 +1,6 @@
-<% @title = 'главная страница' %>
+<% @title = "тейсти, завести дневник, завести блог, создать блог или тлог, молескин" %>
 <%- @sidebar_left_short = true -%>
-<div class="main_info_holder"><p class="main_info"><%= link_to "<i>Тлоги</i>", main_url(:action => 'about') %> &mdash; <span class="main_hightlight">это как блоги, только проще.<br/> Это нечто удобное и быстрое, для самовыражения.</span></p></div>
+<div class="main_info_holder"><p class="main_info"><%= link_to "<i>Тейсти</i>", main_url(:action => 'about') %> &mdash; <span class="main_hightlight">это пространство для самовыражения, наполненное дружелюбными и интересными людьми.</span></p></div>
 
 <div class='onair'>
 </div>  
@@ -23,6 +23,9 @@
 			</div>
 		<% end %>	
 	</div>
+<% end %>
+<% content_for :head do %>
+  <%= tag :meta, :name => :description, :content => 'тейсти — это пространство для самовыражения, зарегистрируйтесь и будьте собой' %>
 <% end %>
 <% if false # content_for :sidebar_right_below do %>
 	<h2><span>Тейстяне</span></h2>
