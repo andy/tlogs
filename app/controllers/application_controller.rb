@@ -161,6 +161,12 @@ class ApplicationController < ActionController::Base
     def preload_current_user
       return true if @current_user
 
+      # remove old cookies
+      cookies.each do |cookie|
+        name = cookie[0].to_s
+        cookies.delete(name) if name.ends_with?('mixpanel') || name == 't' || name == 'mt' || name == 'tm'
+      end
+
       # from session
       @current_user = User.active.find_by_id(session[:u], :include => [:tlog_settings]) if session[:u]
 
