@@ -164,7 +164,7 @@ class ApplicationController < ActionController::Base
       # remove old cookies
       cookies.each do |cookie|
         name = cookie[0].to_s
-        cookies.delete(name) if name.ends_with?('mixpanel') || name == 't' || name == 'mt' || name == 'tm'
+        cookies.delete(name, :domain => current_service.cookie_domain) if name.ends_with?('mixpanel') || name == 't' || name == 'mt' || name == 'tm'
       end
 
       # from session
