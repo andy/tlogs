@@ -27,8 +27,12 @@ class User
                               :too_long => 'адрес не может быть более 20и символов'
 
   validates_format_of         :url,
-                              :with => /^[a-z0-9]([a-z0-9\-]{1,20})?$/i,
+                              :with => /\A[a-z0-9](([a-z0-9\-]{1,20})?([a-z0-9]))?\Z/i,
                               :message => 'адрес содержит недопустимые символы. пожалуйста, выберите другой'
+
+  validates_format_of         :url,
+                              :with => /\A(?!.*\-\-).*\Z/i,     # this matches urls without double -- (no IDN, sorry)
+                              :message => 'адрес содержит недопустимую комбинацию символов (два тире подряд).'
 
   validates_exclusion_of      :url,
                               :in => RESERVED,
