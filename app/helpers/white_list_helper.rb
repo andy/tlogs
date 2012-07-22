@@ -148,7 +148,7 @@ module WhiteListHelper
       img.attributes['src'] = resized_image_path(img.attributes['src'], media_width)
       
       # remove buggy links
-      img.parent.swap(img.to_html) if img.parent && img.parent.name == 'a' && img.parent.attributes['href'] && img.parent.attributes['href'] =~ /(www\.radikal\.ru)/i
+      img.parent.swap(img.to_html) if img.parent && img.parent.name == 'a' && img.parent.attributes['href'] && img.parent.attributes['href'] =~ /((www\.radikal\.ru)|(www\.pictureshack\.ru))/i
       
       # img.parent.swap(img.to_html) if img.parent && img.parent.name == 'p' && img.parent.children.length == 1
     end
