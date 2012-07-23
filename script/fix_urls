@@ -5,6 +5,9 @@
 # Basically, it fixes bogus names that users could unknowingly give to their tlogs
 #  that would break current domain name rules
 #
+
+$current_service = Tlogs::Domains::CONFIGURATION.options_for ENV['CURRENT_SERVICE'], nil
+
 def valid? url
   url =~ /\A[a-z0-9](([a-z0-9\-]{1,20})?([a-z0-9]))?\Z/i && url =~ /\A(?!.*\-\-).*\Z/i && (1..20).include?(url.length) && !User::RESERVED.include?(url)
 end
@@ -26,10 +29,10 @@ def rename user, url
     if valid?(nrl) && !taken?(nrl)
       if !user.is_disabled? && user.is_confirmed? && user.email
         puts "+ #{url} => #{nrl} (notify)"
-        # Emailer.deliver_rename_yourself(Tlogs::Domains::CONFIGURATION.default, user, nrl)
+        Emailer.deliver_rename_yourself($current_service, user, nrl)
       else
         puts "+ #{url} => #{nrl} (rename)"
-        # user.update_attribute :url, nrl
+        user.update_attribute :url, nrl
       end
     else
       puts "- match failed for #{url} (ended with #{nrl})"
