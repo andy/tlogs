@@ -41,6 +41,9 @@ class EmailerController < ApplicationController
         @mail = Emailer.create_premium_expired(current_service, User.premium.first)
       when 'destroy'
         @mail = Emailer.create_destroy(current_service, user)
+      when 'rename_yourself'
+        user.url = 'andy--x'
+        @mail = Emailer.create_rename_yourself(current_service, user, 'andy-x')
       end
       
       true 

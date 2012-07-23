@@ -1,0 +1,44 @@
+#!/usr/bin/env script/runner
+#
+# This script ensures IDN and overall DNS compatibility of tlog names
+#
+# Basically, it fixes bogus names that users could unknowingly give to their tlogs
+#  that would break current domain name rules
+#
+def valid? url
+  url =~ /\A[a-z0-9](([a-z0-9\-]{1,20})?([a-z0-9]))?\Z/i && url =~ /\A(?!.*\-\-).*\Z/i && (1..20).include?(url.length) && !User::RESERVED.include?(url)
+end
+
+def taken? url
+  User.exists?(['url = ?', url])
+end
+
+def rename user, url
+  nrl = url.dup
+  nrl.gsub!(/-+/, '-')
+  nrl.chop! if nrl.ends_with? '-'
+  
+  if valid?(nrl)
+    while taken?(nrl) && valid?(nrl)
+      nrl += nrl.mb_chars[-1].to_s
+    end
+    
+    if valid?(nrl) && !taken?(nrl)
+      if !user.is_disabled? && user.is_confirmed? && user.email
+        puts "+ #{url} => #{nrl} (notify)"
+        # Emailer.deliver_rename_yourself(Tlogs::Domains::CONFIGURATION.default, user, nrl)
+      else
+        puts "+ #{url} => #{nrl} (rename)"
+        # user.update_attribute :url, nrl
+      end
+    else
+      puts "- match failed for #{url} (ended with #{nrl})"
+    end
+  else
+    puts "- nothing works for #{url}"
+  end
+end
+
+User.paginated_each(:per_page => 1000) do |user|
+  rename(user, user.url) unless valid?(user.url)
+end

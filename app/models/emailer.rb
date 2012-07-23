@@ -1,6 +1,14 @@
 class Emailer < ActionMailer::Base
   helper :application, :comments, :url, :white_list
 
+  def rename_yourself(current_service, user, nrl)
+    setup     current_service,
+                :subj => '[тейсти] изменение адреса тлога',
+                :from => '"Ммм... тейсти" <noreply@mmm-tasty.ru>',
+                :email => user.email,
+                :body => { :user => user, :nrl => nrl }
+  end
+  
   def invitation(current_service, sender, invitation)
     setup     current_service,
                 :subj => 'ммм... приглашение',

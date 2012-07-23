@@ -1,0 +1,29 @@
+<!DOCTYPE>
+<html>
+	<body lang="ru" style="padding: 30px 20px 50px 30px; margin: 0; background-color: #ffffff;">
+    <p style="font-family: Trebuchet MS, Arial, sans serif; font-size:0.95em; width:600px; color:#404040; padding-bottom: 2em;">
+      <b>Здравствуйте, <%= h @user.username %>!</b>
+    </p>
+		
+		<p style="font-family: 'Trebuchet MS', Arial, sans-serif; font-size:0.95em; width:600px; color:#404040; padding-bottom: 1em;">
+      Вам нужно изменить адрес вашего тлога <%= link_to h(@user.url), user_url(@user) %> на адрес, который будет соответствовать веб-стандартам.
+      Это значит, что новый адрес, который вы выберете, не должен <%= @user.url.ends_with?('-') ? 'заканчиваться дефисом' : 'содержать двойных (или тройных) дефисов' %>.
+    </p>
+
+    <p style="font-family: 'Trebuchet MS', Arial, sans-serif; font-size:0.95em; width:600px; color:#404040; padding-bottom: 1em;">
+      Если вы не измените адрес на новый в течение недели, система автоматически заменит его на <%= h @nrl %>.
+		</p>
+
+		<p style="font-style: italic; font-family: 'Trebuchet MS', Arial, sans-serif; font-size:0.95em; width:600px; color:#404040; padding-bottom: 1em;">
+      <%= link_to 'Переименовать тлог &rarr;', service_url(account_path(:action => :rename)) %>
+		</p>
+
+		<p style="font-family: 'Trebuchet MS', Arial, sans-serif; font-size:0.90em; width:600px; color:#ccc; padding-bottom: 1em;">
+		  Это автоматичекое уведомление и на него не нужно отвечать.
+		</p>
+
+		<p style="font-family: 'Trebuchet MS', Arial, sans-serif; font-size:0.95em; width:600px; color:#404040; text-align:right;">
+		  C уважением, <a href="<%= service_url %>" target="_blank" style="border: 0px;"><img src="<%= service_url %>images/letter-logo.gif" width='101' height='27' style="position:relative; bottom:-6px;	margin-left:4px;" /></a>
+		</p>
+	</body>
+</html>
