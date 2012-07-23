@@ -166,7 +166,11 @@ class User < ActiveRecord::Base
                 map(&:first).                         # keep only ids
                 reverse
 
-    User.find_all_by_id(user_ids.shuffle[0...(options[:limit] * 2)], :include => [:tlog_settings]).select { |u| u.can_be_viewed_by?(user) }[0..options[:limit]]
+    # keep news user out
+    user_ids -= [3] if Rails.env.production?
+
+    # keep the good guys only
+    User.find_all_by_id(user_ids.shuffle[0...(options[:limit] * 4)], :include => [:tlog_settings]).select { |u| u.can_be_viewed_by?(user) && !u.is_c_banned? && !u.is_ac_banned? && !u.is_disabled? }[0..options[:limit]]
   end
 
   
