@@ -2887,6 +2887,10 @@ div.post_author:hover a.heart_red {
 	width:500px;
 	height:300px;
 }
+form.small #design_css textarea#design_user_css {
+  font-family: monospace;
+  font-size: 14px;
+}
 #custom_functionality {
 	font-size:0.77em;
 	margin-top:10px;
