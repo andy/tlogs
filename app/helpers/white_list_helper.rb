@@ -56,8 +56,9 @@ module WhiteListHelper
     
     return html if html.blank?
     
-    html.gsub!('&amp;', '&')
-    html.gsub!('amp;', '')
+    html.gsub!('&', '&amp;')
+    # html.gsub!('&amp;', '&')
+    # html.gsub!('amp;', '')
     
     media_width = options[:media_width] || 400
     link_target = options[:link_target] || '_blank'
