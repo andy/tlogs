@@ -51,6 +51,8 @@ module WhiteListHelper
   end  
 
   def white_list_html(html, options = {})
+    html = html.dup
+
     valid_flash_params = %w(movie allowfullscreen allowscriptaccess wmode flashvars)
     valid_iframe_params = %w(title width height src frameborder allowfullscreen alt)
     
@@ -73,6 +75,9 @@ module WhiteListHelper
     
     doc = Hpricot(sanitize(doc1.to_html, :tags => allowed_tags, :attributes => allowed_attributes), :fixup_tags => true)
 
+    # Удаляем комментарии так же
+    doc.search("//comment()").remove
+
     # Удаляем пустые параграфы
     # (doc/"//p[text()='']").remove    
     
@@ -80,7 +85,7 @@ module WhiteListHelper
       next if paragraph.children.blank?
 
       paragraph.children.select { |e| e.text? }.each do |text|
-        new_text = auto_link(text.inner_text)
+        new_text = auto_link(text.inner_html)
 
         # [andy] -> ссылка на пользователя
         new_text.gsub!(/(\[([a-z0-9_-]{2,20})\])/i) do
