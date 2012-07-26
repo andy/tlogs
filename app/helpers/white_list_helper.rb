@@ -58,7 +58,7 @@ module WhiteListHelper
     
     return html if html.blank?
     
-    html.gsub!('&', '&amp;')
+    # html.gsub!('&', '&amp;')
     # html.gsub!('&amp;', '&')
     # html.gsub!('amp;', '')
     
@@ -85,21 +85,22 @@ module WhiteListHelper
       next if paragraph.children.blank?
 
       paragraph.children.select { |e| e.text? }.each do |text|
-        new_text = auto_link(text.inner_html)
-
+        inner_html = auto_link(h(text.inner_text))
+        new_html = inner_html.dup
+        
         # [andy] -> ссылка на пользователя
-        new_text.gsub!(/(\[([a-z0-9_-]{2,20})\])/i) do
+        new_html.gsub!(/(\[([a-z0-9\-]{1,20})\])/i) do
           user = User.find_by_url($2)
           user ? "<a href='#{user_url(user)}' class='t-entry-tlog'>#{user.url}</a>" : $1
         end
 
         # @andy -> ссылка на пользователя
-        new_text.gsub!(/(^|\s+|\n)(\@([a-z0-9_-]{2,20}))(\,|\:|\;|\.(\s+|$)|\s+|$)/i) do
+        new_html.gsub!(/(^|\s+|\n)(\@([a-z0-9\-]{1,20}))(\,|\:|\;|\.(\s+|$)|\s+|$)/i) do
           user = User.find_by_url($3)
           user ? "#{$1}<a href='#{user_url(user)}' class='t-entry-tlog'>@#{user.url}</a>#{$4}" : $1
         end
 
-        text.swap(new_text) unless new_text.blank?        
+        text.swap(new_html) if !new_html.blank? && inner_html != new_html
       end
     end
     
