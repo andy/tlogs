@@ -140,7 +140,7 @@ class Message < ActiveRecord::Base
     return false unless self.recipient.is_emailable?
     
     # wether this conversation has notifications turned off
-    return false unless self.conversation.send_notifications?
+    return false unless self.conversation.shadow.send_notifications?
     
     true
   end
