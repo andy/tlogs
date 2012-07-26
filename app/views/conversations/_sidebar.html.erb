@@ -15,8 +15,22 @@
 	      <p><%= link_to '+ написать', service_url(new_conversation_path), :class => ('highlight' if params[:action] == 'new') %></p>
 	    </li>
 	  </ul>
-	</div>    
+	</div>
 </div>
+
+<% unless current_user.tlog_settings.email_messages? %>
+  <div class='section' id='sidebar_conversations_notification'>
+    <h2><span>Настройки</span></h2>
+    <div id='sidebar_conversations_content'>
+      <p>
+        Имейте ввиду, что в
+        <%= link_to 'настройках почты', user_url(current_user, settings_path(:action => :email)) %>
+        у вас выключена пересылка личных сообщений на емейл. Это значит, что новые сообщения
+        не будут приходить к вам на емейл.
+      </p>
+    </div>
+  </div>
+<% end %>
 
 <div class='sidebar_search'>
   <% content_tag :form, :method => 'get', :action => service_url(search_conversations_path) do %>

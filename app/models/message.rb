@@ -139,6 +139,9 @@ class Message < ActiveRecord::Base
     # if recipient is not emailable at all
     return false unless self.recipient.is_emailable?
     
+    # if recipient turned off all messages notifications, don't mail either
+    return false unless self.recipient.tlog_settings.email_messages?
+    
     # wether this conversation has notifications turned off
     return false unless self.conversation.shadow.send_notifications?
     
