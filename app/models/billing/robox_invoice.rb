@@ -112,7 +112,7 @@ class RoboxInvoice < Invoice
   # Production url is https://merchant.roboxchange.com/Index.aspx
   # Test url is http://test.robokassa.ru/Index.aspx
   def payment_url(option)
-    uri = URI.parse 'http://test.robokassa.ru/Index.aspx'
+    uri = URI.parse 'https://merchant.roboxchange.com/Index.aspx'
     
     sig = Digest::MD5.hexdigest [self.class.login, self.amount, self.txn_id, self.password1].join(':')
     uri.query = {
