@@ -195,8 +195,9 @@ class BillingController < ApplicationController
       amount    = params[:OutSum]
       txn_id    = params[:InvId]
       sig       = params[:SignatureValue]
+      pass      = params[:action] == 'robox_result' ? RoboxInvoice.password2 : RoboxInvoice.password1
 
-      our_sig = Digest::MD5.hexdigest [amount, txn_id, RoboxInvoice.password2].join(':')
+      our_sig = Digest::MD5.hexdigest [amount, txn_id, pass].join(':')
 
       robox_reply_with_fail("erronous request (signature mismatch)", params) and return false if our_sig.downcase != sig.downcase      
       
