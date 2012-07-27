@@ -35,10 +35,10 @@ class AnonymousController < ApplicationController
   def toggle
     if @entry.is_disabled?
       @entry.toggle!(:is_disabled)
-      @comment.user.log current_user, :ac_hide, "восстановил анонимку", @entry
+      @entry.author.log current_user, :ac_show, "восстановил анонимку", @entry
     else
       @entry.toggle!(:is_disabled)
-      @comment.user.log current_user, :ac_hide, "удалил анонимку", @entry
+      @entry.author.log current_user, :ac_hide, "удалил анонимку", @entry
     end
   end
   
