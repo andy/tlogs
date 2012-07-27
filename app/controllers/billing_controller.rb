@@ -201,7 +201,7 @@ class BillingController < ApplicationController
 
       robox_reply_with_fail("erronous request (signature mismatch)", params) and return false if our_sig.downcase != sig.downcase      
       
-      @invoice = RoboxInvoice.pending.find_by_id(txn_id)
+      @invoice = RoboxInvoice.find_by_id(txn_id)
 
       robox_reply_with_fail("invoice not found", params) and return false if @invoice.nil?
       
