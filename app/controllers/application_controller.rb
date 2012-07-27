@@ -166,6 +166,9 @@ class ApplicationController < ActionController::Base
         name = cookie[0].to_s
         cookies.delete(name, :domain => current_service.cookie_domain) if name.ends_with?('mixpanel') || name == 't' || name == 'mt' || name == 'tm'
       end
+      
+      # fix issue for erronous flash hash (when set to empty string)
+      session[:flash] = nil if session[:flash] && session[:flash].blank?
 
       # from session
       @current_user = User.active.find_by_id(session[:u], :include => [:tlog_settings]) if session[:u]
