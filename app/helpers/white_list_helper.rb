@@ -51,12 +51,12 @@ module WhiteListHelper
   end  
 
   def white_list_html(html, options = {})
-    html = html.dup
-
     valid_flash_params = %w(movie allowfullscreen allowscriptaccess wmode flashvars)
     valid_iframe_params = %w(title width height src frameborder allowfullscreen alt)
     
     return html if html.blank?
+    
+    html = html.dup
     
     # html.gsub!('&', '&amp;')
     # html.gsub!('&amp;', '&')
