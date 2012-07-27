@@ -40,6 +40,7 @@
 
       .span3.right
         %form.form-search.form-inline{:method => 'post', :action => console_index_path(:action => 'lookup')}
+          %input{:type => 'hidden', :name => request_forgery_protection_token, :value => form_authenticity_token}
           %input.search-query.input-medium#console-search{:type => 'search', :name => 'query', :value => params[:value], :placeholder => 'url / email / uid'}
           %input.btn{:type => 'submit', :value => 'Search'}
 
