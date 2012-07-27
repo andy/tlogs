@@ -72,6 +72,9 @@ www_settings = lambda do |www|
   www.connect 'billing/qiwi/update_bill.:format', :controller => 'billing', :action => 'qiwi_update_bill'
   www.connect 'billing/qiwi/fail', :controller => 'billing', :action => 'qiwi_fail'
   www.connect 'billing/qiwi/success', :controller => 'billing', :action => 'qiwi_success'
+  www.connect 'billing/robox/result', :controller => 'billing', :action => 'robox_result'
+  www.connect 'billing/robox/success', :controller => 'billing', :action => 'robox_success'
+  www.connect 'billing/robox/failure', :controller => 'billing', :action => 'robox_failure'
 
   # account routes, jf helper methods
   www.login 'account/login', :controller => 'account', :action => 'login'

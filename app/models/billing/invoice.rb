@@ -22,6 +22,8 @@
 
 class Invoice < ActiveRecord::Base
   ## attributes and constants
+  DAILY_RATE = ::SETTINGS[:billing]['daily_rate'] || 2.33333333333
+  
   serialize :metadata, HashWithIndifferentAccess
 
 

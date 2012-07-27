@@ -1,10 +1,5 @@
 class BillingController < ApplicationController
-  #
-  # QIWI
-  # ----
-  #
-  # Not implemented
-
+  before_filter :require_current_user, :only => [:robox_success, :robox_failure]
   #
   # SMS Online
   # ----------
@@ -89,7 +84,48 @@ class BillingController < ApplicationController
       end
     end
   end
+
   
+  #
+  # ROBOX
+  # -----
+  #  
+  # POST /billing/robox/result [API endpoint]
+  def robox_result
+    if @invoice.is_pending?
+      @invoice.robox_success!
+    
+      @invoice.deliver!(current_service)
+    
+      render :text => "OK#{@invoice.id}"
+    else
+      render :text => 'FAIL'
+    end
+  end
+  
+  # GET /billing/robox/success [Customer endpoint]
+  def robox_success
+    flash[:good] = @invoice.summary + ' успешно проведен.'
+    
+    redirect_to user_url(current_user, settings_premium_path)
+  end
+  
+  # GET /billing/robox/failure [Customer endpoint]
+  def robox_failure
+    if @invoice.is_pending?
+      flash[:bad] = @invoice.summary + ' был отменен.'
+    
+      @invoice.fail!
+    end
+    
+    redirect_to user_url(current_user, settings_premium_path)
+  end
+
+  
+  #
+  # QIWI
+  # ----
+  #
   def qiwi_fail
     flash[:bad] = 'К сожалению, при оплате произошла какая-то ошибка.'
 
@@ -151,6 +187,34 @@ class BillingController < ApplicationController
   end
   
   protected
+    def robox_preload
+      amount    = params[:OutSum]
+      txn_id    = params[:InvId]
+      sig       = params[:SignatureValue]
+
+      our_sig = Digest::MD5.hexdigest [amount, txn_id, RoboxInvoice.password2].join(':')
+
+      robox_reply_with_fail("erronous request (signature mismatch)", params) and return false if our_sig.downcase != sig.downcase      
+      
+      @invoice = RoboxInvoice.pending.find_by_id(txn_id)
+
+      robox_reply_with_fail("invoice not found", params) and return false if @invoice.nil?
+      
+      robox_reply_with_fail("invalid amount (expected #{@invoice.amount})", params) and return false if amount.to_f != @invoice.amount
+      
+      true
+    end
+  
+    def robox_reply_with_fail(message, params = {})
+      Airbrake.notify(
+        :error_class    => 'RoboxInvoice',
+        :error_message  => "RoboxInvoice: #{message}",
+        :parameters     => params || {}
+      )
+      
+      render :text => "FAIL", :status => 200
+    end
+  
     def qiwi_soap_reply(code, params = {})
       answer = <<-EOF
 <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">

@@ -7,6 +7,7 @@
       var pref_method     = #{@pref_method.to_json};
       var pref_sms        = #{@pref_sms.to_json};
       var pref_qiwi       = #{@pref_qiwi.to_json};
+      var pref_robox      = #{@pref_robox.to_json};
       
       var sms   = jQuery('#t-premium-payment-sms');
       
@@ -184,6 +185,12 @@
         Оплата
 
       %form#t-premium-payment-method
+        - if current_user.is_admin?
+          .method
+            %label
+              %input{:type => 'radio', :name => 'method', :value => 'robox'}
+              ROBOKASSA (Visa/MasterCard, Yandex.Money, Webmoney и другие)
+
         .method
           %label
             %input{:type => 'radio', :name => 'method', :value => 'sms'}
@@ -193,7 +200,30 @@
           %label
             %input{:type => 'radio', :name => 'method', :value => 'qiwi'}
             Qiwi-кошелек (терминалы, qiwi-кошелек или банковской картой)
+        
 
+      - if current_user.is_admin?
+        #t-premium-payment-robox.p-module
+          %form#robox-choose{:method => 'post', :action => user_url(current_site, settings_premium_path(:action => 'robox_init_bill'))}
+            %input{:type => 'hidden', :name => request_forgery_protection_token, :value => form_authenticity_token}
+            %table
+              %tr
+                %td
+                  %label{:for => 'robox-select-option'}
+                    Выберите сумму:
+                %td
+                  %select{:name => 'option', :id => 'robox-select-option'}
+                    = options_from_collection_for_select @robox_options.sort_by(&:position), :name, :text
+            
+              %tr
+                %td
+                %td
+                  %input.button{:type => 'submit', :value => 'Оплатить'}
+      
+            .details
+              %p Qiwi позволяет оплачивать через терминалы, с помощью вашего qiwi-кошелька или банковской карты.
+              %p После того, как вы нажмете "выставить счет" откроется сайт Qiwi, где вам будет предложено выбрать способ оплаты.
+      
       #t-premium-payment-qiwi.p-module
         %form#qiwi-choose{:data => {:url => user_url(current_site, settings_premium_path(:action => 'qiwi_init_bill'))}}
       
@@ -221,7 +251,7 @@
                 %input.button{:type => 'submit', :value => 'Выставить счет'}
         
           .details
-            %p Qiwi позволяет оплачивать через терминалы, с помощью qiwi-кошелек или банковской карты.
+            %p Qiwi позволяет оплачивать через терминалы, с помощью qiwi-кошелька или банковской карты.
             %p После того, как вы нажмете "выставить счет" откроется сайт Qiwi, где вам будет предложено выбрать способ оплаты.
         
         %form#qiwi-template.hidden{:action => 'http://w.qiwi.ru/setInetBill_utf.do', :method => 'POST'}

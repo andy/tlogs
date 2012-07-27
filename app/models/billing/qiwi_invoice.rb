@@ -48,26 +48,31 @@ class QiwiInvoice < Invoice
   ERR_AUTH      = 150
   ERR_TOO_SMALL = 241
   ERR_UNKNOWN   = 300
-  
+
   OPTIONS = {
     'small' => {
-      :days     => 30,
-      :amount   => 69,
-      :position => 1
+      :days       => 30,
+      :days_text  => '1 месяц',
+      :discount   => 0,
+      :amount     => (DAILY_RATE * 30).ceil,
+      :position   => 1
     },
     'medium' => {
-      :days     => 60,
-      :amount   => 129,
-      :position => 2
+      :days       => 93,
+      :days_text  => '3 месяца',
+      :discount   => 5,
+      :amount     => ((DAILY_RATE * 93) * 0.95).ceil,
+      :position   => 2
       
     },
     'large' => {
-      :days     => 100,
-      :amount   => 199,
-      :position => 3
+      :days       => 365,
+      :days_text  => '1 год',
+      :discount   => 10,
+      :amount     => ((DAILY_RATE * 365) * 0.90).ceil,
+      :position   => 3
     }
   }
-
   
   ## validations
   ## callbacks
@@ -86,11 +91,15 @@ class QiwiInvoice < Invoice
   
   def self.options
     @@options ||= OPTIONS.map do |name, opts|
+      text = "#{opts[:days_text] || opts[:days].pluralize('день', 'дня', 'дней', true)} за #{opts[:amount].pluralize('рубль', 'рубля', 'рублей', true)}"
+      text += " (скидка #{opts[:discount]}%)" if opts[:discount] > 0
+
       OpenStruct.new(:name      => name,
                      :days      => opts[:days],
                      :amount    => opts[:amount],
                      :position  => opts[:position],
-                     :text      => "#{opts[:days].pluralize('день', 'дня', 'дней', true)} за #{opts[:amount].pluralize('рубль', 'рубля', 'рублей', true)}"
+                     :discount  => opts[:discount],
+                     :text      => text
                     )
     end
   end

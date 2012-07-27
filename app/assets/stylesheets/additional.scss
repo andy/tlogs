@@ -1044,6 +1044,23 @@ input.placeholder, textarea.placeholder {
       }
     }
   }
+
+  #t-premium-payment-robox {
+    #robox-choose {
+      table tr td {
+        padding: 4px;
+      }
+      .button {
+        margin: 0;
+      }
+      .details {
+        margin-top: 10px;
+        padding: 4px;
+        font-size: 11px;
+        background-color: #eee;
+      }      
+    }
+  }
   
   #t-premium-payment-qiwi {
     #qiwi-choose {

@@ -1,7 +1,7 @@
 class Settings::PremiumController < ApplicationController
   before_filter :require_current_user, :require_owner
   before_filter :require_confirmed_current_user
-  before_filter :require_premium, :except => [:index, :pay, :invoices, :sms_update, :qiwi_init_bill]
+  before_filter :require_premium, :except => [:index, :pay, :invoices, :sms_update, :qiwi_init_bill, :robox_init_bill]
 
   protect_from_forgery
 
@@ -117,13 +117,15 @@ class Settings::PremiumController < ApplicationController
   # Payment popup
   #
   def pay
-    @countries    = SmsonlineInvoice.countries_for_select
-    @qiwi_options = QiwiInvoice.options
+    @countries      = SmsonlineInvoice.countries_for_select
+    @qiwi_options   = QiwiInvoice.options
+    @robox_options  = RoboxInvoice.options
 
     # preferences
     @pref_method  = current_site.invoices.successful.last.try(:pref_key) || 'sms'
     @pref_sms     = SmsonlineInvoice.for_user(current_site).successful.last.try(:pref_options)
     @pref_qiwi    = QiwiInvoice.for_user(current_site).successful.last.try(:pref_options)
+    @pref_robox   = RoboxInvoice.for_user(current_site).successful.last.try(:pref_options)
 
     render :layout => false
   end
@@ -153,6 +155,7 @@ class Settings::PremiumController < ApplicationController
                                    :amount    => option.amount,
                                    :revenue   => option.amount,
                                    :days      => option.days,
+                                   :remote_ip => request.remote_ip,
                                    :metadata  => HashWithIndifferentAccess.new(:option => option.name,
                                                                               :protocol => 'html',
                                                                               :phone => phone
@@ -160,6 +163,23 @@ class Settings::PremiumController < ApplicationController
                                   )
     
     render :json => @invoice.to_json
+  end
+  
+  def robox_init_bill
+    render :nothing => true and return unless request.post?
+    
+    option = RoboxInvoice.options_for(params[:option])
+    
+    @invoice = RoboxInvoice.create!(:user       => current_user,
+                                    :state      => 'pending',
+                                    :amount     => option.amount,
+                                    :revenue    => option.amount,
+                                    :days       => option.days,
+                                    :remote_ip  => request.remote_ip,
+                                    :metadata   => HashWithIndifferentAccess.new(:option => option.name)
+                                  )
+    
+    redirect_to @invoice.payment_url(option)
   end
   
   protected
