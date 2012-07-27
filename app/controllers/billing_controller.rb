@@ -1,5 +1,9 @@
 class BillingController < ApplicationController
   before_filter :require_current_user, :only => [:robox_success, :robox_failure]
+  
+  before_filter :robox_preload, :only => [:robox_result, :robox_success, :robox_failure]
+
+
   #
   # SMS Online
   # ----------
