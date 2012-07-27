@@ -168,7 +168,9 @@ class ApplicationController < ActionController::Base
       end
       
       # fix issue for erronous flash hash (when set to empty string)
-      session[:flash] = nil if session[:flash] && session[:flash].blank?
+      session['flash'] = nil if session['flash'] && session['flash'].blank?
+
+      Rails.logger.debug "* preload: session is #{session.inspect}"
 
       # from session
       @current_user = User.active.find_by_id(session[:u], :include => [:tlog_settings]) if session[:u]
