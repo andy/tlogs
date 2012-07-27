@@ -1,7 +1,7 @@
 class BillingController < ApplicationController
   before_filter :require_current_user, :only => [:robox_success, :robox_failure]
   
-  before_filter :robox_preload, :only => [:robox_result, :robox_success, :robox_failure]
+  before_filter :robox_preload, :only => [:robox_result, :robox_success]
 
 
   #
@@ -107,21 +107,17 @@ class BillingController < ApplicationController
     end
   end
   
-  # GET /billing/robox/success [Customer endpoint]
+  # POST /billing/robox/success [Customer endpoint]
   def robox_success
     flash[:good] = @invoice.summary + ' успешно проведен.'
     
     redirect_to user_url(current_user, settings_premium_path)
   end
   
-  # GET /billing/robox/failure [Customer endpoint]
+  # POST /billing/robox/failure [Customer endpoint]
   def robox_failure
-    if @invoice.is_pending?
-      flash[:bad] = @invoice.summary + ' был отменен.'
-    
-      @invoice.fail!
-    end
-    
+    flash[:bad] = 'Оплата через ROBOX отменена.'
+
     redirect_to user_url(current_user, settings_premium_path)
   end
 
@@ -192,6 +188,8 @@ class BillingController < ApplicationController
   
   protected
     def robox_preload
+      robox_reply_with_fail("invalid request", params) and return false unless request.post?
+      
       amount    = params[:OutSum]
       txn_id    = params[:InvId]
       sig       = params[:SignatureValue]
