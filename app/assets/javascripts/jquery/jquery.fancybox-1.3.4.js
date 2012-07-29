@@ -1070,17 +1070,17 @@
 			$.fancybox.next();
 		});
 
-		if ($.fn.mousewheel) {
-			wrap.bind('mousewheel.fb', function(e, delta) {
-				if (busy) {
-					e.preventDefault();
-
-				} else if ($(e.target).get(0).clientHeight == 0 || $(e.target).get(0).scrollHeight === $(e.target).get(0).clientHeight) {
-					e.preventDefault();
-					$.fancybox[ delta > 0 ? 'prev' : 'next']();
-				}
-			});
-		}
+    // if ($.fn.mousewheel) {
+    //  wrap.bind('mousewheel.fb', function(e, delta) {
+    //    if (busy) {
+    //      e.preventDefault();
+    // 
+    //    } else if ($(e.target).get(0).clientHeight == 0 || $(e.target).get(0).scrollHeight === $(e.target).get(0).clientHeight) {
+    //      e.preventDefault();
+    //      $.fancybox[ delta > 0 ? 'prev' : 'next']();
+    //    }
+    //  });
+    // }
 
 		if (!$.support.opacity) {
 			wrap.addClass('fancybox-ie');
