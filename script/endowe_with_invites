@@ -9,7 +9,7 @@ User.active.paginated_each(:per_page => 1000) do |user|
      user.created_at < 1.months.ago &&
      user.ban_c_till.nil? &&
      user.invitations_left < 3 &&
-     user.listed_me_as_all_friend_light.length >= 3
+     user.listed_me_as_all_friend_light.length >= 2
      
     # skip this user if any of his already invited friends is guilty...
     next unless user.invitations.accepted.map(&:invitee).select do |invitee|
