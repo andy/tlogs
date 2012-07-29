@@ -88,11 +88,11 @@ module WhiteListHelper
         inner_html = auto_link(h(text.inner_text))
         new_html = inner_html.dup
         
-        # [andy] -> ссылка на пользователя
-        new_html.gsub!(/(\[([a-z0-9\-]{1,20})\])/i) do
-          user = User.find_by_url($2)
-          user ? "<a href='#{user_url(user)}' class='t-entry-tlog'>#{user.url}</a>" : $1
-        end
+        # # [andy] -> ссылка на пользователя
+        # new_html.gsub!(/(\[([a-z0-9\-]{1,20})\])/i) do
+        #   user = User.find_by_url($2)
+        #   user ? "<a href='#{user_url(user)}' class='t-entry-tlog'>#{user.url}</a>" : $1
+        # end
 
         # @andy -> ссылка на пользователя
         new_html.gsub!(/(^|\s+|\n)(\@([a-z0-9\-]{1,20}))(\,|\:|\;|\.(\s+|$)|\s+|$)/i) do
