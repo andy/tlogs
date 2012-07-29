@@ -156,7 +156,7 @@ class User < ActiveRecord::Base
     options.reverse_merge!(:limit => 6, :popularity => 2)
     
     user_ids = Rails.cache.fetch("users::active", :expires_in => 10.minutes) do
-      Relationship.find(:all, :select => 'user_id', :order => 'id desc', :limit => 1000).map(&:user_id)
+      Relationship.find(:all, :select => 'user_id', :conditions => 'friendship_status > 0', :order => 'id desc', :limit => 1000).map(&:user_id)
     end
     
     user_ids =  user_ids.sort.                        # sort numerically
