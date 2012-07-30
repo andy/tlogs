@@ -247,7 +247,7 @@ class AccountController < ApplicationController
       
       @user.save if @user.errors.empty?
       if @user.errors.empty?
-        @user.log nil, :signup, "@{@user.url} зарегистрировался через ВКонтакте http://vk.com/id#{@user.vk_id}"
+        @user.log nil, :signup, "зарегистрировался через ВКонтакте http://vk.com/id#{@user.vk_id}"
         Emailer.deliver_foreign(current_service, @user)
         
         login_user @user, :remember => @user.email, :redirect_to => user_url(@user)
