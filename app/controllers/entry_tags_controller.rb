@@ -8,6 +8,9 @@ class EntryTagsController < ApplicationController
     @entry.update_tags
     new_tags = @entry.tags - old_tags
 
+    # touch entries_updated_at because this invalidates view cache
+    current_site.touch :entries_updated_at
+
     render :update do |page|
       page.replace_html "emd_#{@entry.id}", :partial => 'tlog/metadata', :locals => { :entry => @entry }
       new_tags.each do |tag|
@@ -21,6 +24,9 @@ class EntryTagsController < ApplicationController
   def destroy
     tag = Tag.find(params[:id])
     if tag && @entry.tag_list.remove(tag.name) && @entry.update_tags
+      # touch entries_updated_at because this invalidates view cache
+      current_site.touch :entries_updated_at
+
       # обновляем вручную, потому что иначе придется делать @entry.save, а это слишком накладно
       # @entry.connection.update("UPDATE #{@entry.class.table_name} SET #{@entry.class.cached_tag_list_column_name} = '#{@entry.tag_list.to_s.sequelize}' WHERE id = #{@entry.id}")
       render :update do |page|
