@@ -4,7 +4,7 @@
   	<%= auto_discovery_link_tag(:rss, user_url(current_site, tlog_feed_path(:action => :rss))) %>
   	<%= auto_discovery_link_tag(:rss, user_url(current_site, tlog_feed_path(:action => :photos)), { :title => 'только фоторафии' }) %>
   	<%= tag :link, :rel => 'meta', :type => 'application/rdf+xml', :title => 'FOAF', :href => user_url(current_site, foaf_path) %>
-  	<%= tag :meta, :name => 'description', :content => [current_site.url, current_site.tlog_settings.title, @entry.excerpt].compact.join(', ') %>  	
+  	<%= tag :meta, :name => 'description', :content => [current_site.url, current_site.tlog_settings.title, @entry.excerpt].compact.reject { |s| s.blank? }.join(', ')%>
   <% end %>
   
   <%= tag :meta, :property => 'og:type', :content => 'article' %>
@@ -17,16 +17,7 @@
 	<% @entry.tag_list.names.each do |name| %>
 	  <%= tag :meta, :property => 'article:tag', :content => name %>
 	<% end %>
-	<% if current_site.username != current_site.url %>
-	  <% if current_site.username.split(' ', 2) %>
-	    <%= tag :meta, :property => 'article:author:first_name', :content => current_site.username.split(' ', 2)[0] %>
-	    <%= tag :meta, :property => 'article:author:last_name', :content => current_site.username.split(' ', 2)[1] %>
-	  <% else %>
-	    <%= tag :meta, :property => 'article:author:first_name', :content => current_site.username %>
-	  <% end %>
-	<% end %>
-	<%= tag :meta, :property => 'article:author:username', :content => current_site.url %>
-	<%= tag :meta, :property => 'article:author:gender', :content => current_site.gender('male', 'female') %>
+	<%= tag :meta, :property => 'article:author', :content => user_url(current_site) %>
 <% end %>
 
 <% cache "#{current_service.domain}/#{current_site.url}/show:#{@entry.id}/date:#{Date.today.to_s(:db)}/owner:#{is_owner?}/updated_at:#{@entry.updated_at.to_i}", :expires_in => 1.day do %>

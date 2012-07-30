@@ -1,0 +1,10 @@
+<% if current_site.username != current_site.url %>
+  <% if current_site.username.split(' ', 2) %>
+    <%= tag :meta, :property => 'profile:first_name', :content => current_site.username.split(' ', 2)[0] %>
+    <%= tag :meta, :property => 'profile:last_name', :content => current_site.username.split(' ', 2)[1] %>
+  <% else %>
+    <%= tag :meta, :property => 'profile:first_name', :content => current_site.username %>
+  <% end %>
+<% end %>
+<%= tag :meta, :property => 'profile:username', :content => current_site.url %>
+<%= tag :meta, :property => 'profile:gender', :content => current_site.gender('male', 'female') %>
