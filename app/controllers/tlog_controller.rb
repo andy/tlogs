@@ -33,7 +33,7 @@ class TlogController < ApplicationController
   def regular
     @title = current_site.tlog_settings.title || ''
     
-    @cache_key = ['tlog', 'regular', current_service.domain, current_site.id, current_site.url, current_page, is_owner? && current_site.tlog_settings.past_disabled?, current_site.entries_updated_at.to_i, Date.today.to_s(:db)].join(':')
+    @cache_key = ['tlog', 'regular', current_service.domain, current_site.id, current_site.url, current_page, is_owner?, current_site.tlog_settings.past_disabled?, current_site.entries_updated_at.to_i, Date.today.to_s(:db)].join(':')
     Rails.logger.debug "* cache key is #{@cache_key}"
 
     if current_page == 1 || is_owner? || !current_site.tlog_settings.past_disabled?
@@ -57,7 +57,7 @@ class TlogController < ApplicationController
     
     redirect_to user_url(current_site) and return if @time.nil?
     
-    @cache_key = ['tlog', 'daylog', current_service.domain, current_site.id, current_site.url, @time.to_date.to_s(:db), is_owner? && current_site.tlog_settings.past_disabled?, current_site.entries_updated_at.to_i, Date.today.to_s(:db)].join(':')
+    @cache_key = ['tlog', 'daylog', current_service.domain, current_site.id, current_site.url, @time.to_date.to_s(:db), is_owner?, current_site.tlog_settings.past_disabled?, current_site.entries_updated_at.to_i, Date.today.to_s(:db)].join(':')
     Rails.logger.debug "* partial cache key is #{@cache_key}"
 
     # если пользователь предпочел скрыть прошлое, делаем вид что такой страницы не существует
