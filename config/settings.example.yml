@@ -1,4 +1,9 @@
 ---
+social:
+  vk:
+    app_id: APP_ID
+    secret: XXX
+
 billing:
   # this is how much we charge for a single day of premium
   daily_rate: 2.33333333

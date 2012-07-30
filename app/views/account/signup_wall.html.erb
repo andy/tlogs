@@ -1,0 +1,14 @@
+<% @title = "Регистрация" %>
+<script src="http://vkontakte.ru/js/api/openapi.js" type="text/javascript"></script>
+<script type='text/javascript'>
+  VK.init({apiId: <%= ::SETTINGS[:social]['vk']['app_id'] %>});
+  function vkAuthWall(data) {
+    if (data.session) {
+      window.location.href = '/account/foreign';
+    }
+  }
+</script>
+
+<div class='center_data_big_form'>
+  <p>Зарегистрироваться на тейсти можно либо по приглашению, либо авторизовавшись через социальную сеть классического типа <a href='#' onclick='VK.Auth.login(vkAuthWall);'>ВКонтакте</a>.</p>
+</div>

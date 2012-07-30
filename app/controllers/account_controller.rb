@@ -138,6 +138,10 @@ class AccountController < ApplicationController
     reset_session
     
     respond_to do |wants|
+      # wants.mobile do
+      #   Rails.logger.debug "wants mobile"
+      #   render :json => true
+      # end
       wants.html do
         if params[:p] && params[:p] == 'false'
           redirect_to(:back) rescue redirect_to(service_url)
@@ -154,9 +158,6 @@ class AccountController < ApplicationController
           end
         end
       end
-      wants.mobile do
-        render :json => true
-      end
     end
   end
   
@@ -168,7 +169,7 @@ class AccountController < ApplicationController
   def signup
     @invitation = Invitation.revokable.find_by_code params[:code]
     
-    render :action => 'signup_disabled' and return unless @invitation
+    render :action => 'signup_wall' and return unless @invitation
     
     if request.post?
       @user = User.new :email => @invitation.email, :password => params[:user][:password], :url => params[:user][:url], :openid => nil, :eula => params[:user][:eula]
@@ -194,7 +195,70 @@ class AccountController < ApplicationController
     else
       @user = User.new :email => @invitation.email
     end
-  end  
+  end
+  
+  # authorize through vk, http://vk.com/developers.php?oid=-1&p=VK.Auth
+  def foreign
+    vk_valid_fields = %w(expire mid secret sig sid)
+    vk_opts         = ::SETTINGS[:social]['vk'].symbolize_keys
+    cookie_name     = "vk_app_#{vk_opts[:app_id]}"
+    
+    # verify that we get auth cookie
+    redirect_to :action => 'signup' and return unless
+      cookies.has_key? cookie_name
+
+    # get session attributes
+    vk_sess         = Rack::Utils.parse_nested_query(cookies[cookie_name]) rescue {}
+    
+    # validate session - check that all and only these fields are present
+    foreign_error("Извините, но ваша кука — левая!") and return unless
+      vk_valid_fields.sort == vk_sess.keys.sort
+    
+    # verify signature
+    vk_sig          = vk_sess.slice(*(vk_valid_fields - ['sig'])).sort.map { |h| h.join('=') }.join + vk_opts[:secret]
+    
+    Rails.logger.debug vk_sig
+    foreign_error("Извините, но ваша кука — ненастоящая!") and return unless
+      Digest::MD5.hexdigest(vk_sig) == vk_sess['sig']
+    
+    # verify expiration that session is still valid
+    foreign_error("Извините, но время вашей сессии истекло.") and return unless
+      vk_sess['expire'].to_i > Time.now.to_i
+
+    #
+    # at this point, vk session is valid and can be trused
+    #
+    foreign_error("Извините, но этот аккаунт ВКонтакте уже использовался для регистрации.") and return if
+      User.find_by_vk_id(vk_sess['mid'])
+
+    
+    if request.post?
+      @user = User.new :email => params[:user][:email], :password => params[:user][:password], :url => params[:user][:url], :eula => params[:user][:eula]
+      
+      # проверяем на левые емейл адреса
+      @user.errors.add(:email, 'извините, но выбранный вами почтовый сервис находится в черном списке') if @user.email.any? && Disposable::is_disposable_email?(@user.email)
+      
+      @user.errors.add(:password, 'пожалуйста, укажите пароль') if @user.password.blank?
+
+      @user.settings      = {}
+      @user.vk_id         = vk_sess['mid']
+      @user.is_confirmed  = false
+      @user.update_confirmation! @user.email
+      
+      @user.save if @user.errors.empty?
+      if @user.errors.empty?
+        @user.log nil, :signup, "@{@user.url} зарегистрировался через ВКонтакте http://vk.com/id#{@user.vk_id}"
+        Emailer.deliver_foreign(current_service, @user)
+        
+        login_user @user, :remember => @user.email, :redirect_to => user_url(@user)
+      else
+        flash[:bad] = 'При регистрации произошли какие-то ошибки'
+      end
+    else
+      @user = User.new
+    end
+  end
+
   
   # возвращает статус для имени пользователя
   def update_url_status
@@ -327,5 +391,10 @@ class AccountController < ApplicationController
     def redirect_home_if_current_user
       redirect_to user_url(current_user) and return false if current_user
       true
+    end
+    
+    def foreign_error message
+      @message = message
+      render :action => 'foreign_error'
     end
 end

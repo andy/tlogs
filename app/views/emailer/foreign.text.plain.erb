@@ -1,0 +1,23 @@
+<%-
+  confirm_link = service_url(confirm_code_path(:code => @user.read_confirmation_code))
+
+-%>
+Здравствуйте!
+
+ Вы успешно зарегистрировались на сайте Mmm...tasty! (<%= service_url %>)!
+
+ Завершите регистрацию, пройдя по этой ссылке: 
+ <%= link_to confirm_link, confirm_link, :class => 'action-link accept-link' %>
+ 
+
+ Дополнительно, ваши регистрационные данные:
+   Логин: <%= @user.url %>
+   Адрес вашего тлога: <%= user_url(@user) %>
+
+ В случае если вы когда-нибудь забудете свой пароль, пройдите по этой ссылке:
+   <%= service_url(lost_password_path) %>
+
+Спасибо!
+
+--
+С уважением, Ммм... тейсти.

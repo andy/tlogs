@@ -23,6 +23,13 @@ class Emailer < ActionMailer::Base
                 :from => '"Ммм... тейсти" <noreply+signup@mmm-tasty.ru>',
                 :user => user
   end
+
+  def foreign(current_service, user)
+    setup     current_service,
+                :subj => 'ммм... регистрация',
+                :from => '"Ммм... тейсти" <noreply+signup@mmm-tasty.ru>',
+                :user => user
+  end
   
   def link_notification(current_service, user, link)
     setup     current_service,

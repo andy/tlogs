@@ -5,7 +5,7 @@
 
     <%= tag(:input, :type => 'hidden', :name => 'code', :value => h(params[:code])) if params[:code] %>
 
-		<%= render :partial => 'login_and_signup_form', :locals => { :f => f, :disabled => true } %>
+		<%= render :partial => 'login_and_signup_form', :locals => { :f => f } %>
 
 		<div class='form_string'>
 			<label for="user_url">придумайте адрес тлога:

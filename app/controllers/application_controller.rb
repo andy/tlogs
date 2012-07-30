@@ -109,6 +109,8 @@ class ApplicationController < ActionController::Base
     end
 
     def set_mobile_format
+      Rails.logger.debug "* preload: format forced to mobile"
+
       request.format = :mobile
     end
   
