@@ -59,4 +59,13 @@ render :partial => 'entries/entry_datetime', :locals => { :entry => entry } if s
   end
   
   # main entry contents
-  -%><div class='post_content'><%= render :partial => 'entries/display/' + entry.class.to_s.underscore, :locals => { :entry => entry, :mini => mini, :embed => embed } %></div></div>
+  -%><div class='post_content'><%= render :partial => 'entries/display/' + entry.class.to_s.underscore, :locals => { :entry => entry, :mini => mini, :embed => embed } %></div><%-
+  
+  # show tag links for entry
+  if current_site && entry.tag_list.names.any? -%><div class='t-post-tags'><%-
+    entry.tag_list.names.each_with_index do |name, index|
+      %><%= ', ' unless index.zero?
+      %><%= link_to "<span class='t-post-tag-hash'>#</span>" + h(name), tag_view_path(:tags => name) %><%
+    end %></div><%
+  end
+  %></div>

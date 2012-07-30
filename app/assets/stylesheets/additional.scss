@@ -238,6 +238,10 @@ a#new_radio_schedule_showform { font-size: 1.4em; font-family: Tahoma; color: #3
 .post_comment_ban { font-size: 10px; color: #ccc; }
 .post_comment_ban a { color: #ccc; text-decoration: none; }
 
+.t-post-tags {
+  display: none;
+}
+
 .t-post-comment {
   .t-post-comment-destroy-holder {
     position: relative;
