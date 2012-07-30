@@ -46,4 +46,7 @@ class CodeEntry < Entry
   def excerpt
     self.data_part_1.to_s.gsub(/<object.*?<\/object>/i, ' ').truncate(150).to_s
   end
+  def title
+    data_part_2
+  end
 end

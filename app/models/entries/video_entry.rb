@@ -64,6 +64,10 @@ class VideoEntry < Entry
     self.new :data_part_1 => embed_or_url, :data_part_2 => desc
   end
   
+  def title
+    excerpt
+  end
+  
   # пытаемся подключить видео формат после того как видео было найдено
   # def after_find
   #   self.metadata = {} if self.metadata.nil?

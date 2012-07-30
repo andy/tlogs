@@ -107,6 +107,10 @@ class AnonymousEntry < Entry
       self.data_part_1.to_s.gsub(/<object.*?<\/object>/i, ' ').truncate(150).to_s
     end
   end
+  def title
+    excerpt
+  end
+
   def self.new_from_bm(params)
     content = params[:c].strip if params[:c]
     content ||= ''

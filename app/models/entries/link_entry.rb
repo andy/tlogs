@@ -60,6 +60,10 @@ class LinkEntry < Entry
     end
   end
   
+  def title
+    excerpt
+  end
+  
   def self.new_from_bm(params)
     self.new :data_part_1 => params[:url], :data_part_2 => params[:title], :data_part_3 => params[:c]
   end

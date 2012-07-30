@@ -53,4 +53,8 @@ class QuoteEntry < Entry
   def self.new_from_bm(params)
     self.new :data_part_1 => params[:c], :data_part_2 => "<a href='#{params[:url]}'>#{params[:title] || params[:url]}</a>"
   end
+  
+  def title
+    self.data_part_2.to_s.gsub(/<object.*?<\/object>/i, ' ').truncate(150).to_s.gsub("\r", '').gsub("\n", ' ')
+  end
 end

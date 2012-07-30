@@ -49,4 +49,7 @@ class ConvoEntry < Entry
   def self.new_from_bm(params)
     self.new :data_part_1 => params[:c], :data_part_2 => params[:title]
   end
+  def title
+    data_part_2
+  end
 end

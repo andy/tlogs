@@ -45,6 +45,10 @@ class ImageEntry < Entry
     end
   end
   
+  def title
+    excerpt
+  end
+  
   def self.new_from_bm(params)
     url = params[:url]
     uri = URI.parse(url)

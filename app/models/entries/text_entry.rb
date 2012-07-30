@@ -64,4 +64,8 @@ class TextEntry < Entry
     content += "\n<a href='#{params[:url]}'>отсюда</a>" if content
     self.new :data_part_1 => content, :data_part_2 => title
   end
+  
+  def title
+    excerpt
+  end
 end
