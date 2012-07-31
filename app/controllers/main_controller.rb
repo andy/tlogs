@@ -16,6 +16,10 @@ class MainController < ApplicationController
   def about
   end
   
+  def payterms
+    @wmid = ::SETTINGS[:billing]['webmoney']['wmid']
+  end
+  
   def adv
   end
   
