@@ -280,6 +280,8 @@ END
           Russian::strftime(time, "ночью в %H:%M")
         elsif time.day == Time.now.tomorrow.day
           Russian::strftime(time, "завтра в %H:%M")
+        elsif time.year != Time.now.year
+          Russian::strftime(time, "%e %B %Y в %H:%M")
         else
           Russian::strftime(time, "%e %B в %H:%M")
         end
