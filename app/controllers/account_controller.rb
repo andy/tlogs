@@ -233,26 +233,31 @@ class AccountController < ApplicationController
 
     
     if request.post?
-      @user = User.new :email => params[:user][:email], :password => params[:user][:password], :url => params[:user][:url], :eula => params[:user][:eula]
-      
-      # проверяем на левые емейл адреса
-      @user.errors.add(:email, 'извините, но выбранный вами почтовый сервис находится в черном списке') if @user.email.any? && Disposable::is_disposable_email?(@user.email)
-      
-      @user.errors.add(:password, 'пожалуйста, укажите пароль') if @user.password.blank?
-
-      @user.settings      = {}
-      @user.vk_id         = vk_sess['mid']
-      @user.is_confirmed  = false
-      @user.update_confirmation! @user.email
-      
-      @user.save if @user.errors.empty?
-      if @user.errors.empty?
-        @user.log nil, :signup, "зарегистрировался через ВКонтакте http://vk.com/id#{@user.vk_id}"
-        Emailer.deliver_foreign(current_service, @user)
+      User.transaction do
+        foreign_error("Извините, но этот аккаунт ВКонтакте уже использовался для регистрации.") and return if
+          User.find_by_vk_id(vk_sess['mid'])
         
-        login_user @user, :remember => @user.email, :redirect_to => user_url(@user)
-      else
-        flash[:bad] = 'При регистрации произошли какие-то ошибки'
+        @user = User.new :email => params[:user][:email], :password => params[:user][:password], :url => params[:user][:url], :eula => params[:user][:eula]
+      
+        # проверяем на левые емейл адреса
+        @user.errors.add(:email, 'извините, но выбранный вами почтовый сервис находится в черном списке') if @user.email.any? && Disposable::is_disposable_email?(@user.email)
+      
+        @user.errors.add(:password, 'пожалуйста, укажите пароль') if @user.password.blank?
+
+        @user.settings      = {}
+        @user.vk_id         = vk_sess['mid']
+        @user.is_confirmed  = false
+        @user.update_confirmation! @user.email
+      
+        @user.save if @user.errors.empty?
+        if @user.errors.empty?
+          @user.log nil, :signup, "зарегистрировался через ВКонтакте http://vk.com/id#{@user.vk_id}"
+          Emailer.deliver_foreign(current_service, @user)
+        
+          login_user @user, :remember => @user.email, :redirect_to => user_url(@user)
+        else
+          flash[:bad] = 'При регистрации произошли какие-то ошибки'
+        end
       end
     else
       @user = User.new
