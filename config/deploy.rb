@@ -26,6 +26,7 @@ set :repository, 'git://github.com/andy/tlogs.git'
 role :all, 'f1.tlogs.ru', 'f2.tlogs.ru', 'f3.tlogs.ru', 'f4.tlogs.ru'
 role :db, "f1.tlogs.ru", :primary => true
 role :app, 'f2.tlogs.ru', 'f3.tlogs.ru', 'f4.tlogs.ru'
+role :assets, 'f1.tlogs.ru', 'f2.tlogs.ru', 'f3.tlogs.ru', 'f4.tlogs.ru'
 role :web, 'f2.tlogs.ru'
 role :redis, 'f1.tlogs.ru'
 role :cache, 'f4.tlogs.ru', 'f2.tlogs.ru'
@@ -194,18 +195,18 @@ namespace :deploy do
   
   namespace :assets do
     desc "Create glued styles"
-    task :glue, :roles => :app do
+    task :glue, :roles => :assets do
       assets.glue_temp
       assets.deploy
     end
 
     desc "Create glued styles in temp directory"
-    task :glue_temp, :roles => :app do
+    task :glue_temp, :roles => :assets do
       run "cd #{deploy_to} && RAILS_ENV=production bundle exec rake assets:glue"
     end
 
     desc "Deploy glued styles"
-    task :deploy, :roles => :app do
+    task :deploy, :roles => :assets do
       run "cd #{deploy_to} && RAILS_ENV=production bundle exec rake assets:install"
     end
   end  
