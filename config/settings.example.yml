@@ -8,6 +8,10 @@ billing:
   # this is how much we charge for a single day of premium
   daily_rate: 2.33333333
 
+  webmoney:
+    wmid: 164709506031
+    wmr: R265769100531
+
   smsonline:
     login: user
     password: password

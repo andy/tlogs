@@ -868,6 +868,10 @@ input.placeholder, textarea.placeholder {
       }
     }
   }
+  
+  center.webmoney {
+    font-size: 11px;
+  }
 }
 
 .t-avatar-badge-pro {
@@ -1130,6 +1134,38 @@ input.placeholder, textarea.placeholder {
         }
       }
     }
+  }
+}
+
+.t-main-payterms {
+  margin: 0 40px;
+  text-align: left;
+  h1 {
+    color: #333;
+    font-family: Georgia, 'Times New Roman';
+    font-size: 25px;
+    margin: 0 0 20px 0;
+    padding: 0;
+    line-height: 30px;
+  }
+  
+  h2 {
+    color: #333;
+    font-family: Georgia, 'Times New Roman';
+    font-size: 20px;
+    margin: 0 0 10px 0;
+    padding: 0;
+    line-height: 30px;
+  }
+  
+  ol li {
+    font-family: Georgia, serif;
+    font-size: 14px;
+    font-style: normal;
+  }
+  .webmoney {
+    margin-top: 20px;
+    font-size: 12px;
   }
 }
 

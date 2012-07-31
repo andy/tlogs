@@ -10,6 +10,7 @@ class Settings::PremiumController < ApplicationController
 
 
   def index
+    @wmid = ::SETTINGS[:billing]['webmoney']['wmid']
   end
   
   def accounts

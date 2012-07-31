@@ -88,6 +88,18 @@
     = link_to "#{is_premium? ? 'Продлить' : 'Подключить'} тейсти-премиум", user_url(current_site, settings_premium_path(:action => 'pay')), :id => 'paylink', :class => 'paylink fancybox_payment_popup'
     -# - else
     -#   .paydisabled Простите, оплата временно недоступна. Надеемся, что после 16 сентября все заработает.
+
+  %br
+  %br
+  %br
+
+  -# %hr
+  
+  %center.webmoney
+    = link_to image_tag('premium/wm_accepted.png', :title => 'Мы принимаем WebMoney'), 'https://www.webmoney.ru/'
+    %a{:href => "https://passport.webmoney.ru/asp/certview.asp?wmid=#{@wmid}", :target => '_blank'}= image_tag 'premium/wm_attestated.png', :title => "Здесь находится аттестат нашего WM идентификатора #{@wmid}"
+    %br
+    %a{:href => "https://passport.webmoney.ru/asp/certview.asp?wmid=#{@wmid}", :target => '_blank'} Проверить аттестат
   
 :javascript
   jQuery(function() {
