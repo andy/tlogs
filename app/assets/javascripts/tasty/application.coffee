@@ -5,13 +5,13 @@ Tasty =
     jQuery('a.t-act-vote').live "click", Tasty.vote
     jQuery('a.t-act-fave').live "click", Tasty.fave
     jQuery('a.t-act-meta').live "click", Tasty.meta.click
-    Tasty.fastforward.ready()
+    Tasty.fastforward.ready() if current_user && current_user > 0
     jQuery('.t-act-logout').live "click", Tasty.logout
     jQuery('.t-controller-settings-social a.t-act-social-delete').live "click", Tasty.social.del
     jQuery('.t-controller-settings-social a.t-act-social-edit').live "click", Tasty.social.edit
-    Tasty.shortcut.ready() if jQuery('#t-act-shortcut')
-    Tasty.iscroll.ready() if jQuery('.t-iscrollable')
-    Tasty.comments.ready() if jQuery('.t-post-comments')
+    Tasty.shortcut.ready() if jQuery('#t-act-shortcut').length > 0
+    Tasty.iscroll.ready() if jQuery('.t-iscrollable').length > 0
+    Tasty.comments.ready() if jQuery('.t-post-comments').length > 0
     jQuery('.main_page .top_menu sup.t-act-goto-convos').live "click", (event) ->
       window.location.href = '/convos'
       false
