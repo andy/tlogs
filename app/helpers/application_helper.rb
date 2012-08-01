@@ -83,10 +83,10 @@ module ApplicationHelper
         else :thumb64
       end
 
-    width     = user.userpic.width(style)
-    height    = user.userpic.height(style)
+    width     = user.userpic.width(style) || 32
+    height    = user.userpic.height(style) || 32
 
-    if (options[:width] && options[:width] < width) || (options[:height] && options[:height] < height)
+    if (options[:width] && width && options[:width] < width) || (options[:height] && height && options[:height] < height)
       w_ratio = (options[:width] && options[:width] > 0) ? options[:width].to_f / width.to_f : 1
       h_ratio = (options[:height] && options[:height] > 0) ? options[:height].to_f / height.to_f : 1
 
