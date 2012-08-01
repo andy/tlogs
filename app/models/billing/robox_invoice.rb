@@ -145,7 +145,7 @@ class RoboxInvoice < Invoice
   end
   
   def pref_key
-    type.key || 'robox'
+    type.try(:key) || 'robox'
   end
   
   def pref_options
