@@ -459,7 +459,7 @@ Tasty =
       jQuery('#t-act-shortcut')
         .click(Tasty.shortcut.click)
         .hover(Tasty.shortcut.in, Tasty.shortcut.out)
-      jQuery(window).scroll Tasty.shortcut.onscroll
+      # jQuery(window).scroll Tasty.shortcut.onscroll
       
       width     = jQuery('.sidebar:first').offset()?.left
       w_width   = jQuery('#wrapper').offset()?.left
@@ -498,6 +498,10 @@ Tasty =
         shortcut.fadeIn(100) unless shortcut.is(':visible')          
       else
         shortcut.fadeOut(100) if shortcut.is(':visible')
+      
+      # poll every second, this is much faster than onscroll event
+      setTimeout Tasty.shortcut.onscroll, 1000
+      
     
   vote: (event) ->
     Tasty.analytics.event 'Vote', jQuery(this).data('vote-action'), _user.url
