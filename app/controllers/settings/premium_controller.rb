@@ -121,9 +121,11 @@ class Settings::PremiumController < ApplicationController
     @countries      = SmsonlineInvoice.countries_for_select
     @qiwi_options   = QiwiInvoice.options
     @robox_options  = RoboxInvoice.options
+    
+    @robox_types    = RoboxInvoice.types
 
     # preferences
-    @pref_method  = current_site.invoices.successful.last.try(:pref_key) || 'sms'
+    @pref_method  = current_site.invoices.successful.last.try(:pref_key) || 'ym'
     @pref_sms     = SmsonlineInvoice.for_user(current_site).successful.last.try(:pref_options)
     @pref_qiwi    = QiwiInvoice.for_user(current_site).successful.last.try(:pref_options)
     @pref_robox   = RoboxInvoice.for_user(current_site).successful.last.try(:pref_options)
@@ -169,7 +171,8 @@ class Settings::PremiumController < ApplicationController
   def robox_init_bill
     render :nothing => true and return unless request.post?
     
-    option = RoboxInvoice.options_for(params[:option])
+    option = RoboxInvoice.options_for(params[:option])    
+    type   = RoboxInvoice.type_for(params[:type])
     
     @invoice = RoboxInvoice.create!(:user       => current_user,
                                     :state      => 'pending',
@@ -177,10 +180,10 @@ class Settings::PremiumController < ApplicationController
                                     :revenue    => option.amount,
                                     :days       => option.days,
                                     :remote_ip  => request.remote_ip,
-                                    :metadata   => HashWithIndifferentAccess.new(:option => option.name)
+                                    :metadata   => HashWithIndifferentAccess.new(:option => option.name, :type => type.try(:key))
                                   )
     
-    redirect_to @invoice.payment_url(option)
+    redirect_to @invoice.payment_url(option, type)
   end
   
   protected

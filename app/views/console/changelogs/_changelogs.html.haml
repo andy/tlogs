@@ -14,7 +14,7 @@
           - if changelog.owner
             = link_to '@' + changelog.owner.url, console_user_path(changelog.owner)
           - else
-            = '#' + changelog.owner_id
+            = '#' + changelog.owner_id.to_s
             %span.badge.badge-important removed
         %td= changelog.action
         %td= h changelog.comment

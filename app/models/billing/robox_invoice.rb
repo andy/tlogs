@@ -27,6 +27,27 @@ class RoboxInvoice < Invoice
       :position   => 3
     }
   }
+  
+  TYPES = {
+    'ym' => {
+      :code     => 'PCR',
+      :name     => 'Yandex.Money',
+      :desc     => 'Яндекс.Деньги',
+      :position => 1
+    },
+    'cc' => {
+      :code     => 'BANKOCEANMR',
+      :name     => 'Visa / MasterCard',
+      :desc     => 'Кредитной картой (Visa / MasterCard)',
+      :position => 2
+    },
+    'wm' => {
+      :code     => 'WMRM',
+      :name     => 'WebMoney',
+      :desc     => 'WebMoney (WMR, WMZ, WMU, WME и другие валюты)',
+      :position => 3
+    }
+  }
 
 
   ## validations
@@ -55,6 +76,7 @@ class RoboxInvoice < Invoice
 
       OpenStruct.new(:name      => name,
                      :days      => opts[:days],
+                     :days_text => opts[:days_text],
                      :amount    => opts[:amount],
                      :position  => opts[:position],
                      :discount  => opts[:discount],
@@ -63,8 +85,25 @@ class RoboxInvoice < Invoice
     end
   end
   
+  def self.types
+    @@types ||= TYPES.map do |key, opts|
+
+      OpenStruct.new(:key       => key,          
+                     :name      => opts[:name],
+                     :desc      => opts[:desc],
+                     :code      => opts[:code],
+                     :position  => opts[:position]
+                    )
+      
+    end
+  end
+  
   def self.options_for(key)
     options.find { |opt| opt.name.to_s == key.to_s } || options.sort_by(&:position).first
+  end
+  
+  def self.type_for(key)
+    (key && !key.blank? && types.find { |t| t.key == key }) || nil
   end
 
   
@@ -90,15 +129,23 @@ class RoboxInvoice < Invoice
   end
   
   def summary
-    "Платеж через ROBOX на сумму #{self.amount.pluralize('рубль', 'рубля', 'рублей', true)}"
+    "Платеж через ROBOKASSA на сумму #{self.amount.pluralize('рубль', 'рубля', 'рублей', true)}"
   end
   
   def extra_summary
-    "Сервис #{self.is_successful? ? '' : 'не '}продлен на #{self.days.pluralize('день', 'дня', 'дней', true)}"
+    txt = ""
+    txt += "#{@type.name}. " if type
+    txt += "Сервис #{self.is_successful? ? '' : 'не '}продлен на #{self.days.pluralize('день', 'дня', 'дней', true)}"
+    
+    txt
+  end
+  
+  def type
+    @type ||= (self.metadata && self.metadata.has_key?(:type)) ? self.class.type_for(self.metadata[:type]) : nil
   end
   
   def pref_key
-    'robox'
+    type.key || 'robox'
   end
   
   def pref_options
@@ -111,7 +158,7 @@ class RoboxInvoice < Invoice
   
   # Production url is https://merchant.roboxchange.com/Index.aspx
   # Test url is http://test.robokassa.ru/Index.aspx
-  def payment_url(option)
+  def payment_url(option, type = nil)
     uri = URI.parse 'https://merchant.roboxchange.com/Index.aspx'
     
     sig = Digest::MD5.hexdigest [self.class.login, self.amount, self.txn_id, self.password1].join(':')
@@ -121,7 +168,7 @@ class RoboxInvoice < Invoice
       :InvId          => self.txn_id,
       :Desc           => "Тейсти-премиум для тлога @#{self.user.url} за #{option.days_text}",
       :SignatureValue => sig,
-      :IncCurrLabel   => 'PCR',
+      :IncCurrLabel   => type.try(:code),
       :Email          => self.user.is_confirmed? ? self.user.email : nil,
       :Culture        => 'ru'
     }.to_query

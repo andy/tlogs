@@ -185,11 +185,11 @@
         Оплата
 
       %form#t-premium-payment-method
-        - if current_user.is_admin?
+        - @robox_types.sort_by(&:position).each do |type|
           .method
             %label
-              %input{:type => 'radio', :name => 'method', :value => 'robox'}
-              ROBOKASSA (Visa/MasterCard, Yandex.Money, Webmoney и другие)
+              %input{:type => 'radio', :name => 'method', :value => type.key}
+              = type.desc
 
         .method
           %label
@@ -200,12 +200,18 @@
           %label
             %input{:type => 'radio', :name => 'method', :value => 'qiwi'}
             Qiwi-кошелек (терминалы, qiwi-кошелек или банковской картой)
+
+        .method
+          %label
+            %input{:type => 'radio', :name => 'method', :value => 'robox'}
+            Другие &hellip; (терминалы, электронные деньги, мобильные платежи и другие способы)
         
 
-      - if current_user.is_admin?
-        #t-premium-payment-robox.p-module
-          %form#robox-choose{:method => 'post', :action => user_url(current_site, settings_premium_path(:action => 'robox_init_bill'))}
+      - @robox_types.each do |type|
+        .t-premium-payment-robox.p-module{:id => "t-premium-payment-#{type.key}"}
+          %form.robox-choose{:method => 'post', :action => user_url(current_site, settings_premium_path(:action => 'robox_init_bill'))}
             %input{:type => 'hidden', :name => request_forgery_protection_token, :value => form_authenticity_token}
+            %input{:type => 'hidden', :name => 'type', :value => type.key}
             %table
               %tr
                 %td
@@ -213,16 +219,40 @@
                     Выберите сумму:
                 %td
                   %select{:name => 'option', :id => 'robox-select-option'}
-                    = options_from_collection_for_select @robox_options.sort_by(&:position), :name, :text
-            
+                    = options_from_collection_for_select @robox_options.sort_by(&:position), :name, :text, 'year'
+          
               %tr
                 %td
                 %td
                   %input.button{:type => 'submit', :value => 'Оплатить'}
-      
+    
             .details
-              %p Qiwi позволяет оплачивать через терминалы, с помощью вашего qiwi-кошелька или банковской карты.
-              %p После того, как вы нажмете "выставить счет" откроется сайт Qiwi, где вам будет предложено выбрать способ оплаты.
+              %p
+                Выбранный вами метод оплаты:
+                %b= type.name
+              %p Оплата услуги будет произведена через сервис RoboKassa, который является платежным посредником.
+              %p После проведения оплаты, вы будете перенаправлены обратно на сайт.
+
+      #t-premium-payment-robox.t-premium-payment-robox.p-module
+        %form.robox-choose{:method => 'post', :action => user_url(current_site, settings_premium_path(:action => 'robox_init_bill'))}
+          %input{:type => 'hidden', :name => request_forgery_protection_token, :value => form_authenticity_token}
+          %table
+            %tr
+              %td
+                %label{:for => 'robox-select-option'}
+                  Выберите сумму:
+              %td
+                %select{:name => 'option', :id => 'robox-select-option'}
+                  = options_from_collection_for_select @robox_options.sort_by(&:position), :name, :text, 'year'
+
+            %tr
+              %td
+              %td
+                %input.button{:type => 'submit', :value => 'Оплатить'}
+
+          .details
+            %p Оплата услуги будет произведена через сервис RoboKassa, который является платежным посредником.
+            %p После проведения оплаты, вы будете перенаправлены обратно на сайт.
       
       #t-premium-payment-qiwi.p-module
         %form#qiwi-choose{:data => {:url => user_url(current_site, settings_premium_path(:action => 'qiwi_init_bill'))}}
