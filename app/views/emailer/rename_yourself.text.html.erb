@@ -6,17 +6,9 @@
     </p>
 		
 		<p style="font-family: 'Trebuchet MS', Arial, sans-serif; font-size:0.95em; width:600px; color:#404040; padding-bottom: 1em;">
-      Вам нужно изменить адрес вашего тлога <%= link_to h(@user.url), user_url(@user) %> на адрес, который будет соответствовать веб-стандартам.
-      Это значит, что новый адрес, который вы выберете, не должен <%= @user.url.ends_with?('-') ? 'заканчиваться дефисом' : 'содержать двойных (или тройных) дефисов' %>.
+		  Уведомляем вас, что для соответствия правилам предоставления сервиса, ваш тлог был автоматически
+		  переименован из <%= h @user.url %> в <%= h @nrl %>.
     </p>
-
-    <p style="font-family: 'Trebuchet MS', Arial, sans-serif; font-size:0.95em; width:600px; color:#404040; padding-bottom: 1em;">
-      Если вы не измените адрес на новый в течение недели, система автоматически заменит его на <%= h @nrl %>.
-		</p>
-
-		<p style="font-style: italic; font-family: 'Trebuchet MS', Arial, sans-serif; font-size:0.95em; width:600px; color:#404040; padding-bottom: 1em;">
-      <%= link_to 'Переименовать тлог &rarr;', service_url(account_path(:action => :rename)) %>
-		</p>
 
 		<p style="font-family: 'Trebuchet MS', Arial, sans-serif; font-size:0.90em; width:600px; color:#ccc; padding-bottom: 1em;">
 		  Это автоматичекое уведомление и на него не нужно отвечать.

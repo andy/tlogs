@@ -28,8 +28,9 @@ def rename user, url
     
     if valid?(nrl) && !taken?(nrl)
       if !user.is_disabled? && user.is_confirmed? && user.email
-        puts "+ #{url} => #{nrl} (notify)"
+        puts "+ #{url} => #{nrl} (notify, rename)"
         Emailer.deliver_rename_yourself($current_service, user, nrl)
+        user.update_attribute :url, nrl
       else
         puts "+ #{url} => #{nrl} (rename)"
         user.update_attribute :url, nrl
