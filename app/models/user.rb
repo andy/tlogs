@@ -152,22 +152,26 @@ class User < ActiveRecord::Base
 
 
   ## class methods
+  
+  # :popularity is ignored for now
   def self.active_for(user, options = {})
-    options.reverse_merge!(:limit => 6, :popularity => 2)
+    options.reverse_merge!(:limit => 6, :popularity => 1)
     
     user_ids = Rails.cache.fetch("users::active", :expires_in => 10.minutes) do
-      Relationship.find(:all, :select => 'user_id', :conditions => 'friendship_status > 0', :order => 'id desc', :limit => 1000).map(&:user_id)
+      ids = Relationship.find(:all, :select => 'user_id', :conditions => 'friendship_status > 0 AND user_id != 3', :order => 'id desc', :limit => 3000).map(&:user_id)
+
+      ids = ids.sort.                        # sort numerically
+                  group_by { |x| x }.                   # group the same accounts together
+                  sort_by { |k, v| v.length }.          # sort by popularity
+                  select { |k, v| v.length >= options[:popularity] }.  # but select only people who have at least more active subscribers
+                  map(&:first).                         # keep only ids
+                  reverse
+
+      ids
     end
     
-    user_ids =  user_ids.sort.                        # sort numerically
-                group_by { |x| x }.                   # group the same accounts together
-                sort_by { |k, v| v.length }.          # sort by popularity
-                select { |k, v| v.length >= options[:popularity] }.  # but select only people who have at least more active subscribers
-                map(&:first).                         # keep only ids
-                reverse
-
-    # keep news user out
-    user_ids -= [3] if Rails.env.production?
+    # keep out promo tlogs (@daniyar)
+    ids -= User.find_by_id(2232).try(:linked_with) || [] if Rails.env.production?
 
     # keep the good guys only
     User.find_all_by_id(user_ids.shuffle[0...(options[:limit] * 4)], :include => [:tlog_settings]).select { |u| u.can_be_viewed_by?(user) && !u.is_c_banned? && !u.is_ac_banned? && !u.is_disabled? }[0..options[:limit]]
