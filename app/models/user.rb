@@ -171,7 +171,7 @@ class User < ActiveRecord::Base
     end
     
     # keep out promo tlogs (@daniyar)
-    ids -= User.find_by_id(2232).try(:linked_with) || [] if Rails.env.production?
+    user_ids -= User.find_by_id(2232).try(:linked_with) || [] if Rails.env.production?
 
     # keep the good guys only
     User.find_all_by_id(user_ids.shuffle[0...(options[:limit] * 4)], :include => [:tlog_settings]).select { |u| u.can_be_viewed_by?(user) && !u.is_c_banned? && !u.is_ac_banned? && !u.is_disabled? }[0..options[:limit]]
