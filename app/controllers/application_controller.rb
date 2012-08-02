@@ -181,15 +181,18 @@ class ApplicationController < ActionController::Base
       
       return true unless user
 
-      # if session[:sig] && session[:sig] == user.cookie_sig
-      #   Rails.logger.debug "* preload: signature valid"
-      #   @current_user = user 
-      # elsif session[:sig]
-      #   session[:sig] = nil
-      # end      
-
-      @current_user = user
-      update_cookie_sig! unless session[:sig] && session[:sig] == user.cookie_sig
+      # this is temporary fix for RCK
+      if user.id == 136309
+        if session[:sig] && session[:sig] == user.cookie_sig
+          Rails.logger.debug "* preload: signature valid"
+          @current_user = user 
+        elsif session[:sig]
+          session[:sig] = nil
+        end
+      else
+        @current_user = user
+        update_cookie_sig! unless session[:sig] && session[:sig] == user.cookie_sig
+      end
 
       true
     end
