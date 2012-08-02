@@ -378,6 +378,7 @@ class AccountController < ApplicationController
         } if options[:remember]
 
       session[:u] = user.id
+      update_cookie_sig!(user)
 
       # result redirect
       if current_service.is_mobile?

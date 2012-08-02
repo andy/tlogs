@@ -174,10 +174,29 @@ class ApplicationController < ActionController::Base
 
       Rails.logger.debug "* preload: session is #{session.inspect}"
 
-      # from session
-      @current_user = User.active.find_by_id(session[:u], :include => [:tlog_settings]) if session[:u]
+      # validate session
+      return true unless session[:u]
+
+      user = User.active.find_by_id(session[:u], :include => [:tlog_settings])
+      
+      return true unless user
+
+      # if session[:sig] && session[:sig] == user.cookie_sig
+      #   Rails.logger.debug "* preload: signature valid"
+      #   @current_user = user 
+      # elsif session[:sig]
+      #   session[:sig] = nil
+      # end      
+
+      @current_user = user
+      update_cookie_sig! unless session[:sig] && session[:sig] == user.cookie_sig
 
       true
+    end
+    
+    def update_cookie_sig!(user = nil)
+      user ||= current_user
+      session[:sig] = user.cookie_sig
     end
 
     # Является ли текущий пользователь владельцем сайта

@@ -121,6 +121,10 @@ class User
 	def is_openid?
     !self.openid.blank?
   end
+  
+  def cookie_sig
+    Digest::SHA1.hexdigest([self.id, self.email, self.crypted_password, self.created_at.to_i.to_s].join(':'))[0..12]
+  end
 
   def recover_secret
     Digest::SHA1.hexdigest([self.id, self.email, self.crypted_password, self.created_at.to_i.to_s].join(':'))

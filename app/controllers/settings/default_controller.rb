@@ -155,6 +155,7 @@ class Settings::DefaultController < ApplicationController
       if User.encrypt(params[:user_old_password], current_user.salt) == current_user.crypted_password && params[:user_new_password] == params[:user_new_password_repeat]
         current_user.password = params[:user_new_password]
         if current_user.save
+          update_cookie_sig!(current_user)
           flash[:good] = 'Отлично! Вы успешно изменили свой пароль'
           redirect_to :action => 'password'
         else
@@ -258,6 +259,7 @@ class Settings::DefaultController < ApplicationController
             if !@user.errors.on :email
               @user.log nil, :change_email, "сменил емейл адрес на #{new_email}"
               current_user.update_confirmation!(@user.email)
+              update_cookie_sig!(@user)
               Emailer.deliver_confirm(current_service, current_user, @user.email)
               flash[:good] = "Отлично! Мы установили Вам новый емейл адрес, но прежде чем он заработает, вам нужно будет его подтвердить. Поэтому загляните, пожалуйста, в почтовый ящик #{@user.email}, там должно быть письмо с кодом подтверждения"
               redirect_to user_url(current_site, settings_path(:action => 'email'))
