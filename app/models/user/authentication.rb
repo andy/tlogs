@@ -185,7 +185,7 @@ class User
   end
   
   def can_switch?
-    Rails.cache.fetch("u:#{self.id}:#{self.linked_with.join('.')}:can_switch?", :expires_in => 1.day) do
+    Rails.cache.fetch("u:can_switch:#{self.linked_with.join('.')}", :expires_in => 1.day) do
       !!User.find(self.linked_with).find(&:is_premium?)
     end
   end
