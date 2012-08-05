@@ -14,6 +14,10 @@
         %td
           - if changelog.owner
             = link_to '@' + changelog.owner.url, console_user_path(changelog.owner)
+            - if changelog.owner.is_premium?
+              %span.label.label-info premium
+            - if changelog.owner.is_disabled?
+              %span.label.label-important disabled
           - else
             = '#' + changelog.owner_id.to_s
             %span.badge.badge-important removed
