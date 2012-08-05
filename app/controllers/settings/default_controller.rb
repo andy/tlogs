@@ -271,7 +271,7 @@ class Settings::DefaultController < ApplicationController
             @user.is_confirmed = false
             @user.valid?
             if !@user.errors.on :email
-              @user.log nil, :change_email, "сменил емейл адрес на #{new_email}"
+              @user.log nil, :change_email, "сменил емейл адрес на #{new_email}", nil, request.remote_ip
               current_user.update_confirmation!(@user.email)
               update_cookie_sig!(@user)
               Emailer.deliver_confirm(current_service, current_user, @user.email)
@@ -316,7 +316,7 @@ class Settings::DefaultController < ApplicationController
     elsif request.post?
       flash[:good] = 'Тлог был успешно удален'
       
-      @user.log nil, :disable, "#{request.remote_ip} удалил аккаунт"
+      @user.log nil, :disable, "удалил аккаунт", nil, request.remote_ip
       @user.async_disable!
       
       # выходим с сайта
