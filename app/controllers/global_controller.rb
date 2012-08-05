@@ -37,6 +37,9 @@ class GlobalController < ApplicationController
 
       session[:r] = nil
       session[:u] = @user.id
+      update_cookie_sig!(@user)
+      
+      @user.log current_user, :session, "вошел в аккаунт", nil, request.remote_ip
 
       redirect_to service_url
     else
