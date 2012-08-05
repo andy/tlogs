@@ -51,40 +51,49 @@ class MainController < ApplicationController
   end
   
   def last_redirect
-    kind = params[:filter][:kind]
-    rating = params[:filter][:rating]
-
-    kind = 'any' unless Entry::KINDS.include?(kind.to_sym)
-    rating = 'everything' unless EntryRating::RATINGS.include?(rating.to_sym)
+    kind    = 'any'
+    rating  = 'everything'
+    
+    # load params safe way
+    if params[:filter] && params[:filter].is_a?(Hash)
+      f       = params[:filter]
+      k       = f[:kind]        if f[:kind]   && f[:kind].match(/\A[a-z]{1,20}\Z/i)
+      r       = f[:rating]      if f[:rating] && f[:rating].match(/\A[a-z]{1,20}\Z/i)
+      kind    = k if Entry::KINDS.include?(k.to_sym)
+      rating  = r if EntryRating::RATINGS.include?(r.to_sym)
+    end
 
     if current_user
       current_user.settings_will_change!
       current_user.settings[:last_kind] = kind
       current_user.settings[:last_rating] = rating
-      current_user.save
+      current_user.save(false)
     end
     redirect_to service_url(last_path(:kind => kind, :rating => rating))
   end
   
   def hot_redirect
-    kind = params[:kind]
-    kind = 'any' unless Entry::KINDS.include?(kind.to_sym)
+    kind = 'any'
+    kind = params[:kind] if params[:kind] && params[:kind].match(/\A[a-z]{1,20}\Z/i) && Entry::KINDS.include?(kind.to_sym)
 
     redirect_to service_url(hot_path(:kind => kind))
   end
   
   def last
-    # подгружаем
-    kind = params[:kind] || 'default'
-    rating = params[:rating] || 'default'  
+    kind    = 'default'
+    rating  = 'default'
+
+    # load from url
+    k       = params[:kind]   if params[:kind]   && params[:kind].match(/\A[a-z]{1,20}\Z/i)
+    r       = params[:rating] if params[:rating] && params[:rating].match(/\A[a-z]{1,20}\Z/i)    
     
-    # выставляем значения по-умолчанию
-    kind = (current_user && current_user.settings[:last_kind]) || 'any' if kind == 'default'
-    rating = (current_user && current_user.settings[:last_rating]) || 'great' if rating == 'default'
+    # set defaults
+    k       = ((current_user && current_user.settings[:last_kind]) || 'any') if k == 'default'
+    r       = ((current_user && current_user.settings[:last_rating]) || 'great') if r == 'default'
   
-    kind = 'any' unless Entry::KINDS.include?(kind.to_sym)
-    rating = 'great' unless EntryRating::RATINGS.include?(rating.to_sym)
-    
+    kind    = k if Entry::KINDS.include?(k.to_sym)
+    rating  = r if EntryRating::RATINGS.include?(r.to_sym)
+      
     @filter = Struct.new(:kind, :rating).new(kind, rating)
     
     @time = Date.today
