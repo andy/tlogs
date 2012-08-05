@@ -1,0 +1,16 @@
+.well.well-large
+  %h4= h @title
+  
+  %span @hours set to #{@hours}
+  |
+  %span @threshold set to #{@threshold}
+
+.row
+  .span-1
+    &nbsp;
+  .span-6
+    %ol
+      - @ips.each do |ip|
+        %li
+          = link_to ip[0], ip_console_changelogs_path(:addr => ip[0])
+          %span.badge= ip[1]
