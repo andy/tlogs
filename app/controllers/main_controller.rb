@@ -74,7 +74,7 @@ class MainController < ApplicationController
   
   def hot_redirect
     kind = 'any'
-    kind = params[:kind] if params[:kind] && params[:kind].match(/\A[a-z]{1,20}\Z/i) && Entry::KINDS.include?(kind.to_sym)
+    kind = params[:kind] if params[:kind] && params[:kind].match(/\A[a-z]{1,20}\Z/i) && Entry::KINDS.include?(params[:kind].to_sym)
 
     redirect_to service_url(hot_path(:kind => kind))
   end
