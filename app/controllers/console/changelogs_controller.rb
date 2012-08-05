@@ -1,7 +1,7 @@
 class Console::ChangelogsController < ConsoleController
   
   def index
-    @title = 'Общая активность пользователей'
+    @title = 'Общая активность'
     @changelogs = Changelog.noauth.paginate :page => params[:page], :per_page => 100, :order => 'id desc'
   end
   
