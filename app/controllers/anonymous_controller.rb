@@ -35,10 +35,10 @@ class AnonymousController < ApplicationController
   def toggle
     if @entry.is_disabled?
       @entry.toggle!(:is_disabled)
-      @entry.author.log current_user, :ac_show, "восстановил анонимку", @entry
+      @entry.author.log current_user, :ac_show, "восстановил анонимку", @entry, request.remote_ip
     else
       @entry.toggle!(:is_disabled)
-      @entry.author.log current_user, :ac_hide, "удалил анонимку", @entry
+      @entry.author.log current_user, :ac_hide, "удалил анонимку", @entry, request.remote_ip
     end
   end
   
@@ -152,7 +152,7 @@ class AnonymousController < ApplicationController
 
     @comment.user.ban_ac!(@comment.entry, @comment, params[:duration])
     
-    @comment.user.log current_user, :ac_ban, "забанен на #{params[:duration]}", @comment
+    @comment.user.log current_user, :ac_ban, "забанен на #{params[:duration]}", @comment, request.remote_ip
     
     render :update do |page|
       page.replace(dom_id(@comment, :ban), :partial => 'globals/ban_controls', :locals => { :comment => @comment })

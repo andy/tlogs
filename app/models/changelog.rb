@@ -33,4 +33,9 @@ class Changelog < ActiveRecord::Base
   validates_presence_of :owner
   
   validates_presence_of :action
+  
+  
+  named_scope :noauth, { :conditions => 'action != "login" AND action != "session"' }
+
+  named_scope :auth, { :conditions => 'action = "login" OR action = "session"' }  
 end

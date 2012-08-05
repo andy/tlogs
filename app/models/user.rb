@@ -190,8 +190,8 @@ class User < ActiveRecord::Base
     @username ||= read_attribute(:username).blank? ? self.url : read_attribute(:username)
   end
   
-  def log actor, action, comment = nil, object = nil
-    self.changelogs.create! :actor => actor, :action => action.to_s, :comment => comment.try(:to_s), :object => object
+  def log actor, action, comment = nil, object = nil, ip = nil
+    self.changelogs.create! :actor => actor, :action => action.to_s, :comment => comment.try(:to_s), :object => object, :ip => ip
   end
   
   def unreplied_conversations_count

@@ -14,7 +14,7 @@ class Console::UsersController < ConsoleController
   end
   
   def show
-    @changelogs               = @user.changelogs.all :order => 'id desc', :limit => 5
+    @changelogs               = @user.changelogs.noauth.all :order => 'id desc', :limit => 5
     @comments_enabled_count   = @user.comments.enabled.count
     @comments_disabled_count  = @user.comments.disabled.count
     @suspect_count            = @user.reports_on.comments.count
@@ -35,9 +35,23 @@ class Console::UsersController < ConsoleController
     render :action => :suspect
   end
   
-  def changelogs
-    @title = "Изменения в данных @#{@user.url}"
+  def changeall
+    @title = "Вся активность @#{@user.url}"
     @changelogs = @user.changelogs.paginate :page => params[:page], :per_page => 50, :order => 'id desc'
+    
+    render :action => 'changelogs'
+  end
+  
+  def changelogs
+    @title = "Общая активность @#{@user.url}"
+    @changelogs = @user.changelogs.noauth.paginate :page => params[:page], :per_page => 50, :order => 'id desc'
+  end
+  
+  def changeauth
+    @title = "Авторизационная активность @#{@user.url}"
+    @changelogs = @user.changelogs.auth.paginate :page => params[:page], :per_page => 50, :order => 'id desc'
+    
+    render :action => 'changelogs'
   end
   
   def confirm
@@ -50,7 +64,7 @@ class Console::UsersController < ConsoleController
       end
     end
     
-    @user.log current_user, :confirm, 'подтвердил почту и сменил пароль'
+    @user.log current_user, :confirm, 'подтвердил почту и сменил пароль', nil, request.remote_ip
     
     @user.update_attribute :is_confirmed, true
     
@@ -63,7 +77,7 @@ class Console::UsersController < ConsoleController
   def acchange
     duration = params[:duration].to_i || 0
 
-    @user.log current_user, :ac_ban, duration.zero? ? 'снял бан' : "#{@user.is_ac_banned? ? 'забанил' : 'изменил'} на #{duration.pluralize('день', 'дня', 'дней', true)}"
+    @user.log current_user, :ac_ban, duration.zero? ? 'снял бан' : "#{@user.is_ac_banned? ? 'забанил' : 'изменил'} на #{duration.pluralize('день', 'дня', 'дней', true)}", nil, request.remote_ip
     
     @user.update_attribute :ban_ac_till, duration.zero? ? nil : duration.days.from_now
     
@@ -73,7 +87,7 @@ class Console::UsersController < ConsoleController
   def cchange
     duration = params[:duration].to_i || 0
 
-    @user.log current_user, :c_ban, duration.zero? ? 'снял бан' : "#{@user.is_c_banned? ? 'забанил' : 'изменил'} на #{duration.pluralize('день', 'дня', 'дней', true)}"
+    @user.log current_user, :c_ban, duration.zero? ? 'снял бан' : "#{@user.is_c_banned? ? 'забанил' : 'изменил'} на #{duration.pluralize('день', 'дня', 'дней', true)}", nil, request.remote_ip
     
     @user.update_attribute :ban_c_till, duration.zero? ? nil : duration.days.from_now
     
@@ -83,7 +97,7 @@ class Console::UsersController < ConsoleController
   def wipeout
     render :json => false and return unless @user.is_disabled?
 
-    @user.log current_user, :wipeout, 'все комментарии были удалены'
+    @user.log current_user, :wipeout, 'все комментарии были удалены', nil, request.remote_ip
 
     Rails.env.development? ? @user.wipeout! : @user.async_wipeout!
     
@@ -91,7 +105,7 @@ class Console::UsersController < ConsoleController
   end
   
   def disable    
-    @user.log current_user, :disable, params[:comment]
+    @user.log current_user, :disable, params[:comment], nil, request.remote_ip
 
     Rails.env.development? ? @user.disable! : @user.async_disable!
 
@@ -101,7 +115,7 @@ class Console::UsersController < ConsoleController
   def restore
     render :json => false and return unless @user.is_disabled?
 
-    @user.log current_user, :restore, params[:comment]
+    @user.log current_user, :restore, params[:comment], nil, request.remote_ip
 
     @user.restore!
 
@@ -111,7 +125,7 @@ class Console::UsersController < ConsoleController
   def destroy
     render :json => false and return unless @user.is_disabled?
     
-    @user.log current_user, :destroy, params[:comment]
+    @user.log current_user, :destroy, params[:comment], nil, request.remote_ip
 
     Rails.env.development? ? @user.destroy : @user.async_destroy!
     
@@ -123,7 +137,7 @@ class Console::UsersController < ConsoleController
     
     do_increment = params[:inc] == 'true' 
 
-    @user.log current_user, :invitations, "#{do_increment ? 'добавил' : 'отнял'} приглашение"
+    @user.log current_user, :invitations, "#{do_increment ? 'добавил' : 'отнял'} приглашение", nil, request.remote_ip
 
     @user.send( (do_increment ? :increment! : :decrement!), :invitations_left)
     
@@ -133,7 +147,7 @@ class Console::UsersController < ConsoleController
   def mprevoke
     render :json => false and return unless @user.is_mainpageable?
 
-    @user.log current_user, :mprevoke, params[:comment]
+    @user.log current_user, :mprevoke, params[:comment], nil, request.remote_ip
 
     Rails.env.development? ? @user.mprevoke! : @user.async_mprevoke!
     
@@ -143,7 +157,7 @@ class Console::UsersController < ConsoleController
   def mpgrant
     render :json => false and return if @user.is_mainpageable?
 
-    @user.log current_user, :mpgrant, params[:comment]
+    @user.log current_user, :mpgrant, params[:comment], nil, request.remote_ip
 
     @user.mpgrant!
     

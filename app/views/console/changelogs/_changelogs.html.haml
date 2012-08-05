@@ -6,6 +6,7 @@
       %th Action
       %th Comment
       %th By
+      %th Addr
       %th When
   %tbody
     - @changelogs.each do |changelog|
@@ -24,8 +25,14 @@
           - else
             —
         %td
+          - if changelog.ip
+            = link_to changelog.ip, ip_console_changelogs_path(:addr => changelog.ip)
+          - else
+            —
+        %td
           %span{:title => changelog.created_at.to_s(:db)}
             = time_ago_in_words changelog.created_at, true
             ago
+        
 
 = bootstrap_paginate @changelogs

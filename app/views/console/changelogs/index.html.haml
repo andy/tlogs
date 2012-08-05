@@ -1,5 +1,11 @@
 
 .well.well-large
-  %h3 Все изменения на сайте
+  %h4= h @title
+  
+  = link_to_unless_current 'вся', all_console_changelogs_path
+  |
+  = link_to_unless_current 'общая', console_changelogs_path
+  |
+  = link_to_unless_current 'авторизация', auth_console_changelogs_path  
 
 = render :partial => 'changelogs'

@@ -181,17 +181,15 @@ class ApplicationController < ActionController::Base
       
       return true unless user
 
-      # this is temporary fix for RCK
-      if user.id == 136309
-        if session[:sig] && session[:sig] == user.cookie_sig
-          Rails.logger.debug "* preload: signature valid"
-          @current_user = user 
-        elsif session[:sig]
-          session[:sig] = nil
+      if session[:sig] && session[:sig] == user.cookie_sig
+        Rails.logger.debug "* preload: signature valid"
+        if !session[:ip] || session[:ip] != request.remote_ip
+          @user.log(nil, :session, "изменился IP-адрес", nil, request.remote_ip) if session[:ip]
+          session[:ip] = request.remote_ip
         end
-      else
-        @current_user = user
-        update_cookie_sig! unless session[:sig] && session[:sig] == user.cookie_sig
+        @current_user = user 
+      elsif session[:sig]
+        session[:sig] = nil
       end
 
       true

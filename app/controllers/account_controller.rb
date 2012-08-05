@@ -35,7 +35,7 @@ class AccountController < ApplicationController
           login_with_openid @user.openid
       # иначе, даже если это openid пользователь - авторизуем по емейлу
       else
-        # @user.log nil, :login, "#{request.remote_ip} авторизовался на сайте"
+        @user.log nil, :login, "авторизовался на сайте", nil, request.remote_ip
         login_user @user, { :remember => @user.email, :redirect_to => service_path(params[:ref]) }
       end
     else
@@ -55,7 +55,7 @@ class AccountController < ApplicationController
       if !@user.errors.on("url")
         @user.update_attribute(:url, @user.url)
         
-        @user.log nil, :rename, "@#{current_user.url} изменил адрес на @#{@user.url}"
+        @user.log nil, :rename, "@#{current_user.url} изменил адрес на @#{@user.url}", nil, request.remote_ip
         
         @user.rename! if params['remove_subscribers'] && params['remove_subscribers'] == '1'
         
@@ -84,7 +84,7 @@ class AccountController < ApplicationController
         end        
         
         if user.crypted_password
-          user.log nil, :recover_password, "#{request.remote_ip} запросил восстановление пароля"
+          user.log nil, :recover_password, "запросил восстановление пароля (#{user.email})", nil, request.remote_ip
           Emailer.deliver_lost_password(current_service, user)
           flash[:lost_user_id] = user.id
           redirect_to :action => 'lost_password_sent'
@@ -109,7 +109,7 @@ class AccountController < ApplicationController
       if request.post?
         @user.password = params[:user][:password]
         if !@user.password.blank? && @user.save
-          @user.log nil, :recover_password, "#{request.remote_ip} сменил пароль"
+          @user.log nil, :recover_password, "сменил пароль", nil, request.remote_ip
           flash[:good] = 'Ваш пароль был успешно изменен'
           redirect_to service_url(login_path(:noref => true))
         else
@@ -184,7 +184,7 @@ class AccountController < ApplicationController
       # @user.update_confirmation!(@user.email)
       @user.save if @user.errors.empty?
       if @user.errors.empty?
-        @user.log @invitation.user, :signup, "@#{@user.url} зарегистрировался по приглашению"
+        @user.log @invitation.user, :signup, "@#{@user.url} зарегистрировался по приглашению", nil, request.remote_ip
         Emailer.deliver_signup(current_service, @user)
         @invitation.update_attribute(:invitee_id, @user.id)
 
@@ -217,7 +217,6 @@ class AccountController < ApplicationController
     # verify signature
     vk_sig          = vk_sess.slice(*(vk_valid_fields - ['sig'])).sort.map { |h| h.join('=') }.join + vk_opts[:secret]
     
-    Rails.logger.debug vk_sig
     foreign_error("Извините, но ваша кука — ненастоящая!") and return unless
       Digest::MD5.hexdigest(vk_sig) == vk_sess['sig']
     
@@ -251,7 +250,7 @@ class AccountController < ApplicationController
       
         @user.save if @user.errors.empty?
         if @user.errors.empty?
-          @user.log nil, :signup, "зарегистрировался через ВКонтакте http://vk.com/id#{@user.vk_id}"
+          @user.log nil, :signup, "зарегистрировался через ВКонтакте http://vk.com/id#{@user.vk_id}", nil, request.remote_ip
           Emailer.deliver_foreign(current_service, @user)
         
           login_user @user, :remember => @user.email, :redirect_to => user_url(@user)
@@ -379,6 +378,8 @@ class AccountController < ApplicationController
 
       session[:u] = user.id
       update_cookie_sig!(user)
+      session[:ip] = request.remote_ip
+      
 
       # result redirect
       if current_service.is_mobile?

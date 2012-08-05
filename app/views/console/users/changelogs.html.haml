@@ -1,4 +1,13 @@
 .well
-  %h4= @title
+  %h3= h @title
+  
+  = link_to_unless_current 'вся', changeall_console_user_path(@user)
+  %span.badge.badge-info= @user.changelogs.count
+  |
+  = link_to_unless_current 'общая', changelogs_console_user_path(@user)
+  %span.badge.badge-info= @user.changelogs.noauth.count
+  |
+  = link_to_unless_current 'авторизационная', changeauth_console_user_path(@user)
+  %span.badge.badge-info= @user.changelogs.auth.count
 
 = render :partial => 'console/changelogs/changelogs'
