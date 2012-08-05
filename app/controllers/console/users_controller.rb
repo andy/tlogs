@@ -79,7 +79,7 @@ class Console::UsersController < ConsoleController
 
     @user.log current_user, :ac_ban, duration.zero? ? 'снял бан' : "#{@user.is_ac_banned? ? 'забанил' : 'изменил'} на #{duration.pluralize('день', 'дня', 'дней', true)}", nil, request.remote_ip
     
-    @user.update_attribute :ban_ac_till, duration.zero? ? nil : duration.days.from_now
+    @user.update_attribute :ban_ac_till, duration.zero? ? 1.second.ago : duration.days.from_now
     
     render :json => true
   end
@@ -89,7 +89,7 @@ class Console::UsersController < ConsoleController
 
     @user.log current_user, :c_ban, duration.zero? ? 'снял бан' : "#{@user.is_c_banned? ? 'забанил' : 'изменил'} на #{duration.pluralize('день', 'дня', 'дней', true)}", nil, request.remote_ip
     
-    @user.update_attribute :ban_c_till, duration.zero? ? nil : duration.days.from_now
+    @user.update_attribute :ban_c_till, duration.zero? ? 1.second.ago : duration.days.from_now
     
     render :json => true
   end
