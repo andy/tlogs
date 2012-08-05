@@ -184,7 +184,7 @@ class ApplicationController < ActionController::Base
       if session[:sig] && session[:sig] == user.cookie_sig
         Rails.logger.debug "* preload: signature valid"
         if !session[:ip] || session[:ip] != request.remote_ip
-          @user.log(nil, :session, "изменился IP-адрес", nil, request.remote_ip) if session[:ip]
+          @user.log(nil, :session, "изменился ip-адрес (был #{session[:ip]})", nil, request.remote_ip) if session[:ip]
           session[:ip] = request.remote_ip
         end
         @current_user = user 

@@ -149,6 +149,18 @@ class Settings::DefaultController < ApplicationController
     redirect_to :action => :user_common
   end
   
+  def force_signature_change
+    redirect_to :action => 'password' and return unless request.post?
+
+    flash[:good] = 'Все сессии разлогинены'
+    current_user.update_attribute :created_at, current_user.created_at.since(1.second)
+    update_cookie_sig!(current_user)
+    
+    current_user.log nil, :session, 'все сессии разлогинены', nil, request.remote_ip
+    
+    redirect_to :action => 'password'
+  end
+  
   def password
     redirect_to :action => 'index' and return if current_user.crypted_password.blank?
     if request.post?
@@ -165,6 +177,8 @@ class Settings::DefaultController < ApplicationController
         flash[:bad] = 'Не удалось изменить пароль потому что вы либо неправильно указали старый пароль, либо два новых пароля не совпадают'
       end
     end
+    
+    @changelogs = current_user.changelogs.auth.paginate :page => 1, :per_page => 20, :order => 'id desc'
   end
     
   def agreement
