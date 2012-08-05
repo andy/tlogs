@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120730150750) do
+ActiveRecord::Schema.define(:version => 20120805154723) do
 
   create_table "attachments", :force => true do |t|
     t.integer "entry_id",     :default => 0,  :null => false
@@ -71,20 +71,24 @@ ActiveRecord::Schema.define(:version => 20120730150750) do
   add_index "bookmarklets", ["user_id", "created_at"], :name => "index_bookmarklets_on_user_id_and_created_at"
 
   create_table "changelogs", :force => true do |t|
-    t.integer  "owner_id",    :null => false
+    t.integer  "owner_id",                  :null => false
     t.integer  "actor_id"
     t.integer  "object_id"
     t.string   "object_type"
-    t.string   "action",      :null => false
+    t.string   "action",                    :null => false
     t.text     "comment"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "ip",          :limit => 16
   end
 
+  add_index "changelogs", ["action"], :name => "index_changelogs_on_action"
   add_index "changelogs", ["actor_id", "action"], :name => "index_changelogs_on_actor_id_and_action"
   add_index "changelogs", ["actor_id"], :name => "index_changelogs_on_actor_id"
+  add_index "changelogs", ["ip"], :name => "index_changelogs_on_ip"
   add_index "changelogs", ["object_id", "object_type"], :name => "index_changelogs_on_object_id_and_object_type"
   add_index "changelogs", ["owner_id", "action"], :name => "index_changelogs_on_owner_id_and_action"
+  add_index "changelogs", ["owner_id", "ip"], :name => "index_changelogs_on_owner_id_and_ip"
   add_index "changelogs", ["owner_id"], :name => "index_changelogs_on_owner_id"
 
   create_table "comment_views", :force => true do |t|
