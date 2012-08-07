@@ -22,7 +22,7 @@
             = '#' + changelog.owner_id.to_s
             %span.badge.badge-important removed
         %td= changelog.action
-        %td= h changelog.comment
+        %td= auto_link(h(changelog.comment))
         %td
           - if changelog.actor
             = link_to '@' + changelog.actor.url, console_user_path(changelog.actor)
