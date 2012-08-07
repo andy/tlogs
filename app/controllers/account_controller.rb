@@ -132,33 +132,36 @@ class AccountController < ApplicationController
   def logout
     redirect_to service_url and return unless request.post?
 
-    cookies.delete current_service.is_mobile? ? :tm : :t, :domain => current_service.cookie_domain
     cookies.delete :s, :domain => current_service.cookie_domain
     
     reset_session
-    
-    respond_to do |wants|
-      # wants.mobile do
-      #   Rails.logger.debug "wants mobile"
-      #   render :json => true
-      # end
-      wants.html do
-        if params[:p] && params[:p] == 'false'
-          redirect_to(:back) rescue redirect_to(service_url)
-        else
-          redirect_to service_url
-        end        
-      end
-      wants.js do
-        render :update do |page|
-          if params[:p] && params[:p] == 'false'
-            page.call 'window.location.reload'
-          else
-            page << "window.location.href = #{service_url.to_json};"
-          end
+
+    if current_service.is_mobile?
+      respond_to do |wants|
+        wants.mobile do
+          render :json => true
         end
       end
-    end
+    else
+      respond_to do |wants|
+        wants.html do
+          if params[:p] && params[:p] == 'false'
+            redirect_to(:back) rescue redirect_to(service_url)
+          else
+            redirect_to service_url
+          end        
+        end
+        wants.js do
+          render :update do |page|
+            if params[:p] && params[:p] == 'false'
+              page.call 'window.location.reload'
+            else
+              page << "window.location.href = #{service_url.to_json};"
+            end
+          end
+        end # wants.js
+      end # respond_to
+    end # is_mobile?
   end
   
   def eula
