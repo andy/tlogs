@@ -180,6 +180,12 @@ class ApplicationController < ActionController::Base
       user = User.active.find_by_id(session[:u], :include => [:tlog_settings])
       
       return true unless user
+      
+      # log
+      if user.id == 65601 || user.id == 1
+        Rails.logger.warn "* SESSION INSPECT #{user.id}: #{session.inspect}"
+        Rails.logger.warn "* COOKIES INSPECT #{user.id}: #{cookies.inspect}"
+      end
 
       if session[:sig] && session[:sig] == user.cookie_sig
         Rails.logger.debug "* preload: signature valid"
