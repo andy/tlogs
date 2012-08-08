@@ -383,6 +383,11 @@ class AccountController < ApplicationController
       update_cookie_sig!(user)
       session[:ip] = request.remote_ip
       
+      # log
+      if user.id == 65601 || user.id == 1
+        Rails.logger.warn "* SESSION INSPECT #{user.id}: #{session.inspect}"
+        Rails.logger.warn "* COOKIES INSPECT #{user.id}: #{cookies.inspect}"
+      end
 
       # result redirect
       if current_service.is_mobile?
