@@ -77,7 +77,8 @@ class User
     elsif self.created_at > "27 apr 2011".to_time
       limits = {
         (0...4.weeks) => { :mainpageable_entries => 3, :voteable_entries => 1 },
-        (4.weeks..100.years) => { :mainpageable_entries => 6, :voteable_entries => 2 }
+        (4.weeks...1.year) => { :mainpageable_entries => 6, :voteable_entries => 2 },
+        (1.year...100.years) => { :mainpageable_entries => nil, :voteable_entries => nil }
       }
     else
       limits = {
