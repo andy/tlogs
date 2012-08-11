@@ -49,6 +49,7 @@ DISPOSABLE_DOMAINS = %w(
   2ch.so
   2-ch.so
   asdasd.ru
+  spam.su
   shitmail.me
   mailforspam.com
   mailinator.com
