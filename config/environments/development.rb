@@ -26,4 +26,4 @@ config.action_mailer.delivery_method = :test
 config.action_mailer.default_charset = "utf-8"
 
 # config.middleware.use 'Rack::Bug'
-config.middleware.use 'Rack::AssetProxy', :asset_path => /^\/(assets|uc)\//, :asset_uri => 'http://assets0.mmm-tasty.ru'
+config.middleware.use 'Rack::AssetProxy', :asset_path => /^\/(assets|uc)\//, :asset_uri => 'http://a0.tcdn.ru'

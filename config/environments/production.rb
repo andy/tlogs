@@ -21,7 +21,7 @@ config.cache_store = :mem_cache_store, ['f4.tlogs.ru:11211', 'f2.tlogs.ru:11211'
 
 # Enable serving of images, stylesheets, and javascripts from an asset server
 # config.action_controller.asset_host                  = Proc.new { |source, request| "http://assets#{source.hash % 4}.#{request.current_service.host}" }
-config.action_controller.asset_host                 = "http://assets%d.mmm-tasty.ru"
+config.action_controller.asset_host                 = "http://a%d.tcdn.ru"
 
 # Email delivery
 config.action_mailer.delivery_method = :sendmail

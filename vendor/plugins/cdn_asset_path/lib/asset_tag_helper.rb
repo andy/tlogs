@@ -7,9 +7,14 @@ module ActionView::Helpers::AssetTagHelper
   
   protected
     def rewrite_asset_path path
-      asset_id  = file_mtime "#{Rails.root}/public#{path}"
-      prefix    = asset_id ? "/#{asset_id}" : ""
-      "#{prefix}#{path}"
+      full_path = "#{Rails.root}/public#{path}"
+      if should_cache?(full_path)
+        asset_id  = file_mtime(full_path)
+        prefix    = asset_id ? "/#{asset_id}" : ""
+        "#{prefix}#{path}"
+      else
+        path
+      end
     end
 
     def should_cache? source
@@ -17,13 +22,13 @@ module ActionView::Helpers::AssetTagHelper
     end
 
     def file_mtime source
-      return $asset_files_checksum_cache[source] if should_cache?(source) && $asset_files_checksum_cache.keys.include?(source)
+      return $asset_files_checksum_cache[source] if $asset_files_checksum_cache.keys.include?(source)
       
       result  = nil
       fstat   = File.stat(source) rescue nil
       result  = (Digest::MD5.hexdigest("#{fstat.size}").gsub(/[a-f]*/,'')+"0"*10)[0,10] if fstat
       
-      $asset_files_checksum_cache[source] = result if should_cache?(source)
+      $asset_files_checksum_cache[source] = result
       
       result
     end
