@@ -6,8 +6,9 @@ class ApiController < ApplicationController
   ALLOWED_API_HOSTS = %w(31.31.197.29 127.0.0.1)
 
   API_WHITELIST = {
-    'subscribeme.ru' => '01fd09a535847a61ff5cb229',
-    'tasty.zojl.ru'  => 'acc590704fe4550d4d86e8e8'
+    'subscribeme.ru'  => '01fd09a535847a61ff5cb229',
+    'tasty.zojl.ru'   => 'acc590704fe4550d4d86e8e8',
+    'tastymap.io'     => '9d4399d32d489ea1c9727761'
   }
 
   def user_details
