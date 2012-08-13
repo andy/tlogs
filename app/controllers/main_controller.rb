@@ -236,7 +236,6 @@ class MainController < ApplicationController
       result
     end
     
-    
     render :layout => false if should_xhr?
   end
   

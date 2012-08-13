@@ -75,7 +75,7 @@ class ApplicationController < ActionController::Base
     end
 
     def should_xhr?
-      request.xhr? && request.format != :mobile
+      request.xhr? && !@current_service.is_mobile?
     end
   
     def authorized?
@@ -106,6 +106,8 @@ class ApplicationController < ActionController::Base
       Rails.logger.debug "* preload: current_service is #{@current_service.domain || 'nil'}, subdomain is #{request.subdomains.first.to_s || 'nil'}, domain set to #{request.domain || 'nil'}"
       
       set_mobile_format if @current_service.is_mobile?
+      
+      Rails.logger.debug "* preload: format is #{request.format} (xhr? #{request.xhr?})"
     end
 
     def set_mobile_format
