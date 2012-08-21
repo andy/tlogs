@@ -123,7 +123,7 @@ class Console::UsersController < ConsoleController
   end
   
   def destroy
-    render :json => false and return unless @user.is_disabled?
+    render :json => false and return if @user.is_disabled?
     
     @user.log current_user, :destroy, params[:comment], nil, request.remote_ip
 
