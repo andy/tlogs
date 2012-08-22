@@ -372,14 +372,19 @@ module Technoweenie # :nodoc:
 
         def sanitize_filename(filename)
           return unless filename
-          returning filename.strip do |name|
-            # NOTE: File.basename doesn't work right with Windows paths on Unix
-            # get only the filename, not the whole path
-            name.gsub! /^.*(\\|\/)/, ''
 
-            # Finally, replace all non alphanumeric, underscore or periods with underscore
-            name.gsub! /[^A-Za-z0-9\.\-]/, '_'
-          end
+          require 'securerandom'
+
+          SecureRandom.hex(12) + File.extname(filename)
+          # return unless filename
+          # returning filename.strip do |name|
+          #   # NOTE: File.basename doesn't work right with Windows paths on Unix
+          #   # get only the filename, not the whole path
+          #   name.gsub! /^.*(\\|\/)/, ''
+          # 
+          #   # Finally, replace all non alphanumeric, underscore or periods with underscore
+          #   name.gsub! /[^A-Za-z0-9\.\-]/, '_'
+          # end
         end
 
         # before_validation callback.
