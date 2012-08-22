@@ -104,7 +104,9 @@ class Console::UsersController < ConsoleController
     render :json => true
   end
   
-  def disable    
+  def disable
+    render :json => false and return if @user.is_disabled?
+    
     @user.log current_user, :disable, params[:comment], nil, request.remote_ip
 
     Rails.env.development? ? @user.disable! : @user.async_disable!
@@ -123,7 +125,7 @@ class Console::UsersController < ConsoleController
   end
   
   def destroy
-    render :json => false and return if @user.is_disabled?
+    render :json => false and return unless @user.is_disabled?
     
     @user.log current_user, :destroy, params[:comment], nil, request.remote_ip
 
