@@ -16,8 +16,52 @@
       });
     </script>
 	<% end %>
+	
+	<% if is_admin? %>
+  	<script type='text/javascript'>
+    googletag.cmd.push(function() {
+    googletag.defineSlot('/12198513/240x400', [240, 400], 'div-gpt-ad-1341942108431-0').addService(googletag.pubads());
+    googletag.pubads().enableSingleRequest();
+    googletag.enableServices();
+    });
+    </script>
+    
+    <style type='text/css'>
+      .t-banner-crazy {
+        float: right;
+        position: fixed;
+        right: 0;
+        width: 260px;
+        height: 100%;
+        background: black;
+        margin: 0;
+        padding: 0;
+      }
+      .t-banner-crazy-holder {
+        margin: 10px;
+        margin-top: 80px;
+      }
+
+      .tlog { margin-right: 260px; }
+
+      .pref#fixedbox_r_t { right: 260px; }
+    </style>
+    
+  <% end %>
 </head>
 <body id='the_tlog_body' class="<%= classes(['is-owner', is_owner?], ['is-not-owner', !is_owner?], ['not-logged-in', !current_user], ['logged-in', current_user]) %>">
+  
+  <% if is_admin? %>
+    <div class='t-banner-crazy'>
+      <div class='t-banner-crazy-holder'>
+        <div id='div-gpt-ad-1341942108431-0' style='width:240px; height:400px;'>
+        <script type='text/javascript'>
+        googletag.cmd.push(function() { googletag.display('div-gpt-ad-1341942108431-0'); });
+        </script>
+        </div>
+      </div>
+    </div>
+  <% end %>
 	<div class='tlog'>
 		<div class="tlog_header">
 			<div id='tlog_menu'>
