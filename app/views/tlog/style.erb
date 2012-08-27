@@ -125,5 +125,30 @@ a, div.sidebar p, div.sidebar span, .messages_other, #message_is_private_label<%
 	color:#<%= @design.color_voter_text %>!important;
 }
 <% end %>
+
+/* mobile css */
+@media only screen and (device-width: 768px) {
+  /* For general iPad layouts */
+  div.service_comments, div.service_link, div.service_edit { display: block; }
+  div#fixedbox_r_t { top: 0px; }
+  .t-post-comment .t-post-comment-reply { display: block; }
+}
+
+@media only screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:portrait) {
+  /* For portrait layouts only */
+  div.service_comments, div.service_link, div.service_edit { display: block; }
+  div#fixedbox_r_t { top: 0px; }
+  .t-post-comment .t-post-comment-reply { display: block; }
+  .vote_up, .vote_down {display: block; }
+}
+
+@media only screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:landscape) {
+  /* For landscape layouts only */
+  div.service_comments, div.service_link, div.service_edit { display: block; }
+  div#fixedbox_r_t { top: 0; }
+  .t-post-comment .t-post-comment-reply { display: block; }
+  .vote_up, .vote_down {display: block; }
+}
+
 /* user-defined css */
 <%= @design.user_css.tr('<>', '').gsub(/behavior/i, '').gsub(/expression/i, '') unless @design.user_css.blank? %>
