@@ -70,6 +70,7 @@ class AnonymousEntry < Entry
                 член вагина
                 fuck dick fucking fcuk suck sucking fuxx sex eblya
                 дрянь дряни быдло гопота гопник
+                twitter viewy tumblr facebook vk.com
                 )
 
   validates_each :data_part_1, :data_part_2 do |record, attr, value|
