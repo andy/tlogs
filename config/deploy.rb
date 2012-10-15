@@ -23,10 +23,10 @@ set :repository, 'git://github.com/andy/tlogs.git'
 # be used to single out a specific subset of boxes in a particular role, like
 # :primary => true.
 
-role :all, 'f1.tlogs.ru', 'f2.tlogs.ru', 'f3.tlogs.ru', 'f4.tlogs.ru'
+role :all, 'f1.tlogs.ru', 'f2.tlogs.ru', 'f3.tlogs.ru', 'f4.tlogs.ru', 'st1.tlogs.ru'
 role :db, "f1.tlogs.ru", :primary => true
 role :app, 'f2.tlogs.ru', 'f3.tlogs.ru', 'f4.tlogs.ru'
-role :assets, 'f1.tlogs.ru', 'f2.tlogs.ru', 'f3.tlogs.ru', 'f4.tlogs.ru'
+role :assets, 'f1.tlogs.ru', 'f2.tlogs.ru', 'f3.tlogs.ru', 'f4.tlogs.ru', 'st1.tlogs.ru'
 role :web, 'f2.tlogs.ru'
 role :redis, 'f1.tlogs.ru'
 role :cache, 'f4.tlogs.ru', 'f2.tlogs.ru'

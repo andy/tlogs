@@ -35,20 +35,22 @@
         = menu_item 'Анонимки', :anonymous, %w(anonymous/*)
         = menu_item "Моё#{"<sup class='t-act-goto-convos'>+#{current_user.unviewed_conversations_count}</sup>" unless current_user.unviewed_conversations_count.zero?}", :my, %w(main/my main/last_personalized conversations/index conversations/show conversations/new conversations/search) if current_user
         = menu_item 'Прямой эфир', :live
+        = menu_item 'Orange House', 'http://orangehouse.mmm-tasty.ru'
+        
         -# menu_item "#{image_tag 'specials/newyear/fa_ico.gif', :alt => 'Форэверэлон', :style => 'position: relative; top: 3px;'} Forever Alone чат", 'http://www.mmm-tasty.ru/specials/newyear'
-        - if false
-          = menu_item "#{image_tag 'specials/surfingbird/put_a_bird_on_it.png', :size => '29x25', :alt => 'Surfingbird', :style => 'position: relative; top: 7px; margin: -7px 0 0 0;'} Surfingbird", 'http://www.mmm-tasty.ru/specials/surfingbird'
-          :javascript
-            jQuery(document).ready(function() {
-              jQuery('sb-act-track').click(function() {
-                if(typeof _gaq != 'undefined') {
-                  _gaq.push(['_trackEvent', 'Surfingbird', 'Main', null, 1]);
-                }
-                return true;
-              });
-            });
-        - else
-          = menu_item "День из жизни", :random
+        -# - if false
+        -# = menu_item "#{image_tag 'specials/surfingbird/put_a_bird_on_it.png', :size => '29x25', :alt => 'Surfingbird', :style => 'position: relative; top: 7px; margin: -7px 0 0 0;'} Surfingbird", 'http://www.mmm-tasty.ru/specials/surfingbird'
+        -#   :javascript
+        -#     jQuery(document).ready(function() {
+        -#       jQuery('sb-act-track').click(function() {
+        -#         if(typeof _gaq != 'undefined') {
+        -#           _gaq.push(['_trackEvent', 'Surfingbird', 'Main', null, 1]);
+        -#         }
+        -#         return true;
+        -#       });
+        -#     });
+        -# - else
+        -#   = menu_item "День из жизни", :random
 
   #wrapper
     - sidebar_left = capture do
