@@ -4,9 +4,13 @@ env :PATH, '/usr/local/bin:/usr/bin:/bin:/var/lib/gems/1.8/bin:/usr/local/node/b
 job_type :bundle, "cd :path && source .reerc && RAILS_ENV=:environment bundle exec :task :output"
 
 # Remove rack uploads trash
-every 1.day do
-  command "find /tmp/ -maxdepth 1 -type f -name RackMultipart\\* -ctime +1 -print0 -user tasty | xargs -0 rm 2>/dev/null"
-  command "find /tmp/ -maxdepth 1 -type f -name mini_magick\\* -ctime +1 -print0 -user tasty | xargs -0 rm 2>/dev/null"
+every 10.minutes do
+  command "find /tmp/ -maxdepth 1 -type f -name RackMultipart\\* -cmin +10 -print0 -user tasty | xargs -0 rm 2>/dev/null"
+  command "find /tmp/ -maxdepth 1 -type d -name RackMultipart\\*.lock -cmin +10 -print0 -user tasty | xargs -0 rm -r 2>/dev/null"
+  command "find /tmp/ -maxdepth 1 -type f -name mini_magick\\* -cmin +10 -print0 -user tasty | xargs -0 rm 2>/dev/null"
+  command "find /tmp/ -maxdepth 1 -type d -name mini_magick\\*.lock -cmin +10 -print0 -user tasty | xargs -0 rm -r 2>/dev/null"
+
+  command "find /tmp/ -maxdepth 1 -type f -name stream\\* -cmin +10 -print0 -user tasty | xargs -0 rm 2>/dev/null"
 end
 
 every :reboot do
