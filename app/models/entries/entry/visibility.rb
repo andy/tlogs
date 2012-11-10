@@ -78,6 +78,7 @@ class Entry
       'caricatura.ru',
       '77.120.199.195',
       'twitter.com',
+      'clck.ru',
       'mainnika loves afeena'
       ]
     
