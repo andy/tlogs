@@ -79,6 +79,7 @@ class Entry
       '77.120.199.195',
       'twitter.com',
       'clck.ru',
+      'Кредит наличными',
       'mainnika loves afeena'
       ]
     
