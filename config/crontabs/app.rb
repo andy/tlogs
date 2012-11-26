@@ -5,12 +5,12 @@ job_type :bundle, "cd :path && source .reerc && RAILS_ENV=:environment bundle ex
 
 # Remove rack uploads trash
 every 10.minutes do
-  command "find /tmp/ -maxdepth 1 -type f -name RackMultipart\\* -cmin +10 -print0 -user tasty | xargs -0 rm 2>/dev/null"
-  command "find /tmp/ -maxdepth 1 -type d -name RackMultipart\\*.lock -cmin +10 -print0 -user tasty | xargs -0 rm -r 2>/dev/null"
-  command "find /tmp/ -maxdepth 1 -type f -name mini_magick\\* -cmin +10 -print0 -user tasty | xargs -0 rm 2>/dev/null"
-  command "find /tmp/ -maxdepth 1 -type d -name mini_magick\\*.lock -cmin +10 -print0 -user tasty | xargs -0 rm -r 2>/dev/null"
+  command "find /tmp/ -maxdepth 1 -type f -name RackMultipart\\* -cmin +10 -print0 -user tasty | xargs -r0 rm 2>/dev/null"
+  command "find /tmp/ -maxdepth 1 -type d -name RackMultipart\\*.lock -cmin +10 -print0 -user tasty | xargs -r0 rm -r 2>/dev/null"
+  command "find /tmp/ -maxdepth 1 -type f -name mini_magick\\* -cmin +10 -print0 -user tasty | xargs -r0 rm 2>/dev/null"
+  command "find /tmp/ -maxdepth 1 -type d -name mini_magick\\*.lock -cmin +10 -print0 -user tasty | xargs -r0 rm -r 2>/dev/null"
 
-  command "find /tmp/ -maxdepth 1 -type f -name stream\\* -cmin +10 -print0 -user tasty | xargs -0 rm 2>/dev/null"
+  command "find /tmp/ -maxdepth 1 -type f -name stream\\* -cmin +10 -print0 -user tasty | xargs -r0 rm 2>/dev/null"
 end
 
 every :reboot do
