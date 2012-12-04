@@ -35,7 +35,7 @@
         = menu_item 'Анонимки', :anonymous, %w(anonymous/*)
         = menu_item "Моё#{"<sup class='t-act-goto-convos'>+#{current_user.unviewed_conversations_count}</sup>" unless current_user.unviewed_conversations_count.zero?}", :my, %w(main/my main/last_personalized conversations/index conversations/show conversations/new conversations/search) if current_user
         = menu_item 'Прямой эфир', :live
-        -# menu_item "#{image_tag 'specials/darudar/dd_icon_color.gif', :alt => 'Дарудар', :style => ''} Darudar", "http://www.mmm-tasty.ru/specials/darudar"
+        = menu_item "#{image_tag 'specials/darudar/dd_icon_color.gif', :alt => 'Дарудар', :style => ''} Дарудар", "http://www.mmm-tasty.ru/specials/darudar"
         -# menu_item 'Orange House', 'http://orangehouse.mmm-tasty.ru'
         
         -# menu_item "#{image_tag 'specials/newyear/fa_ico.gif', :alt => 'Форэверэлон', :style => 'position: relative; top: 3px;'} Forever Alone чат", 'http://www.mmm-tasty.ru/specials/newyear'
