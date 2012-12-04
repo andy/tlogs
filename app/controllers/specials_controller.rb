@@ -3,6 +3,10 @@ class SpecialsController < ApplicationController
   def index
     redirect_to '/'
   end
+  
+  def darudar
+    
+  end
 
   def surfingbird
     @title = "Surfingbird — мы подбираем интересные страницы, фото и видео на основе рекомендаций людей, которым нравится то же, что и тебе."
