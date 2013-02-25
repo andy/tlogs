@@ -51,37 +51,35 @@
 </head>
 <body id='the_tlog_body' class="<%= classes(['is-owner', is_owner?], ['is-not-owner', !is_owner?], ['not-logged-in', !current_user], ['logged-in', current_user]) %>">
   
-  <% if is_admin? %>
-    <style type='text/css'>
-      .t-banner-crazy {
-        float: right;
-        position: fixed;
-        right: 0;
-        width: 272px;
-        height: 100%;
-        background: url('<%= image_path 'ad_sidebar_bg.jpg' %>');
-        margin: 0;
-        box-shadow: inset 5px 1px 10px #333;
-        padding: 0;
-      }
+  <style type='text/css'>
+    .t-banner-crazy {
+      float: right;
+      position: fixed;
+      right: 0;
+      width: 272px;
+      height: 100%;
+      background: url('<%= image_path 'ad_sidebar_bg.jpg' %>');
+      margin: 0;
+      box-shadow: inset 5px 1px 10px #333;
+      padding: 0;
+    }
 
-      .t-banner-crazy-holder {
-        margin: 64px 16px 16px;
-      }
+    .t-banner-crazy-holder {
+      margin: 64px 16px 16px;
+    }
 
-      .tlog { margin-right: 272px; }
-    </style>
+    .tlog { margin-right: 272px; }
+  </style>
 
-    <div class='t-banner-crazy'>
-      <div class='t-banner-crazy-holder'>
-        <script language="JavaScript" type="text/javascript" src="http://ads.heias.com/x/heias.TAG.v2.0/heias.js"></script>
-        <script language="JavaScript" type="text/javascript">
+  <div class='t-banner-crazy'>
+    <div class='t-banner-crazy-holder'>
+      <script language="JavaScript" type="text/javascript" src="http://ads.heias.com/x/heias.TAG.v2.0/heias.js"></script>
+      <script language="JavaScript" type="text/javascript">
         var HEIAS_SRC='http://ads.heias.com/x/heias.TAG.v2.0/?H_VAR=n|;|12564|;|c|;|1686|;|s|;|18569|;|';
         document.write('<scr' + 'ipt language="JavaScript" type="text/javascript" src="'+ HEIAS_SRC +'"><\/scr' + 'ipt>');
-        </script>
-      </div>
+      </script>
     </div>
-  <% end %>
+  </div>
   <% if false && is_admin? %>
     <div class='t-banner-crazy'>
       <div class='t-banner-crazy-holder'>
