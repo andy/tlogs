@@ -14,7 +14,7 @@
     :css
       body.main_page { background:url(#{current_user.tlog_settings.background.image.url}) fixed; }
 
-%body
+%body.main_page
   - if is_admin?
     :plain
       <style type='text/css'>
@@ -47,58 +47,56 @@
         </div>
       </div>
 
-  .main_page
+  .logo
+    = link_to_if((params[:controller] != 'main' || params[:action] != 'index'), image_tag(current_service.logo(logo_is_gray ? nil : :white), :alt => current_service.name, :class => 'logo_img'), service_url, :class => 'logo_link')
 
-    .logo
-      = link_to_if((params[:controller] != 'main' || params[:action] != 'index'), image_tag(current_service.logo(logo_is_gray ? nil : :white), :alt => current_service.name, :class => 'logo_img'), service_url, :class => 'logo_link')
+  .register_enter
+    %div{ :class => classes('top_hello', ['gray', logo_is_gray]) }
+      - if current_user
+        Будьте собой, #{link_to_tlog(current_user, :link => :username)}!
+      - else
+        Присоединяйтесь к нам, #{link_to 'зарегистрируйтесь', service_url(login_path)}.
 
-    .register_enter
-      %div{ :class => classes('top_hello', ['gray', logo_is_gray]) }
-        - if current_user
-          Будьте собой, #{link_to_tlog(current_user, :link => :username)}!
-        - else
-          Присоединяйтесь к нам, #{link_to 'зарегистрируйтесь', service_url(login_path)}.
+    .top_menu
+      %ul
+        - news = User.find_by_url 'news'
+        - news_count = if news then news.new_entries_count_for(current_user) else 0 end
+        = menu_item 'О проекте', :about, %w(main/about main/users main/new_users main/stats main/adv)
+        = menu_item "Новости#{"<sup>+#{news_count}</sup>" unless news_count.zero?}", :news
+        = menu_item 'Лучшее', :last
+        = menu_item 'Анонимки', :anonymous, %w(anonymous/*)
+        = menu_item "Моё#{"<sup class='t-act-goto-convos'>+#{current_user.unviewed_conversations_count}</sup>" unless current_user.unviewed_conversations_count.zero?}", :my, %w(main/my main/last_personalized conversations/index conversations/show conversations/new conversations/search) if current_user
+        = menu_item 'Прямой эфир', :live
+        = menu_item "#{image_tag 'specials/darudar/dd_icon_color.gif', :alt => 'Дарудар', :style => 'position: relative; top: 3px;'} Дару-Дар", "http://www.mmm-tasty.ru/specials/darudar"
+        -# menu_item 'Orange House', 'http://orangehouse.mmm-tasty.ru'
+        
+        -# menu_item "#{image_tag 'specials/newyear/fa_ico.gif', :alt => 'Форэверэлон', :style => 'position: relative; top: 3px;'} Forever Alone чат", 'http://www.mmm-tasty.ru/specials/newyear'
+        -# - if false
+        -# = menu_item "#{image_tag 'specials/surfingbird/put_a_bird_on_it.png', :size => '29x25', :alt => 'Surfingbird', :style => 'position: relative; top: 7px; margin: -7px 0 0 0;'} Surfingbird", 'http://www.mmm-tasty.ru/specials/surfingbird'
+        -#   :javascript
+        -#     jQuery(document).ready(function() {
+        -#       jQuery('sb-act-track').click(function() {
+        -#         if(typeof _gaq != 'undefined') {
+        -#           _gaq.push(['_trackEvent', 'Surfingbird', 'Main', null, 1]);
+        -#         }
+        -#         return true;
+        -#       });
+        -#     });
+        -# - else
+        -#   = menu_item "День из жизни", :random
 
-      .top_menu
-        %ul
-          - news = User.find_by_url 'news'
-          - news_count = if news then news.new_entries_count_for(current_user) else 0 end
-          = menu_item 'О проекте', :about, %w(main/about main/users main/new_users main/stats main/adv)
-          = menu_item "Новости#{"<sup>+#{news_count}</sup>" unless news_count.zero?}", :news
-          = menu_item 'Лучшее', :last
-          = menu_item 'Анонимки', :anonymous, %w(anonymous/*)
-          = menu_item "Моё#{"<sup class='t-act-goto-convos'>+#{current_user.unviewed_conversations_count}</sup>" unless current_user.unviewed_conversations_count.zero?}", :my, %w(main/my main/last_personalized conversations/index conversations/show conversations/new conversations/search) if current_user
-          = menu_item 'Прямой эфир', :live
-          = menu_item "#{image_tag 'specials/darudar/dd_icon_color.gif', :alt => 'Дарудар', :style => 'position: relative; top: 3px;'} Дару-Дар", "http://www.mmm-tasty.ru/specials/darudar"
-          -# menu_item 'Orange House', 'http://orangehouse.mmm-tasty.ru'
-          
-          -# menu_item "#{image_tag 'specials/newyear/fa_ico.gif', :alt => 'Форэверэлон', :style => 'position: relative; top: 3px;'} Forever Alone чат", 'http://www.mmm-tasty.ru/specials/newyear'
-          -# - if false
-          -# = menu_item "#{image_tag 'specials/surfingbird/put_a_bird_on_it.png', :size => '29x25', :alt => 'Surfingbird', :style => 'position: relative; top: 7px; margin: -7px 0 0 0;'} Surfingbird", 'http://www.mmm-tasty.ru/specials/surfingbird'
-          -#   :javascript
-          -#     jQuery(document).ready(function() {
-          -#       jQuery('sb-act-track').click(function() {
-          -#         if(typeof _gaq != 'undefined') {
-          -#           _gaq.push(['_trackEvent', 'Surfingbird', 'Main', null, 1]);
-          -#         }
-          -#         return true;
-          -#       });
-          -#     });
-          -# - else
-          -#   = menu_item "День из жизни", :random
+  #wrapper
+    - sidebar_left = capture do
+      = yield :sidebar_left
+    - unless sidebar_left.blank?
+      .sidebar_holder
+        %div{ :class => ['sidebar', @sidebar_left_short && 'sidebar_left_short']}
+          .personal.round
+            .content
+              = sidebar_left
 
-    #wrapper
-      - sidebar_left = capture do
-        = yield :sidebar_left
-      - unless sidebar_left.blank?
-        .sidebar_holder
-          %div{ :class => ['sidebar', @sidebar_left_short && 'sidebar_left_short']}
-            .personal.round
-              .content
-                = sidebar_left
-
-      - sidebar_right = capture do
-        = yield :sidebar_right
+    - sidebar_right = capture do
+      = yield :sidebar_right
       - unless sidebar_right.blank?
         .sidebar_holder
           .sidebar.sidebar_right

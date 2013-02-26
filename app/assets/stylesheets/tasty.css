@@ -2091,7 +2091,7 @@ div.popular a {
 }
 
 
-.main_page {
+body.main_page {
 	background:url("/assets/bgs/c0/f3/1_original.gif") fixed; /* XXXXX */
 }
 
