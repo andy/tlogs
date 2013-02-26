@@ -66,11 +66,12 @@
 
     - sidebar_right = capture do
       = yield :sidebar_right
-      <script language="JavaScript" type="text/javascript" src="http://ads.heias.com/x/heias.TAG.v2.0/heias.js"></script>
-      <script language="JavaScript" type="text/javascript">
-        var HEIAS_SRC='http://ads.heias.com/x/heias.TAG.v2.0/?H_VAR=n|;|12564|;|c|;|1686|;|s|;|18569|;|';
-        document.write('<scr' + 'ipt language="JavaScript" type="text/javascript" src="'+ HEIAS_SRC +'"><\/scr' + 'ipt>');
-      </script>
+      :plain
+        <script language="JavaScript" type="text/javascript" src="http://ads.heias.com/x/heias.TAG.v2.0/heias.js"></script>
+        <script language="JavaScript" type="text/javascript">
+          var HEIAS_SRC='http://ads.heias.com/x/heias.TAG.v2.0/?H_VAR=n|;|12564|;|c|;|1686|;|s|;|18569|;|';
+          document.write('<scr' + 'ipt language="JavaScript" type="text/javascript" src="'+ HEIAS_SRC +'"><\/scr' + 'ipt>');
+        </script>
 
     - unless sidebar_right.blank?
       .sidebar_holder
