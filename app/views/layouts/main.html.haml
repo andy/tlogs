@@ -34,7 +34,7 @@
           margin: 64px 16px 16px;
         }
 
-        .main_page { margin-right: 272px; }
+        .tlog { margin-right: 272px; }
       </style>
 
       <div class='t-banner-crazy'>
@@ -97,23 +97,23 @@
 
     - sidebar_right = capture do
       = yield :sidebar_right
-      - unless sidebar_right.blank?
-        .sidebar_holder
-          .sidebar.sidebar_right
-            .personal.round
-              .content
-                = sidebar_right
+    - unless sidebar_right.blank?
+      .sidebar_holder
+        .sidebar.sidebar_right
+          .personal.round
+            .content
+              = sidebar_right
 
-      .main_rounded_holder
-        .rounded_main_center
-          = yield
-    
-    = render :partial => 'globals/foot'
+    .main_rounded_holder
+      .rounded_main_center
+        = yield
+  
+  = render :partial => 'globals/foot'
 
-    = render :partial => 'globals/top_nav'
-    
-    - if @enable_shortcut
-      %div{ :id => 't-act-shortcut', :class => classes(['gray', logo_is_gray]) } &uarr; Наверх
-    
-    = render :partial => 'globals/reformal' if Rails.env.production?
+  = render :partial => 'globals/top_nav'
+  
+  - if @enable_shortcut
+    %div{ :id => 't-act-shortcut', :class => classes(['gray', logo_is_gray]) } &uarr; Наверх
+  
+  = render :partial => 'globals/reformal' if Rails.env.production?
 </html>
