@@ -15,37 +15,6 @@
       body.main_page { background:url(#{current_user.tlog_settings.background.image.url}) fixed; }
 
 %body.main_page
-  - if is_admin?
-    :plain
-      <style type='text/css'>
-        .t-banner-crazy {
-          float: right;
-          position: fixed;
-          right: 0;
-          width: 272px;
-          height: 100%;
-          background: url('<%= image_path 'ad_sidebar_bg.jpg' %>');
-          margin: 0;
-          box-shadow: inset 5px 1px 10px #333;
-          padding: 0;
-        }
-
-        .t-banner-crazy-holder {
-          margin: 64px 16px 16px;
-        }
-
-        .tlog { margin-right: 272px; }
-      </style>
-
-      <div class='t-banner-crazy'>
-        <div class='t-banner-crazy-holder'>
-          <script language="JavaScript" type="text/javascript" src="http://ads.heias.com/x/heias.TAG.v2.0/heias.js"></script>
-          <script language="JavaScript" type="text/javascript">
-            var HEIAS_SRC='http://ads.heias.com/x/heias.TAG.v2.0/?H_VAR=n|;|12564|;|c|;|1686|;|s|;|18569|;|';
-            document.write('<scr' + 'ipt language="JavaScript" type="text/javascript" src="'+ HEIAS_SRC +'"><\/scr' + 'ipt>');
-          </script>
-        </div>
-      </div>
 
   .logo
     = link_to_if((params[:controller] != 'main' || params[:action] != 'index'), image_tag(current_service.logo(logo_is_gray ? nil : :white), :alt => current_service.name, :class => 'logo_img'), service_url, :class => 'logo_link')
@@ -97,6 +66,12 @@
 
     - sidebar_right = capture do
       = yield :sidebar_right
+      <script language="JavaScript" type="text/javascript" src="http://ads.heias.com/x/heias.TAG.v2.0/heias.js"></script>
+      <script language="JavaScript" type="text/javascript">
+        var HEIAS_SRC='http://ads.heias.com/x/heias.TAG.v2.0/?H_VAR=n|;|12564|;|c|;|1686|;|s|;|18569|;|';
+        document.write('<scr' + 'ipt language="JavaScript" type="text/javascript" src="'+ HEIAS_SRC +'"><\/scr' + 'ipt>');
+      </script>
+
     - unless sidebar_right.blank?
       .sidebar_holder
         .sidebar.sidebar_right
