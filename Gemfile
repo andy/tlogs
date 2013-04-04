@@ -1,6 +1,6 @@
 source "http://rubygems.org"
 
-gem 'rails', '2.3.17'
+gem 'rails', '2.3.18'
 
 gem 'whenever', :require => false
 

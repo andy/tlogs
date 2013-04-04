@@ -1,16 +1,16 @@
 GEM
   remote: http://rubygems.org/
   specs:
-    actionmailer (2.3.17)
-      actionpack (= 2.3.17)
-    actionpack (2.3.17)
-      activesupport (= 2.3.17)
+    actionmailer (2.3.18)
+      actionpack (= 2.3.18)
+    actionpack (2.3.18)
+      activesupport (= 2.3.18)
       rack (~> 1.1.0)
-    activerecord (2.3.17)
-      activesupport (= 2.3.17)
-    activeresource (2.3.17)
-      activesupport (= 2.3.17)
-    activesupport (2.3.17)
+    activerecord (2.3.18)
+      activesupport (= 2.3.18)
+    activeresource (2.3.18)
+      activesupport (= 2.3.18)
+    activesupport (2.3.18)
     after_commit (1.0.10)
       activerecord (>= 1.15.6, < 3.0.0)
     airbrake (3.1.2)
@@ -51,15 +51,15 @@ GEM
     paperclip-meta (0.4.2)
       paperclip
     rack (1.1.6)
-    rails (2.3.17)
-      actionmailer (= 2.3.17)
-      actionpack (= 2.3.17)
-      activerecord (= 2.3.17)
-      activeresource (= 2.3.17)
-      activesupport (= 2.3.17)
+    rails (2.3.18)
+      actionmailer (= 2.3.18)
+      actionpack (= 2.3.18)
+      activerecord (= 2.3.18)
+      activeresource (= 2.3.18)
+      activesupport (= 2.3.18)
       rake (>= 0.8.3)
     raindrops (0.9.0)
-    rake (10.0.3)
+    rake (10.0.4)
     rdoc (3.12)
       json (~> 1.4)
     redis (2.2.2)
@@ -128,7 +128,7 @@ DEPENDENCIES
   newrelic_rpm
   paperclip (= 2.3.9)
   paperclip-meta
-  rails (= 2.3.17)
+  rails (= 2.3.18)
   rake
   rdoc
   redis (~> 2.2.0)
