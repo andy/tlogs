@@ -1,5 +1,5 @@
 GEM
-  remote: http://rubygems.org/
+  remote: https://rubygems.org/
   specs:
     actionmailer (2.3.18)
       actionpack (= 2.3.18)
@@ -44,7 +44,6 @@ GEM
     json (1.7.3)
     kgio (2.7.4)
     memcache-client (1.8.5)
-    method_source (0.8.1)
     mime-types (1.18)
     mini_magick (3.4)
       subexec (~> 0.2.1)
@@ -66,12 +65,6 @@ GEM
       activesupport (~> 2.3.2)
     paperclip-meta (0.4.2)
       paperclip
-    pry (0.9.12)
-      coderay (~> 1.0.5)
-      method_source (~> 0.8)
-      slop (~> 3.4)
-    pry-rails (0.2.2)
-      pry (>= 0.9.10)
     rack (1.1.6)
     rails (2.3.18)
       actionmailer (= 2.3.18)
@@ -107,7 +100,6 @@ GEM
     sinatra (1.2.8)
       rack (~> 1.1)
       tilt (>= 1.2.2, < 2.0)
-    slop (3.4.4)
     subexec (0.2.2)
     system_timer (1.2.4)
     thinking-sphinx (1.4.12)
@@ -153,7 +145,6 @@ DEPENDENCIES
   newrelic_rpm
   paperclip (= 2.3.9)
   paperclip-meta
-  pry-rails
   rails (= 2.3.18)
   rake
   rdoc
