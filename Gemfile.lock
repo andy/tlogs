@@ -36,7 +36,6 @@ GEM
     execjs (1.4.0)
       multi_json (~> 1.0)
     fssm (0.2.9)
-    god (0.13.2)
     haml (3.1.6)
     highline (1.6.16)
     hiredis (0.4.5)
@@ -134,7 +133,6 @@ DEPENDENCIES
   capistrano_colors
   coderay
   compass
-  god
   haml
   hiredis (~> 0.4.0)
   hpricot

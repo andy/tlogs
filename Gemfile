@@ -33,7 +33,6 @@ gem 'coderay'
 gem 'ruby-openid', :require => 'openid'
 gem 'hpricot'
 gem 'russian'
-gem 'god'
 
 gem 'json'
 
