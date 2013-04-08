@@ -5,7 +5,7 @@
     :javascript
       var _gaq = _gaq || [];
       _gaq.push(['_trackEvent', 'Error', '404', 'Tlog not found']);
-  
+
   %body{:lang => 'ru'}
     %div{:data => {:role => 'page'}}
       %div{:data => {:role => 'header'}}
@@ -17,7 +17,7 @@
         %p он или никогда не существовал, или переехал на новый адрес
         %p
           = link_to 'вернуться на главную', service_url
-          или 
+          или
           - if current_user
             = link_to 'вернуться в свой тлог', user_url(current_user)
           - else

@@ -8,7 +8,7 @@
   <div class='section'>
     <h2><span>Дополнительно</span></h2>
     <p><%= link_to 'самое "горячее"', service_url(main_path(:action => 'hot')) %></p><br/>
-    <p><%= link_to 'отвратительное', service_url(main_path(:action => 'worst')) %></p>      
+    <p><%= link_to 'отвратительное', service_url(main_path(:action => 'worst')) %></p>
   </div>
 
   <div class='section sidebar_calendar'>
@@ -17,7 +17,7 @@
       prev_year = nil
       User.calendar(@time).each do |month, days| -%><%=
         content_tag :span, days.first.year, :class => 'year' unless days.first.year == prev_year %><%-
-        prev_year = days.first.year 
+        prev_year = days.first.year
         -%> <span class='month'><%= month.to_rmonth_s.capitalize %></span> <%
         days.each do |day|
           url = service_url(last_day_path(:year => day.year, :month => day.month, :day => day.mday, :kind => @filter.kind, :rating => @filter.rating, :page => nil)) %> <%=
@@ -43,11 +43,11 @@
       <p>По вашему запросу не было найдено ни одной записи.</p>
     </div>
   <% else %>
-  
+
     <% @entries.each do |entry| %>
       <%= render :partial => 'entries/entry_display', :locals => { :entry => entry, :show_comments_bubble => true, :show_username => true, :comment_views => @comment_views } %>
     <% end %>
-    
+
     <%= paginate @pager, :url_options => { :kind => @filter.kind, :rating => @filter.rating } %>
   <% end %>
 </div>

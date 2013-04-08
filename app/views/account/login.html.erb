@@ -6,43 +6,42 @@
 
   function vk_auth_info ( data )
   {
-  	console.log ( data );
+    console.log ( data );
   }
 </script>
  -->
 <% @title = "Вход на сайт #{current_service.domain}" %>
 
-
 <div class="center_data_big_form">
-	<% form_for :user, @user, :html => { :class => 'big' } do |f| %>
+  <% form_for :user, @user, :html => { :class => 'big' } do |f| %>
 
-		<%= render :partial => 'login_and_signup_form', :locals => { :f => f } %>
+    <%= render :partial => 'login_and_signup_form', :locals => { :f => f } %>
 
-		<%= hidden_field_tag 'ref', params[:ref] if params[:ref] %>
+    <%= hidden_field_tag 'ref', params[:ref] if params[:ref] %>
 
-		<input type="submit" value="Войти" class='button' />
-		<div class='options_togo'>
-			<%= link_to 'забыли пароль?', lost_password_url %>
-		</div>
-<!-- 
-		<hr />
+    <input type="submit" value="Войти" class='button' />
+    <div class='options_togo'>
+      <%= link_to 'забыли пароль?', lost_password_url %>
+    </div>
+<!--
+    <hr />
 
-		или через аккаунты в социальных сетях:
+    или через аккаунты в социальных сетях:
 
 <div class='rel'>
-	<div id="vk_login_button" onclick="VK.Auth.login(vk_auth_info, 1);"></div>
-	<script type="text/javascript">
-		VK.UI.button('vk_login_button');
-		// VK.Widgets.Auth("vk_auth", {width: "200px", authUrl: '/account/vk_auth'});
-	</script>
+  <div id="vk_login_button" onclick="VK.Auth.login(vk_auth_info, 1);"></div>
+  <script type="text/javascript">
+    VK.UI.button('vk_login_button');
+    // VK.Widgets.Auth("vk_auth", {width: "200px", authUrl: '/account/vk_auth'});
+  </script>
 </div>
 
  -->
-		
-		<div id='navigation'>
-			<%= link_to "&#x2190; вернуться на главную", main_url, :id => 'return_to_main' %>
-			...
-			<%= link_to 'зарегистрироваться &#x2192;', signup_url, :id => 'signup_url' %>
-		</div>		
-	<% end %>
+    
+    <div id='navigation'>
+      <%= link_to "&#x2190; вернуться на главную", main_url, :id => 'return_to_main' %>
+      ...
+      <%= link_to 'зарегистрироваться &#x2192;', signup_url, :id => 'signup_url' %>
+    </div>    
+  <% end %>
 </div>

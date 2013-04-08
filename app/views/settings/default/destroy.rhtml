@@ -1,6 +1,6 @@
 <% @title = 'удаление тлога' %>
 <% content_for :header do %>
-	Удаление тлога
+  Удаление тлога
 <% end %>
 
 <p class='settings_warning'><span>Удаление нельзя отменить</span>. При удалении тлога все ваши записи и комментарии будут удалены с сайта безвозвратно. Вернуть назад ничего нельзя.</p>
@@ -14,7 +14,7 @@
   </label>
 
   <%= tag :input, :type => 'hidden', :name => 'authenticity_token', :value => form_authenticity_token %>
-  
+
   <div class='submit_button'>
     <input type='submit' value='Удалить тлог' class='button dangerous' />
   </div>

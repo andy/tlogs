@@ -19,7 +19,7 @@
         %div
           = link_to_tlog(user, :link => :userpic, :empty => :blank)
           %p= link_to_tlog(user)
-    
+
       = content_tag(:p, "... и еще #{(@users.total_entries - @users.per_page).pluralize('пользователь', 'пользователя', 'пользователей', true)}") if @users.total_pages > 1
 
 = yield :sidebar_right_below

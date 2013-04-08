@@ -13,7 +13,7 @@
   = tasty_include_javascripts :console
   :javascript
     window._token = #{form_authenticity_token.to_json};
-  
+
   = yield :head
 
 %body
@@ -51,7 +51,7 @@
     .row
       .span12
         = yield
-    
+
     .row
       .span12
         %hr

@@ -1,15 +1,15 @@
 <%- @section = section -%>
 <div class='<%= section.dom_id(:section_form) %>' <%= "id='#{section.dom_id(:h2_form)}' style='display: none'" unless section.new_record? %>>
-	<form method='post' action='<%= user_url(current_site, settings_sidebar_path(:action => section.new_record? ? 'section' : 'section_update')) %>'>
-	  <%= tag :input, :type => 'hidden', :name => 'authenticity_token', :value => form_authenticity_token %>
-    
-		<% unless section.new_record? %>
-			<input type='hidden' name='section_id' value='<%= section.id %>' />
-		<% end %>
-		<%= text_field :section, :name, :id => section.new_record? ? 'new-name-sidebar-section' : section.dom_id(:name), :value => section.new_record? ? nil : section.name %>
-		<%= submit_to_remote nil, '+', :url => user_url(current_site, settings_sidebar_path(:action => section.new_record? ? 'section' : 'section_update')) %>
-		<%= tasty_error_message_on :section, :name, :id => section.new_record? ? 'new-name-sidebar-section' : section.dom_id(:name) %>
-	</form>
+  <form method='post' action='<%= user_url(current_site, settings_sidebar_path(:action => section.new_record? ? 'section' : 'section_update')) %>'>
+    <%= tag :input, :type => 'hidden', :name => 'authenticity_token', :value => form_authenticity_token %>
+
+    <% unless section.new_record? %>
+      <input type='hidden' name='section_id' value='<%= section.id %>' />
+    <% end %>
+    <%= text_field :section, :name, :id => section.new_record? ? 'new-name-sidebar-section' : section.dom_id(:name), :value => section.new_record? ? nil : section.name %>
+    <%= submit_to_remote nil, '+', :url => user_url(current_site, settings_sidebar_path(:action => section.new_record? ? 'section' : 'section_update')) %>
+    <%= tasty_error_message_on :section, :name, :id => section.new_record? ? 'new-name-sidebar-section' : section.dom_id(:name) %>
+  </form>
 </div>
 
 <script type='text/javascript'>

@@ -25,7 +25,6 @@ class Background < ActiveRecord::Base
 
   has_many    :tlog_settings, :class_name => 'TlogSettings'
 
-
   ## plugins
   has_attached_file :image,
     :url              => '/assets/bgs/:sha1_partition/:id_:style.:extension',
@@ -33,15 +32,12 @@ class Background < ActiveRecord::Base
     :convert_options  => { :all => '-strip' },
     :use_timestamp    => false
 
-  
   ## named_scopes
   named_scope :public, :conditions => { :is_public => true }
-
 
   ## validations
   validates_presence_of :user
 
-  
   ## callbacks
   ## class methods
   ## public methods

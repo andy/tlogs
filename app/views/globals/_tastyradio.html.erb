@@ -11,27 +11,27 @@
         <div style='float: left; line-height: 1.2em; padding: 0 2px;' class='strong highlight'>сейчас</div>
         <%= content_tag(:marquee, track_info[:song], :behavior => 'alternate', :scrollamount => '1', :style => 'width: 170px; background-color: white; position: relative; left: 2px; line-height: 1.2em;') %>
       </div>
-    
+
       <p>
-        
+
       </p>
     <% end %>
     <% RadioSchedule.onair.each do |schedule| %>
       <p>
         <%= content_tag :span, schedule.onair? ? 'сейчас' : say_time_in_words(schedule.air_at), :class => "strong#{' highlight' if schedule.onair?}" %>
         <%= content_tag :span, h(schedule.body) %>
-      </p>    
+      </p>
     <% end %>
-    
+
     <div id='tastyradio_holder'>
-	    <p>
-	      <%= link_to "Включить радио", service_url(tastyradio_index_path), :target => '_blank', :id => 'tastyradio_link' %>
-	      <%= image_tag 'fastforward.png', :alt => '', :class => 'popout', :size => '12x12', :title => 'Ссылка откроется в новом окне' %>
-	      <%= link_to '(edit)', service_url(all_tastyradio_path), :title => 'Редактировать программу передач', :id => 'tastyradio_edit' if current_user && RadioSchedule.djs.include?(current_user.id) %>
-	    </p>
-	  </div>
+      <p>
+        <%= link_to "Включить радио", service_url(tastyradio_index_path), :target => '_blank', :id => 'tastyradio_link' %>
+        <%= image_tag 'fastforward.png', :alt => '', :class => 'popout', :size => '12x12', :title => 'Ссылка откроется в новом окне' %>
+        <%= link_to '(edit)', service_url(all_tastyradio_path), :title => 'Редактировать программу передач', :id => 'tastyradio_edit' if current_user && RadioSchedule.djs.include?(current_user.id) %>
+      </p>
+    </div>
   </div>
-  
+
   <script type='text/javascript'>
     jQuery('#tastyradio_link').popupWindow({ height: 300, width: 500, windowName: 'Tasty Radio', top: 50, left: 50 });
     jQuery('abbr.timeago').timeago();

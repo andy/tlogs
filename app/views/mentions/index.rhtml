@@ -1,7 +1,7 @@
 <%
 print_mentions = []
 @mentions.each do |mention|
-	print_mentions.push({ 'pic' => userpic_src(mention, { :style => :thumb64 }), 'url' => mention.url }) if mention.url
+  print_mentions.push({ 'pic' => userpic_src(mention, { :style => :thumb64 }), 'url' => mention.url }) if mention.url
 end
 %>
 {"success":1,"x":"y2","list":<%= print_mentions.to_json %>}

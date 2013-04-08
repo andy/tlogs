@@ -2,7 +2,7 @@ class Entry
   # fix visibility for entries that are over limit
   before_validation do |entry|
     entry.visibility = 'public' if entry.id.nil? && !entry.author.is_allowed_visibility?(entry.visibility)
-    
+
     entry.visibility = 'public' if %w(mainpageable voteable).include?(entry.visibility) && entry.unwanted_content?
   end
 
@@ -15,12 +15,12 @@ class Entry
   }
   VISIBILITY_FOR_SELECT_NEW = VISIBILITY.sort_by { |obj| obj[1][:order] }.map { |k,v| [v[:new], k.to_s] }
   VISIBILITY_FOR_SELECT_EDIT = VISIBILITY.sort_by { |obj| obj[1][:order] }.map { |k,v| [v[:edit], k.to_s] }
-  
+
   # Виртуальный атрибут visibility позволяет нам заботиться о всех составляющих видимости записи практически через одну функцию
   def visibility
     VISIBILITY.find { |v| v[1][:options] == [self.is_voteable?, self.is_mainpageable?, self.is_private?] }[0].to_s rescue :public
   end
-  
+
   def visibility=(kind)
     kind ||= 'private'
     kind = 'private' unless VISIBILITY.keys.map(&:to_s).include?(kind)
@@ -36,10 +36,10 @@ class Entry
       self.is_mainpageable = false if self.author && !self.author.is_mainpageable?
     end
   end
-  
+
   def unwanted_content?
     contents = [self.data_part_1, self.data_part_2, self.data_part_3].compact.join("\n")
-    
+
     bads = [
       'testkub.ru',
       'magicwish.ru',
@@ -82,7 +82,7 @@ class Entry
       'Кредит наличными',
       'mainnika loves afeena'
       ]
-    
-    bads.find { |bad| contents.include?(bad) } ? true : false    
+
+    bads.find { |bad| contents.include?(bad) } ? true : false
   end
 end

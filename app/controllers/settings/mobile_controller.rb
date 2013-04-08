@@ -3,10 +3,10 @@ class Settings::MobileController < ApplicationController
   before_filter :require_confirmed_current_user
 
   protect_from_forgery
-  
+
   helper :settings
   layout "settings"
-  
+
   def email
     # create mobile settings thing
     current_site.mobile_settings ||= MobileSettings.create :user => current_site, :keyword => MobileSettings.generate_keyword
@@ -27,7 +27,7 @@ class Settings::MobileController < ApplicationController
       end
     end
   end
-  
+
   def bookmarklets
     @bookmarklet = Bookmarklet.find_by_id_and_user_id(params[:id], current_site.id) if params[:id]
     @bookmarklet ||= Bookmarklet.new
@@ -43,7 +43,7 @@ class Settings::MobileController < ApplicationController
       end
     end
   end
-  
+
   def bookmarklet_destroy
     @bookmarklet = Bookmarklet.find_by_id_and_user_id(params[:id], current_site.id)
     @bookmarklet.destroy if @bookmarklet

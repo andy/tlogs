@@ -1,17 +1,17 @@
 <% @title = 'ограничения – нужно подождать' %>
 <% content_for :header do %>
-	<div class='post_name'>
-		<%= link_to "&#x2190;", user_url(current_site, publish_path), :title => 'К выбору типа записи' %>&nbsp;
-		<%= @entry.new_record? ? 'Добавить' : 'Редактировать' %> <%= @entry.to_russian :whom %>
-	</div>
+  <div class='post_name'>
+    <%= link_to "&#x2190;", user_url(current_site, publish_path), :title => 'К выбору типа записи' %>&nbsp;
+    <%= @entry.new_record? ? 'Добавить' : 'Редактировать' %> <%= @entry.to_russian :whom %>
+  </div>
 <% end %>
 
 <div class='limit_exceeded'>
-	<h2>ОГРАНИЧЕНИЯ ОГРАНИЧЕНИЯ ОГРАНИЧЕНИЯ</h2>
-	<% if @reason %>
+  <h2>ОГРАНИЧЕНИЯ ОГРАНИЧЕНИЯ ОГРАНИЧЕНИЯ</h2>
+  <% if @reason %>
     <%= content_tag :p, @reason %>
     <% if @reason.expires_at %>
-    	<p>Осталось примерно <%= @reason.expires_at.distance_between_in_words(Time.now) %>.</p>
+      <p>Осталось примерно <%= @reason.expires_at.distance_between_in_words(Time.now) %>.</p>
     <% end %>
     <% if @reason.premium %>
       <%= content_tag :p, @reason.premium %>

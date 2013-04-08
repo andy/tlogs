@@ -35,39 +35,36 @@ class Conversation < ActiveRecord::Base
   has_many :messages, :dependent => :destroy
 
   belongs_to :last_message, :class_name => 'Message'
-  
+
   named_scope :unreplied, :conditions => 'is_replied = 0'
-  
+
   named_scope :unviewed, :conditions => 'is_viewed = 0'
-  
+
   named_scope :with, lambda { |user| { :conditions => ['recipient_id = ?', user.id] } }
 
   named_scope :active, :conditions => 'is_disabled = 0'
-  
-  named_scope :disabled, :conditions => 'is_disabled = 1'
 
+  named_scope :disabled, :conditions => 'is_disabled = 1'
 
   before_create do |record|
     record.send_notifications = record.user.tlog_settings.email_messages
-    
+
     true
   end
-
 
   # shadow conversation — opposite conversation by other party
   def shadow
     Conversation.find_by_user_id_and_recipient_id(self.recipient_id, self.user_id)
   end
-  
+
   def to_param
     recipient.url
   end
-  
-  
+
   def block!
     update_attributes!(:is_disabled => true) unless is_disabled?
   end
-  
+
   def async_destroy!
     block!
 

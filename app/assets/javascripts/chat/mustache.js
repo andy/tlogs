@@ -190,7 +190,6 @@ var Mustache = function () {
         "g");
       });
 
-
       // for each {{#foo}}{{/foo}} section do...
       return template.replace(regex, function (match, before, type, name, content, after) {
         // before contains only tags, no sections

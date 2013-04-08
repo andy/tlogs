@@ -21,10 +21,10 @@
       Услуга начинает предоставляться моментально, сразу после получения уведомления от сайта ROBOKASSA об успешной оплате.
     %li
       Оплата Тейсти-Премиум не освобождает пользователя от обязательств соблюдать правила предоставления услуги и выполнять соглашение с сервисом.
-  
+
   %center.webmoney
     = link_to image_tag('premium/wm_accepted.png', :title => 'Мы принимаем WebMoney'), 'https://www.webmoney.ru/'
     %a{:href => "https://passport.webmoney.ru/asp/certview.asp?wmid=#{@wmid}", :target => '_blank'}= image_tag 'premium/wm_attestated.png', :title => "Здесь находится аттестат нашего WM идентификатора #{@wmid}"
     %br
     %a{:href => "https://passport.webmoney.ru/asp/certview.asp?wmid=#{@wmid}", :target => '_blank'} Проверить аттестат
-  
+

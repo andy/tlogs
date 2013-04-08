@@ -36,19 +36,19 @@
   %body
     .t-premium-link
       %h2 Авторизуйтесь
-      
+
       %p Пожалуйста, введите e-mail и пароль для аккаунта, который хотите подключить.
-      
+
       .error
         Извините, неправильно указан e-mail или пароль.
-      
+
       %form{:method => 'POST', :action => user_url(current_site, settings_premium_path(:action => :link))}
         %label
           e-mail (<em>openid не поддерживается</em>):
           %input{:type => 'text', :name => 'email'}
-      
+
         %label
           пароль:
           %input{:type => 'password', :name => 'password'}
-    
+
         %input.button{:type => 'submit', :value => 'Добавить'}

@@ -1,38 +1,38 @@
 <% @title = 'анонимки' %>
 
 <div class='onair'>
-	<%= paginate @entry_ids if @entry_ids.current_page > 1 %>
+  <%= paginate @entry_ids if @entry_ids.current_page > 1 %>
 
   <% prev_entry = nil %>
-	<% @entries.each_with_index do |entry, index| %>
-		<%= render :partial => 'entries/anonymous_entry_display', :locals => { :entry => entry, :show_datetime => !(prev_entry.created_at.same_day?(entry.created_at) rescue false) } %>
-		<%- prev_entry = entry -%>
-	<% end %>
+  <% @entries.each_with_index do |entry, index| %>
+    <%= render :partial => 'entries/anonymous_entry_display', :locals => { :entry => entry, :show_datetime => !(prev_entry.created_at.same_day?(entry.created_at) rescue false) } %>
+    <%- prev_entry = entry -%>
+  <% end %>
 
-	<%= paginate @entry_ids %>
+  <%= paginate @entry_ids %>
 </div>
 
 <script type='text/javascript'>
 // <[!CDATA[
-	<%= "var comments_views_update = #{@comment_views.to_json(:only => [:id, :comments_count], :methods => [:last_comment_viewed])}" if @comment_views %>
-//	]]>
+  <%= "var comments_views_update = #{@comment_views.to_json(:only => [:id, :comments_count], :methods => [:last_comment_viewed])}" if @comment_views %>
+//  ]]>
 </script>
 
 <% content_for :sidebar_left do %>
-	<div class='section'>
-		<h2><span>Что это такое?</span></h2>
-		<p>Анонимка - это обычная текстовая запись, только мы с вами не видим кто её написал, а ЭВМ тщательно это скрывает.</p><br/>
-		<p>Написать анонимку - это как незнакомцу рассказать то, чем с друзьями не поделишься.</p><br/><br/>
+  <div class='section'>
+    <h2><span>Что это такое?</span></h2>
+    <p>Анонимка - это обычная текстовая запись, только мы с вами не видим кто её написал, а ЭВМ тщательно это скрывает.</p><br/>
+    <p>Написать анонимку - это как незнакомцу рассказать то, чем с друзьями не поделишься.</p><br/><br/>
                 <p>Анонимки - не рекламная площадка, не средство обращения на себя внимания и не место, где вашу запись просто увидит больше людей.</p><br/>
 <p>Пожалуйста, не публикуйте в анонимки то, что можно опубликовать в личный тлог.</p><br/>
                 <p>Записи, не отвечающие требованиям, будут удаляться, а автор не сможет писать анонимку ещё месяц.</p>
 
-	</div>
-	
-	<% if current_user %>
-		<div class='section'>
-			<h2><span>Как написать анонимку?</span></h2>
-			<p>Для этого нужно нажать на зеленый плюсик в верхнем меню, и в скрытом разделе "дополнительно" выбрать "анонимка"... дальше все очевидно. Ну или нажать <%= link_to 'сюда', user_url(current_user, publish_path(:action => :anonymous)) %>.</p>
-		</div>
-	<% end %>
+  </div>
+  
+  <% if current_user %>
+    <div class='section'>
+      <h2><span>Как написать анонимку?</span></h2>
+      <p>Для этого нужно нажать на зеленый плюсик в верхнем меню, и в скрытом разделе "дополнительно" выбрать "анонимка"... дальше все очевидно. Ну или нажать <%= link_to 'сюда', user_url(current_user, publish_path(:action => :anonymous)) %>.</p>
+    </div>
+  <% end %>
 <% end %>

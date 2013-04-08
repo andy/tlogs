@@ -1,14 +1,14 @@
 !!! 5
 %html
   %head
-  
+
   %body
     .t-accounts-switcher.popup
       - if current_user.can_switch?
         %h2 Переключиться в другой аккаунт
-      
+
         .accounts
-        
+
           %hr
           - @accounts.each do |user|
             - wh = userpic_dimensions(user)
@@ -26,19 +26,16 @@
                 - else
                   %form{:method => 'POST', :action => global_path(:action => 'switch')}
                     %input{:type => 'hidden', :name => request_forgery_protection_token, :value => form_authenticity_token}
-                    %input{:type => 'hidden', :name => 'url', :value => user.url.downcase}    
+                    %input{:type => 'hidden', :name => 'url', :value => user.url.downcase}
                     %input{:type => 'submit', :class => 'button', :value => 'Переключиться'}
             %hr
         .actions
           %a{:class => 't-act-logout', :href => '#'} Совсем выйти
-    
+
       - else
         .disabled
           Извините, но вам недоступна эта опция.
-        
+
         .actions
           %a{:class => 't-act-logout', :href => '#'} Совсем выйти
-          
-      
-  
-  
+

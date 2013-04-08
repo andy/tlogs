@@ -7,11 +7,11 @@ class User
   ## callbacks
   ## class methods
   ## public methods
-  
+
   def self.admins
     [1, 2, 180926]
   end
-  
+
   def self.moderators
     admins + []
   end
@@ -19,56 +19,56 @@ class User
   def is_admin?
     User.admins.include?(self.id)
   end
-  
+
   def is_moderator?
     User.moderators.include?(self.id)
   end
-  
+
   # пользователь выключен, анонимен, либо имеет неподтвержденный емейл адрес
   def is_limited?
     self.is_disabled? || (!self.is_openid? && !self.is_confirmed?)
   end
-  
+
   # можно ли пользователю отправлять письма?
   def is_emailable?
     self.is_confirmed? && !self.email.blank? && !self.is_disabled?
   end
-  
+
   # checks wether current user has user blacklisted
   def is_blacklisted_for?(user)
     user && user.id != self.id && self.is_premium? && self.blacklist_ids.include?(user.id)
   end
-  
+
   # checks wether this tlog can be viewed by other users
   def can_be_viewed_by?(user)
     # you can always view your own tlog
     return true if user && user.id == self.id
-    
+
     # skip if current user is blacklisted
     return false if user && self.is_blacklisted_for?(user)
-    
+
     case self.tlog_settings.privacy
     when 'open'
       true
-      
+
       # registration required
     when 'rr'
       user ? true : false
-      
+
       # friend-mode
     when 'fr'
       user && self.all_friend_ids.include?(user.id)
-      
+
       # only me
     when 'me'
       user && user.id == self.id
     end
   end
-  
+
   def visibility_limit
     # limits
     limits = {}
-    
+
     # on 27 apr 2011 registration was open, limit those people forever
     if self.is_premium?
       limits = {
@@ -86,24 +86,24 @@ class User
         (3.weeks...4.weeks) => { :mainpageable_entries => 6, :voteable_entries => 2 },
         (4.weeks...100.years) => { :mainpageable_entries => nil, :voteable_entries => nil }
       }
-    end    
+    end
 
     age   = Time.now - self.created_at
     limit = limits.find { |l| l[0].include?(age) }[1]
   end
-  
+
   def allowed_visibilities
     allow  = Entry::VISIBILITY.keys
     reject = []
-    
+
     # premium users are unlimited
     # return allow if self.is_premium?
 
     entries = self.entries.find(:all, :select => 'entries.id, entries.is_voteable, entries.is_mainpageable', :conditions => 'entries.is_mainpageable = 1 AND entries.created_at > DATE_SUB(NOW(), INTERVAL 24 HOUR)')
-    
+
     mainpageable_entries = entries.select { |e| e.is_mainpageable? }.length
     voteable_entries     = entries.select { |e| e.is_voteable? }.length
-    
+
     limit = self.visibility_limit
 
     reject << [:mainpageable, :voteable] if limit[:mainpageable_entries] && mainpageable_entries >= limit[:mainpageable_entries]
@@ -127,7 +127,7 @@ class User
         #   reason = Reason.new "К сожалению, музыку можно заливать лишь раз в день."
         #   reason.expires_at = Time.now.tomorrow.midnight
         # end
-        
+
         reason = Reason.new "К сожалению, мы временно отключили возможность заливать музыку прямо на тейсти :( Поэтому, как временное решение, пользуйтесь сервисами на которые можно залить треки, а потом вставляйте проигрыватель в тейсти. Приносим свои извинения за неудобства."
         reason.premium = "Эта опция, возможно, будет доступна премиум пользователям."
 
@@ -135,7 +135,7 @@ class User
         # анонимки можно создавать только раз в неделю
         # logger.debug "self = #{self.inspect}"
         # logger.debug "klass = #{klass.inspect}"
-        
+
         if self.ban_ac_till && self.ban_ac_till > Time.now
           reason = Reason.new "Персональный запрет"
           reason.expires_at = self.ban_ac_till
@@ -162,17 +162,17 @@ class User
           end
         end
     end
-    
+
     reason
   end
-  
+
   # может ли вообще голосовать за эту запись?
   def can_vote?(entry)
     return false if self.is_limited?
     return false if entry.user_id == self.id
     true
   end
-  
+
   # сила голоса пользователя. Пока что абсолютно равное значение для всех
   def vote_power
     is_admin? ? 2 : 1
@@ -182,20 +182,19 @@ class User
   def in_beta?
     !!self.relationship_with(User.find_by_url('beta'))
   end
-  
+
   def is_premium?
     (self.premium_till && self.premium_till > Time.now) || false
   end
-  
+
   def premium_days_left
     is_premium? ? ((self.premium_till - Time.now) / 1.day).floor : 0
   end
-  
+
   def premium_strftime
     self.premium_till.yesterday.strftime '%d %h %Y'
   end
 
-  ## private methods  
-  
-  
+  ## private methods
+
 end

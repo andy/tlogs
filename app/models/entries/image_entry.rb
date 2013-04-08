@@ -44,11 +44,11 @@ class ImageEntry < Entry
       'Картинка'
     end
   end
-  
+
   def title
     excerpt
   end
-  
+
   def self.new_from_bm(params)
     url = params[:url]
     uri = URI.parse(url)
@@ -57,7 +57,7 @@ class ImageEntry < Entry
     # если фликер - спец обработчик
     if uri.host && uri.path && uri.host.ends_with?('flickr.com')
 
-      # согласно http://www.flickr.com/services/api/misc.urls.html      
+      # согласно http://www.flickr.com/services/api/misc.urls.html
       photo_id = if uri.host.ends_with?('.static.flickr.com')
                   # статический путь до картинки - http://farm1.static.flickr.com/81/248825450_1140cb041a.jpg?v=0
                   uri.path.match(/^\/[0-9]*\/([0-9]*)/i)[1]
@@ -77,18 +77,17 @@ class ImageEntry < Entry
     end
     self.new :data_part_1 => source, :data_part_2 => content, :data_part_3 => url
   end
-  
-  
+
   def data_part_1=(link)
     write_attribute(:data_part_1, link)
-    
+
     if link =~ Format::HTTP_LINK
       self.metadata_will_change!
       self.metadata = {} if self.metadata.nil?
       self.metadata.merge!(get_metadata_for_linked_image(link))
     end
   end
-  
+
   # функция вычисления симметричных размеров для текущей картинки. работает как для записей
   # с локальной картинкой, так и для записей только со ссылкой на картинку.
   def geometry(options = {})
@@ -96,7 +95,7 @@ class ImageEntry < Entry
     height = options[:height] || 0
     image = options[:image]
     image ||= self.attachments.first if self.attachments
-    
+
     if image
       image_width, image_height = self.attachments.first.width, self.attachments.first.height
     elsif self.metadata && self.metadata.has_key?(:width)
@@ -109,7 +108,7 @@ class ImageEntry < Entry
     h_ratio = height > 0 ? height.to_f / image_height.to_f : 1
 
     ratio = [w_ratio, h_ratio].min
-    
+
     # пересчитываем
     width = ratio < 1 ? (image_width * ratio).to_i : image_width
     height = ratio < 1 ? (image_height * ratio).to_i : image_height
@@ -122,8 +121,8 @@ class ImageEntry < Entry
       Rails.cache.fetch("e:meta:img:#{Digest::SHA1.hexdigest(link)}", :expires_in => 1.week) do
         image = Net::HTTP.get(URI.parse(link))
         image_size = ImageSize.new(image)
-        
-        { :width => image_size.get_width, :height => image_size.get_height }        
+
+        { :width => image_size.get_width, :height => image_size.get_height }
       end || { }
     rescue Exception => ex
       logger.debug "could not get image metadata for this url: #{link}, #{ex}"

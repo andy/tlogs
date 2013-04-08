@@ -2,6 +2,6 @@
   <%= content_tag(:b, say_time_in_words(comment.user.ban_ac_till)) unless comment.user.ban_ac_till.blank? %>
   <% User::BAN_AC_DURATIONS.keys.each do |duration| %>
     <% next if duration == 'unban' && comment.user.ban_ac_till.blank? %>
-    <%= link_to_remote duration, { :url => service_url("/main/anonymous/ban_ac/#{comment.id}?duration=#{duration}") } %>  
+    <%= link_to_remote duration, { :url => service_url("/main/anonymous/ban_ac/#{comment.id}?duration=#{duration}") } %>
   <% end %>
-<% end %> 
+<% end %>

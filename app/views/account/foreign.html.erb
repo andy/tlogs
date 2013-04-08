@@ -1,35 +1,35 @@
 <% @title = "Регистрация нового пользователя" %>
 
 <div class='center_data_big_form'>
-	<% form_for :user, @user, :html => { :class => 'big' } do |f| %>
+  <% form_for :user, @user, :html => { :class => 'big' } do |f| %>
 
     <%= tag(:input, :type => 'hidden', :name => 'code', :value => h(params[:code])) if params[:code] %>
 
-		<%= render :partial => 'login_and_signup_form', :locals => { :f => f } %>
+    <%= render :partial => 'login_and_signup_form', :locals => { :f => f } %>
 
-		<div class='form_string'>
-			<label for="user_url">придумайте адрес тлога:
-				<%= f.text_field :url, :class => "at_input" %>
-				<div class="rel"><div class="at"><h1>.<%= current_service.domain %></h1></div></div>
-				<%= tasty_error_message_on('user', 'url') %>
-			</label>
-		</div>
-		
-		<div class='form_eula'>
-  		<%= f.check_box :eula %> — я прочел и принял условия <%= link_to 'пользовательского соглашения', account_url(:action => 'eula') %>
-  		<%= tasty_error_message_on 'user', 'eula' %>
-		</div>
-			
-		<input type="submit" value="Зарегистрироваться" class='button'/>
+    <div class='form_string'>
+      <label for="user_url">придумайте адрес тлога:
+        <%= f.text_field :url, :class => "at_input" %>
+        <div class="rel"><div class="at"><h1>.<%= current_service.domain %></h1></div></div>
+        <%= tasty_error_message_on('user', 'url') %>
+      </label>
+    </div>
+    
+    <div class='form_eula'>
+      <%= f.check_box :eula %> — я прочел и принял условия <%= link_to 'пользовательского соглашения', account_url(:action => 'eula') %>
+      <%= tasty_error_message_on 'user', 'eula' %>
+    </div>
+      
+    <input type="submit" value="Зарегистрироваться" class='button'/>
 
-		<div class='options_togo'>
-			или <%= link_to 'у меня уже есть логин', login_url %>
-		</div>
-		
-		<div id='navigation'>
-			<%= link_to "&#x2190; вернуться на главную", main_url, :id => 'return_to_main' %>
-		</div>
-	<% end %>
+    <div class='options_togo'>
+      или <%= link_to 'у меня уже есть логин', login_url %>
+    </div>
+    
+    <div id='navigation'>
+      <%= link_to "&#x2190; вернуться на главную", main_url, :id => 'return_to_main' %>
+    </div>
+  <% end %>
 </div>
 
 <%= observe_field 'user_url', :url => { :action => 'update_url_status' }, :frequency => 0.25, :with => 'url' %>

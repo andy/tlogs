@@ -1,32 +1,32 @@
 <% content_for :head do %>
-	<!-- content_for :head -->
-	<%= auto_discovery_link_tag(:rss, user_url(current_user, tlog_feed_protected_path(:key => current_user.last_personalized_key, :action => :last_personalized))) %>
-	<!-- /content_for :head -->
+  <!-- content_for :head -->
+  <%= auto_discovery_link_tag(:rss, user_url(current_user, tlog_feed_protected_path(:key => current_user.last_personalized_key, :action => :last_personalized))) %>
+  <!-- /content_for :head -->
 <% end %>
 <% if @entries.blank? %>
-	<div class='onair'>
-		<p>Здесь, пока, пусто. Видимо, вы еще не подписаны ни на один тлог.</p>
-	</div>
+  <div class='onair'>
+    <p>Здесь, пока, пусто. Видимо, вы еще не подписаны ни на один тлог.</p>
+  </div>
 <% else %>
-	<div class='onair t-iscrollable' data-iscroll-name='my-ordered'>
-		<% @entries.each do |entry| %>
-			<%= render :partial => 'entries/entry_display', :locals => { :entry => entry, :show_comments_bubble => true, :show_username => true, :show_tags => false, :comment_views => @comment_views } %>
-		<% end %>
+  <div class='onair t-iscrollable' data-iscroll-name='my-ordered'>
+    <% @entries.each do |entry| %>
+      <%= render :partial => 'entries/entry_display', :locals => { :entry => entry, :show_comments_bubble => true, :show_username => true, :show_tags => false, :comment_views => @comment_views } %>
+    <% end %>
 
-		<%= paginate @entry_ids %>		
-	</div>
+    <%= paginate @entry_ids %>    
+  </div>
 <% end %>
 
 <% content_for :sidebar_right do %>
-  <%= render :partial => 'main/my_sidebar_right' %>	
+  <%= render :partial => 'main/my_sidebar_right' %>  
   <%= render :partial => 'conversations/sidebar' %>
 
-	<div class='section'>
-		<h2><span>RSS</span></h2>
+  <div class='section'>
+    <h2><span>RSS</span></h2>
 
     <div>
       <p>На эту ленту можно подписаться через <%= link_to 'RSS', user_url(current_user, tlog_feed_protected_path(:key => current_user.last_personalized_key, :action => :last_personalized)), :class => 'rss' %></p>
-	  
+  
     </div>
-	</div>
+  </div>
 <% end %>

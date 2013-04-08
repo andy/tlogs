@@ -59,14 +59,14 @@ class LinkEntry < Entry
       'Ссылка'
     end
   end
-  
+
   def title
     excerpt
   end
-  
+
   def self.new_from_bm(params)
     self.new :data_part_1 => params[:url], :data_part_2 => params[:title], :data_part_3 => params[:c]
   end
-  
+
   before_validation :make_a_link_from_data_part_1_if_present
 end

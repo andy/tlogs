@@ -9,37 +9,37 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
     "http://www.w3.org/TR/xhtml1/DTD/xhtml-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
-	<head></head>
-	<body style="padding: 30px 20px 50px 30px; margin: 0; background-color: #ffffff;">
+  <head></head>
+  <body style="padding: 30px 20px 50px 30px; margin: 0; background-color: #ffffff;">
     <p style="font-family: Trebuchet MS, Arial, sans serif; font-size:0.95em; width:600px; color:#404040; padding-bottom: 2em;">
       <b>Здравствуйте, <%= h @user.username %>!</b>
     </p>
-		
-		<p style="font-family: Trebuchet MS, Arial, sans serif; font-size: 0.95em; width: 600px; color: #404040; padding-bottom: 1em;">
-		  <% if @is_anonymous_author %>
-		    Аноним
-		  <% else %>
-		    Пользователь <%= link_to_comment_author(@comment) %>
-		  <% end %>
-		  оставил комментарий к <%= @is_anonymous ? 'анонимке' : 'записи' %> <i>"<%= link_to h(@entry.excerpt), entry_link %>":</i>
-		</p>
-		
-		<p style="font-style: italic; font-family: Trebuchet MS, Arial, sans serif; font-size: 0.95em; width: 600px; color: #404040; padding-bottom: 1em;">
-		  <b>Его комментарий:</b>
-		  <br/>
-			<%= @comment.fetch_cached_or_run_block { |text| white_list_comment text } %>
-		</p>
+    
+    <p style="font-family: Trebuchet MS, Arial, sans serif; font-size: 0.95em; width: 600px; color: #404040; padding-bottom: 1em;">
+      <% if @is_anonymous_author %>
+        Аноним
+      <% else %>
+        Пользователь <%= link_to_comment_author(@comment) %>
+      <% end %>
+      оставил комментарий к <%= @is_anonymous ? 'анонимке' : 'записи' %> <i>"<%= link_to h(@entry.excerpt), entry_link %>":</i>
+    </p>
+    
+    <p style="font-style: italic; font-family: Trebuchet MS, Arial, sans serif; font-size: 0.95em; width: 600px; color: #404040; padding-bottom: 1em;">
+      <b>Его комментарий:</b>
+      <br/>
+      <%= @comment.fetch_cached_or_run_block { |text| white_list_comment text } %>
+    </p>
 
-		<p style="font-family: Trebuchet MS, Arial, sans serif; font-size:0.95em; width:600px; color:#404040; padding-bottom: 2em;">
-		  <%= link_to comment_link, comment_link %>
-		</p>
-		
-		<p style="font-family:Trebuchet MS, Arial, sans serif; font-size:0.95em; width:600px; color:#808080; padding-bottom: 2em;">
-			Вы получили это письмо, потому что подписались на комментарии к этой записи. Чтобы отписаться, нажмите на конвертик наверху страницы.
-		</p>
-		
-		<p style="font-family:Trebuchet MS, Arial, sans serif; font-size:0.95em; width:600px; color:#404040; text-align:right;">
-		  C уважением, <a href="<%= service_url %>" target="_blank" style="border: 0px;"><img src="<%= service_url %>images/letter-logo.gif" width='101' height='27' style="position:relative; bottom:-6px;	margin-left:4px;" /></a>
-		</p>
-	</body>
+    <p style="font-family: Trebuchet MS, Arial, sans serif; font-size:0.95em; width:600px; color:#404040; padding-bottom: 2em;">
+      <%= link_to comment_link, comment_link %>
+    </p>
+    
+    <p style="font-family:Trebuchet MS, Arial, sans serif; font-size:0.95em; width:600px; color:#808080; padding-bottom: 2em;">
+      Вы получили это письмо, потому что подписались на комментарии к этой записи. Чтобы отписаться, нажмите на конвертик наверху страницы.
+    </p>
+    
+    <p style="font-family:Trebuchet MS, Arial, sans serif; font-size:0.95em; width:600px; color:#404040; text-align:right;">
+      C уважением, <a href="<%= service_url %>" target="_blank" style="border: 0px;"><img src="<%= service_url %>images/letter-logo.gif" width='101' height='27' style="position:relative; bottom:-6px;  margin-left:4px;" /></a>
+    </p>
+  </body>
 </html>

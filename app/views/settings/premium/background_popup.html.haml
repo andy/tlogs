@@ -5,14 +5,14 @@
   %body
     .t-premium-background
       %h2 Загрузите свое фоновое изображение
-    
+
       %form{:method => 'POST', :action => user_url(current_site, settings_premium_path(:action => 'background')), :enctype => 'multipart/form-data'}
         %input{:type => 'hidden', :name => request_forgery_protection_token, :value => form_authenticity_token}
         %label
           Выберите файл с изображением:
           %input{:type => 'file', :name => 'image'}
 
-        %h2 
+        %h2
           Цвет логотипа
           .logo_color
             %label
@@ -22,5 +22,5 @@
             %label
               %input{ :type => 'radio', :name => 'gray_logo', :checked => false, :value => 1 }
               серый
-          
+
         %input{:type => 'submit', :class => 'button', :value => 'Загрузить'}

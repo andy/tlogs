@@ -1,18 +1,17 @@
-
 class Time
   # возвращает true если даты - один день
   def same_day?(time)
     self.to_date == time.to_date
   end
-  
+
   def today?
     self.to_date == Date.today
   end
-  
+
   def to_timestamp_s
     "#{mday} #{month.to_rmonth} #{year}, #{"%02d" % hour}:#{"%02d" % min}"
   end
-  
+
   # Time.now.distance_between_in_words(1.year.ago, ' спустя')
   def distance_between_in_words(dst, postfix = nil)
     seconds = (self.to_i - dst.to_i).abs

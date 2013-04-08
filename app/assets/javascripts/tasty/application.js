@@ -39,30 +39,30 @@ function run_comments_views_update( ) {
     if (element) {
       Element.update(element, text);
 
-			if(object.comments_count > 0) {
-				/* add .has_comments class to two parent divs (this will make bubble visible) */
-				var elm_p = element.up('div.comment_cloud');
-				if(elm_p && !elm_p.hasClassName('has_comments')) {
-					elm_p.addClassName('has_comments');
-				}
-			
-				var elm_p = elm_p.up('div.service_comments');
-				if(elm_p && !elm_p.hasClassName('has_comments')) {
-					elm_p.addClassName('has_comments');
-				}
-			} else {
-				/* remove .has_comments class to two parent divs (this will make bubble invisible) */
-				var elm_p = element.up('div.comment_cloud');
-				if(elm_p && elm_p.hasClassName('has_comments')) {
-					elm_p.removeClassName('has_comments');
-				}
-			
-				var elm_p = elm_p.up('div.service_comments');
-				if(elm_p && elm_p.hasClassName('has_comments')) {
-					elm_p.removeClassName('has_comments');
-				}
-			}
-		}
+      if(object.comments_count > 0) {
+        /* add .has_comments class to two parent divs (this will make bubble visible) */
+        var elm_p = element.up('div.comment_cloud');
+        if(elm_p && !elm_p.hasClassName('has_comments')) {
+          elm_p.addClassName('has_comments');
+        }
+      
+        var elm_p = elm_p.up('div.service_comments');
+        if(elm_p && !elm_p.hasClassName('has_comments')) {
+          elm_p.addClassName('has_comments');
+        }
+      } else {
+        /* remove .has_comments class to two parent divs (this will make bubble invisible) */
+        var elm_p = element.up('div.comment_cloud');
+        if(elm_p && elm_p.hasClassName('has_comments')) {
+          elm_p.removeClassName('has_comments');
+        }
+      
+        var elm_p = elm_p.up('div.service_comments');
+        if(elm_p && elm_p.hasClassName('has_comments')) {
+          elm_p.removeClassName('has_comments');
+        }
+      }
+    }
   });
 }
 
@@ -70,7 +70,7 @@ function run_comments_views_update( ) {
 function run_entry_ratings_update( ) {
   if (typeof entry_ratings_update == 'undefined')
     return;
-    
+
   entry_ratings_update.each ( function(object) {
     var element = $('entry_rating_' + object.id);
     if (element) Element.update(element, object.value);
@@ -85,10 +85,10 @@ function run_entry_ratings_update( ) {
  * do the dynamic tweaking and tuning
  */
 function enable_services_for_current_user( ) {
-	/*
-	 * Note here: we can't really use .show() method here, as it will set default element
-	 * display setting, rather than let the browser decide
-	 */
+  /*
+   * Note here: we can't really use .show() method here, as it will set default element
+   * display setting, rather than let the browser decide
+   */
 
   /* all links that can be shown to logged in user */
   jQuery(".enable_for_current_user").css('display', '');
@@ -108,33 +108,32 @@ document.observe('dom:loaded', function( ) {
   if(typeof current_user != 'undefined') {
     run_comments_views_update();
     run_entry_ratings_update();
-  	jQuery('input, textarea').placeholder();
+    jQuery('input, textarea').placeholder();
     if(current_user) {
       enable_services_for_current_user();
     }
   }
 });
 
-
 function emulate_rails_flash(klass, message) {
-	// remove element if exists
-	if(jQuery('#flash_holder').length != 0) { jQuery('#flash_holder').remove(); }
-	
-	// create new one
-	jQuery('.onair').prepend("<div id='flash_holder'><table id='flash'><tr><td id='flash_message'><p></p></td></tr></table></div>");
-	jQuery('#flash').click(function() { jQuery(this).fadeOut(300, function() { jQuery('#flash_holder').remove(); }); });
-	jQuery('#flash_holder #flash_message').addClass(klass).find('p').text(message);
+  // remove element if exists
+  if(jQuery('#flash_holder').length != 0) { jQuery('#flash_holder').remove(); }
+  
+  // create new one
+  jQuery('.onair').prepend("<div id='flash_holder'><table id='flash'><tr><td id='flash_message'><p></p></td></tr></table></div>");
+  jQuery('#flash').click(function() { jQuery(this).fadeOut(300, function() { jQuery('#flash_holder').remove(); }); });
+  jQuery('#flash_holder #flash_message').addClass(klass).find('p').text(message);
 }
 
-jQuery(document).ready(function() {	
-	jQuery('a, button').focus(function(){ this.blur();} );
+jQuery(document).ready(function() {  
+  jQuery('a, button').focus(function(){ this.blur();} );
 
-	jQuery('#pref_friends_holder .pref_friends_user').live('click', function() {
-	  ga_event('Userbar', 'Heart', jQuery(this).find('a').val());
-	  return true;
-	});
+  jQuery('#pref_friends_holder .pref_friends_user').live('click', function() {
+    ga_event('Userbar', 'Heart', jQuery(this).find('a').val());
+    return true;
+  });
 
-	jQuery('#invoke-pref-fav').click(function() {
+  jQuery('#invoke-pref-fav').click(function() {
     if(jQuery(this).data('fetched')) {
       var img = jQuery(this).find('img');
       if(jQuery('#pref_friends_holder').is(':visible')) {
@@ -142,8 +141,8 @@ jQuery(document).ready(function() {
         img.attr('src', img.data('inactive'));
       } else {
         jQuery('#pref_friends_holder').show();
-        img.attr('src', img.data('active'));        
-      }        
+        img.attr('src', img.data('active'));
+      }
     } else {
       if(jQuery(this).data('fetching')) {
         // prevent double clicks
@@ -174,10 +173,10 @@ jQuery(document).ready(function() {
           type: 'post',
           data: { authenticity_token: window._token }
         });
-        
+
       }
     }
 
     return false;
-	});
+  });
 });

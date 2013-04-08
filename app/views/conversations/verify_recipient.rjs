@@ -4,7 +4,7 @@ page << "if(jQuery('#message_recipient_url').val() == #{@value.to_json}) {"
     page << "
       jQuery('#message_recipient a').attr('href', #{user_url(@recipient).to_json}).html(#{@recipient.url.to_json});
       jQuery('#message_recipient').show();
-      jQuery('#message_recipient_url').removeClass('input_error');    
+      jQuery('#message_recipient_url').removeClass('input_error');
     "
 
     # check wether they had conversation previously
@@ -20,11 +20,11 @@ page << "if(jQuery('#message_recipient_url').val() == #{@value.to_json}) {"
     page << "
       jQuery('#subtext_message').attr('class', 'success').html(#{text.to_json});
     "
-  
+
   else
     # remove the url
     page << "jQuery('#message_recipient').hide();"
-  
+
     # update the status value
     if @value
       page << "jQuery('#subtext_message').attr('class', 'failure').html('указанный вами пользователь не найден');"

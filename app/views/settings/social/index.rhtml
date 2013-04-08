@@ -1,57 +1,57 @@
 <% @title = 'социальные настройки' %>
 <% content_for :header do %>
-	<%= image_tag('ctulhu.gif', :size => '18x22') %> Друзья
+  <%= image_tag('ctulhu.gif', :size => '18x22') %> Друзья
 <% end %>
 
 <p class='settings_warning'>
-	На этой странице работает <span class='highlight'>drag &amp; drop</span>!
-	<span class='ctulhu_note'>Используйте значок <%= image_tag 'ctulhu.gif' %> для перетаскивания друзей.</span>
+  На этой странице работает <span class='highlight'>drag &amp; drop</span>!
+  <span class='ctulhu_note'>Используйте значок <%= image_tag 'ctulhu.gif' %> для перетаскивания друзей.</span>
 </p>
 
 <!-- <p class='settings_warning'>
   Кстати, читать записи друзей можно <%= link_to 'прямо с сайта', service_url(main_path(:action => 'my')) %>, либо через <%= link_to 'RSS', user_url(current_site, tlog_feed_protected_path(:key => current_user.last_personalized_key, :action => :last_personalized)), :title => 'подписаться через RSS', :class => 'rss' %>
 </p> -->
 <table id='friends_table'>
-	<tr>
-		<th style='width: 33%'>
-			<h2>публичные</h2>
-			<p>будут показываться в боковой панели вашего тлога. их увидят все</p>
-		</th>
-		<th style='width: 33%'>
-			<h2>общие</h2>
-			<p>те, кого вы хотите читать, но по каким-то причинам не хотите отображать в боковой панели</p>
-		</th>
+  <tr>
+    <th style='width: 33%'>
+      <h2>публичные</h2>
+      <p>будут показываться в боковой панели вашего тлога. их увидят все</p>
+    </th>
+    <th style='width: 33%'>
+      <h2>общие</h2>
+      <p>те, кого вы хотите читать, но по каким-то причинам не хотите отображать в боковой панели</p>
+    </th>
     <th style='width: 33%'>
       <h2>черный список</h2>
       <p>все, кого вы добавите в этот список, не смогут читать и комментировать ваши записи</p>
     </th>
-	</tr>
-	<tr>
-		<td>
-			<ul id='public_friends'><%= render :partial => 'user', :collection => current_user.public_friends, :locals => { :css_class => 'public-friendly-friend' } %></ul>
-		</td>
-		<td>
-			<ul id='friends'><%= render :partial => 'user', :collection => current_user.friends, :locals => { :css_class => 'friendly-friend' } %></ul>
-		</td>
+  </tr>
+  <tr>
+    <td>
+      <ul id='public_friends'><%= render :partial => 'user', :collection => current_user.public_friends, :locals => { :css_class => 'public-friendly-friend' } %></ul>
+    </td>
+    <td>
+      <ul id='friends'><%= render :partial => 'user', :collection => current_user.friends, :locals => { :css_class => 'friendly-friend' } %></ul>
+    </td>
     <td>
       <% if is_premium? %>
-        <ul id='blacklisted'><%= render :partial => 'user', :collection => current_user.blacklist, :locals => { :css_class => 'blacklist-friend' } %></ul>      
+        <ul id='blacklisted'><%= render :partial => 'user', :collection => current_user.blacklist, :locals => { :css_class => 'blacklist-friend' } %></ul>
       <% else %>
         <p>Эта опция доступна премиум-пользователям.</p>
         <p><%= link_to 'Подробнее &rarr;', user_url(current_site, settings_premium_path) %></p>
       <% end %>
     </td>
-	</tr>
+  </tr>
 </table>
 
 <% form_remote_tag :url => user_url(current_site, url_for(:action => 'add')) do
     options                  = { 'публичные' => 2, 'общие' => 1 }
-    options['черный список'] = -2 if is_premium?  
+    options['черный список'] = -2 if is_premium?
   %>
-	<div class='social_manipulator'>
-		Добавить <input id='new_user_url' type='text' autocomplete='off' name='url' value='' /> в <%= select_tag 'friendship_status', options_for_select(options, 2) %> <input type='submit' value='+' class='button' />
-	</div>
-	<%= tasty_error_message_on :new_user, :url %>
+  <div class='social_manipulator'>
+    Добавить <input id='new_user_url' type='text' autocomplete='off' name='url' value='' /> в <%= select_tag 'friendship_status', options_for_select(options, 2) %> <input type='submit' value='+' class='button' />
+  </div>
+  <%= tasty_error_message_on :new_user, :url %>
 <% end %>
 
 <%

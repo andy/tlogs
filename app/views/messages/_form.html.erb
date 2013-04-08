@@ -8,12 +8,12 @@
 <% remote_form_for :message, @message, :url => service_url(messages_path).downcase, :before => 'submit_started();', :failure => 'submit_failure()', :complete => 'jQuery("#submitting").hide()' do |f| %>
 
   <div class='rel'>
-	  <div class='message_sender'><%= link_to_tlog current_user %></div>
-	</div>
+    <div class='message_sender'><%= link_to_tlog current_user %></div>
+  </div>
 
-	<div class='rel'>
-	  <%= image_tag 'ajax-smaller-loader.gif', :size => '16x16', :alt => '', :title => '', :style => 'display: none', :id => 'submitting' %>
-	</div>
+  <div class='rel'>
+    <%= image_tag 'ajax-smaller-loader.gif', :size => '16x16', :alt => '', :title => '', :style => 'display: none', :id => 'submitting' %>
+  </div>
 
   <%= tag :input, :name => 'message[recipient_url]', :type => 'hidden', :value => conversation.recipient.url %>
   <%= tag :input, :name => 'disable_ajax_refresh', :type => 'hidden', :value => '1' %>
@@ -22,30 +22,29 @@
 
   <%= f.text_area :body, :style => 'width: 450px; height: 6em; font-size: 14px;', :class => 'resizable', :tabindex => '1' %>
   <%= tasty_error_message_on :message, :body %>
-  
+
   <div class='message_submit'>
     <span>Теги запрещены, ссылки выделяются автоматически</span>
     <%= f.submit 'Отправить', :tabindex => '0' %>
   </div>
 <% end %>
 
-
 <script type='text/javascript'>
   function submit_started() {
     jQuery('#submitting').show();
     jQuery('.submit_button input').attr('disabled', 'disabled');
   }
-  
+
   function submit_failure() {
     jQuery('#submitting').hide();
     jQuery('.submit_button input').removeAttr('disabled');
     error_message_on('message_body', 'К сожалению, случилась серверная ошибка и ваше сообщение не было отправлено. Попробуйте повторить свою попытку позже.');
   }
-  
+
   // focus immediately on page load
-  jQuery(document).ready(function() { 
+  jQuery(document).ready(function() {
     Tasty.mentions.onkeydown('#message_body', 'Shift+@', '/convos/mentions');
 
-    if(window.document.location.hash == '#form') { jQuery('#message_body').focus(); } 
+    if(window.document.location.hash == '#form') { jQuery('#message_body').focus(); }
   });
 </script>

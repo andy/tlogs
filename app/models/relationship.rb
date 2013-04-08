@@ -36,14 +36,13 @@ class Relationship < ActiveRecord::Base
   # есть пользователь :user которого читает другой пользователь, :reader
   belongs_to :user
   belongs_to :reader, :class_name => 'User', :foreign_key => 'reader_id'
-  
+
   validates_presence_of :user_id
   validates_presence_of :reader_id
   validates_inclusion_of :friendship_status, :in => -2..2
-  
+
   acts_as_list :scope => 'reader_id = #{reader_id} AND friendship_status = #{friendship_status}'
-  
-  
+
   def say_it(user, reader)
     case friendship_status
     when PUBLIC
@@ -56,18 +55,18 @@ class Relationship < ActiveRecord::Base
       "Подписаться на #{user.gender('его', 'её')} тлог"
     end
   end
-  
+
   def stamp(lwec)
     self.last_viewed_at             = Time.now
     self.last_viewed_entries_count  = lwec
-    
+
     self
   end
 
   def stamp!(lwec)
     self.stamp(lwec).save!
   end
-  
+
   # positive relationship is one when user is explicitly or implicitly following another
   def positive?
     self.friendship_status >= 0
@@ -77,12 +76,12 @@ class Relationship < ActiveRecord::Base
   def negative?
     self.friendship_status < 0
   end
-  
+
   # subscribed is when user explicitly expressed his will to follow this user
   def subscribed?
     self.friendship_status > 0
   end
-  
+
   # when user explicitly put this relationship in ignored list
   def ignored?
     self.friendship_status == IGNORED

@@ -16,7 +16,7 @@
         <% if @new_record %>
           <%#= link_to_function 'Дополнительно ...', 'new Effect.toggle("entry_options", "blind", { duration: 0.3 })' %>
         <% end %>
-    
+
         <div id='entry_options' <%#= ' style="display: none"' if @new_record %>>
           <div id='entry_visibility_div'>
             <% if entry.visibility != 'voteable' || @new_record %>
@@ -33,7 +33,7 @@
               <% end %>
             <% end %>
           </div>
-          
+
           <!-- <div id='entry_nsfw_holder'>
             <div id='entry_nsfw_holder_checkbox'>
               <%#= check_box :entry, :nsfw, :class => 'checkbox' %>
@@ -43,7 +43,7 @@
               <div id='entry_nsfw_holder_comments'>Поставьте эту галочку, если ваша запись содержит нецензурные выражения, является оскорбительной или содержит порнографические материалы.</div>
             </div>
           </div> -->
-      
+
           <div id='entry_tags'>
             <label for='entry_tag_list'>Теги: </label><br/>
             <%= text_field 'entry', 'tag_list', { :id => 'entry_tag_list', :autocomplete => 'off' } %>
@@ -53,7 +53,7 @@
         </div>
       </div>
     <% end %>
-    
+
     <%= submit_to_remote "button", "Предпросмотр", :url => user_url(current_site, url_for(:action => :preview)), :before => 'remote_request_started("generate_preview", "Подготавливаем ...");', :loaded => 'remote_request_finished("generate_preview", "Предпросмотр");', :html => { :id => 'generate_preview', :class => 'button' } %>&nbsp;
     <%= submit_tag 'Сохранить', :class => 'button', :id => 'submit_button' %>
     <div class='form_submit_return'>
@@ -64,7 +64,7 @@
         <%= link_to 'вернуться обратно', user_url(current_user, publish_path(bookmarklet_url_options)) %>
       <% end %>
     </div>
-  </form> 
+  </form>
 </div>
 
 <% if in_bookmarklet? && params[:bm][:autosave] == 'true' %>
@@ -72,8 +72,8 @@
 <% end %>
 <script type='text/javascript'>
   jQuery(function() {
-  	Tasty.mentions.onkeydown('#entry_data_part_1', 'Shift+@', '<%= publish_url(:action => "mentions") %>');
-  	Tasty.mentions.onkeydown('#entry_data_part_2', 'Shift+@', '<%= publish_url(:action => "mentions") %>');
+    Tasty.mentions.onkeydown('#entry_data_part_1', 'Shift+@', '<%= publish_url(:action => "mentions") %>');
+    Tasty.mentions.onkeydown('#entry_data_part_2', 'Shift+@', '<%= publish_url(:action => "mentions") %>');
 
     if(jQuery('#entry_visibility').val() == 'mainpageable' || jQuery('#entry_visibility').val() == 'voteable') {
       jQuery('#entry_nsfw_holder').show();
@@ -82,7 +82,7 @@
       jQuery('#entry_nsfw_holder').hide();
       jQuery('.visibility_comments').hide();
     }
-    
+
     jQuery('#entry_visibility').change(function() {
       if(jQuery(this).val() == 'mainpageable' || jQuery(this).val() == 'voteable') {
         jQuery('#entry_nsfw_holder').show(300);
@@ -92,7 +92,7 @@
         jQuery('.visibility_comments').hide(300);
       }
     });
-    
+
     // var tags = <%#= current_site.tags.to_json %>;
     // var current_tags = <%#= @entry.tags.to_json %>;
     // jQuery('#entry_tag_list').autoSuggest(tags, {selectedItemProp: "name", searchObjProps: "name", preFill: current_tags, matchCase: false, neverSubmit: true, startText: '', selectionLimit: 20, emptyText: 'нажмите tab, чтобы добавить тег' });

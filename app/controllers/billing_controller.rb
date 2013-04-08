@@ -1,8 +1,7 @@
 class BillingController < ApplicationController
   before_filter :require_current_user, :only => [:robox_success, :robox_failure]
-  
-  before_filter :robox_preload, :only => [:robox_result, :robox_success]
 
+  before_filter :robox_preload, :only => [:robox_result, :robox_success]
 
   #
   # SMS Online
@@ -38,7 +37,7 @@ class BillingController < ApplicationController
   # pay    -> how much we get (usd, float)
   # zpay   -> how much we get (usd, float)
   # md5    -> md5 hex (password tid sn op phone pref txt)
-  # 
+  #
   # request ip:
   # 83.137.50.31, 85.192.45.22, 194.67.81.38, 95.163.74.6
   #
@@ -51,7 +50,7 @@ class BillingController < ApplicationController
         :error_message  => "SmsonlineInvoice: invalid remote address (#{request.remote_ip})",
         :parameters     => params
       )
-      
+
       render :text => "utf=неверный адрес запроса"
       return
     end
@@ -61,10 +60,10 @@ class BillingController < ApplicationController
       @invoice = SmsonlineInvoice.new :remote_ip => request.remote_ip,
                                        :metadata => params.slice(*SmsonlineInvoice::METADATA_KEYS),
                                        :state    => 'successful'
-    
+
       if @invoice.valid?
         @invoice.save!
-        
+
         # reload, so we would have .user refreshed with new premium_strftime option
         @invoice.reload
 
@@ -89,31 +88,30 @@ class BillingController < ApplicationController
     end
   end
 
-  
   #
   # ROBOX
   # -----
-  #  
+  #
   # POST /billing/robox/result [API endpoint]
   def robox_result
     if @invoice.is_pending?
       @invoice.robox_success!
-    
+
       @invoice.deliver!(current_service)
-    
+
       render :text => "OK#{@invoice.id}"
     else
       render :text => 'FAIL'
     end
   end
-  
+
   # POST /billing/robox/success [Customer endpoint]
   def robox_success
     flash[:good] = @invoice.summary + ' успешно проведен.'
-    
+
     redirect_to user_url(current_user, settings_premium_path)
   end
-  
+
   # POST /billing/robox/failure [Customer endpoint]
   def robox_failure
     flash[:bad] = 'Оплата через ROBOX отменена.'
@@ -121,7 +119,6 @@ class BillingController < ApplicationController
     redirect_to user_url(current_user, settings_premium_path)
   end
 
-  
   #
   # QIWI
   # ----
@@ -131,23 +128,23 @@ class BillingController < ApplicationController
 
     redirect_to current_user ? user_url(current_user, settings_premium_path) : service_url(login_path(:noref => 1))
   end
-  
+
   def qiwi_success
     flash[:good] = 'Великолепно! Тейсти-премиум успешно оплачен через QIWI-кошелек'
 
     redirect_to current_user ? user_url(current_user, settings_premium_path) : service_url(login_path(:noref => 1))
   end
-  
+
   # POST /billing/qiwi/update_bill
   def qiwi_update_bill
     code    = QiwiInvoice::SUCCESS
     testing = false
-    
+
     login   = params["Envelope"]["Body"]["updateBill"]["login"]
     pass    = params["Envelope"]["Body"]["updateBill"]["password"]
     txn     = params["Envelope"]["Body"]["updateBill"]["txn"].gsub('qiwi-', '').to_i
     status  = params["Envelope"]["Body"]["updateBill"]["status"].to_i
-    
+
     testing = true if pass.blank?
 
     QiwiInvoice.transaction do
@@ -162,7 +159,7 @@ class BillingController < ApplicationController
 
       @invoice.metadata_will_change!
       @invoice.metadata[:testing] = true if testing
-    
+
       case status
         when 50..59
           # do nothing, payment in process
@@ -172,7 +169,7 @@ class BillingController < ApplicationController
 
           # mark as paid and proceed
           @invoice.qiwi_success!
-          
+
           @invoice.deliver!(current_service)
         when 100..200
           # payment failed
@@ -182,14 +179,14 @@ class BillingController < ApplicationController
           @invoice.qiwi_failed!
       end
     end
-    
+
     qiwi_soap_reply(code)
   end
-  
+
   protected
     def robox_preload
       robox_reply_with_fail("invalid request", params) and return false unless request.post?
-      
+
       amount    = params[:OutSum]
       txn_id    = params[:InvId]
       sig       = params[:SignatureValue]
@@ -197,27 +194,27 @@ class BillingController < ApplicationController
 
       our_sig = Digest::MD5.hexdigest [amount, txn_id, pass].join(':')
 
-      robox_reply_with_fail("erronous request (signature mismatch)", params) and return false if our_sig.downcase != sig.downcase      
-      
+      robox_reply_with_fail("erronous request (signature mismatch)", params) and return false if our_sig.downcase != sig.downcase
+
       @invoice = RoboxInvoice.find_by_id(txn_id)
 
       robox_reply_with_fail("invoice not found", params) and return false if @invoice.nil?
-      
+
       robox_reply_with_fail("invalid amount (expected #{@invoice.amount})", params) and return false if amount.to_f != @invoice.amount
-      
+
       true
     end
-  
+
     def robox_reply_with_fail(message, params = {})
       Airbrake.notify(
         :error_class    => 'RoboxInvoice',
         :error_message  => "RoboxInvoice: #{message}",
         :parameters     => params || {}
       )
-      
+
       render :text => "FAIL", :status => 200
     end
-  
+
     def qiwi_soap_reply(code, params = {})
       answer = <<-EOF
 <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
@@ -236,7 +233,7 @@ EOF
           :parameters     => params
         )
       end
-    
+
       render :xml => answer, :status => 200
     end
 end

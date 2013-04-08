@@ -20,7 +20,7 @@ class EntryVote < ActiveRecord::Base
 
   validates_presence_of :user_id
   validates_presence_of :entry_id
-  
+
   named_scope :positive, { :conditions => 'value > 0' }
-  named_scope :negative, { :conditions => 'value < 0' }  
+  named_scope :negative, { :conditions => 'value < 0' }
 end

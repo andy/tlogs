@@ -30,7 +30,7 @@
         %p С помощью этой функции вы сможете быстро переключаться между несколькими аккаунтами.
       %p.change
         = link_to 'Настроить', user_url(current_site, settings_premium_path(:action => 'accounts')), :class => 'button' if is_premium?
-  
+
     .feature.pad
       = image_tag 'premium/settings_privacy.png'
       %p.bold Только для себя
@@ -50,18 +50,17 @@
         %p Вы сможете поменять фон на главной странице на свой, либо выбрать любой из понравившихся из нашей скромной коллекции.
       %p.change
         = link_to 'Настроить', user_url(current_site, settings_premium_path(:action => 'background')), :class => 'button' if is_premium?
-    
 
   %hr
-  
+
   %h3 А также
-  
+
   .extra-features
     .feature.pad
       = image_tag 'premium/settings_anonymous.png'
       %p.bold Открытые анонимки
       %p У вас будет снято ограничение, не позволяющее вам писать анонимки сразу после регистрации.
-    
+
     .feature.pad
       = image_tag 'premium/settings_limits.png'
       %p.bold Никаких ограничений
@@ -71,12 +70,12 @@
       = image_tag 'premium/settings_noads.png'
       %p.bold Никакой рекламы
       %p Если вам захочется, то в вашем тлоге исчезнет раздел "Реклама".
-    
+
     -# .feature
     -#   = image_tag 'premium/settings_heart.png'
     -#   %p.bold Благодарность
     -#   %p Оплатой сервиса вы поддержите проект и его разрабочиков, и тогда они смогут выделять больше времени и ресурсов на его развитие.
-      
+
       - if is_premium?
         %label#grateful
           %input{:type => 'checkbox', :checked => (current_site.settings[:ng] == 1) ? nil : 'checked'}
@@ -94,17 +93,17 @@
   %br
 
   -# %hr
-  
+
   %center.webmoney
     = link_to image_tag('premium/wm_accepted.png', :title => 'Мы принимаем WebMoney'), 'https://www.webmoney.ru/'
     %a{:href => "https://passport.webmoney.ru/asp/certview.asp?wmid=#{@wmid}", :target => '_blank'}= image_tag 'premium/wm_attestated.png', :title => "Здесь находится аттестат нашего WM идентификатора #{@wmid}"
     %br
     %a{:href => "https://passport.webmoney.ru/asp/certview.asp?wmid=#{@wmid}", :target => '_blank'} Проверить аттестат
-  
+
 :javascript
   jQuery(function() {
     jQuery('#grateful input').change(function() {
-      var value = 
+      var value =
       jQuery.ajax({
         url: #{user_url(current_site, settings_premium_path(:action => 'grateful')).to_json},
         type: 'post',

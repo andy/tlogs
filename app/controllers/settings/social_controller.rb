@@ -4,14 +4,14 @@ class Settings::SocialController < ApplicationController
   after_filter :expire_cache, :only => [:delete, :title_update, :add, :sort]
 
   protect_from_forgery
-  
+
   helper :settings
   layout "settings"
-  
+
   def index
     @new_user = User.new
   end
-  
+
   def delete
     render :nothing => true and return unless request.post?
     relationship = Relationship.find(params[:relationship_id], :conditions => "reader_id = #{current_user.id}") rescue nil
@@ -41,7 +41,7 @@ class Settings::SocialController < ApplicationController
       page.visual_effect :highlight, user.dom_id(:title_editor)
     end
   end
-  
+
   def add
     user = User.find_by_url(params[:url])
     friendship_status = params[:friendship_status]
@@ -50,9 +50,9 @@ class Settings::SocialController < ApplicationController
         page.call :clear_all_errors
         page.call :error_message_on, :new_user_url, 'такой пользователь не найден'
       end
-      return      
+      return
     end
-    
+
     new_relationship = true # вставлять объект в страницу? не нужно делать если relationship существует
     move_relationship = false
     relationship = current_user.relationship_with(user, false)
@@ -67,7 +67,7 @@ class Settings::SocialController < ApplicationController
       relationship = current_user.set_friendship_status_for(user, friendship_status)
       relationship.move_to_bottom
     end
-    
+
     # Перезагружаем пользователья в смесь User+Relationship. Именно такой объект ожидает partial _user.rhtml
     @user = current_user.relationship_as_user_with(user)
     render :update do |page|
@@ -81,7 +81,7 @@ class Settings::SocialController < ApplicationController
       page[:new_user_url].value = ''
     end
   end
-  
+
   def sort
     sorts = { 'public_friends' => 2, 'friends' => 1, 'guessed' => 0, 'delete' => -1, 'blacklisted' => -2 }
     sort_key = (sorts.keys.to_a & params.keys.to_a).first
@@ -102,7 +102,7 @@ class Settings::SocialController < ApplicationController
     end
     render :nothing => true
   end
-  
+
   private
     def expire_cache
       expire_fragment(:controller => '/tlog', :action => 'index', :content_for => 'public_friends')

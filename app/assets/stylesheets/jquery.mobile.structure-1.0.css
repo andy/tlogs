@@ -36,21 +36,21 @@ div.ui-mobile-viewport { overflow-x: hidden; }
 /* native overflow scrolling */
 .ui-page.ui-mobile-touch-overflow,
 .ui-mobile-touch-overflow.ui-native-fixed .ui-content {
-	overflow: auto;
-	height: 100%;
-	-webkit-overflow-scrolling: touch;
-	-moz-overflow-scrolling: touch;
-	-o-overflow-scrolling: touch;
-	-ms-overflow-scrolling: touch;
-	overflow-scrolling: touch;
+  overflow: auto;
+  height: 100%;
+  -webkit-overflow-scrolling: touch;
+  -moz-overflow-scrolling: touch;
+  -o-overflow-scrolling: touch;
+  -ms-overflow-scrolling: touch;
+  overflow-scrolling: touch;
 }
 .ui-page.ui-mobile-touch-overflow,
 .ui-page.ui-mobile-touch-overflow * {
-	/* some level of transform keeps elements from blinking out of visibility on iOS */
-	-webkit-transform: rotateY(0);
+  /* some level of transform keeps elements from blinking out of visibility on iOS */
+  -webkit-transform: rotateY(0);
 }
 .ui-page.ui-mobile-pre-transition {
-	display: block;
+  display: block;
 }
 
 /* loading screen */
@@ -83,38 +83,38 @@ div.ui-mobile-viewport { overflow-x: hidden; }
 /* native fixed headers and footers */
 .ui-mobile-touch-overflow.ui-page.ui-native-fixed,
 .ui-mobile-touch-overflow.ui-page.ui-native-fullscreen {
-	overflow: visible;
+  overflow: visible;
 }
 .ui-mobile-touch-overflow.ui-native-fixed .ui-header,
 .ui-mobile-touch-overflow.ui-native-fixed .ui-footer {
-	position: fixed;
-	left: 0;
-	right: 0;
-	top: 0;
-	z-index: 200;
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  z-index: 200;
 }
 .ui-mobile-touch-overflow.ui-page.ui-native-fixed .ui-footer {
-	top: auto;
-	bottom: 0;
+  top: auto;
+  bottom: 0;
 }
 .ui-mobile-touch-overflow.ui-native-fixed .ui-content {
-	padding-top: 2.5em;
-	padding-bottom: 3em;
-	top: 0;
-	bottom: 0;
-	height: auto;
-	position: absolute;
+  padding-top: 2.5em;
+  padding-bottom: 3em;
+  top: 0;
+  bottom: 0;
+  height: auto;
+  position: absolute;
 }
 .ui-mobile-touch-overflow.ui-native-fullscreen .ui-content {
-	padding-top: 0;
-	padding-bottom: 0;
+  padding-top: 0;
+  padding-bottom: 0;
 }
 .ui-mobile-touch-overflow.ui-native-fullscreen .ui-header,
 .ui-mobile-touch-overflow.ui-native-fullscreen .ui-footer {
-	opacity: .9;
+  opacity: .9;
 }
 .ui-native-bars-hidden {
-	display: none;
+  display: none;
 }
 
 /* icons sizing */
@@ -131,88 +131,87 @@ div.ui-mobile-viewport { overflow-x: hidden; }
 .ui-hide-label label,
 .ui-hidden-accessible { position: absolute !important; left: -9999px; clip: rect(1px 1px 1px 1px); clip: rect(1px,1px,1px,1px); }
 .spin  {
-	-webkit-transform: rotate(360deg);
-	-webkit-animation-name: spin;
-	-webkit-animation-duration: 1s;
-	-webkit-animation-iteration-count:  infinite;
-	-webkit-animation-timing-function: linear;
+  -webkit-transform: rotate(360deg);
+  -webkit-animation-name: spin;
+  -webkit-animation-duration: 1s;
+  -webkit-animation-iteration-count:  infinite;
+  -webkit-animation-timing-function: linear;
 }
 @-webkit-keyframes spin {
-	from {-webkit-transform: rotate(0deg);}
-  	to {-webkit-transform: rotate(360deg);}
+  from {-webkit-transform: rotate(0deg);}
+    to {-webkit-transform: rotate(360deg);}
 }
 
 /* Transitions from jQtouch (with small modifications): http://www.jqtouch.com/
 Built by David Kaneda and maintained by Jonathan Stark.
 */
 .in, .out {
-	-webkit-animation-timing-function: ease-in-out;
-	-webkit-animation-duration: 350ms;
+  -webkit-animation-timing-function: ease-in-out;
+  -webkit-animation-duration: 350ms;
 }
 
-
 .slide.out {
-	-webkit-transform: translateX(-100%);
-	-webkit-animation-name: slideouttoleft;
+  -webkit-transform: translateX(-100%);
+  -webkit-animation-name: slideouttoleft;
 }
 
 .slide.in {
-	-webkit-transform: translateX(0);
-	-webkit-animation-name: slideinfromright;
+  -webkit-transform: translateX(0);
+  -webkit-animation-name: slideinfromright;
 }
 
 .slide.out.reverse {
-	-webkit-transform: translateX(100%);
-	-webkit-animation-name: slideouttoright;
+  -webkit-transform: translateX(100%);
+  -webkit-animation-name: slideouttoright;
 }
 
 .slide.in.reverse {
-	-webkit-transform: translateX(0);
-	-webkit-animation-name: slideinfromleft;
+  -webkit-transform: translateX(0);
+  -webkit-animation-name: slideinfromleft;
 }
 
 .slideup.out {
-	-webkit-animation-name: dontmove;
-	z-index: 0;
+  -webkit-animation-name: dontmove;
+  z-index: 0;
 }
 
 .slideup.in {
-	-webkit-transform: translateY(0);
-	-webkit-animation-name: slideinfrombottom;
-	z-index: 10;
+  -webkit-transform: translateY(0);
+  -webkit-animation-name: slideinfrombottom;
+  z-index: 10;
 }
 
 .slideup.in.reverse {
-	z-index: 0;
-	-webkit-animation-name: dontmove;
+  z-index: 0;
+  -webkit-animation-name: dontmove;
 }
 
 .slideup.out.reverse {
-	-webkit-transform: translateY(100%);
-	z-index: 10;
-	-webkit-animation-name: slideouttobottom;
+  -webkit-transform: translateY(100%);
+  z-index: 10;
+  -webkit-animation-name: slideouttobottom;
 }
 
 .slidedown.out {
-	-webkit-animation-name: dontmove;
-	z-index: 0;
+  -webkit-animation-name: dontmove;
+  z-index: 0;
 }
 
 .slidedown.in {
-	-webkit-transform: translateY(0);
-	-webkit-animation-name: slideinfromtop;
-	z-index: 10;
+  -webkit-transform: translateY(0);
+  -webkit-animation-name: slideinfromtop;
+  z-index: 10;
 }
 
 .slidedown.in.reverse {
-	z-index: 0;
-	-webkit-animation-name: dontmove;
+  z-index: 0;
+  -webkit-animation-name: dontmove;
 }
 
 .slidedown.out.reverse {
-	-webkit-transform: translateY(-100%);
-	z-index: 10;
-	-webkit-animation-name: slideouttotop;
+  -webkit-transform: translateY(-100%);
+  z-index: 10;
+  -webkit-animation-name: slideouttotop;
 }
 
 @-webkit-keyframes slideinfromright {
@@ -265,14 +264,14 @@ Built by David Kaneda and maintained by Jonathan Stark.
 }
 
 .fade.out {
-	z-index: 0;
-	-webkit-animation-name: fadeout;
+  z-index: 0;
+  -webkit-animation-name: fadeout;
 }
 
 .fade.in {
-	opacity: 1;
-	z-index: 10;
-	-webkit-animation-name: fadein;
+  opacity: 1;
+  z-index: 10;
+  -webkit-animation-name: fadein;
 }
 
 /* The properties in this rule are only necessary for the 'flip' transition.
@@ -282,43 +281,43 @@ Built by David Kaneda and maintained by Jonathan Stark.
  * value.
  */
 .viewport-flip {
-	-webkit-perspective: 1000;
-	position: absolute;
+  -webkit-perspective: 1000;
+  position: absolute;
 }
 
 .ui-mobile-viewport-transitioning,
 .ui-mobile-viewport-transitioning .ui-page {
-	width: 100%;
-	height: 100%;
-	overflow: hidden;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
 }
 
 .flip {
-	-webkit-animation-duration: .65s;
-	-webkit-backface-visibility:hidden;
-	-webkit-transform:translateX(0); /* Needed to work around an iOS 3.1 bug that causes listview thumbs to disappear when -webkit-visibility:hidden is used. */
+  -webkit-animation-duration: .65s;
+  -webkit-backface-visibility:hidden;
+  -webkit-transform:translateX(0); /* Needed to work around an iOS 3.1 bug that causes listview thumbs to disappear when -webkit-visibility:hidden is used. */
 }
 
 .flip.out {
-	-webkit-transform: rotateY(-180deg) scale(.8);
-	-webkit-animation-name: flipouttoleft;
+  -webkit-transform: rotateY(-180deg) scale(.8);
+  -webkit-animation-name: flipouttoleft;
 }
 
 .flip.in {
-	-webkit-transform: rotateY(0) scale(1);
-	-webkit-animation-name: flipinfromleft;
+  -webkit-transform: rotateY(0) scale(1);
+  -webkit-animation-name: flipinfromleft;
 }
 
 /* Shake it all about */
 
 .flip.out.reverse {
-	-webkit-transform: rotateY(180deg) scale(.8);
-	-webkit-animation-name: flipouttoright;
+  -webkit-transform: rotateY(180deg) scale(.8);
+  -webkit-animation-name: flipouttoright;
 }
 
 .flip.in.reverse {
-	-webkit-transform: rotateY(0) scale(1);
-	-webkit-animation-name: flipinfromright;
+  -webkit-transform: rotateY(0) scale(1);
+  -webkit-animation-name: flipinfromright;
 }
 
 @-webkit-keyframes flipinfromright {
@@ -341,7 +340,6 @@ Built by David Kaneda and maintained by Jonathan Stark.
     to { -webkit-transform: rotateY(180deg) scale(.8); }
 }
 
-
 /* Hackish, but reliable. */
 
 @-webkit-keyframes dontmove {
@@ -350,26 +348,26 @@ Built by David Kaneda and maintained by Jonathan Stark.
 }
 
 .pop {
-	-webkit-transform-origin: 50% 50%;
+  -webkit-transform-origin: 50% 50%;
 }
 
 .pop.in {
-	-webkit-transform: scale(1);
+  -webkit-transform: scale(1);
     opacity: 1;
-	-webkit-animation-name: popin;
-	z-index: 10;
+  -webkit-animation-name: popin;
+  z-index: 10;
 }
 
 .pop.in.reverse {
-	z-index: 0;
-	-webkit-animation-name: dontmove;
+  z-index: 0;
+  -webkit-animation-name: dontmove;
 }
 
 .pop.out.reverse {
-	-webkit-transform: scale(.2);
-	opacity: 0;
-	-webkit-animation-name: popout;
-	z-index: 10;
+  -webkit-transform: scale(.2);
+  opacity: 0;
+  -webkit-animation-name: popout;
+  z-index: 10;
 }
 
 @-webkit-keyframes popin {
@@ -417,8 +415,8 @@ Built by David Kaneda and maintained by Jonathan Stark.
 /* fixed page header & footer configuration */
 .ui-header, .ui-footer, .ui-page-fullscreen .ui-header, .ui-page-fullscreen .ui-footer  { position: absolute;  overflow: hidden; width: 100%; border-left-width: 0; border-right-width: 0; }
 .ui-header-fixed, .ui-footer-fixed {
-	z-index: 1000;
-	-webkit-transform: translateZ(0); /* Force header/footer rendering to go through the same rendering pipeline as native page scrolling. */
+  z-index: 1000;
+  -webkit-transform: translateZ(0); /* Force header/footer rendering to go through the same rendering pipeline as native page scrolling. */
 }
 .ui-footer-duplicate, .ui-page-fullscreen .ui-fixed-inline { display: none; }
 .ui-page-fullscreen .ui-header, .ui-page-fullscreen .ui-footer { opacity: .9; }
@@ -502,12 +500,12 @@ Built by David Kaneda and maintained by Jonathan Stark.
 .ui-collapsible-heading a span.ui-btn .ui-icon { left: 0; margin-top: -10px; }
 .ui-collapsible-heading-status { position: absolute; top: -9999px; left:0px; }
 .ui-collapsible-content {
-	display: block;
-	margin:  0 -8px;
-	padding: 10px 16px;
-	border-top:  none;      /* Overrides ui-btn-up-* */
-	background-image: none; /* Overrides ui-btn-up-* */
-	font-weight: normal;    /* Overrides ui-btn-up-* */
+  display: block;
+  margin:  0 -8px;
+  padding: 10px 16px;
+  border-top:  none;      /* Overrides ui-btn-up-* */
+  background-image: none; /* Overrides ui-btn-up-* */
+  font-weight: normal;    /* Overrides ui-btn-up-* */
 }
 .ui-collapsible-content-collapsed { display: none; }
 
@@ -536,30 +534,30 @@ Built by David Kaneda and maintained by Jonathan Stark.
 */
 
 @media all and (min-width: 450px){
-	.ui-field-contain .ui-controlgroup-label { vertical-align: top; display: inline-block;  width: 20%;  margin: 0 2% 0 0;  }
-	.ui-field-contain .ui-controlgroup-controls { width: 60%; display: inline-block; }
-	.ui-field-contain .ui-controlgroup .ui-select { width: 100%; } 
-	.ui-field-contain .ui-controlgroup-horizontal .ui-select { width: auto; }
-}	.ui-dialog { min-height: 480px; }
-.ui-dialog .ui-header, 
-.ui-dialog .ui-content, 
-.ui-dialog .ui-footer { 
-	max-width: 500px; 
-	margin: 10% auto 15px auto; 
-	width: 85%; 
-	position: relative; 
+  .ui-field-contain .ui-controlgroup-label { vertical-align: top; display: inline-block;  width: 20%;  margin: 0 2% 0 0;  }
+  .ui-field-contain .ui-controlgroup-controls { width: 60%; display: inline-block; }
+  .ui-field-contain .ui-controlgroup .ui-select { width: 100%; }
+  .ui-field-contain .ui-controlgroup-horizontal .ui-select { width: auto; }
+}  .ui-dialog { min-height: 480px; }
+.ui-dialog .ui-header,
+.ui-dialog .ui-content,
+.ui-dialog .ui-footer {
+  max-width: 500px;
+  margin: 10% auto 15px auto;
+  width: 85%;
+  position: relative;
 }
-.ui-dialog .ui-header, 
-.ui-dialog .ui-footer  { 
-	padding: 0 15px; 
-	z-index: 10; 
+.ui-dialog .ui-header,
+.ui-dialog .ui-footer  {
+  padding: 0 15px;
+  z-index: 10;
 }
-.ui-dialog .ui-content { 
-	padding: 15px; 
+.ui-dialog .ui-content {
+  padding: 15px;
 }
-.ui-dialog .ui-content, 
-.ui-dialog .ui-footer { 
-	margin-top: -15px;  
+.ui-dialog .ui-content,
+.ui-dialog .ui-footer {
+  margin-top: -15px;
 }
 .ui-checkbox, .ui-radio { position:relative;  margin: .2em 0 .5em; z-index: 1;  }
 .ui-checkbox .ui-btn, .ui-radio .ui-btn { margin: 0; text-align: left; z-index: 2; }
@@ -573,11 +571,10 @@ Built by David Kaneda and maintained by Jonathan Stark.
 .ui-checkbox input,.ui-radio input { position:absolute; left:20px; top:50%; width: 10px; height: 10px;  margin:-5px 0 0 0; outline: 0 !important; z-index: 1; }.ui-field-contain { padding: 1.5em 0; margin: 0; border-bottom-width: 1px; overflow: visible; }
 .ui-field-contain:first-child { border-top-width: 0; }
 @media all and (min-width: 450px){
-	.ui-field-contain { border-width: 0; padding: 0; margin: 1em 0; }
-}	.ui-select { display: block; position: relative; }
+  .ui-field-contain { border-width: 0; padding: 0; margin: 1em 0; }
+}  .ui-select { display: block; position: relative; }
 .ui-select select { position: absolute; left: -9999px; top: -9999px; }
 .ui-select .ui-btn { overflow: hidden; }
-
 
 .ui-select .ui-btn { opacity: 1; }
 
@@ -589,7 +586,7 @@ Built by David Kaneda and maintained by Jonathan Stark.
 @-moz-document url-prefix() {.ui-select .ui-btn select { opacity: 0.0001; }}
 .ui-select .ui-btn select.ui-select-nativeonly { opacity: 1; text-indent: 0; }
 
-.ui-select .ui-btn-icon-right .ui-btn-inner { padding-right: 45px; } 
+.ui-select .ui-btn-icon-right .ui-btn-inner { padding-right: 45px; }
 .ui-select .ui-btn-icon-right .ui-icon { right: 15px;  }
 
 /* labels */
@@ -609,10 +606,10 @@ label.ui-select { font-size: 16px; line-height: 1.4;  font-weight: normal; margi
 .ui-li.ui-selectmenu-placeholder { display: none; }
 .ui-selectmenu .ui-header .ui-title { margin: 0.6em 46px 0.8em; }
 
-@media all and (min-width: 450px){	
-	.ui-field-contain label.ui-select { vertical-align: top;  display: inline-block;  width: 20%;  margin: 0 2% 0 0; }
-	.ui-field-contain .ui-select { width: 60%; display: inline-block; }
-}	
+@media all and (min-width: 450px){  
+  .ui-field-contain label.ui-select { vertical-align: top;  display: inline-block;  width: 20%;  margin: 0 2% 0 0; }
+  .ui-field-contain .ui-select { width: 60%; display: inline-block; }
+}  
 
 /* when no placeholder is defined in a multiple select, the header height doesn't even extend past the close button.  this shim's content in there */
 .ui-selectmenu .ui-header h1:after { content: '.'; visibility: hidden; }label.ui-input-text { font-size: 16px; line-height: 1.4; display: block; font-weight: normal; margin: 0 0 .3em; }
@@ -627,15 +624,15 @@ textarea.ui-input-text { height: 50px; -webkit-transition: height 200ms linear; 
 
 /* orientation adjustments - incomplete!*/
 @media all and (min-width: 450px){
-	.ui-field-contain label.ui-input-text  { vertical-align: top; display: inline-block;  width: 20%;  margin: 0 2% 0 0 }
-	.ui-field-contain input.ui-input-text, 
-	.ui-field-contain textarea.ui-input-text, 
-	.ui-field-contain .ui-input-search { width: 60%; display: inline-block; } 
-	.ui-field-contain .ui-input-search { width: 50%; }
-	.ui-hide-label input.ui-input-text, 
-	.ui-hide-label textarea.ui-input-text, 
-	.ui-hide-label .ui-input-search { padding: .4em; width: 97%; } 
-	.ui-input-search input.ui-input-text { width: 98%; /*echos rule from above*/ }
+  .ui-field-contain label.ui-input-text  { vertical-align: top; display: inline-block;  width: 20%;  margin: 0 2% 0 0 }
+  .ui-field-contain input.ui-input-text,
+  .ui-field-contain textarea.ui-input-text,
+  .ui-field-contain .ui-input-search { width: 60%; display: inline-block; }
+  .ui-field-contain .ui-input-search { width: 50%; }
+  .ui-hide-label input.ui-input-text,
+  .ui-hide-label textarea.ui-input-text,
+  .ui-hide-label .ui-input-search { padding: .4em; width: 97%; }
+  .ui-input-search input.ui-input-text { width: 98%; /*echos rule from above*/ }
 }.ui-listview { margin: 0; counter-reset: listnumbering; }
 .ui-content .ui-listview { margin: -15px; }
 .ui-content .ui-listview-inset { margin: 1em 0;  }
@@ -664,8 +661,8 @@ ol.ui-listview .ui-li-jsnumbering:before { content: "" !important; } /* to avoid
 
 .ui-li-aside { float: right; width: 50%; text-align: right; margin: .3em 0; }
 @media all and (min-width: 480px){
-	 .ui-li-aside { width: 45%; }
-}	 
+   .ui-li-aside { width: 45%; }
+}  
 .ui-li-divider { cursor: default; }
 .ui-li-has-alt .ui-btn-inner a.ui-link-inherit, .ui-li-static.ui-li-has-alt { padding-right: 95px; }
 .ui-li-has-count .ui-li-count { position: absolute; font-size: 11px; font-weight: bold; padding: .2em .5em; top: 50%; margin-top: -.9em; right: 38px; }
@@ -695,9 +692,9 @@ div.ui-slider-switch { width: 99.8%; }
 a.ui-slider-handle { position: absolute; z-index: 10;  top: 50%; width: 28px; height: 28px; margin-top: -15px; margin-left: -15px; }
 a.ui-slider-handle .ui-btn-inner { padding-left: 0; padding-right: 0; }
 @media all and (min-width: 480px){
-	.ui-field-contain label.ui-slider { vertical-align: top;  display: inline-block;  width: 20%;  margin: 0 2% 0 0; }
-	.ui-field-contain div.ui-slider { width: 43%; }
-}	
+  .ui-field-contain label.ui-slider { vertical-align: top;  display: inline-block;  width: 20%;  margin: 0 2% 0 0; }
+  .ui-field-contain div.ui-slider { width: 43%; }
+}  
 
 div.ui-slider-switch { height: 32px;  overflow: hidden; margin-left: 0; }
 div.ui-slider-inneroffset { margin-left: 50%; position: absolute; top: 1px; height: 100%; width: 50%; }

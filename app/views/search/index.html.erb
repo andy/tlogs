@@ -1,27 +1,27 @@
 <% @title = "результаты поиска по запросу \"#{h params[:query]}\"" %>
 
 <div class='filter'>
-	<p>
-		Вы искали <span class='highlight large'><%= h params[:query] %></span>		
-		<% if @entries.total_entries.zero? %>
-			, но мы, к сожалению, ничего не нашли
-		<% end %>
-		<% unless @entries.total_entries.zero? %>
-			и нашли <span class='strong'><%= @entries.total_entries.pluralize("запись", "записи", "записей", true) %></span>
-		<% end %>
-	</p>
+  <p>
+    Вы искали <span class='highlight large'><%= h params[:query] %></span>    
+    <% if @entries.total_entries.zero? %>
+      , но мы, к сожалению, ничего не нашли
+    <% end %>
+    <% unless @entries.total_entries.zero? %>
+      и нашли <span class='strong'><%= @entries.total_entries.pluralize("запись", "записи", "записей", true) %></span>
+    <% end %>
+  </p>
 </div>
 
 <%= "<div class='onair'>" unless current_site %>
 <%= paginate @entries, :css_class => 'top_nav_paginator', :url_options => { :query => params[:query] } if @entries.current_page > 1 %>
 
 <% @entries.reject { |e| e.nil? }.each do |entry| %>
-	<%= render :partial => 'entries/entry_display', :locals => { :entry => entry, :show_comments_bubble => true, :show_username => !current_site, :show_datetime => !!current_site, :comment_views => @comment_views } %>
+  <%= render :partial => 'entries/entry_display', :locals => { :entry => entry, :show_comments_bubble => true, :show_username => !current_site, :show_datetime => !!current_site, :comment_views => @comment_views } %>
 <% end %>
 
 <%= paginate @entries, :url_options => { :query => params[:query] } %>
 <%= "</div>" unless current_site %>
 
 <% content_for :sidebar do %>
- 	<%= render :partial => 'tlog/sidebar' %>
+   <%= render :partial => 'tlog/sidebar' %>
 <% end if current_site %>

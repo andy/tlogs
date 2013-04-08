@@ -1,21 +1,21 @@
 <div class='section' id='sidebar_conversations'>
   <h2><span>Переписки</span></h2>
-	<div id='sidebar_conversations_content'>
-	  <ul>
-	    <li>
-	      <p><%= link_to "все", service_url(conversations_path), :class => ('highlight' if params[:action] == 'index') %><%= "<sup>+#{current_user.unviewed_conversations_count}</sup>" if current_user.unviewed_conversations_count.nonzero? %></p>
-	    </li>
+  <div id='sidebar_conversations_content'>
+    <ul>
+      <li>
+        <p><%= link_to "все", service_url(conversations_path), :class => ('highlight' if params[:action] == 'index') %><%= "<sup>+#{current_user.unviewed_conversations_count}</sup>" if current_user.unviewed_conversations_count.nonzero? %></p>
+      </li>
       <!-- <li>
         <p><%= link_to "непросмотренные", service_url(unviewed_conversations_path), :class => ('highlight' if params[:action] == 'unviewed') %></p>
       </li> -->
-	    <li>
-	      <p><%= link_to "неотвеченные #{"(#{current_user.unreplied_conversations_count})" if current_user.unreplied_conversations_count.nonzero?}", service_url(unreplied_conversations_path), :class => ('highlight' if params[:action] == 'unreplied') %></p>
-	    </li>
-	    <li>
-	      <p><%= link_to '+ написать', service_url(new_conversation_path), :class => ('highlight' if params[:action] == 'new') %></p>
-	    </li>
-	  </ul>
-	</div>
+      <li>
+        <p><%= link_to "неотвеченные #{"(#{current_user.unreplied_conversations_count})" if current_user.unreplied_conversations_count.nonzero?}", service_url(unreplied_conversations_path), :class => ('highlight' if params[:action] == 'unreplied') %></p>
+      </li>
+      <li>
+        <p><%= link_to '+ написать', service_url(new_conversation_path), :class => ('highlight' if params[:action] == 'new') %></p>
+      </li>
+    </ul>
+  </div>
 </div>
 
 <% unless current_user.tlog_settings.email_messages? %>
