@@ -64,5 +64,7 @@ gem 'resque', '1.19.0'
 gem 'resque-lock'
 
 group :development do
-	gem 'annotate'
+  gem 'annotate'
+  gem 'capistrano'
+  gem 'capistrano_colors'
 end
