@@ -2,34 +2,32 @@ class MessagesController < ApplicationController
   before_filter :require_current_user
 
   before_filter :require_confirmed_current_user
-  
+
   before_filter :preload_message, :only => [:destroy]
 
   protect_from_forgery
 
   helper :main
 
-
   # this is an legacy redirect url
   def index
     redirect_to service_url(conversations_path)
   end
-  
+
   def create
     @disable_ajax_refresh = params[:disable_ajax_refresh] || false
     @disable_flash        = params[:disable_flash] || false
     @last_message_id      = params[:last_message_id].to_i rescue false
-    
+
     # set message options
     @message           = Message.new
     @message.body      = params[:message][:body]
     @message.user      = current_user
     @message.recipient = User.find_by_url(params[:message][:recipient_url])
-    
+
     # set conversation options, but only take them if they exist
     convo_options = params[:message].slice(:send_notifications).symbolize_keys
 
-    
     if @message.valid?
       # no way this can fail!
       @recipient_message = @message.begin_conversation!(convo_options)
@@ -49,11 +47,10 @@ class MessagesController < ApplicationController
       end
     end
   end
-  
+
   def destroy
     @message.destroy
   end
-  
 
   protected
     def preload_message

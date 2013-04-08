@@ -2,41 +2,41 @@
     "http://www.w3.org/TR/xhtml1/DTD/xhtml-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
   <head></head>
-	<body style="padding:30px 20px 50px 30px; margin:0; background-color: #ffffff;">
-	  <div class='notification verification' style='margin:0; padding: 0'>
+  <body style="padding:30px 20px 50px 30px; margin:0; background-color: #ffffff;">
+    <div class='notification verification' style='margin:0; padding: 0'>
     <p style="font-family:Trebuchet MS, Arial, sans serif; font-size:0.95em; width:600px; color:#404040; padding-bottom: 2em;">
       <b>Здравствуйте!</b>
     </p>
 
-		<p style="font-family:Trebuchet MS, Arial, sans serif; font-size:0.95em; width:600px; color:#404040; padding-bottom: 1em;">
+    <p style="font-family:Trebuchet MS, Arial, sans serif; font-size:0.95em; width:600px; color:#404040; padding-bottom: 1em;">
       Вы успешно зарегистрировались на сайте <%= link_to 'Mmm...tasty', service_url %>!
-		</p>
+    </p>
 
     <p style="font-family:Trebuchet MS, Arial, sans serif; font-size:0.95em; width:600px; color:#404040; padding-bottom: 1em;">
       Завершите регистрацию пройдя по этой ссылке:
     </p>
-    
+
     <p style="font-style:italic; font-family:Trebuchet MS, Arial, sans serif; font-size:1.25em; width:600px; color:#404040; padding-bottom: 1em;">
       <%- confirm_link = service_url(confirm_code_path(:code => @user.read_confirmation_code)) -%>
       <%= link_to confirm_link, confirm_link, :class => 'action-link accept-link' %>
     </p>
-		
-		<p style="font-family:Trebuchet MS, Arial, sans serif; font-size:0.95em; width:600px; color:#808080; padding-bottom: 1em;">
-		  Дополнительно, ваши регистрационные данные:
-		  <ul style="font-family:Trebuchet MS, Arial, sans serif; font-size:0.95em; width:600px; color:#808080;">
-		    <li>Логин: <b><%= @user.url %></b></li>
-		    <li>Адрес вашего тлога: <b><%= user_url(@user) %></b></li>
-		  </ul>      
-		</p>
-		
-		<p  style="font-style:italic; font-family:Trebuchet MS, Arial, sans serif; font-size:0.95em; width:600px; color:#808080; padding-bottom: 2em;">
-  	  В случае если вы когда-нибудь забудете свой пароль, пройдите по этой ссылке: <br/>
-  	  <%= link_to service_url(lost_password_path), service_url(lost_password_path) %>
-		</p>
-		
-		<p style="font-family:Trebuchet MS, Arial, sans serif; font-size:0.95em; width:600px; color:#404040; text-align:right;">
-		  C уважением, <a href="<%= service_url %>" target="_blank" style="border: 0px;"><img src="<%= service_url %>images/letter-logo.gif" width='101' height='27' style="position:relative; bottom:-6px;	margin-left:4px;" /></a>
-		</p>
-		</div>
-	</body>
+    
+    <p style="font-family:Trebuchet MS, Arial, sans serif; font-size:0.95em; width:600px; color:#808080; padding-bottom: 1em;">
+      Дополнительно, ваши регистрационные данные:
+      <ul style="font-family:Trebuchet MS, Arial, sans serif; font-size:0.95em; width:600px; color:#808080;">
+        <li>Логин: <b><%= @user.url %></b></li>
+        <li>Адрес вашего тлога: <b><%= user_url(@user) %></b></li>
+      </ul>
+    </p>
+    
+    <p  style="font-style:italic; font-family:Trebuchet MS, Arial, sans serif; font-size:0.95em; width:600px; color:#808080; padding-bottom: 2em;">
+      В случае если вы когда-нибудь забудете свой пароль, пройдите по этой ссылке: <br/>
+      <%= link_to service_url(lost_password_path), service_url(lost_password_path) %>
+    </p>
+    
+    <p style="font-family:Trebuchet MS, Arial, sans serif; font-size:0.95em; width:600px; color:#404040; text-align:right;">
+      C уважением, <a href="<%= service_url %>" target="_blank" style="border: 0px;"><img src="<%= service_url %>images/letter-logo.gif" width='101' height='27' style="position:relative; bottom:-6px;  margin-left:4px;" /></a>
+    </p>
+    </div>
+  </body>
 </html>

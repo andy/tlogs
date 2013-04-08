@@ -1,4 +1,3 @@
-
 %table.table.table-striped
   %thead
     %tr
@@ -7,7 +6,7 @@
       %th Статус
       %th Общая информация
       %th Когда
-      
+
   %tbody
     - @invoices.each do |invoice|
       %tr
@@ -20,6 +19,5 @@
           %p
             %small= invoice.extra_summary
         %td= time_ago_in_words invoice.updated_at, true
-        
 
 = bootstrap_paginate @invoices

@@ -1,42 +1,42 @@
 <% @title = 'новости' %>
 <% @sidebar_left_short = true %>
 <div class='onair'>
-	<%= paginate @entries, :css_class => 'top_nav_paginator' if @page > 1 %>	
+  <%= paginate @entries, :css_class => 'top_nav_paginator' if @page > 1 %>  
 
-	<%- prev_entry = nil -%>
-	<% @entries.each do |entry| %>
-		<%= render :partial => 'entries/entry_display', :locals => { :entry => entry, :show_comments_bubble => true, :show_datetime => !(prev_entry.created_at.same_day?(entry.created_at) rescue false) } %>
-		<%- prev_entry = entry -%>
-	<% end %>
+  <%- prev_entry = nil -%>
+  <% @entries.each do |entry| %>
+    <%= render :partial => 'entries/entry_display', :locals => { :entry => entry, :show_comments_bubble => true, :show_datetime => !(prev_entry.created_at.same_day?(entry.created_at) rescue false) } %>
+    <%- prev_entry = entry -%>
+  <% end %>
 
-	<%= paginate @entries %>
-	
-	<script type='text/javascript'>
+  <%= paginate @entries %>
+  
+  <script type='text/javascript'>
   // <[!CDATA[
-  	<%= "var comments_views_update = #{@comment_views.to_json(:only => [:id, :comments_count], :methods => [:last_comment_viewed])}" if @comment_views %>
-  //	]]>
+    <%= "var comments_views_update = #{@comment_views.to_json(:only => [:id, :comments_count], :methods => [:last_comment_viewed])}" if @comment_views %>
+  //  ]]>
   </script>
 </div>
 <% content_for :sidebar_right do %>
   <%= render :partial => 'adv_sidebar_right' %>
 <% end %>
 <% content_for :sidebar_left do %>
-	<h2 class='center'><span>Авторы</span></h2>
-	<div class='users'>
-		<% User.find([2, 1]).each do |user| %>
-			<div>
-				<%= link_to_tlog user, :link => :userpic, :empty => :blank %>
-				<p><%= link_to_tlog user %></p>
-			</div>
-		<% end %>
-	</div>
-	<h2 class='center'><span>Муза</span></h2>
-	<div class='users'>
-		<% User.find([7]).each do |user| %>
-			<div>
-				<%= link_to_tlog user, :link => :userpic, :empty => :blank %>
-				<p><%= link_to_tlog user %></p>
-			</div>
-		<% end %>
-	</div>
+  <h2 class='center'><span>Авторы</span></h2>
+  <div class='users'>
+    <% User.find([2, 1]).each do |user| %>
+      <div>
+        <%= link_to_tlog user, :link => :userpic, :empty => :blank %>
+        <p><%= link_to_tlog user %></p>
+      </div>
+    <% end %>
+  </div>
+  <h2 class='center'><span>Муза</span></h2>
+  <div class='users'>
+    <% User.find([7]).each do |user| %>
+      <div>
+        <%= link_to_tlog user, :link => :userpic, :empty => :blank %>
+        <p><%= link_to_tlog user %></p>
+      </div>
+    <% end %>
+  </div>
 <% end %>

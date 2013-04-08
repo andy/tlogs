@@ -7,31 +7,29 @@ b, u, i, center,
 dl, dt, dd, ol, ul, li,
 fieldset, form, label, legend,
 table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, embed, 
-figure, figcaption, footer, header, hgroup, 
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
 menu, nav, output, ruby, section, summary,
 time, mark, audio, video {
-	margin: 0;
-	padding: 0;
-	border: 0;
-	font-size: 100%;
-	font-family: Arial, sans-serif;
-	vertical-align: baseline;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font-family: Arial, sans-serif;
+  vertical-align: baseline;
 }
 
-
-
 blockquote, q {
-	quotes: none;
+  quotes: none;
 }
 blockquote:before, blockquote:after,
 q:before, q:after {
-	content: '';
-	content: none;
+  content: '';
+  content: none;
 }
 table {
-	border-collapse: collapse;
-	border-spacing: 0;
+  border-collapse: collapse;
+  border-spacing: 0;
 }
 
 body {
@@ -41,52 +39,49 @@ body {
 a{color:#3ab0f2;text-decoration: underline;}
 a:hover{text-decoration: none;}
 
-
-
 .row{text-align: center;}
 .row .inner{width:800px;margin:auto;border-left: 0px solid red;border-right:0px solid red;position: relative;}
 .row1{
-	background: url('/images/specials/darudar/row1.png') repeat-x 0px 0px;
-	width: 100%;
-	height: 272px;
+  background: url('/images/specials/darudar/row1.png') repeat-x 0px 0px;
+  width: 100%;
+  height: 272px;
 
 }
 .row1 .logo{
-	display: block;
-	background: url('/images/specials/darudar/logo.png') no-repeat 0px 0px;
-	width: 401px;
-	height: 159px;
-	position: absolute;
-	left: 225px;
-	top: 10px;
+  display: block;
+  background: url('/images/specials/darudar/logo.png') no-repeat 0px 0px;
+  width: 401px;
+  height: 159px;
+  position: absolute;
+  left: 225px;
+  top: 10px;
 }
 .row1 .mmmtasty{
-	display: block;
-	background: url('/images/specials/darudar/mmmtasty.png') no-repeat 0px 0px;
-	width: 199px;
-	height: 76px;
-	position: absolute;
-	left: -32px;
-	top: 0px;
+  display: block;
+  background: url('/images/specials/darudar/mmmtasty.png') no-repeat 0px 0px;
+  width: 199px;
+  height: 76px;
+  position: absolute;
+  left: -32px;
+  top: 0px;
 }
 
-
 .row2{
-	background: #f1f1f1;
-	padding-bottom:30px;
+  background: #f1f1f1;
+  padding-bottom:30px;
 }
 
 .row2 .mainphoto{
-	background: url('/images/specials/darudar/mainphoto.jpg') no-repeat 0px 0px;
-	width: 792px;
-	height: 337px;
-	position: absolute;
-	top: -93px;
-	left:4px;
+  background: url('/images/specials/darudar/mainphoto.jpg') no-repeat 0px 0px;
+  width: 792px;
+  height: 337px;
+  position: absolute;
+  top: -93px;
+  left:4px;
 }
 .row2 .text{
-	padding: 268px 10px 0;
-	text-align: left;
+  padding: 268px 10px 0;
+  text-align: left;
 
 }
 
@@ -94,19 +89,19 @@ a:hover{text-decoration: none;}
 .row2 .text p{color:#000000;font-size: 18px;line-height: 140%;}
 
 .row2 .join{
-	background: url('/images/specials/darudar/join.jpg') no-repeat 0px 0px;
-	width: 798px;
-	height: 339px;
-	margin-top:30px;
-	position: relative;
+  background: url('/images/specials/darudar/join.jpg') no-repeat 0px 0px;
+  width: 798px;
+  height: 339px;
+  margin-top:30px;
+  position: relative;
 }
 
 .row2 .join .help{
-	width:170px;
-	position: absolute;
-	top: -13px;
-	left: 464px;
-	text-align: left;
+  width:170px;
+  position: absolute;
+  top: -13px;
+  left: 464px;
+  text-align: left;
 }
 .row2 .join .help .label{font-size:18px;color:#3ab0f2;font-weight: bold;margin-bottom:5px;}
 
@@ -116,19 +111,19 @@ top: 283px;border: 0px solid red;}
 .row2 .join .join_button:hover{background: url('/images/specials/darudar/joinhover.png') no-repeat;}
 
 .row3{
-	background: #ffffff;	
-	padding-bottom:30px;
+  background: #ffffff;  
+  padding-bottom:30px;
 }
 .row3 .text{text-align: left;padding:30px 10px 45px;}
 .row3 .text h2{color:#3ab0f2;font-weight: bold;font-size: 40px;margin-bottom:10px;}
 .row3 .text p{color:#000000;font-size: 18px;line-height: 140%;}
 
 .row3 .gifts{
-	background: url('/images/specials/darudar/gifts.jpg') no-repeat 0px 0px;
-	width: 793px;
-	height: 436px;
-	margin:auto;
-	position: relative;
+  background: url('/images/specials/darudar/gifts.jpg') no-repeat 0px 0px;
+  width: 793px;
+  height: 436px;
+  margin:auto;
+  position: relative;
 }
 .row3 .gifts .label{position: absolute;left:0;top:0;text-align: left;}
 .row3 .gifts .label h3{color:#3ab0f2;font-size: 18px;font-weight: bold;margin-bottom: 5px;}
@@ -145,7 +140,6 @@ top: 283px;border: 0px solid red;}
 top: 350px;width:250px;height:85px;border: 0px solid red;}
 .row3 .gifts .supported:hover{background: url('/images/specials/darudar/supporthover.png') no-repeat 0px 0px;}
 
-
 .row4{background: #f1f1f1;}
 
 .row4 .text{text-align: left;padding:30px 10px 45px;}
@@ -153,11 +147,11 @@ top: 350px;width:250px;height:85px;border: 0px solid red;}
 .row4 .text p{color:#000000;font-size: 18px;line-height: 140%;}
 
 .row4 .konkurs{
-	background: url('/images/specials/darudar/konkurs.jpg') no-repeat 0px 0px;
-	width: 795px;
-	height: 275px;
-	margin:auto;
-	position: relative;
+  background: url('/images/specials/darudar/konkurs.jpg') no-repeat 0px 0px;
+  width: 795px;
+  height: 275px;
+  margin:auto;
+  position: relative;
 }
 /* здесь можно поменять border: 1px … и тогда увидишь гед какие границы ссылок :) */
 .row4 .konkurs .pic{position: absolute;left:0;top:0;display: block;}
@@ -179,32 +173,29 @@ top: 350px;width:250px;height:85px;border: 0px solid red;}
 .row4 .about_konkurs .about5{left:550px;}
 .row4 .about_konkurs .about6{left:683px;}
 
-
-
 .row5{background:  url('/images/specials/darudar/footer_bg.png') repeat-x 0px 0px; height:52px;}
 .row5 .inner{height:52px;}
 .row5 .logo{
-	background: url('/images/specials/darudar/footer_logo.png') no-repeat 0px 0px;
-	width: 200px;
-	height: 67px;
-	position: absolute;
-	display: block;
-	right:-12px;
-	bottom:0;
+  background: url('/images/specials/darudar/footer_logo.png') no-repeat 0px 0px;
+  width: 200px;
+  height: 67px;
+  position: absolute;
+  display: block;
+  right:-12px;
+  bottom:0;
 }
 .row5 .share{
-	background: url('/images/specials/darudar/share.png') no-repeat 0px 0px;
-	width: 200px;
-	height: 40px;
-	position: absolute;
-	display: block;
-	left:-15px;
-	bottom:6px;
+  background: url('/images/specials/darudar/share.png') no-repeat 0px 0px;
+  width: 200px;
+  height: 40px;
+  position: absolute;
+  display: block;
+  left:-15px;
+  bottom:6px;
 
 }
 .row5 .share a.facebook{position: absolute;width:46px;height:39px;left:0px;top:0px;border: 0px solid red;}
 .row5 .share a.vkontakte{position: absolute;width:43px;height:39px;left:54px;top:0px;border: 0px solid red;}
 .row5 .share a.googleplus{position: absolute;width:38px;height:39px;left:105px;top:0px;border: 0px solid red;}
 .row5 .share a.mail{position: absolute;width:42px;height:39px;left:152px;top:0px;border: 0px solid red;}
-
 

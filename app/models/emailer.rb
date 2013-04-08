@@ -8,7 +8,7 @@ class Emailer < ActionMailer::Base
                 :email => user.email,
                 :body => { :user => user, :nrl => nrl }
   end
-  
+
   def invitation(current_service, sender, invitation)
     setup     current_service,
                 :subj => 'ммм... приглашение',
@@ -30,13 +30,13 @@ class Emailer < ActionMailer::Base
                 :from => '"Ммм... тейсти" <noreply+signup@mmm-tasty.ru>',
                 :user => user
   end
-  
+
   def link_notification(current_service, user, link)
     setup     current_service,
                 :subj => 'ммм... ваш аккаунт привязан к другому',
                 :from => '"Mmm... noreply <noreply@mmm-tasty.ru"',
                 :reply_to => '"Mmm... premium" <premium@mmm-tasty.ru>',
-                :body => { :user => user, :link => link }                
+                :body => { :user => user, :link => link }
   end
 
   def confirm(current_service, user, email)
@@ -46,7 +46,7 @@ class Emailer < ActionMailer::Base
                 :email => email,
                 :body => { :user => user, :email => email }
   end
-  
+
   def message(current_service, user, message)
     setup     current_service,
                 :subj => "ммм.... новое личное сообщение от #{message.user.url}",
@@ -54,14 +54,14 @@ class Emailer < ActionMailer::Base
                 :user => user,
                 :body => { :message => message }
   end
-  
+
   def comment(current_service, user, comment)
     setup     current_service,
                 :subj => "ммм... комментарий (#{comment.entry.excerpt})",
                 :from => '"Mmm... comments" <noreply+comments@mmm-tasty.ru>',
                 :user => user,
                 :body => { :comment => comment }
-  end  
+  end
 
   def comment_reply(current_service, user, comment)
     setup     current_service,
@@ -69,8 +69,8 @@ class Emailer < ActionMailer::Base
                 :from => '"Mmm... comments" <noreply+comments@mmm-tasty.ru>',
                 :user => user,
                 :body => { :comment => comment }
-  end  
-  
+  end
+
   # письмо для пользователей подписанных на комментарии
   def comment_to_subscriber(current_service, user, comment)
     setup     current_service,
@@ -87,7 +87,7 @@ class Emailer < ActionMailer::Base
                 :from => '"Mmm... password" <noreply+signup@mmm-tasty.ru>',
                 :user => user
   end
-  
+
   # письмо любовь от пользователя
   def invoice(current_service, invoice)
     setup     current_service,
@@ -97,7 +97,7 @@ class Emailer < ActionMailer::Base
                 :user     => invoice.user,
                 :body     => { :invoice => invoice }
   end
-  
+
   def premium_will_expire(current_service, user)
     setup     current_service,
                 :subj     => 'ммм... до окончания премиум-подписки осталось 3 дня',
@@ -105,7 +105,7 @@ class Emailer < ActionMailer::Base
                 :reply_to => '"Mmm... premium" <premium@mmm-tasty.ru>',
                 :user     => user
   end
-  
+
   def premium_expired(current_service, user)
     setup     current_service,
                 :subj     => 'ммм... премиум-подписка отключена',
@@ -113,20 +113,20 @@ class Emailer < ActionMailer::Base
                 :reply_to => '"Mmm... premium" <premium@mmm-tasty.ru>',
                 :user     => user
   end
-  
+
   def destroy(current_service, user)
     setup     current_service,
                 :subj => "ммм... удаление тлога #{user.url}",
                 :from => '"Mmm... destroy" <noreply+destroy@mmm-tasty.ru>',
                 :user => user
   end
-  
+
   private
     def setup(current_service, options = {})
       # message specific things
       @body       = (options[:body] || {})
       @body[:user] = options[:user] if @body[:user].blank? && options[:user]
-  
+
       # global settings
       @sent_on    = Time.now
       @headers    = {}

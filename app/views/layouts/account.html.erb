@@ -4,26 +4,26 @@
 <!--[if IE 8 ]>    <html class="ie8" lang="ru"> <![endif]-->
 <!--[if (gte IE 9)|!(IE)]><!--> <html lang="ru"> <!--<![endif]-->
 <head>
-	<%= render :partial => 'globals/head' %>
+  <%= render :partial => 'globals/head' %>
 </head>
 <body class="bg_main">
-	<div class='l_2'>
-  	<div id="wrapper" class="layout_2">
-  		<div class="rounded_center">
-  			<div class="content_layout_2">
-  				<div class="padd_left">
-  					<span class="header"><%= yield :header %></span>
-  					<% if @title %>
-  						<span class="system_where"><%= @title %></span>
-  					<% end %>
-  					<%= flash_div %>
-  					<%= yield %>
-  				</div>
-  			</div>
-  		</div>
-  	</div>
-  	<%= render :partial => 'globals/foot' %>
-	</div>
-	<%= render :partial => 'globals/top_nav' %>
+  <div class='l_2'>
+    <div id="wrapper" class="layout_2">
+      <div class="rounded_center">
+        <div class="content_layout_2">
+          <div class="padd_left">
+            <span class="header"><%= yield :header %></span>
+            <% if @title %>
+              <span class="system_where"><%= @title %></span>
+            <% end %>
+            <%= flash_div %>
+            <%= yield %>
+          </div>
+        </div>
+      </div>
+    </div>
+    <%= render :partial => 'globals/foot' %>
+  </div>
+  <%= render :partial => 'globals/top_nav' %>
 </body>
 </html>

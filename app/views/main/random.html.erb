@@ -1,66 +1,66 @@
 <% @title = "день из жизни #{h @user.url}" %>
 
 <div class='onair'>
-	<% @entries.each do |entry| %>
-		<%= render :partial => 'entries/entry_display', :locals => { :entry => entry, :show_comments_bubble => true } %>
-	<% end %>
-	
-	<script type='text/javascript'>
+  <% @entries.each do |entry| %>
+    <%= render :partial => 'entries/entry_display', :locals => { :entry => entry, :show_comments_bubble => true } %>
+  <% end %>
+  
+  <script type='text/javascript'>
   // <[!CDATA[
-  	<%= "var comments_views_update = #{@comment_views.to_json(:only => [:id, :comments_count], :methods => [:last_comment_viewed])}" if @comment_views %>
-  //	]]>
+    <%= "var comments_views_update = #{@comment_views.to_json(:only => [:id, :comments_count], :methods => [:last_comment_viewed])}" if @comment_views %>
+  //  ]]>
   </script>
 </div>
 
 <% content_for :sidebar_left do %>
-	<div class='section'>
-		<h2><span><%= link_to image_tag('reload.gif'), service_url(main_path(:action => :random)), :title => 'другой день, другой пользователь', :class => 'reload' %>&nbsp;День из жизни <%= link_to_tlog(@user) %></span></h2>
-		
-		<div class='avatar_holder'>
-  	  <% if @user.userpic? %>
-  	    <% style = @user.tlog_design_settings.large_userpic? ? :thumb128 : :thumb64 %>
-  	    <%= link_to image_tag(@user.userpic.url(style), :size => @user.userpic.image_size(style), :alt => @user.url, :title => @user.url, :class => 'avatar'), image_path(@user.userpic.url(:large)), :class => 'fancybox', :rel => 'follow', :title => @user.url %>
-  	  <% else %>
-  			<%= userpic_tag(@user) %>
-    	<% end %>
+  <div class='section'>
+    <h2><span><%= link_to image_tag('reload.gif'), service_url(main_path(:action => :random)), :title => 'другой день, другой пользователь', :class => 'reload' %>&nbsp;День из жизни <%= link_to_tlog(@user) %></span></h2>
+    
+    <div class='avatar_holder'>
+      <% if @user.userpic? %>
+        <% style = @user.tlog_design_settings.large_userpic? ? :thumb128 : :thumb64 %>
+        <%= link_to image_tag(@user.userpic.url(style), :size => @user.userpic.image_size(style), :alt => @user.url, :title => @user.url, :class => 'avatar'), image_path(@user.userpic.url(:large)), :class => 'fancybox', :rel => 'follow', :title => @user.url %>
+      <% else %>
+        <%= userpic_tag(@user) %>
+      <% end %>
     </div>
 
-		<% if false && @user.avatar %>
-			<div class='avatar_holder'><%= link_to_tlog @user, :link => :userpic %></div>
-		<% end %>
+    <% if false && @user.avatar %>
+      <div class='avatar_holder'><%= link_to_tlog @user, :link => :userpic %></div>
+    <% end %>
 
-		<p class='brief'>
-			<%= h @user.url %> в тейсти уже примерно
-			<span class='strong'><%= @user.created_at.distance_between_in_words(Time.now) %></span>
-			и за все это время успел<%= @user.gender('', 'а') %> написать
-			<span class='strong'><%= @user.entries_count_for(current_user) %></span>
-			<%= @user.entries_count_for(current_user).pluralize("запись", "записи", "записей", false) %>
-		</p>
-	</div>
+    <p class='brief'>
+      <%= h @user.url %> в тейсти уже примерно
+      <span class='strong'><%= @user.created_at.distance_between_in_words(Time.now) %></span>
+      и за все это время успел<%= @user.gender('', 'а') %> написать
+      <span class='strong'><%= @user.entries_count_for(current_user) %></span>
+      <%= @user.entries_count_for(current_user).pluralize("запись", "записи", "записей", false) %>
+    </p>
+  </div>
 
-	<% unless @user.tlog_settings.about.blank? %>
-		<div class='section sidebar_about'>
-			<h2><span><%= h @user.url %> о себе</span></h2>
-			<%- about = @user.tlog_settings.about -%>
-			<% if about.length > 60 %>
-				<div id='about_brief'>
-					<p><%= h strip_tags(white_list_entry(about)).truncate(60).to_s %></p>
-					<%= link_to_function 'далее&nbsp;&#x2192;', "$('about_brief', 'about_full').invoke('toggle');", :class => 'about_more' %>
-				</div>
-				<div id='about_full' style='display: none'>
-					<%= white_list_entry(about) %>
-					<%= link_to_function 'убрать', "$('about_brief', 'about_full').invoke('toggle');", :class => 'about_more' %>
-				</div>
-			<% else %>
-				<div id='about_full'><%= white_list_entry(about) %></div>
-			<% end %>
-		</div>
-	<% end %>
-	
-	<div class='section sidebar_calendar'>
-		<h2><span>другие дни</span></h2>
-		<%= render :partial => 'globals/calendar', :locals => { :calendar => @calendar, :time => @time } %>
-	</div>
+  <% unless @user.tlog_settings.about.blank? %>
+    <div class='section sidebar_about'>
+      <h2><span><%= h @user.url %> о себе</span></h2>
+      <%- about = @user.tlog_settings.about -%>
+      <% if about.length > 60 %>
+        <div id='about_brief'>
+          <p><%= h strip_tags(white_list_entry(about)).truncate(60).to_s %></p>
+          <%= link_to_function 'далее&nbsp;&#x2192;', "$('about_brief', 'about_full').invoke('toggle');", :class => 'about_more' %>
+        </div>
+        <div id='about_full' style='display: none'>
+          <%= white_list_entry(about) %>
+          <%= link_to_function 'убрать', "$('about_brief', 'about_full').invoke('toggle');", :class => 'about_more' %>
+        </div>
+      <% else %>
+        <div id='about_full'><%= white_list_entry(about) %></div>
+      <% end %>
+    </div>
+  <% end %>
+  
+  <div class='section sidebar_calendar'>
+    <h2><span>другие дни</span></h2>
+    <%= render :partial => 'globals/calendar', :locals => { :calendar => @calendar, :time => @time } %>
+  </div>
 
   <!-- <div class='section sidebar_others'>
     <h2><span>этот день у других...</span></h2>

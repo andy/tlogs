@@ -1,6 +1,6 @@
 <form>
   <%= tag :input, :type => 'hidden', :name => 'authenticity_token', :value => form_authenticity_token %>
-	<%= hidden_field_tag 'relationship_id', @relationship.id %>
-	<%= text_field_tag 'title', @relationship.title, :maxlength => 64 %>
-	<%= submit_to_remote nil, 'схрнть', :url => user_url(current_site, settings_social_path(:action => :title_update)) %>
+  <%= hidden_field_tag 'relationship_id', @relationship.id %>
+  <%= text_field_tag 'title', @relationship.title, :maxlength => 64 %>
+  <%= submit_to_remote nil, 'схрнть', :url => user_url(current_site, settings_social_path(:action => :title_update)) %>
 </form>

@@ -23,5 +23,5 @@
 class CouponInvoice < Invoice
   def summary
     "Скидочный купон на сумму #{self.amount} руб."
-  end  
+  end
 end

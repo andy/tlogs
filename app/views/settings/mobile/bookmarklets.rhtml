@@ -1,10 +1,10 @@
 <% @title = 'настройки браузерного тлоггинга' %>
 <% content_for :header do %>
-	Закладки для вашего браузера
+  Закладки для вашего браузера
 <% end %>
 
 <p>На этой странице Вы найдете и сможете сами соорудить специальные закладки (еще их иногда называют <i>букмарклетами</i>), которые могут значительно облегчить добавление новых записей в ваш тлог, особенно, если Вы находитесь на другом веб-сайте.</p>
-	
+  
 <!-- <p>О том как это работает можно посмотреть в этом видео ...</p>
 <h1>НУ И НУ, ВИДЕО ЗАБЫЛИ СДЕЛАТЬ!</h1> -->
 <p>Установить букмарклет очень просто - достаточно перетянуть ссылку в меню закладок вашего браузера.</p>
@@ -13,62 +13,62 @@
 <%= render :partial => 'bookmarklet', :collection => Bookmarklet.public.all %>
 
 <div id='my_bookmarklets'>
-	<%= render :partial => 'bookmarklets' if current_user.bookmarklets.size > 0 %>
+  <%= render :partial => 'bookmarklets' if current_user.bookmarklets.size > 0 %>
 </div>
 
 <h2><%= @bookmarklet.new_record? ? 'Создать свою закладку' : h("Редактируем закладку '#{@bookmarklet.name}'") %></h2>
 
 <form method='post' action='<%= request.request_uri %>' class='small'>
   <%= tag :input, :type => 'hidden', :name => 'authenticity_token', :value => form_authenticity_token %>
-	<table class='form'>
-		<tr>
-			<td class='label'>
-				<label for='bookmarklet_name'>Название:</label>
-			</td>
-			<td class='input'>
-				<%= text_field :bookmarklet, :name %>
-				<%= tasty_error_message_on :bookmarklet, :name %>
-				<div class='input_note'>примеры названия: сохранить в тейсти, прочитать позже, поделиться со всеми</div>
-			</td>
-		</tr>
-		<tr>
-			<td class='label'>
-				<label for='bookmarklet_type'>Тип записи:</label>
-			</td>
-			<td class='input'>
-				<%= select(:bookmarklet, :entry_type, Entry::KINDS_FOR_SELECT_SIGNULAR.reject { |v| %w(song).include?(v[1]) }) %>
-				<%= tasty_error_message_on :bookmarklet, :entry_type %>
-			</td>
-		</tr>
-		<tr>
-			<td class='label'>
-				<label for='bookmarklet_tags'>Теги:</label>
-			</td>
-			<td class='input'>
-				<%= text_field :bookmarklet, :tags %>
-				<%= tasty_error_message_on :bookmarklet, :tags %>
-				<div class='input_note'>теги нужно разделять запятыми</div>
-			</td>
-		</tr>
-		<tr>
-			<td class='label'>
-				<label for'bookmarklet_visibility'>Видимость:</label>
-			</td>
-			<td class='input'>
-				<%= select :bookmarklet, :visibility, Entry::VISIBILITY_FOR_SELECT_NEW %>
-				<%= tasty_error_message_on :bookmarklet, :visibility %>
-			</td>
-		</tr>
-		<tr>
-			<td class='label'></td>
-			<td class='input'>
-				<%= check_box :bookmarklet, :autosave %>
-				<label for='bookmarklet_autosave'>сохранять автоматически не спрашивая подтверждения</label>
-			</td>
-		</tr>
-	</table>
-	
-	<div class='submit_button'>
-		<input type='submit' value='Сохранить' class='button'>
-	</div>
+  <table class='form'>
+    <tr>
+      <td class='label'>
+        <label for='bookmarklet_name'>Название:</label>
+      </td>
+      <td class='input'>
+        <%= text_field :bookmarklet, :name %>
+        <%= tasty_error_message_on :bookmarklet, :name %>
+        <div class='input_note'>примеры названия: сохранить в тейсти, прочитать позже, поделиться со всеми</div>
+      </td>
+    </tr>
+    <tr>
+      <td class='label'>
+        <label for='bookmarklet_type'>Тип записи:</label>
+      </td>
+      <td class='input'>
+        <%= select(:bookmarklet, :entry_type, Entry::KINDS_FOR_SELECT_SIGNULAR.reject { |v| %w(song).include?(v[1]) }) %>
+        <%= tasty_error_message_on :bookmarklet, :entry_type %>
+      </td>
+    </tr>
+    <tr>
+      <td class='label'>
+        <label for='bookmarklet_tags'>Теги:</label>
+      </td>
+      <td class='input'>
+        <%= text_field :bookmarklet, :tags %>
+        <%= tasty_error_message_on :bookmarklet, :tags %>
+        <div class='input_note'>теги нужно разделять запятыми</div>
+      </td>
+    </tr>
+    <tr>
+      <td class='label'>
+        <label for'bookmarklet_visibility'>Видимость:</label>
+      </td>
+      <td class='input'>
+        <%= select :bookmarklet, :visibility, Entry::VISIBILITY_FOR_SELECT_NEW %>
+        <%= tasty_error_message_on :bookmarklet, :visibility %>
+      </td>
+    </tr>
+    <tr>
+      <td class='label'></td>
+      <td class='input'>
+        <%= check_box :bookmarklet, :autosave %>
+        <label for='bookmarklet_autosave'>сохранять автоматически не спрашивая подтверждения</label>
+      </td>
+    </tr>
+  </table>
+  
+  <div class='submit_button'>
+    <input type='submit' value='Сохранить' class='button'>
+  </div>
 </form>

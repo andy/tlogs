@@ -21,7 +21,7 @@ class Entry
       (zero_if_last && entry_page == total_pages) ? 0 : entry_page
     end
   end
-    
+
   def next(options = {})
     include_private = options.fetch(:include_private, false)
     @next ||= Entry.find_by_sql("SELECT id, created_at, user_id, comments_count, updated_at, is_voteable, is_private, is_mainpageable, comments_enabled FROM entries WHERE id > #{self.id} AND user_id = #{self.user_id}#{' AND is_private = 0 ' unless include_private} LIMIT 1").first rescue nil
@@ -35,7 +35,7 @@ class Entry
   def next_id
     @next_id ||= Entry.find_by_sql("SELECT id FROM entries WHERE id > #{self.id} AND user_id = #{self.user_id} AND is_private = 0 LIMIT 1").first[:id] rescue false
   end
-  
+
   def prev_id
     @prev_id ||= Entry.find_by_sql("SELECT id FROM entries WHERE id < #{self.id} AND user_id = #{self.user_id} AND is_private = 0 ORDER BY id DESC LIMIT 1").first[:id] rescue false
   end

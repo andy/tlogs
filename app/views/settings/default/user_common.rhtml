@@ -1,65 +1,65 @@
 <% @title = 'общие настройки пользователя' %>
 <% content_for :header do %>
-	общие настройки пользователя
+  общие настройки пользователя
 <% end %>
 
 <form method='post' action='<%= user_url(current_site, settings_path(:action => 'user_common')) %>' enctype='multipart/form-data' class='small'>
   <%= tag :input, :type => 'hidden', :name => 'authenticity_token', :value => form_authenticity_token %>
-  
-	<table class='form'>
-		<tr>
-			<td class='label'><label for='settings_username'>Имя:</label></td>
-			<td class='input'>
-				<%= text_field :user, :username %>
-				<div class='input_note'>
-					нам это нужно лишь для того, чтобы обращаться к вам по имени внутри системы
-				</div>
-			</td>
-		</tr>
-		<tr>
-			<td class='label'><label for='settings_gender_f'>Пол:</label></td>
-			<td class='input'>
-				<%= radio_button :user, :gender, 'm', :class => 'radio' %><label for='user_gender_m' class='radio'>мужской</label>
-				<%= radio_button :user, :gender, 'f', :class => 'radio' %><label for='user_gender_f' class='radio'>женский</label>
-				<div class='input_note'>
-					мы тут где-то пишем "его тлог" или "её тлог", и эта настройка как раз для этого
-				</div>
-			</td>
-		</tr>
-		<tr>
-			<td class='label'><label for='user_userpic'>Ваш портрет:</label></td>
-			<td class='input'>
-				<% if current_user.userpic? %>
-					<%= userpic_tag(current_user) %>
-					<%= link_to image_tag('delete.gif'), user_url(current_site, settings_path(:action => :deuserpic)), :title => 'удалить аватар', :method => :delete %>
-					<br/> <br/>
-				<% end %>
 
-				<%= file_field :user, :userpic %>
-			</td>
-		</tr>
-		<tr>
-			<td class='label'><label for='tlog_settings_title'>Заголовок тлога:</label></td>
-			<td class='input'>
-				<%= text_field_tag 'tlog_settings[title]', @tlog_settings[:title], :id => 'tlog_settings_title' %>
-				<div class='input_note'>
-					с этим пунктом должно быть все понятно и без комментария
-				</div>
-			</td>
-		</tr>
-		<tr>
-			<td class='label'><label for='tlog_settings_about'>О себе:</label></td>
-			<td class='input'>
-				<%= text_area_tag 'tlog_settings[about]', @tlog_settings[:about], :rows => nil, :cols => nil, :id => 'tlog_settings_about', :class => 'resizable' %>
-				<div class='input_note'>
-					Этот текст, который Вы, возможно, здесь напишете, он появится на странице "о вас", когда другой пользователь нажмет на вашу картинку в тлоге.
-				</div>
-			</td>
-		</tr>
-	</table>
+  <table class='form'>
+    <tr>
+      <td class='label'><label for='settings_username'>Имя:</label></td>
+      <td class='input'>
+        <%= text_field :user, :username %>
+        <div class='input_note'>
+          нам это нужно лишь для того, чтобы обращаться к вам по имени внутри системы
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td class='label'><label for='settings_gender_f'>Пол:</label></td>
+      <td class='input'>
+        <%= radio_button :user, :gender, 'm', :class => 'radio' %><label for='user_gender_m' class='radio'>мужской</label>
+        <%= radio_button :user, :gender, 'f', :class => 'radio' %><label for='user_gender_f' class='radio'>женский</label>
+        <div class='input_note'>
+          мы тут где-то пишем "его тлог" или "её тлог", и эта настройка как раз для этого
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td class='label'><label for='user_userpic'>Ваш портрет:</label></td>
+      <td class='input'>
+        <% if current_user.userpic? %>
+          <%= userpic_tag(current_user) %>
+          <%= link_to image_tag('delete.gif'), user_url(current_site, settings_path(:action => :deuserpic)), :title => 'удалить аватар', :method => :delete %>
+          <br/> <br/>
+        <% end %>
 
-	<div class='submit_button'>
-		<input type='submit' value='Сохранить' class='button' />
-	</div>
+        <%= file_field :user, :userpic %>
+      </td>
+    </tr>
+    <tr>
+      <td class='label'><label for='tlog_settings_title'>Заголовок тлога:</label></td>
+      <td class='input'>
+        <%= text_field_tag 'tlog_settings[title]', @tlog_settings[:title], :id => 'tlog_settings_title' %>
+        <div class='input_note'>
+          с этим пунктом должно быть все понятно и без комментария
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td class='label'><label for='tlog_settings_about'>О себе:</label></td>
+      <td class='input'>
+        <%= text_area_tag 'tlog_settings[about]', @tlog_settings[:about], :rows => nil, :cols => nil, :id => 'tlog_settings_about', :class => 'resizable' %>
+        <div class='input_note'>
+          Этот текст, который Вы, возможно, здесь напишете, он появится на странице "о вас", когда другой пользователь нажмет на вашу картинку в тлоге.
+        </div>
+      </td>
+    </tr>
+  </table>
+
+  <div class='submit_button'>
+    <input type='submit' value='Сохранить' class='button' />
+  </div>
 </form>
 

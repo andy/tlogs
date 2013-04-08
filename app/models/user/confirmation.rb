@@ -2,7 +2,6 @@ class User
   ## included modules & attr_*
   EMAIL_SIGNATURE_SECRET = 'YO SHALL NOT KNOW EVER!@@@#!'
 
-
   ## associations
   ## plugins
   ## named_scopes
@@ -20,15 +19,15 @@ class User
     self.settings[:email_confirmation_code] = [ email, self.confirmation_code_for(email) ]
     self.update_attribute(:settings, self.settings) unless self.new_record?
   end
-  
+
   def read_confirmation_code
     "#{self.id}_#{self.settings[:email_confirmation_code][1]}"
   end
-  
+
   def read_confirmation_email
     self.settings[:email_confirmation_code][0] rescue nil
   end
-  
+
   def clear_confirmation
     self.settings_will_change!
     self.settings.delete(:email_confirmation_code)
@@ -44,7 +43,6 @@ class User
     nil
   end
 
-
-  ## private methods  
+  ## private methods
 
 end

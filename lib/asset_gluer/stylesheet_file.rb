@@ -9,7 +9,7 @@ module AssetGluer
 
     def self.dir
       File.join(AssetGluer.asset_dir, 'stylesheets')
-    end    
+    end
 
     # преобразовать относительный путь в файле в абсолютный на
     # файловой системе
@@ -25,17 +25,17 @@ module AssetGluer
 
       # process with sass
       contents = filter_with_sass(contents) if %w(.scss .sass).include?(File.extname(@absolute_path))
-      
+
       # process images
       contents = filter_images(contents)
-      
+
       contents
     end
-    
+
     def self.process(contents)
       contents
     end
-    
+
     protected
       def filter_with_sass(contents, options = {})
         Rails.cache.fetch "gluer:css:sass:#{Digest::SHA1.hexdigest(contents)}", :expires_in => 1.day do
@@ -44,10 +44,10 @@ module AssetGluer
           default_sass_options = {
             :syntax       => File.extname(@absolute_path)[1..-1].to_sym,
             :style        => Rails.env.production? ? :compressed : :expanded,
-            :line_numbers => Rails.env.development? 
+            :line_numbers => Rails.env.development?
           }
           engine = Sass::Engine.new(contents, default_sass_options.merge(options))
-        
+
           engine.render
         end
       end
@@ -69,7 +69,7 @@ module AssetGluer
           end
         end.join("\n")
       end
-    
+
       # преобразовать путь до картинки в относительный относительно AssetGluer.asset_dir
       # и проставить хост
       def assetify_image_url(url)
@@ -91,6 +91,6 @@ module AssetGluer
           "#{AssetGluer.assets_host(url)}#{stat}#{image}"
         end
       end
-    
+
   end
 end

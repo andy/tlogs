@@ -1,18 +1,18 @@
 <% @title = current_site ? "все #{current_site.gender('его', 'её')} теги" : "облако тегов от всех пользователей тейсти" %>
 
 <div class='filter'>
-	<p><%= current_site ? "Все #{current_site.gender('его', 'её')} <span class='highlight large'>теги</span>" : 'Теги всех пользователей' %></p>
+  <p><%= current_site ? "Все #{current_site.gender('его', 'её')} <span class='highlight large'>теги</span>" : 'Теги всех пользователей' %></p>
 </div>
 
 <div class='tags_cloud'>
-	<% "<div class='onair'>" unless current_site %>
-	  <%= "<span class='highlight'>Похоже, что здесь совершенно пусто</span>" if @tags.length.zero? %>
-		<% @tags.each do |tag, weight, count| %>
-			<%= link_to tag, user_url(current_site, tag_view_path(:tags => tag)), { :style => "font-size: #{weight}px;", :title => "#{count.pluralize('запись', 'записи', 'записей', true)} с этим тегом" } %>
-		<% end %>	
-	<% "</div>" unless current_site %>
+  <% "<div class='onair'>" unless current_site %>
+    <%= "<span class='highlight'>Похоже, что здесь совершенно пусто</span>" if @tags.length.zero? %>
+    <% @tags.each do |tag, weight, count| %>
+      <%= link_to tag, user_url(current_site, tag_view_path(:tags => tag)), { :style => "font-size: #{weight}px;", :title => "#{count.pluralize('запись', 'записи', 'записей', true)} с этим тегом" } %>
+    <% end %>  
+  <% "</div>" unless current_site %>
 </div>
 
 <div class='return_from_permalink'>
-	<%= link_to "&#x2190; обратно в #{current_site.gender("его", "её")} тлог", user_path(current_site) %>
+  <%= link_to "&#x2190; обратно в #{current_site.gender("его", "её")} тлог", user_path(current_site) %>
 </div>

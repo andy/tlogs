@@ -9,7 +9,7 @@
     <% if @messages.total_entries.zero? %>
       <div class='centered'>
         <p>К сожалению, по вашему запросу не найдено ни одного сообщения.</p>
-      
+
         <div class='linkback'>
           <%= link_to '&larr; вернуться', service_url(conversations_path) %>
         </div>
@@ -17,7 +17,7 @@
     <% else %>
       <%= paginate @messages if @messages.current_page > 1 %>
 
-    	<%= render :partial => 'messages/message', :collection => @messages.compact, :spacer_template => 'messages/message_spacer' %>
+      <%= render :partial => 'messages/message', :collection => @messages.compact, :spacer_template => 'messages/message_spacer' %>
 
       <%= paginate @messages %>
     <% end %>
@@ -32,19 +32,19 @@
         jQuery(this).find('.showonhover').show();
 
         return false;
-      },    
+      },
       mouseleave: function() {
         jQuery(this).find('.showonhover').hide();
 
         return false;
       }
     });
-    
+
     jQuery('abbr.timeago').timeago();
   });
 </script>
 
 <% content_for :sidebar_right do %>
-  <%= render :partial => 'main/my_sidebar_right' %>	
+  <%= render :partial => 'main/my_sidebar_right' %>  
   <%= render :partial => 'conversations/sidebar' %>
 <% end %>

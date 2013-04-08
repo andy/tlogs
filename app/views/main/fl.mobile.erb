@@ -8,11 +8,11 @@
           <%
             diff = user.entries_count_for(current_user) - user.last_viewed_entries_count.to_i
             if diff > 0 %>
-    				<span class='ui-li-count'>+<%= diff %></span>
-  				<% end %>          
-  			<% end %>
+            <span class='ui-li-count'>+<%= diff %></span>
+          <% end %>
+        <% end %>
       </li>
-    <% end %>    
+    <% end %>
   </ul>
 </div>
 <div data-role="footer">

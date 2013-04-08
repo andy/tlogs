@@ -20,19 +20,19 @@
               .meta
                 %p= user.entries_count.pluralize('запись', 'записи', 'записей', true)
                 %p Обновление #{user.last_public_entry_at.distance_between_in_words(Time.now, ' назад')}
-      
+
             .controls
               - if user.id == current_user.id
                 %p.self Это ваш аккаунт
               - else
                 = link_to_remote image_tag('icon_x.png') + '&nbsp;Отключить аккаунт', :url => user_url(current_site, settings_premium_path(:action => 'unlink', :url => user.url.downcase)), :confirm => "Действительно отключить аккаунт #{user.url}?", :html => { :class => 'hover unlink' }
-          
+
           %hr
-  
+
     .actions
       = link_to "Подключить #{current_site.can_switch? ? 'еще один ' : ''}аккаунт", user_url(current_site, settings_premium_path(:action => 'accounts_popup')), :id => 'fancybox_accounts_popup'
 
-:javascript  
+:javascript
   jQuery('#fancybox_accounts_popup').fancybox({
     titleShow: false,
     centerOnScroll: true,

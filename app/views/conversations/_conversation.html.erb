@@ -9,21 +9,21 @@ message = conversation.messages.last
 
 <% content_tag_for :div, conversation do %>
 
-	<div class='rel'><div class='message_sender'>
+  <div class='rel'><div class='message_sender'>
     <div class='message_sender_link'><%= link_to_tlog conversation.recipient %></div>
     <%= timeago message.created_at %>
   </div></div>
 
   <% if conversation.is_replied? %>
     <div class='rel'><div class='reply'>
-  	  <%= link_to image_tag('arrow_g.gif', :size => '10x10'), service_url(conversation_path(conversation)) + '#form' %>
+      <%= link_to image_tag('arrow_g.gif', :size => '10x10'), service_url(conversation_path(conversation)) + '#form' %>
     </div></div>
   <% end %>
-  
+
   <% if !conversation.is_viewed? && !conversation.is_replied? %>
     <div class='rel'><div class='unviewed'>
-  	  <%= link_to_remote image_tag('unread-conversation.png', :size => '8x8', :alt => '[n]'), { :url => service_url(mav_conversation_path(conversation)).downcase }, :title => 'Отметить как прочитанное' %>
-  	</div></div>
+      <%= link_to_remote image_tag('unread-conversation.png', :size => '8x8', :alt => '[n]'), { :url => service_url(mav_conversation_path(conversation)).downcase }, :title => 'Отметить как прочитанное' %>
+    </div></div>
   <% end %>
 
   <div class='conversation_controls showonhover'><div class='delete'>

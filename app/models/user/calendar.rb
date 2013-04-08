@@ -11,7 +11,7 @@ class User
   # User.find(1).calendar.each do |day, entries|
   def calendar(date=nil)
     date ||= Date.today
-    time = date.to_time    
+    time = date.to_time
     start_at = time.since(1.month).at_end_of_month
     end_at = time.ago(1.month).at_beginning_of_month
 
@@ -28,15 +28,15 @@ class User
     start_at    = time.ago(1.month).at_beginning_of_month
     end_at      = time.since(1.month).at_end_of_month
     end_at      = Date.tomorrow.to_time if end_at > Date.today
-    
+
     result      = {}
     while start_at < end_at do
       result[start_at.month] ||= []
       result[start_at.month] << start_at
-      
+
       start_at += 1.day
     end
-    
+
     result.sort_by { |m, d| ("%04d%02d" % [d.first.year, d.first.month]).to_i }
   end
 

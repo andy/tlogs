@@ -23,15 +23,12 @@ class Bookmarklet < ActiveRecord::Base
   ## included modules & attr_*
   attr_protected :user_id
 
-
   ## associations
   belongs_to :user
-
 
   ## plugins
   ## named_scopes
   named_scope         :public, :conditions => 'is_public = 1'
-
 
   ## validations
   validates_presence_of           :user_id
@@ -45,14 +42,12 @@ class Bookmarklet < ActiveRecord::Base
   validates_inclusion_of          :visibility,
                                   :in => Entry::VISIBILITY_FOR_SELECT_NEW.map { |v| v[1] }
 
-
   ## callbacks
   ## class methods
   ## public methods
   def is_owner?(user)
     user.id == self.user_id
   end
-
 
   ## private methods
 end

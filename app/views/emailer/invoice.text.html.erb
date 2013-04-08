@@ -1,30 +1,30 @@
 <!DOCTYPE>
 <html>
-	<body lang="ru" style="padding: 30px 20px 50px 30px; margin: 0; background-color: #ffffff;">
+  <body lang="ru" style="padding: 30px 20px 50px 30px; margin: 0; background-color: #ffffff;">
     <p style="font-family: Trebuchet MS, Arial, sans serif; font-size:0.95em; width:600px; color:#404040; padding-bottom: 2em;">
       <b>Здравствуйте, <%= h @user.username %>!</b>
     </p>
-		
-		<p style="font-family:Trebuchet MS, Arial, sans serif; font-size:0.95em; width:600px; color:#404040; padding-bottom: 1em;">
-		  Вы оплатили премиум-аккаунт и ваша подписка продлена на <%= @invoice.days.pluralize('день', 'дня', 'дней', true) %>, до <%= Russian.strftime(@user.premium_till, '%e %B %Y') %>.</i>
-		</p>
-		
-		<p style="font-style:italic; font-family:Trebuchet MS, Arial, sans serif; font-size:0.95em; width:600px; color:#404040; padding-bottom: 1em;">
-		  <b>Детали платежа:</b>
-		  <br/>
-		  <%= h @invoice.summary %> 
-		</p>
-		
-		<p style="font-family:Trebuchet MS, Arial, sans serif; font-size:0.95em; width:600px; color:#404040; padding-bottom: 1em;">
-		  Спасибо!
-		</p>
+    
+    <p style="font-family:Trebuchet MS, Arial, sans serif; font-size:0.95em; width:600px; color:#404040; padding-bottom: 1em;">
+      Вы оплатили премиум-аккаунт и ваша подписка продлена на <%= @invoice.days.pluralize('день', 'дня', 'дней', true) %>, до <%= Russian.strftime(@user.premium_till, '%e %B %Y') %>.</i>
+    </p>
+    
+    <p style="font-style:italic; font-family:Trebuchet MS, Arial, sans serif; font-size:0.95em; width:600px; color:#404040; padding-bottom: 1em;">
+      <b>Детали платежа:</b>
+      <br/>
+      <%= h @invoice.summary %>
+    </p>
+    
+    <p style="font-family:Trebuchet MS, Arial, sans serif; font-size:0.95em; width:600px; color:#404040; padding-bottom: 1em;">
+      Спасибо!
+    </p>
 
-		<p style="font-family:Trebuchet MS, Arial, sans serif; font-size:0.8em; width:600px; color:#808080; padding-bottom: 2em;">
-			Это автоматическое письмо. В случае проблем с оплатой обращайтесь в службу поддержки по адресу <a href='mailto:premium@<%= @current_service.domain %>'>premium@<%= @current_service.domain %></a>.
-		</p>
-		
-		<p style="font-family:Trebuchet MS, Arial, sans serif; font-size:0.95em; width:600px; color:#404040; text-align:right;">
-		  C уважением, <a href="<%= service_url %>" target="_blank" style="border: 0px;"><img src="<%= service_url %>images/letter-logo.gif" width='101' height='27' style="position:relative; bottom:-6px;	margin-left:4px;" /></a>
-		</p>
-	</body>
+    <p style="font-family:Trebuchet MS, Arial, sans serif; font-size:0.8em; width:600px; color:#808080; padding-bottom: 2em;">
+      Это автоматическое письмо. В случае проблем с оплатой обращайтесь в службу поддержки по адресу <a href='mailto:premium@<%= @current_service.domain %>'>premium@<%= @current_service.domain %></a>.
+    </p>
+    
+    <p style="font-family:Trebuchet MS, Arial, sans serif; font-size:0.95em; width:600px; color:#404040; text-align:right;">
+      C уважением, <a href="<%= service_url %>" target="_blank" style="border: 0px;"><img src="<%= service_url %>images/letter-logo.gif" width='101' height='27' style="position:relative; bottom:-6px;  margin-left:4px;" /></a>
+    </p>
+  </body>
 </html>

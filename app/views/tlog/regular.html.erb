@@ -1,22 +1,22 @@
 <% content_for :head do %>
   <%= render :partial => 'tlog/head' %>
-  <%= render :partial => 'tlog/meta' %>  
+  <%= render :partial => 'tlog/meta' %>
 <% end %>
 
 <% if @entries.size > 0 %>
   <% cache @cache_key, :expires_in => 1.day do %>
-  	<%= render :partial => 'lenta' %>
+    <%= render :partial => 'lenta' %>
   <% end %>
   <script type='text/javascript'>
   // <[!CDATA[
-  	<%= "var comments_views_update = #{@comment_views.to_json(:only => [:id, :comments_count], :methods => [:last_comment_viewed])};" if @comment_views %>
-  	<%= "var entry_ratings_update = #{@entry_ratings.to_json};" if @entry_ratings %>
-  //	]]>
+    <%= "var comments_views_update = #{@comment_views.to_json(:only => [:id, :comments_count], :methods => [:last_comment_viewed])};" if @comment_views %>
+    <%= "var entry_ratings_update = #{@entry_ratings.to_json};" if @entry_ratings %>
+  //  ]]>
   </script>
 <% else %>
   <%= render :partial => 'lenta' %>
 <% end %>
 
 <% content_for :sidebar do %>
-	<%= render :partial => 'tlog/sidebar' %>
+  <%= render :partial => 'tlog/sidebar' %>
 <% end %>

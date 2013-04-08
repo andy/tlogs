@@ -1,10 +1,10 @@
 class SearchController < ApplicationController
   skip_before_filter :require_confirmation_on_current_user
-  
+
   before_filter :check_if_can_be_viewed
-  
+
   before_filter :enable_shortcut
-  
+
   helper :main
   layout 'main'
 
@@ -36,13 +36,13 @@ class SearchController < ApplicationController
       options[:with][:is_mainpageable] = 1
       options[:with][:is_private] = 0
     end
-    
+
     Rails.logger.debug options.inspect
 
     @entries = Entry.search params[:query], options
-    
+
     @comment_views = User::entries_with_views_for(@entries.map(&:id), current_user)
-    
+
     if !current_site
       user_options = {
         :page           => 1,
@@ -57,7 +57,7 @@ class SearchController < ApplicationController
     # результаты отображаются внутри тлога если поиск выполнялся по индивидуальному тлогу
     render :layout => current_site ? 'tlog' : 'main'
   end
-  
+
   protected
     def check_if_can_be_viewed
       render :template => 'tlog/hidden', :layout => 'tlog' and return false if current_site && !current_site.can_be_viewed_by?(current_user)

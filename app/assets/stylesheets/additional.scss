@@ -34,7 +34,7 @@ div#y-panel_h.hd { font-size: 12px; background-color: #3c3c3c; background-image:
 
 .footer-social {
   a {
-    text-decoration: none; 
+    text-decoration: none;
     img {
       position: relative;
       top: -1px;
@@ -85,7 +85,7 @@ div.quote_entry span.quote_entry_source p { display: inline; font-style: italic;
     style: italic;
     size: 10px;
   }
-  padding-left: 3px;  
+  padding-left: 3px;
 }
 
 /* disabled buttons */
@@ -117,7 +117,6 @@ input.disabled, input.disabled:active {
   margin-bottom: 1em;
 }
 
-
 /* bookmate verstka */
 .sidebar_books h2 a { color: white; text-decoration: none; }
 .sidebar_books h2 img { vertical-align: middle;}
@@ -128,7 +127,7 @@ input.disabled, input.disabled:active {
 .sidebar_books .sidebar_book img {
   -webkit-box-shadow: 3px 3px 15px rgba(0,0,0,0.3);
   -moz-box-shadow: 3px 3px 15px rgba(0,0,0,0.3);
-  -o-box-shadow: 3px 3px 15px rgba(0,0,0,0.3);  
+  -o-box-shadow: 3px 3px 15px rgba(0,0,0,0.3);
   box-shadow: 3px 3px 15px rgba(0,0,0,0.3);
   margin-bottom: 5px;
   width: 100px;
@@ -188,15 +187,15 @@ form.donation input.submit_donation { margin-top: 20px; margin-left: 380px; }
 /* radioedit */
 /* new schedule form */
 .new_radio_schedule {
-  font-size: 11px; 
-  text-align: left; 
-  padding: 20px 20px 0 20px; 
+  font-size: 11px;
+  text-align: left;
+  padding: 20px 20px 0 20px;
 
-  h3 { 
-    padding-top: 0px; 
+  h3 {
+    padding-top: 0px;
     margin-top: 0px;
   }
-  table { 
+  table {
     width: 100%;
     -webkit-box-shadow: rgba(0, 0, 0, 0.199219) 0px 0px 2px;
     -moz-box-shadow: rgba(0, 0, 0, 0.199219) 0px 0px 2px;
@@ -204,14 +203,14 @@ form.donation input.submit_donation { margin-top: 20px; margin-left: 380px; }
     box-shadow: rgba(0, 0, 0, 0.199219) 0px 0px 2px;
     behavior: url(/images/htc/PIE.htc);
 
-    tr td { 
+    tr td {
       vertical-align: middle;
       padding-top: 10px;
     }
-    tr.rs_submit td { 
+    tr.rs_submit td {
       padding-bottom: 10px;
     }
-    tr.rs_submit td .button { 
+    tr.rs_submit td .button {
       margin-top: 0px;
     }
     tr td label {
@@ -286,13 +285,13 @@ a#new_radio_schedule_showform { font-size: 1.4em; font-family: Tahoma; color: #3
     cursor: pointer;
     text-decoration: none;
   }
-  
+
   .t-post-comment-reply-holder {
     position: relative;
     top: -18px;
     left: -25px;
     width: 20px;
-    height: 20px;    
+    height: 20px;
   }
   .t-post-comment-reply {
     background: url(/images/arrow_i.gif) no-repeat 5px 5px;
@@ -301,17 +300,17 @@ a#new_radio_schedule_showform { font-size: 1.4em; font-family: Tahoma; color: #3
     display: none;
     cursor: hand;
     cursor: pointer;
-    
+
     &:hover {
       background: url(/images/arrow_g.gif) no-repeat 5px 5px;
     }
   }
-  
+
   .t-post-comment-replied {
     display: block;
     background: url(/images/arrow_g.gif) no-repeat 5px 5px;
   }
-  
+
   &:hover {
     .t-post-comment-reply {
       display: block;
@@ -327,7 +326,6 @@ a#new_radio_schedule_showform { font-size: 1.4em; font-family: Tahoma; color: #3
     }
   }
 }
-
 
 .user_rel .hover { visibility: hidden; }
 .user_rel:hover .hover { visibility: visible; }
@@ -353,7 +351,7 @@ form.small {
   }
   input, #design_css textarea {
     font-family: 'Lucida Grande', 'Myriad Pro', 'Tahoma', arial;
-    font-size: 11px;    
+    font-size: 11px;
   }
 }
 
@@ -463,7 +461,7 @@ input.placeholder, textarea.placeholder {
   cursor: hand;
   z-index: 3;
   display: none;
-  
+
   &.thincut {
     background-color: white;
     color: #404040;
@@ -472,12 +470,12 @@ input.placeholder, textarea.placeholder {
     padding: 2px 5px;
     text-align: center;
     top: 2px;
-    left: 2px;    
+    left: 2px;
   }
 }
 
 #t-act-shortcut.gray {
-  color: #444;  
+  color: #444;
 }
 
 .settings .t-controller-settings-default {
@@ -503,10 +501,10 @@ input.placeholder, textarea.placeholder {
     letter-spacing: -1;
     margin-bottom: 20px;
   }
-  
+
   .accounts {
     width: 499px;
-  
+
     input.button {
       font-size: 11px;
       margin-top: 0px;
@@ -519,7 +517,7 @@ input.placeholder, textarea.placeholder {
     margin-top: 10px;
 
     a {
-      color: orange;    
+      color: orange;
       text-decoration: none;
       &:hover {
         text-decoration: underline;
@@ -553,7 +551,7 @@ input.placeholder, textarea.placeholder {
         height: 70px;
         margin-left: 20px;
         color: #999;
-        
+
         .url {
           font-weight: bold;
           font-family: Trebuchet MS, arial;
@@ -576,7 +574,7 @@ input.placeholder, textarea.placeholder {
           font-size: 11px;
           color: #444;
         }
-        
+
         a.unlink {
           font-size: 11px;
           text-decoration: none;
@@ -594,7 +592,7 @@ input.placeholder, textarea.placeholder {
 }
 
 .settings .t-controller-settings-premium {
-  
+
   a.button {
     margin-top: 7px;
     padding: 5px 8px;
@@ -611,7 +609,7 @@ input.placeholder, textarea.placeholder {
     text-decoration: none;
     vertical-align: center;
   }
-  
+
   .header {
     a.button {
       position: relative;
@@ -641,7 +639,7 @@ input.placeholder, textarea.placeholder {
       }
       td.position {
         font-size: 11px;
-        
+
       }
     }
   }
@@ -660,7 +658,7 @@ input.placeholder, textarea.placeholder {
         margin-right: 15px;
         margin-bottom: 20px;
         cursor: pointer; cursor: hand;
-        
+
         .note-set, .note-current {
           visibility: hidden;
           padding: 2px;
@@ -674,7 +672,7 @@ input.placeholder, textarea.placeholder {
           border: 1px solid #eee;
           text-align: center;
         }
-        
+
         .delete {
           visibility: hidden;
           position: relative;
@@ -685,20 +683,20 @@ input.placeholder, textarea.placeholder {
           padding: 1px;
           margin: 0;
           background-color: white;
-          
+
           img {
             margin: 2px;
-          }     
+          }
         }
-        
-        border: 4px solid #eee; 
+
+        border: 4px solid #eee;
         &.selected {
           border: 4px solid #ccc;
         }
         &:hover {
           border: 4px solid #ddd;
         }
-      }      
+      }
     }
     .preview {
       width: 340px;
@@ -706,7 +704,7 @@ input.placeholder, textarea.placeholder {
       text-align: center;
       padding: 20px 80px 0px 80px;
       z-index: 1;
-      
+
       .title {
         img {
           width: 100px;
@@ -735,7 +733,7 @@ input.placeholder, textarea.placeholder {
           }
         }
       }
-      
+
       .content {
         overflow: visible;
         text-align: left;
@@ -754,7 +752,7 @@ input.placeholder, textarea.placeholder {
           span {
             background-color: #404040;
             color: white;
-            padding: 0 2px;            
+            padding: 0 2px;
           }
         }
         .text { margin: 0; padding: 0; }
@@ -797,18 +795,18 @@ input.placeholder, textarea.placeholder {
       font-size: 24px;
       color: orange;
     }
-    
+
     .enabled {
       .alert { color: #F26882; }
     }
-    
+
     hr {
       color: #eee;
       margin-top: 20px;
       margin-bottom: 20px;
       clear: both;
     }
-    
+
     h3 {
       font-size: 24px;
       color: #444444;
@@ -828,10 +826,10 @@ input.placeholder, textarea.placeholder {
       }
       p {
         margin: 0;
-        padding: 0!important;        
+        padding: 0!important;
       }
     }
-    
+
     img.shadow {
       position: relative;
       left: -20px;
@@ -849,7 +847,7 @@ input.placeholder, textarea.placeholder {
         margin-right: 40px;
       }
     }
-    
+
     .extra-features {
       .feature {
         width: 150px;
@@ -868,7 +866,7 @@ input.placeholder, textarea.placeholder {
       }
     }
   }
-  
+
   center.webmoney {
     font-size: 11px;
   }
@@ -899,7 +897,7 @@ input.placeholder, textarea.placeholder {
     font-size: 22px;
     margin-bottom: 15px;
   }
-  
+
   label {
     display: block;
     font-size: 16px;
@@ -909,7 +907,7 @@ input.placeholder, textarea.placeholder {
     color: #444444;
     cursor: pointer;
     margin-bottom: 15px;
-    
+
     input {
 //      background: #DAFFDA;
       padding: 3px;
@@ -941,12 +939,12 @@ input.placeholder, textarea.placeholder {
   input.button {
     margin-top: 20px;
   }
-  
+
 }
 
 .t-premium-link {
   padding: 40px;
-  
+
   p {
     margin-bottom: 20px;
     font-size: 13px;
@@ -961,11 +959,11 @@ input.placeholder, textarea.placeholder {
     border-top: 2px solid orange;
     border-bottom: 2px solid orange;
     cursor:pointer;
-  	cursor:hand;
-  	font-size:90%;
-  	margin-bottom: 10px;
-  	background: #d23d24;
-  	display: none;
+    cursor:hand;
+    font-size:90%;
+    margin-bottom: 10px;
+    background: #d23d24;
+    display: none;
   }
 
   h2 {
@@ -977,7 +975,7 @@ input.placeholder, textarea.placeholder {
     font-size: 22px;
     margin-bottom: 15px;
   }
-  
+
   label {
     display: block;
     font-size: 16px;
@@ -987,7 +985,7 @@ input.placeholder, textarea.placeholder {
     color: #444444;
     cursor: pointer;
     margin-bottom: 15px;
-    
+
     input {
       background: #DAFFDA;
       padding: 3px;
@@ -1019,7 +1017,7 @@ input.placeholder, textarea.placeholder {
     color: #9E9E9E;
     font-size: 45px;
     font-family: Tahoma, Arial, 'sans serif';
-    
+
     input {
       margin: 0;
       padding: 0;
@@ -1027,7 +1025,7 @@ input.placeholder, textarea.placeholder {
       padding-right: 10px;
     }
   }
-  
+
 }
 
 .t-premium-payment {
@@ -1038,7 +1036,7 @@ input.placeholder, textarea.placeholder {
     padding: 0;
   }
   margin: 20px;
-  
+
   #t-premium-payment-method {
     margin: 10px 0;
     padding-bottom: 10px;
@@ -1067,10 +1065,10 @@ input.placeholder, textarea.placeholder {
         padding: 4px;
         font-size: 11px;
         background-color: #eee;
-      }      
+      }
     }
   }
-  
+
   #t-premium-payment-qiwi {
     #qiwi-choose {
       #phone-demo {
@@ -1116,7 +1114,7 @@ input.placeholder, textarea.placeholder {
               background-color: #ccc;
               padding: 0 2px;
               font-weight: bold;
-            }            
+            }
           }
           .meta {
             background-color: #eee;
@@ -1130,7 +1128,7 @@ input.placeholder, textarea.placeholder {
               font-size: 11px;
               font-style: italic;
             }
-            
+
           }
         }
       }
@@ -1149,7 +1147,7 @@ input.placeholder, textarea.placeholder {
     padding: 0;
     line-height: 30px;
   }
-  
+
   h2 {
     color: #333;
     font-family: Georgia, 'Times New Roman';
@@ -1158,7 +1156,7 @@ input.placeholder, textarea.placeholder {
     padding: 0;
     line-height: 30px;
   }
-  
+
   ol li {
     font-family: Georgia, serif;
     font-size: 14px;
@@ -1206,7 +1204,7 @@ input.placeholder, textarea.placeholder {
 .t-main-adv-section {
   p {
     display: block;
-    background-color: transparent; 
+    background-color: transparent;
     margin-bottom: 1em;
     span {
       background-color: white;
@@ -1238,7 +1236,7 @@ input.placeholder, textarea.placeholder {
       width: 120px;
       overflow: hidden;
       text-overflow: ellipsis;
-      
+
       a {
         text-decoration: none;
         color: #444;
@@ -1278,7 +1276,7 @@ input.placeholder, textarea.placeholder {
 .content_layout_2 .eula {
   p {
     font-size: 12px;
-    font-weight: normal;    
+    font-weight: normal;
   }
   ul, ol {
     margin-left: 1em;
@@ -1304,7 +1302,7 @@ input.placeholder, textarea.placeholder {
   .image {
     float: left;
     margin: 1px;
-    
+
     img { padding: 3px; }
   }
 }

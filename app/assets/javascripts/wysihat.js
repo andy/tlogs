@@ -4,7 +4,6 @@
  *  WysiHat is freely distributable under the terms of an MIT-style license.
  *--------------------------------------------------------------------------*/
 
-
 var WysiHat = {};
 WysiHat.Editor = {
   attach: function(textarea) {
@@ -27,7 +26,6 @@ WysiHat.Editor = {
 
     textarea.insert({before: editArea});
     textarea.hide();
-
 
     return editArea;
   }

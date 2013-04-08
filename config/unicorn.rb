@@ -35,7 +35,6 @@ if GC.respond_to?(:copy_on_write_friendly=)
   GC.copy_on_write_friendly = true
 end
 
-
 before_fork do |server, worker|
   # the following is highly recomended for Rails + "preload_app true"
   # as there's no need for the master process to hold a connection
@@ -48,7 +47,7 @@ before_fork do |server, worker|
     rescue Errno::ENOENT, Errno::ESRCH
       # someone else did our job for us
     end
-  end  
+  end
 end
 
 after_fork do |server, worker|

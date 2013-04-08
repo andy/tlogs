@@ -1,7 +1,7 @@
 class AddIpToChangelogs < ActiveRecord::Migration
   def self.up
     add_column :changelogs, :ip, :string, :limit => 16
-    
+
     add_index :changelogs, :ip
     add_index :changelogs, [:owner_id, :ip]
     add_index :changelogs, :action

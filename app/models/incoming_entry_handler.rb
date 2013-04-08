@@ -3,10 +3,10 @@ class IncomingEntryHandler < ActionMailer::Base
     :image => /^image\/(jpeg|jpg|gif|png)$/i,
     :song => /^audio\/mp3$/i
   }
-  
+
   def receive(email)
     logger.warn "? Info: email object is #{email.inspect}"
-    
+
     # иногда какая-то фигня с адресом... пропускаем такие письма
     unless email.to
       logger.warn "- Error: skipping email, recipient not found ('to:' empty)"
@@ -18,14 +18,13 @@ class IncomingEntryHandler < ActionMailer::Base
     else
       keyword = email.to.first.split('@')[0] rescue nil
     end
-    
+
     if keyword.nil? || !mobile_settings = MobileSettings.find_by_keyword(keyword)
       logger.warn "- Error: authentication failed for email from #{email.from.nil? ? '(nil)' : email.from.join(',')} to #{email.to.nil? ? '(nil)' : email.to.join(',')} with subject #{email.subject}"
       return false
     end
-    
 
-    user = mobile_settings.user    
+    user = mobile_settings.user
     attachments = {}
     total_attachments = 0
 
@@ -53,7 +52,6 @@ class IncomingEntryHandler < ActionMailer::Base
     end
 
     Entry.class # okay, this will pre-load the entry.rb file, since you cant know the name from TextEntry
-
 
     if total_attachments > 0
       Entry.transaction do

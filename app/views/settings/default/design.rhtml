@@ -7,192 +7,192 @@
   <script type="text/javascript" src="http://yui.yahooapis.com/combo?2.9.0/build/utilities/utilities.js&2.9.0/build/slider/slider-min.js&2.9.0/build/colorpicker/colorpicker-min.js&2.9.0/build/container/container-min.js"></script>
 <% end %>
 <% content_for :header do %>
-	оформление тлога
+  оформление тлога
 <% end %>
 
 <form method='post' action='<%= user_url(current_site, settings_path(:action => 'design')) %>' enctype="multipart/form-data" class='small'>
   <%= tag :input, :type => 'hidden', :name => 'authenticity_token', :value => form_authenticity_token %>
-	<h2>Фоновая картинка</h2>
-	<table class='form'>
-		<tr id='choise_1'>
-			<td class='label'><label for='bg_by_link_input'>Ссылка:</label></td>
-			<td class='input'>
-				<%= text_field 'design', 'background_url' %>
-				<div class='input_note'>
-					<%= link_to_function "Картинка есть у Вас на диске?", "$('choise_2', 'choise_1').invoke('toggle');" %>
-				</div>
-			</td>
-		</tr>
-		<tr id='choise_2' style='display: none;'>
-			<td class='label'><label for='attachment_uploaded_data'>Файл:</label></td>
-			<td class='input'>
-				<%= file_field 'attachment', :uploaded_data %>
-				<%= tasty_error_message_on 'attachment', 'uploaded_data' %>
-				<div class='input_note'>
-					<%= link_to_function "Использовать ссылку", "$('choise_2', 'choise_1').invoke('toggle');" %>
-				</div>			
-			</td>
-		</tr>
-		<tr>
-			<td class='label'></td>
-			<td class='input'>
-				<%= check_box 'design', 'background_fixed' %><label for='design_background_fixed' id='design_background_fixed_label'>зафиксировать <abbr title='поставьте галочку, чтобы фон не двигался при прокрутке старницы'>?</abbr></label>
-			</td>
-		</tr>
-	</table>
+  <h2>Фоновая картинка</h2>
+  <table class='form'>
+    <tr id='choise_1'>
+      <td class='label'><label for='bg_by_link_input'>Ссылка:</label></td>
+      <td class='input'>
+        <%= text_field 'design', 'background_url' %>
+        <div class='input_note'>
+          <%= link_to_function "Картинка есть у Вас на диске?", "$('choise_2', 'choise_1').invoke('toggle');" %>
+        </div>
+      </td>
+    </tr>
+    <tr id='choise_2' style='display: none;'>
+      <td class='label'><label for='attachment_uploaded_data'>Файл:</label></td>
+      <td class='input'>
+        <%= file_field 'attachment', :uploaded_data %>
+        <%= tasty_error_message_on 'attachment', 'uploaded_data' %>
+        <div class='input_note'>
+          <%= link_to_function "Использовать ссылку", "$('choise_2', 'choise_1').invoke('toggle');" %>
+        </div>      
+      </td>
+    </tr>
+    <tr>
+      <td class='label'></td>
+      <td class='input'>
+        <%= check_box 'design', 'background_fixed' %><label for='design_background_fixed' id='design_background_fixed_label'>зафиксировать <abbr title='поставьте галочку, чтобы фон не двигался при прокрутке старницы'>?</abbr></label>
+      </td>
+    </tr>
+  </table>
 
-	<h2>Расположение и оформление дат</h2>
-	<table class='date_style'>
-		<tr>
-			<td>
-				<label>
-					<%= radio_button :design, :date_style, 'inside' %> внутри, по-умолчанию
-				</label>
-			</td>
-		</tr>
-		<tr>
-			<td>
-				<label>
-					<%= radio_button :design, :date_style, 'huge' %> большая, сбоку
-				</label>
-			</td>
-		</tr>
-		<tr>
-			<td>
-				<label>
-					<%= radio_button :design, :date_style, 'outside' %> маленькая, сбоку
-				</label>
-			</td>
-		</tr>
-	</table>
-	
-	<h2>Размер юзерпика в боковой панели</h2>
-	<table class='date_style'>
-	  <% unless current_site.userpic? %>
-  	  <tr>
-  	    <td><p class='red'>Эта функция будет доступна вам после того как вы <%= link_to 'перезальете', user_url(current_site, settings_path(:action => :user_common)) %> свой юзерпик.</p></td>
-  	  </tr>
-  	<% end %>
-	  <tr>
-	    <td>
-	      <label>
-	        <%= radio_button :design, :large_userpic, 'false' %> использовать маленький юзерпик
-	      </label>
-	    </td>
-	  </tr>
-	  <tr>
-	    <td>
-	      <label>
-	        <%= radio_button :design, :large_userpic, 'true' %> использовать большой юзерпик
-	      </label>
-	    </td>
-	  </tr>	  
-	</table>
-	
-	<h2>Цвета</h2>
-	<table id='design_colors' class='form'>
-		<tr>
-			<th colspan='2'></th>
-			<th class='transparent'>Выкл<abbr title='сделает этот блок прозрачным'>?</abbr></th>
-			<th colspan='2'></th>
-		</tr>
-		<tr>
-			<td class='label'>фоновый</td>
-			<td><%= text_field 'design', 'color_bg', :class => 'tlog_color_picker', :autocomplete => 'off' %></td>
-			<td></td>
-			<td class='label border'>даты</td>
-			<td><%= text_field 'design', 'color_date', :class => 'tlog_color_picker', :autocomplete => 'off' %></td>
-		</tr>
-		<tr>
-			<td class='label'>фон ленты тлога</td>
-			<td><%= text_field 'design', 'color_tlog_bg', :class => 'tlog_color_picker', :autocomplete => 'off' %></td>
-			<td><%= check_box 'design', 'color_tlog_bg_is_transparent', :class => 'checkbox' %></td>
-			<td class='label border'>текст в тлоге</td>
-			<td><%= text_field 'design', 'color_tlog_text', :class => 'tlog_color_picker', :autocomplete => 'off' %></td>
-		</tr>
-		<tr>
-			<td class='label design_color_sidebar_bg_label'>фон боковой панели<br><span class='input_note'>и даты, когда она сбоку</span></td>
-			<td><%= text_field 'design', 'color_sidebar_bg', :class => 'tlog_color_picker', :autocomplete => 'off' %></td>
-			<td><%= check_box 'design', 'color_sidebar_bg_is_transparent', :class => 'checkbox' %></td>
-			<td class='label border'>текст боковой панели</td>
-			<td><%= text_field 'design', 'color_sidebar_text', :class => 'tlog_color_picker', :autocomplete => 'off' %></td>
-		</tr>
-		<tr>
-			<td class='label'>фон голосовалки</td>
-			<td><%= text_field 'design', 'color_voter_bg', :class => 'tlog_color_picker', :autocomplete => 'off' %></td>
-			<td><%= check_box 'design', 'color_voter_bg_is_transparent', :class => 'checkbox' %></td>
-			<td class='label border'>текст голосовалки</td>
-			<td><%= text_field 'design', 'color_voter_text', :class => 'tlog_color_picker', :autocomplete => 'off' %></td>
-		</tr>
-		<tr>
-			<td class='label'>подсветка<br><span class='input_note'>поднадька, поданька</span></td>
-			<td><%= text_field 'design', 'color_highlight', :class => 'tlog_color_picker', :autocomplete => 'off' %></td>
-			<td></td>
-			<td class='label border'>текст ссылки</td>
-			<td><%= text_field 'design', 'color_link', :class => 'tlog_color_picker', :autocomplete => 'off' %></td>
-		</tr>
-	</table>
-	
-	<div class='submit_button'>
-		<input type='submit' value='Сохранить' class='button' />
-	</div>
-	
-	<h2>Предпросмотр</h2>
-	<div id='design_preview' style='<%= "background-image: url(#{image_path @design.background_url});" unless @design.background_url.blank? %><%= "background-color: ##{@design.color_bg};" unless @design.color_bg.blank? %>' class='design_color_bg'>
-		<div id='design_tlog_title'>
-			<span class='design_color_sidebar_bg design_color_sidebar_text'><%= h current_user.url %></span>
-		</div>
-		<div class='rel'>
-			<div id='design_sidebar'>
-				<div><p class='design_color_sidebar_text design_color_sidebar_bg'>О нем</p></div>
-				<div><p class='design_color_sidebar_text design_color_sidebar_bg'>Поиск</p></div>
-				<div><p class='design_color_sidebar_text design_color_sidebar_bg'>Теги</p></div>
-				<div><p class='design_color_sidebar_text design_color_sidebar_bg'>Календарь</p></div>
-				<div><p class='design_color_highlight design_color_sidebar_text'>Друзья</p></div>
-				<div><p class='design_friends'>
-					<% current_user.public_friends[0..5].each do |user| %>
-						<%= link_to_tlog user, {}, :class => 'design_color_sidebar_text design_color_sidebar_bg' %>
-					<% end %>
-					...
-				</p></div>
-			</div>
-		</div>
-		<div id='design_preview_tlog' class='design_color_tlog_bg design_color_tlog_text' style='<%= "background-color: ##{@design.color_tlog_bg};" unless @design.color_tlog_bg.blank? %><%= "color: ##{@design.color_tlog_text}" unless @design.color_tlog_text.blank? %>'>
-			<div id='design_date' class='design_color_date'>Сегодня, <%= "#{Time.now.mday} #{Time.now.month.to_rmonth}" %></div>
-			<div class='rel'>
-				<div id='design_voter' class='design_color_voter_bg design_color_voter_text'>7</div>
-			</div>
-			<h2 class='design_color_tlog_text'>Заголовок</h2>
-			<p>примерно так будет выглядеть ваш тлог если отойти от монитора на 10 метров</p>
-			<h2 class='design_color_tlog_text'>Картинка</h2>
-			<p><%= image_tag "sleepy_hollow_by_spookyme.jpg" %></p>
-			<h2 class='design_color_tlog_text'>Cсылка</h2>
-			<p><a href='http://www.mmm-tasty.ru/' class='design_color_link' style='<%= "color: ##{@design.color_link}" if false %>'>mmm-tasty.ru</a></p>
-			<h2 class='design_color_tlog_text'>Цитата</h2>
-			<p><span>&laquo;</span>То, что долго живет, растет медленно<span>&raquo;</span></p>
-		</div>
-	</div>
-
-	<h2>Ваш CSS</h2>
-	<div style='margin: 0px 0px 20px 0px; padding: 5px 20px; background-color: #eee; font-size: 12px;'>
-	  <p style='font-size: 12px;'>
-	    Пожалуйста, прежде чем задавать вопросы про <abbr title='Cascading Style Sheets'>CSS</abbr> и оформление, ознакомьтесь с <a href='http://vk.com/topic-20765600_24090807'>неофициальным FAQ по оформлению тлога</a>.</p>
-	  <p style='font-size: 12px;'>Спасибо.</p>
-	</div>
+  <h2>Расположение и оформление дат</h2>
+  <table class='date_style'>
+    <tr>
+      <td>
+        <label>
+          <%= radio_button :design, :date_style, 'inside' %> внутри, по-умолчанию
+        </label>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <label>
+          <%= radio_button :design, :date_style, 'huge' %> большая, сбоку
+        </label>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <label>
+          <%= radio_button :design, :date_style, 'outside' %> маленькая, сбоку
+        </label>
+      </td>
+    </tr>
+  </table>
   
-	
-	<%= link_to_function 'Добавьте ваш собственный CSS-код', 'Effect.toggle("design_css", "blind", { duration: 0.3 });', :class => 'design_css_toggle' %>
-	<div id='design_css'<%= " style='display: none'" if @design.user_css.blank? %>>
-		<div>
-			<%= text_area :design, :user_css, :rows => nil, :cols => nil, :class => 'resizable' %>
-			<%= tasty_error_message_on 'design', 'user_css' %>
-		</div>
-	</div>
-	
+  <h2>Размер юзерпика в боковой панели</h2>
+  <table class='date_style'>
+    <% unless current_site.userpic? %>
+      <tr>
+        <td><p class='red'>Эта функция будет доступна вам после того как вы <%= link_to 'перезальете', user_url(current_site, settings_path(:action => :user_common)) %> свой юзерпик.</p></td>
+      </tr>
+    <% end %>
+    <tr>
+      <td>
+        <label>
+          <%= radio_button :design, :large_userpic, 'false' %> использовать маленький юзерпик
+        </label>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <label>
+          <%= radio_button :design, :large_userpic, 'true' %> использовать большой юзерпик
+        </label>
+      </td>
+    </tr>  
+  </table>
+  
+  <h2>Цвета</h2>
+  <table id='design_colors' class='form'>
+    <tr>
+      <th colspan='2'></th>
+      <th class='transparent'>Выкл<abbr title='сделает этот блок прозрачным'>?</abbr></th>
+      <th colspan='2'></th>
+    </tr>
+    <tr>
+      <td class='label'>фоновый</td>
+      <td><%= text_field 'design', 'color_bg', :class => 'tlog_color_picker', :autocomplete => 'off' %></td>
+      <td></td>
+      <td class='label border'>даты</td>
+      <td><%= text_field 'design', 'color_date', :class => 'tlog_color_picker', :autocomplete => 'off' %></td>
+    </tr>
+    <tr>
+      <td class='label'>фон ленты тлога</td>
+      <td><%= text_field 'design', 'color_tlog_bg', :class => 'tlog_color_picker', :autocomplete => 'off' %></td>
+      <td><%= check_box 'design', 'color_tlog_bg_is_transparent', :class => 'checkbox' %></td>
+      <td class='label border'>текст в тлоге</td>
+      <td><%= text_field 'design', 'color_tlog_text', :class => 'tlog_color_picker', :autocomplete => 'off' %></td>
+    </tr>
+    <tr>
+      <td class='label design_color_sidebar_bg_label'>фон боковой панели<br><span class='input_note'>и даты, когда она сбоку</span></td>
+      <td><%= text_field 'design', 'color_sidebar_bg', :class => 'tlog_color_picker', :autocomplete => 'off' %></td>
+      <td><%= check_box 'design', 'color_sidebar_bg_is_transparent', :class => 'checkbox' %></td>
+      <td class='label border'>текст боковой панели</td>
+      <td><%= text_field 'design', 'color_sidebar_text', :class => 'tlog_color_picker', :autocomplete => 'off' %></td>
+    </tr>
+    <tr>
+      <td class='label'>фон голосовалки</td>
+      <td><%= text_field 'design', 'color_voter_bg', :class => 'tlog_color_picker', :autocomplete => 'off' %></td>
+      <td><%= check_box 'design', 'color_voter_bg_is_transparent', :class => 'checkbox' %></td>
+      <td class='label border'>текст голосовалки</td>
+      <td><%= text_field 'design', 'color_voter_text', :class => 'tlog_color_picker', :autocomplete => 'off' %></td>
+    </tr>
+    <tr>
+      <td class='label'>подсветка<br><span class='input_note'>поднадька, поданька</span></td>
+      <td><%= text_field 'design', 'color_highlight', :class => 'tlog_color_picker', :autocomplete => 'off' %></td>
+      <td></td>
+      <td class='label border'>текст ссылки</td>
+      <td><%= text_field 'design', 'color_link', :class => 'tlog_color_picker', :autocomplete => 'off' %></td>
+    </tr>
+  </table>
+  
+  <div class='submit_button'>
+    <input type='submit' value='Сохранить' class='button' />
+  </div>
+  
+  <h2>Предпросмотр</h2>
+  <div id='design_preview' style='<%= "background-image: url(#{image_path @design.background_url});" unless @design.background_url.blank? %><%= "background-color: ##{@design.color_bg};" unless @design.color_bg.blank? %>' class='design_color_bg'>
+    <div id='design_tlog_title'>
+      <span class='design_color_sidebar_bg design_color_sidebar_text'><%= h current_user.url %></span>
+    </div>
+    <div class='rel'>
+      <div id='design_sidebar'>
+        <div><p class='design_color_sidebar_text design_color_sidebar_bg'>О нем</p></div>
+        <div><p class='design_color_sidebar_text design_color_sidebar_bg'>Поиск</p></div>
+        <div><p class='design_color_sidebar_text design_color_sidebar_bg'>Теги</p></div>
+        <div><p class='design_color_sidebar_text design_color_sidebar_bg'>Календарь</p></div>
+        <div><p class='design_color_highlight design_color_sidebar_text'>Друзья</p></div>
+        <div><p class='design_friends'>
+          <% current_user.public_friends[0..5].each do |user| %>
+            <%= link_to_tlog user, {}, :class => 'design_color_sidebar_text design_color_sidebar_bg' %>
+          <% end %>
+          ...
+        </p></div>
+      </div>
+    </div>
+    <div id='design_preview_tlog' class='design_color_tlog_bg design_color_tlog_text' style='<%= "background-color: ##{@design.color_tlog_bg};" unless @design.color_tlog_bg.blank? %><%= "color: ##{@design.color_tlog_text}" unless @design.color_tlog_text.blank? %>'>
+      <div id='design_date' class='design_color_date'>Сегодня, <%= "#{Time.now.mday} #{Time.now.month.to_rmonth}" %></div>
+      <div class='rel'>
+        <div id='design_voter' class='design_color_voter_bg design_color_voter_text'>7</div>
+      </div>
+      <h2 class='design_color_tlog_text'>Заголовок</h2>
+      <p>примерно так будет выглядеть ваш тлог если отойти от монитора на 10 метров</p>
+      <h2 class='design_color_tlog_text'>Картинка</h2>
+      <p><%= image_tag "sleepy_hollow_by_spookyme.jpg" %></p>
+      <h2 class='design_color_tlog_text'>Cсылка</h2>
+      <p><a href='http://www.mmm-tasty.ru/' class='design_color_link' style='<%= "color: ##{@design.color_link}" if false %>'>mmm-tasty.ru</a></p>
+      <h2 class='design_color_tlog_text'>Цитата</h2>
+      <p><span>&laquo;</span>То, что долго живет, растет медленно<span>&raquo;</span></p>
+    </div>
+  </div>
 
-	<div class='submit_button'>
-		<input type='submit' value='Сохранить' class='button' />
-	</div>
+  <h2>Ваш CSS</h2>
+  <div style='margin: 0px 0px 20px 0px; padding: 5px 20px; background-color: #eee; font-size: 12px;'>
+    <p style='font-size: 12px;'>
+      Пожалуйста, прежде чем задавать вопросы про <abbr title='Cascading Style Sheets'>CSS</abbr> и оформление, ознакомьтесь с <a href='http://vk.com/topic-20765600_24090807'>неофициальным FAQ по оформлению тлога</a>.</p>
+    <p style='font-size: 12px;'>Спасибо.</p>
+  </div>
+
+  
+  <%= link_to_function 'Добавьте ваш собственный CSS-код', 'Effect.toggle("design_css", "blind", { duration: 0.3 });', :class => 'design_css_toggle' %>
+  <div id='design_css'<%= " style='display: none'" if @design.user_css.blank? %>>
+    <div>
+      <%= text_area :design, :user_css, :rows => nil, :cols => nil, :class => 'resizable' %>
+      <%= tasty_error_message_on 'design', 'user_css' %>
+    </div>
+  </div>
+  
+
+  <div class='submit_button'>
+    <input type='submit' value='Сохранить' class='button' />
+  </div>
 </form>
 
 <% content_for :body do %>
@@ -222,12 +222,12 @@
     }
   }
 
-  jQuery('#design_colors input.checkbox').change(function() { design_check_box(this); });  
+  jQuery('#design_colors input.checkbox').change(function() { design_check_box(this); });
   jQuery('#design_colors input:checkbox:checked').each(function() { design_check_box(this); });
-  
+
 // function design_check_box(element, field) {
 //   var field = $(field);
-// 
+//
 //   if(element.checked) {
 //     field.disabled = true;
 //     field.style.color = '#999';
@@ -240,10 +240,9 @@
 //     field.style.color = '';
 //     $$('.' + field.id + '_label').each(function(e) {
 //       e.style.color = '';
-//     });    
+//     });
 //   }
 // }
-
 
 var TlogColorPicker = Class.create({
   initialize: function(elements) {
@@ -254,7 +253,7 @@ var TlogColorPicker = Class.create({
       width: '400px',
       visible: false,
       constraintoviewport: true,
-      close: true, 
+      close: true,
       draggable: true,
       dragonly: true,
       underlay: 'shadow',
@@ -263,7 +262,7 @@ var TlogColorPicker = Class.create({
     });
 
     this.panel.renderEvent.subscribe(function() {
-      if(!this.picker) { 
+      if(!this.picker) {
         this.picker = new YAHOO.widget.ColorPicker('y-picker', {
           images: {
             PICKER_THUMB: '<%= image_path('colorpicker/select.gif') %>',
@@ -296,7 +295,7 @@ var TlogColorPicker = Class.create({
       element.observe('click', this__.onClick.bindAsEventListener(this__));
       this__.colorize(element, element.value);
     });
-    
+
     // handle panel events
     Event.observe('y-panel-ok', 'click', this.hide.bindAsEventListener(this));
     Event.observe('y-panel-cancel', 'click', this.cancel.bindAsEventListener(this));
@@ -340,7 +339,7 @@ var TlogColorPicker = Class.create({
       } else {
         element.style.backgroundColor = 'black';
       }
-      
+
       $$('.' + element.id).each(function(e) {
         e.style.color = '#' + hex_color;
       });
@@ -366,7 +365,7 @@ var TlogColorPicker = Class.create({
   onKeyPress: function(key, event) {
     alert(key);
     alert(event);
-    
+
     this.hide();
 
     event.stop();

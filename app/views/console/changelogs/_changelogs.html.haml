@@ -1,4 +1,3 @@
-
 %table.table.table-striped
   %thead
     %tr
@@ -37,6 +36,5 @@
           %span{:title => changelog.created_at.to_s(:db)}
             = time_ago_in_words changelog.created_at, true
             ago
-        
 
 = bootstrap_paginate @changelogs

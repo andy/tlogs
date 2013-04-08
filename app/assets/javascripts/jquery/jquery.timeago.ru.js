@@ -13,7 +13,7 @@
       return t;
     }
   }
- 
+
   jQuery.timeago.settings.strings = {
     prefixAgo: null,
     prefixFromNow: "через",

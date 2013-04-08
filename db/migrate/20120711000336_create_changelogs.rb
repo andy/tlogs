@@ -8,10 +8,10 @@ class CreateChangelogs < ActiveRecord::Migration
 
       t.string  :action,  :null => false
       t.text    :comment
-      
+
       t.timestamps
     end
-    
+
     add_index :changelogs, [:object_id, :object_type]
     add_index :changelogs, :owner_id
     add_index :changelogs, [:owner_id, :action]

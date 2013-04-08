@@ -10,16 +10,16 @@
       <h3><span class='gray'>Переписка между вами и </span><span class='highlight'><%= @conversation.recipient.url %></span></h3>
 
       <div class='rel'>
-      	<div class='conversation_subscribe_controls'>
-      		<%= link_to_remote image_tag('letter.gif', :size => '17x15'), { :url => service_url(subscribe_conversation_path(@conversation)).downcase }, :id => 'subscribe_link', :style => "display: #{@conversation.send_notifications? ? 'none' : 'block'}", :title => 'подписаться на уведомления по почте' %>
-      		<%= link_to_remote image_tag('unletter.gif', :size => '17x15'), { :url => service_url(unsubscribe_conversation_path(@conversation)).downcase }, :id => 'unsubscribe_link', :style => "display: #{@conversation.send_notifications? ? 'block' : 'none'}", :title => 'отписаться от уведомлений по почте' %>
-      	</div>
+        <div class='conversation_subscribe_controls'>
+          <%= link_to_remote image_tag('letter.gif', :size => '17x15'), { :url => service_url(subscribe_conversation_path(@conversation)).downcase }, :id => 'subscribe_link', :style => "display: #{@conversation.send_notifications? ? 'none' : 'block'}", :title => 'подписаться на уведомления по почте' %>
+          <%= link_to_remote image_tag('unletter.gif', :size => '17x15'), { :url => service_url(unsubscribe_conversation_path(@conversation)).downcase }, :id => 'unsubscribe_link', :style => "display: #{@conversation.send_notifications? ? 'block' : 'none'}", :title => 'отписаться от уведомлений по почте' %>
+        </div>
       </div>
     </div>
 
     <%= paginate @messages %>
 
-  	<%= render :partial => 'messages/message', :collection => @messages.reverse, :spacer_template => 'messages/message_spacer' %>
+    <%= render :partial => 'messages/message', :collection => @messages.reverse, :spacer_template => 'messages/message_spacer' %>
 
     <%= render :partial => 'messages/message_spacer' %>
 
@@ -33,26 +33,26 @@
   jQuery(document).ready(function() {
     jQuery('#subscribe_link').twipsy({ placement: 'below' });
     jQuery('#unsubscribe_link').twipsy({ placement: 'below' });
-    
+
     // enable hover stuff
     jQuery(".message", jQuery('div.messages')[0]).live({
       mouseenter: function() {
         jQuery(this).find('.showonhover').show();
 
         return false;
-      },    
+      },
       mouseleave: function() {
         jQuery(this).find('.showonhover').hide();
 
         return false;
       }
     });
-    
+
     jQuery('abbr.timeago').timeago();
   });
 </script>
 
 <% content_for :sidebar_right do %>
-  <%= render :partial => 'main/my_sidebar_right' %>	
+  <%= render :partial => 'main/my_sidebar_right' %>  
   <%= render :partial => 'conversations/sidebar' %>
 <% end %>

@@ -1,34 +1,34 @@
 <% @title = 'поменять адрес тлога' %>
 
 <% content_for :header do %>
-	переименовать тлог
+  переименовать тлог
 <% end %>
 
 <div class="center_data_big_form">
-	<p>У нас на тейсти легко оставаться анонимным, если хочется. На этой специальной странице можно <span class='highlight'>изменить адрес</span> вашего тлога, т.е. переехать со всем содержимым вашего текущего тлога на новый url (если он, конечно, еще ни кем не занят).</p>
+  <p>У нас на тейсти легко оставаться анонимным, если хочется. На этой специальной странице можно <span class='highlight'>изменить адрес</span> вашего тлога, т.е. переехать со всем содержимым вашего текущего тлога на новый url (если он, конечно, еще ни кем не занят).</p>
   <p>Пожалуйста, обратите внимание, что после нажатия кнопки "Переехать!" ваш тлог будет доступен <span class='highlight'>только по новому адресу</span>, а старый адрес сразу же перестанет работать.</p>
   <p>Дополнительно, вы можете отписать от своего тлога всех, кто на него подписан и начать новую прекрасную жизнь.</p>
-	
-	<br/><br/>
-	<% form_for :user, @user, :html => { :class => 'big' } do |f| %>
+  
+  <br/><br/>
+  <% form_for :user, @user, :html => { :class => 'big' } do |f| %>
 
-		<div class='form_string'>
-			<label for="user_url">новое имя / адрес:
-				<%= f.text_field :url, :class => "at_input" %>
-				<div class="rel"><div class="at"><h1>.<%= current_service.domain %></h1></div></div>
-				<%= tasty_error_message_on('user', 'url') %>
-			</label>
-		</div>
-		
-		<div class='form_string remove_subscribers'>
-	    <input type='checkbox' name='remove_subscribers' value='1' id='remove_subscribers' />
-	    <label for='remove_subscribers'>&mdash; отписать всех от моего тлога</label>
-		</div>
+    <div class='form_string'>
+      <label for="user_url">новое имя / адрес:
+        <%= f.text_field :url, :class => "at_input" %>
+        <div class="rel"><div class="at"><h1>.<%= current_service.domain %></h1></div></div>
+        <%= tasty_error_message_on('user', 'url') %>
+      </label>
+    </div>
+    
+    <div class='form_string remove_subscribers'>
+      <input type='checkbox' name='remove_subscribers' value='1' id='remove_subscribers' />
+      <label for='remove_subscribers'>&mdash; отписать всех от моего тлога</label>
+    </div>
 
-		<div class='submit_button'>
-			<input type='submit' value='Переехать!' class='button' />
-		</div>
-	<% end %>
+    <div class='submit_button'>
+      <input type='submit' value='Переехать!' class='button' />
+    </div>
+  <% end %>
 </div>
 
 <%= observe_field 'user_url', :url => { :action => 'update_url_status' }, :frequency => 0.25, :with => 'url' %>

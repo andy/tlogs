@@ -1,8 +1,8 @@
 <div class='section'>
   <h2><span>Записи</span></h2>
   <div class='vertical_nav'>
-		<%= link_to 'активные', service_url(main_path(:action => 'my', :page => nil)), :class => (params[:action] == 'my') ? 'highlight' : nil %><br/>
-		<%= link_to 'новые', service_url(main_path(:action => :last_personalized, :page => nil)), :class => (params[:action] == 'last_personalized') ? 'highlight' : nil %><br/>
-		<%= link_to 'избранное', user_url(current_user, faves_path) %>
-	</div>		
+    <%= link_to 'активные', service_url(main_path(:action => 'my', :page => nil)), :class => (params[:action] == 'my') ? 'highlight' : nil %><br/>
+    <%= link_to 'новые', service_url(main_path(:action => :last_personalized, :page => nil)), :class => (params[:action] == 'last_personalized') ? 'highlight' : nil %><br/>
+    <%= link_to 'избранное', user_url(current_user, faves_path) %>
+  </div>    
 </div>

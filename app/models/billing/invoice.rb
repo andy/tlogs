@@ -23,14 +23,12 @@
 class Invoice < ActiveRecord::Base
   ## attributes and constants
   DAILY_RATE = ::SETTINGS[:billing]['daily_rate'] || 2.33333333333
-  
-  serialize :metadata, HashWithIndifferentAccess
 
+  serialize :metadata, HashWithIndifferentAccess
 
   ## associations
   belongs_to :user
-  
-  
+
   ## named scopes
   named_scope     :for_user,
                   lambda { |user| { :conditions => "user_id = #{user.id}" } }
@@ -44,7 +42,6 @@ class Invoice < ActiveRecord::Base
   named_scope     :failed,
                   :conditions => { :state => 'failed' }
 
-  
   ## validations
   validates_inclusion_of  :state,
                           :in => %w(pending successful failed)
@@ -52,17 +49,15 @@ class Invoice < ActiveRecord::Base
   validates_presence_of   :user
 
   validates_presence_of   :amount
-  
+
   validates_presence_of   :revenue
-  
+
   validates_presence_of   :days
 
   validates_presence_of   :metadata
 
-
   ## callbacks
   after_create            :expand_premium_for_user!, :if => :is_successful?
-
 
   ## public methods
   def is_pending?
@@ -72,11 +67,11 @@ class Invoice < ActiveRecord::Base
   def is_successful?
     state == 'successful'
   end
-  
+
   def success!
     update_attribute :state, 'successful'
   end
-  
+
   def fail!
     update_attribute :state, 'failed'
   end
@@ -96,11 +91,11 @@ class Invoice < ActiveRecord::Base
   def extra_summary
     ''
   end
-  
+
   def pref_key
     nil
   end
-  
+
   def pref_options
     nil
   end
@@ -108,8 +103,8 @@ class Invoice < ActiveRecord::Base
   def expand_premium_for_user!
     expand_since = [user.premium_till, Time.now].compact.max
     user.update_attribute(:premium_till, (expand_since + self.days.days).end_of_day + 8.hours)
-  end 
-  
+  end
+
   ## protected methods
   protected
 end

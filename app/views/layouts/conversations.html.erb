@@ -4,44 +4,44 @@
 <!--[if IE 8 ]>    <html class="ie8" lang="ru"> <![endif]-->
 <!--[if (gte IE 9)|!(IE)]><!--> <html lang="ru"> <!--<![endif]-->
 <head>
-	<%= render :partial => 'globals/head' %>
+  <%= render :partial => 'globals/head' %>
 </head>
 <body id='the_tlog_body' class="<%= classes(['is-owner', is_owner?], ['logged-in', current_user]) %>">
-	<div class='tlog'>
-		<div class="tlog_header">
-			<div id='tlog_menu'>
-				<span id='tlog_menu_desc'>
-					<div>
-						<span id='tlog_menu_url'>
-							<%= link_to_tlog_if(params[:action] != 'index' || params[:controller] != 'tlog' || (@page && @page != 1), current_site) %>
-						</span>
-					</div>
-					<%= content_tag(:span, h(current_site.tlog_settings.title), :id => 'tlog_menu_title') unless current_site.tlog_settings.title.blank? %>
-				</span>
-			</div>
+  <div class='tlog'>
+    <div class="tlog_header">
+      <div id='tlog_menu'>
+        <span id='tlog_menu_desc'>
+          <div>
+            <span id='tlog_menu_url'>
+              <%= link_to_tlog_if(params[:action] != 'index' || params[:controller] != 'tlog' || (@page && @page != 1), current_site) %>
+            </span>
+          </div>
+          <%= content_tag(:span, h(current_site.tlog_settings.title), :id => 'tlog_menu_title') unless current_site.tlog_settings.title.blank? %>
+        </span>
+      </div>
 
-			<div class='sidebar_holder sidebar_tlog_right' id='tlog_sidebar'>
-				<div class='rel'>
-					<div class='sidebar' id='tlog_sidebar_content' style='display: block'>
-						<div class="personal round">
-						  <div class="content">
-								<%= render :partial => 'conversations/sidebar' %>
-						  </div>
-						</div>								
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="main_rounded_holder">
-			<div class="rounded_main_center">
-				<div class='onair convos'>
-					<%= flash_div %>
-					<%= yield %>
-				</div>
-			</div>
-		</div>
-		<%= render :partial => 'globals/foot' %>
-	</div>	
-	<%= render :partial => 'globals/top_nav' %>
+      <div class='sidebar_holder sidebar_tlog_right' id='tlog_sidebar'>
+        <div class='rel'>
+          <div class='sidebar' id='tlog_sidebar_content' style='display: block'>
+            <div class="personal round">
+              <div class="content">
+                <%= render :partial => 'conversations/sidebar' %>
+              </div>
+            </div>                
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="main_rounded_holder">
+      <div class="rounded_main_center">
+        <div class='onair convos'>
+          <%= flash_div %>
+          <%= yield %>
+        </div>
+      </div>
+    </div>
+    <%= render :partial => 'globals/foot' %>
+  </div>  
+  <%= render :partial => 'globals/top_nav' %>
 </body>
 </html>

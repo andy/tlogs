@@ -48,7 +48,7 @@ class TextEntry < Entry
 
   def entry_russian_dict; { :who => 'ммм... пост', :whom => 'ммм... пост' } end
   def excerpt
-    if self.data_part_2.to_s.length > 0 
+    if self.data_part_2.to_s.length > 0
       self.data_part_2.to_s.gsub(/<object.*?<\/object>/i, ' ').truncate(150).to_s.gsub("\r", '').gsub("\n", ' ')
     else
       self.data_part_1.to_s.gsub(/<object.*?<\/object>/i, ' ').truncate(150).to_s.gsub("\r", '').gsub("\n", ' ')
@@ -64,7 +64,7 @@ class TextEntry < Entry
     content += "\n<a href='#{params[:url]}'>отсюда</a>" if content
     self.new :data_part_1 => content, :data_part_2 => title
   end
-  
+
   def title
     excerpt
   end

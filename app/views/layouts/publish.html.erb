@@ -4,21 +4,21 @@
 <!--[if IE 8 ]>    <html class="ie8" lang="ru"> <![endif]-->
 <!--[if (gte IE 9)|!(IE)]><!--> <html lang="ru"> <!--<![endif]-->
 <head>
-	<%= render :partial => 'globals/head' %>
-	<%= tasty_include_javascripts :extended %>
+  <%= render :partial => 'globals/head' %>
+  <%= tasty_include_javascripts :extended %>
 </head>
 <body class="bg_main body_layout_2">
-	<div id="wrapper">
-		<div id="header">
-			<%= yield :header %>
-		</div>
-		<div id="container">
-			<%= yield %>
-		</div>
-	</div>
-	<% unless in_bookmarklet? %>
-		<%= render :partial => 'globals/foot' %>
-		<%= render :partial => 'globals/top_nav' %>
-	<% end %>
+  <div id="wrapper">
+    <div id="header">
+      <%= yield :header %>
+    </div>
+    <div id="container">
+      <%= yield %>
+    </div>
+  </div>
+  <% unless in_bookmarklet? %>
+    <%= render :partial => 'globals/foot' %>
+    <%= render :partial => 'globals/top_nav' %>
+  <% end %>
 </body>
 </html>

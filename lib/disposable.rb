@@ -40,7 +40,7 @@ DISPOSABLE_DOMAINS = %w(
   mytempemail.com
   notsharingmy.info
   tempemail.co.za
-  12minutemail.com  
+  12minutemail.com
   mailcatch.com
   maillses.allowed.org
   mails.twilightparadox.com
@@ -233,7 +233,7 @@ module Disposable
       return true if email.downcase.ends_with?('@' + domain.downcase)
       return true if email.downcase.ends_with?('.' + domain.downcase)
     end
-    
+
     return false
 
     begin
@@ -253,7 +253,7 @@ module Disposable
         :backtrace      => ex.backtrace,
         :parameters     => { :email => email }
       )
-      
+
       false
     end
   end

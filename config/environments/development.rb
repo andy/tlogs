@@ -16,7 +16,6 @@ config.action_controller.consider_all_requests_local = true
 config.action_controller.perform_caching             = true
 config.action_view.debug_rjs                         = true
 
-
 # Caching, woohoo!
 config.cache_store = :mem_cache_store, '127.0.0.1:11211', { :namespace => 'd' }
 

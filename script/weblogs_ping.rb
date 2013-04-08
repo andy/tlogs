@@ -8,12 +8,12 @@ counter = {}
 
 def efetch(entry_id)
   begin
-    entry = Entry.find(entry_id, :include => { :author => [ :tlog_settings ]})      
+    entry = Entry.find(entry_id, :include => { :author => [ :tlog_settings ]})
   rescue ActiveRecord::RecordNotFound
     return nil
   end
   user  = entry.author
-    
+
   if entry.is_private?
     puts "- skipping private entry (#{user.url}, #{entry.id})"
     return false
@@ -62,17 +62,17 @@ $redis.subscribe(:ping) do |on|
     counter.keys.each do |entry_id|
       if counter[entry_id] > 30
         puts "- entry not found (#{entry_id})"
-	counter.delete entry_id
+  counter.delete entry_id
       else
-	entry = efetch(entry_id)
-	if entry.nil?
-	  counter[entry_id] += 1
-	elsif entry
-	  counter.delete entry_id
-	  entries << entry
-	else
-	  counter.delete entry_id
-	end
+  entry = efetch(entry_id)
+  if entry.nil?
+    counter[entry_id] += 1
+  elsif entry
+    counter.delete entry_id
+    entries << entry
+  else
+    counter.delete entry_id
+  end
       end
     end
 

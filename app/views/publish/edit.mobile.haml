@@ -2,7 +2,7 @@
   %h1
     = @entry.new_record? ? 'Добавить' : 'Редактировать'
     = @entry.to_russian :whom
-  
+
   %form{ :method => 'post' }
     %input{ :type => 'hidden', :name => 'entry[authenticity_token]', :value => form_authenticity_token }
     %input{ :type => 'hidden', :name => 'utf8', :value => '✓' }
@@ -17,7 +17,7 @@
     .ui-hide-label{ :data => { :role => 'fieldcontain' } }
       %label{ :for => 'entry_data_part_1' } Текст поста
       %textarea{ :name => 'entry[data_part_1]', :id => 'entry_data_part_1', :placeholder => 'Текст' }= @entry.data_part_2
-    
+
     - if @entry.visibility != 'voteable' || @new_record
       %div{ :data => { :role => 'fieldcontain' } }
         -# label{ :for => 'entry_visibility' } Тип записи
@@ -39,12 +39,12 @@
         - else
           .visibility_comments
             %b Жизнь удалась.
-            Вы никак не ограничены в количестве публикаций в прямой эфир.    
-    
+            Вы никак не ограничены в количестве публикаций в прямой эфир.
+
     .ui-hide-label{ :data => { :role => 'fieldcontain' } }
       %label{ :for => 'entry_tag_list' } Теги
-      %input{ :type => 'text', :name => 'entry[tag_list]', :id => 'entry_tag_list', :autocomplete => :off, :data => { :mini => 'true' }, :value => @entry.tag_list, :placeholder => 'Теги' }    
-  
+      %input{ :type => 'text', :name => 'entry[tag_list]', :id => 'entry_tag_list', :autocomplete => :off, :data => { :mini => 'true' }, :value => @entry.tag_list, :placeholder => 'Теги' }
+
     %input{ :type => 'submit', :value => 'Сохранить', :data => { :icon => 'check', :iconpos => 'right' } }
 
 :javascript
@@ -55,7 +55,7 @@
     jQuery('#entry_nsfw_holder').hide().trigger( 'updatelayout' );
     jQuery('.visibility_comments').hide().trigger( 'updatelayout' );
   }
-  
+
   jQuery('#entry_visibility').change(function() {
     if(jQuery(this).val() == 'mainpageable' || jQuery(this).val() == 'voteable') {
       jQuery('#entry_nsfw_holder').show(300).trigger( 'updatelayout' );
@@ -65,4 +65,4 @@
       jQuery('.visibility_comments').hide(300).trigger( 'updatelayout' );
     }
   });
-  
+

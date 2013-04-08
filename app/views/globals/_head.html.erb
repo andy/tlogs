@@ -16,8 +16,8 @@
 
 <% if not current_site %>
 <!-- ms ie9 navigation -->
-<meta name="application-name" content="Тейсти"> 
-<meta name="msapplication-tooltip" content="Тейсти"> 
+<meta name="application-name" content="Тейсти">
+<meta name="msapplication-tooltip" content="Тейсти">
 <meta name="msapplication-starturl" content="<%= current_service.url %>">
 <%- [
     { :name => 'прямой эфир', :uri => service_url(main_path(:action => :live)) },
@@ -50,7 +50,7 @@
     <%- end -%>
   <%- end -%>
   window._is_private = <%= is_private?.to_json %>;
-  window._token = "<%= form_authenticity_token %>";  
+  window._token = "<%= form_authenticity_token %>";
 </script>
 
 <!-- google analytics code -->
@@ -60,7 +60,7 @@
   <%= tasty_include_stylesheets :application %>
   <%- if current_site && %w(tlog conversations faves tags search).include?(params[:controller]) -%>
     <%= tasty_include_stylesheets :tlog %>
-    <%= tag :link, :rel => 'stylesheet', :type => 'text/css', :href => user_url(current_site, style_path(:revision => current_site.tlog_settings.css_revision)) if current_site.tlog_settings %>	
+    <%= tag :link, :rel => 'stylesheet', :type => 'text/css', :href => user_url(current_site, style_path(:revision => current_site.tlog_settings.css_revision)) if current_site.tlog_settings %>  
 <%-   end
     end
     unless disable_js -%>
