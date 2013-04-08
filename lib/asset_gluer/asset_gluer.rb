@@ -23,10 +23,10 @@ module AssetGluer
       options = paths.extract_options!
 
       contents = paths.flatten.map { |path| self.new(path).process }.join("\n")
-
+      
       self.process(contents)
     end
-
+    
     def self.cache_dir
       File.join(self.dir, "cache")
     end

@@ -2,7 +2,7 @@
 %html
   %head
     = render :partial => 'globals/head'
-
+  
   %body{:lang => 'ru'}
     %div{:data => {:role => 'page'}}
       %div{:data => {:role => 'header'}}
@@ -10,10 +10,10 @@
 
         %h1= h current_site.url
 
-        = yield :header_r
+        = yield :header_r 
 
       = yield
-
+      
     = yield :extra
 
   = render :partial => 'globals/counters' if Rails.env.production?

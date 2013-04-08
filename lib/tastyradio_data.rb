@@ -31,22 +31,22 @@ module TastyradioData
           data = status[(offset*6)...((offset + 1) * 6)]
           result[:online] = data[3]
           result[:song]   = data[5].strip.gsub(/^\-\s+/, '').gsub(/\s+\-$/, '')
-
+        
           result[:song] = 'неизвестный трек' if result[:song] && result[:song] == '-'
         end
 
         result[:online] = onum if onum > 0
-
+        
         return result
       end
 
       nil
     # rescue
-    #
+    # 
     #   nil
     end
-
+    
   end
-
+  
   module_function :fetch
 end

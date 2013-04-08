@@ -6,11 +6,11 @@
     %meta{:robots => 'index,follow'}
     %meta{'http-equiv' => 'imagetoolbar', :content => 'no'}
     %link{:rel => 'shortcut icon', :href => '/images/specials/newyear/favicon.ico'}
-
+    
     = tasty_include_stylesheets :chat
     = tasty_include_javascripts :chat
     = render :partial => 'globals/gajs'
-
+    
     :javascript
       var current_user = #{current_user ? current_user.id : 0};
       var current_site = #{current_site ? current_site.url.downcase.to_json : 'www'.to_json};
@@ -20,16 +20,17 @@
             :premium  => current_user.is_premium?
             # :sid  => cookies[ActionController::Base.session_options[:key]]
           }.to_json };
-
+      
       window._is_private = #{is_private?.to_json};
-      window._token = #{form_authenticity_token.to_json};
-
+      window._token = #{form_authenticity_token.to_json};  
+      
       jQuery(document).ready(function() {
         Chat.ready(#{ { :autojoin => @autojoin }.to_json });
       });
+      
 
   %body
-
+  
     #wrapper
       .top
         .btm-sh-top
@@ -62,9 +63,10 @@
           #channels
             .list.clearfix
               // %a.join.fancybox{:rel => 'twipsy', :type => 'ajax', :href => '/specials/newyear/choose', :title => 'Подключиться к новому каналу или создать его', :data => { :placement => 'below', :offset => 5 } } +
-
+            
             .content
 
+          
           #compose
             .userpic= userpic_tag(current_user, :width => 32)
             %form
@@ -72,5 +74,5 @@
               %input#submit{:type => 'submit', :value => 'Отправить'}
               #submit_spinner
               #chat_errors Знаете, #{current_user.url}, у нас тут какие-то проблемы. Вобщем, нужно обновить страницу.
-
+  
     = render :partial => 'globals/counters' if Rails.env.production?

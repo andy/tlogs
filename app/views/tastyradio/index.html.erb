@@ -1,30 +1,30 @@
 <div class="<%= is_mobile_device? ? 'small_player' : 'big_player' %>">
-  <div class="header">
-    <div class="logo_holder">
-      <%= image_tag 'tastyradio/logo.png', :size => '200x35' %>
-      <div class="online">Слушателей: <span>загружаем...</span></div>
-    </div>
+	<div class="header">
+		<div class="logo_holder">
+		  <%= image_tag 'tastyradio/logo.png', :size => '200x35' %>
+			<div class="online">Слушателей: <span>загружаем...</span></div>
+		</div>
     <div class="desktop_players">
       Слушать в плеере:
       <div><a href="http://radio.tlogs.ru:8000/stream.mp3" target="_blank">WinAmp</a></div>
       <div><a href="http://radio.tlogs.ru:8000/stream.mp3.m3u" target="_blank">iTunes</a></div>
     </div>
-  </div>
-  <div class="content">
-    <div class="stop_btn control_margin" id="play_stop"></div>
-    <div class="meta">
-      В эфире:
-      <div class="song_holder" id="song"><span class="song">загружаем...</span></div>
-    </div>
-    <div class="volume">
-      <div class="icons">
-        <div class="up"></div>
-        <div class="down"></div>
-      </div>
-      <div class="slider"><div class="knob"></div></div>
-    </div>
-  </div>
-  <div class='info'>Все вопросы и пожелания по эфиру, направляйте, пожалуйста, в <nobr><%= link_to 'редакцию радио', current_user ? user_url(current_user, named_new_conversation_path(:url => 'radio')) : user_url(@radio), :target => '_blank' %>.</nobr></div>
+	</div>
+	<div class="content">
+		<div class="stop_btn control_margin" id="play_stop"></div>
+		<div class="meta">
+			В эфире:
+			<div class="song_holder" id="song"><span class="song">загружаем...</span></div>
+		</div>
+		<div class="volume">
+			<div class="icons">
+				<div class="up"></div>
+				<div class="down"></div>
+			</div>
+			<div class="slider"><div class="knob"></div></div>
+		</div>
+	</div>
+	<div class='info'>Все вопросы и пожелания по эфиру, направляйте, пожалуйста, в <nobr><%= link_to 'редакцию радио', current_user ? user_url(current_user, named_new_conversation_path(:url => 'radio')) : user_url(@radio), :target => '_blank' %>.</nobr></div>  
 </div>
 <div id="song_label_hidden"></div>
 

@@ -12,7 +12,7 @@ module ApplicationHelper
       ''
     end
   end
-
+  
   # avatar_tag (this is legacy, use userpic_tag)
   #   user
   #   options
@@ -33,7 +33,7 @@ module ApplicationHelper
     if (options[:width] && options[:width] < width) || (options[:height] && options[:height] < height)
       w_ratio = (options[:width] && options[:width] > 0) ? options[:width].to_f / width.to_f : 1
       h_ratio = (options[:height] && options[:height] > 0) ? options[:height].to_f / height.to_f : 1
-
+    
       ratio = [w_ratio, h_ratio].min
 
       width = ratio < 1 ? (width * ratio).to_i : width
@@ -62,18 +62,18 @@ module ApplicationHelper
     end
     image_path('noavatar.gif')
   end
-
+  
   # new way to embed userpics (succeeds avatar_tag)
   def userpic_tag(user, options = {})
     # fallback to legacy code while we do not have all users migrated to the new rules
     return avatar_tag(user, options) unless user.userpic?
-
+    
     blank     = options[:blank] || false
 
     # backwards compatibility
     empty     = options[:empty] || false
     blank   ||= true if empty && empty.to_sym == :blank
-
+    
     style     = \
       case options[:width] || 64
         when 0..16 then :thumb16
@@ -96,7 +96,7 @@ module ApplicationHelper
       height = ratio < 1 ? (height * ratio).to_i : height
     end
 
-    # content_tag(:div, 'pro', :class => 't-avatar-badge-pro') +
+    # content_tag(:div, 'pro', :class => 't-avatar-badge-pro') + 
     image_tag(image_path(user.userpic.url(style)),
         :class  => classes('avatar', [options[:class], options[:class]]),
         :style  => options[:style],
@@ -105,7 +105,7 @@ module ApplicationHelper
         :height => height
       )
   end
-
+  
   def flash_div
     [:bad, :good].each do |key|
       if flash && flash[key]
@@ -123,7 +123,7 @@ END
     end
     ""
   end
-
+  
   def updated_comments_count(entry, views)
     v = views.select { |v| v.id == entry.id }.try(:first)
 
@@ -140,15 +140,15 @@ END
     else
       txt = entry.comments_count
     end
-
+    
     txt
   end
-
+  
   # classes is to set css-classes or other attributes conditionally
   # classes("class-without-conditions", ["logged-class", logged_in?], "third-class-without-conditions")
   def classes(*pairs)
     glued_classes = []
-    pairs.each do |pair|
+    pairs.each do |pair| 
       next if pair.blank?
       arr = Array(pair)
       raise ArgumentError, "css_class or [css_class, condition] are expected (got #{pair.inspect})" if arr.size.zero? || arr.size > 2
@@ -156,30 +156,30 @@ END
     end
     glued_classes.any? ? glued_classes.join(" ") : nil
   end
-
+  
   def audio_player_id
     @audio_player_id ||= 0
     @audio_player_id += 1
     "#{@audio_player_id}"
   end
-
+  
   def application_title
     content_tag(:title, [strip_tags(@title), h(current_site ? h(current_site.url) : current_service.name)].reject(&:blank?).join(' – ')) if @title
   end
-
+  
   def show_tlog_ads?
     # temporarily show in andys tlog
     return true if current_site.id == 1
-
+    
     return false if current_site.is_premium?
-
+    
     true
   end
-
+  
   def link_to_tlog(user, options = {}, html_options = nil)
     link_to_tlog_if(true, user, options, html_options)
   end
-
+  
   def link_to_tlog_if(condition, user, options = {}, html_options = nil)
     options ||= {}
     html_options ||= {}
@@ -198,7 +198,7 @@ END
     html_options.merge!({ :class => css_class.strip })
     link_to_if condition, username, user_url(user), html_options
   end
-
+  
   def resized_image_path(src, width)
     return src if !defined?(current_service) || !current_service || !current_service.is_mobile?
 
@@ -214,54 +214,54 @@ END
     asset_av = [0, 1, 3]
     asset_id = asset_av[sig.hash % 3]
     asset = "http://assets#{asset_id}.mmm-tasty.ru"
-
+    
     [asset, path].join('/')
   end
 
   def mark(keyword)
     Entry.find_by_sql("/* #{keyword} */ SELECT id FROM entries WHERE id = 0")
   end
-
+  
   def paginate(pageable, options = {})
     render :partial => 'globals/pagination', :locals => options.merge(:pageable => pageable)
   end
-
+  
   def infinite_paginate(page, options = {})
     render :partial => 'globals/infinite_pagination', :locals => options.merge(:page => page) if page
   end
-
+  
   # escape and truncate html attribute
   # options are for truncate() call, e.g. :length
   def h_attr(text, options = {})
     clean = Hpricot.parse(text).to_plain_text.gsub('<', '&lt;').gsub('>', '&gt;') rescue ''
     truncate(clean, { :length => 64 }.merge(options)).gsub(/(\r\n|\r|\n)/, ' ').tr('"', "&quot;").tr('\'', "&quot;")
   end
-
+  
   def timeago(time, options = {})
     options[:class] ||= 'timeago'
     content_tag(:abbr, Russian::strftime(time, '%d %B %Y в %H:%M'), options.merge(:title => time.getutc.iso8601))
   end
-
+  
   def current_controller_class
     't-controller-' + params[:controller].gsub('/', '-')
   end
-
+  
   def current_action_class
     't-action-' + params[:action]
   end
-
+  
   def days(n)
     n.pluralize('день', 'дня', 'дней', true)
   end
-
+  
   def hours(n)
     n.pluralize('час', 'часа', 'часов', true)
   end
-
+  
   def say_time_in_words(time)
     distance    = (time - Time.now).round
     in_minutes  = (distance / 1.minute).round.abs
-
+    
     if distance > 0
       # future
       if distance <= 1.hour
@@ -306,5 +306,5 @@ END
       end
     end
   end
-
+  
 end

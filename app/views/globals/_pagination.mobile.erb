@@ -3,9 +3,9 @@
   total_pages = pageable.page_count if pageable.respond_to?(:page_count)
   total_pages ||= pageable.total_pages if pageable.respond_to?(:total_pages)
   total_pages ||= 0
-
+  
   previous_page = next_page = nil
-
+  
   if total_pages > 0
     previous_page = pageable.previous_page if (pageable.respond_to?(:previous_page?) && pageable.previous_page?) || pageable.previous_page
     next_page = pageable.next_page if (pageable.respond_to?(:next_page?) && pageable.next_page?) || pageable.next_page
@@ -14,23 +14,24 @@
     next_page = nil if next_page && next_page > 67 && params[:controller] == 'search'
   end
 
+  
   css_class ||= ''
-  reverse ||= false
-  url_options ||= {}
+  reverse ||= false  
+  url_options ||= {}  
  %>
 <% if total_pages > 1 %>
   <div data-role='navbar'>
     <ul>
-      <%=
-        if previous_page
-          if previous_page == 1
-            content_tag(:li, link_to('обратно', url_for({ :controller => params[:controller], :action => params[:action], :page => nil }.update(url_options)), 'data-icon' => 'arrow-l', 'data-iconpos' => 'top', 'data-direction' => 'reverse'))
-           else
-            content_tag(:li, link_to('обратно', url_for({:controller => params[:controller], :action => params[:action], :page => reverse ? (total_pages - previous_page + 1) : previous_page}.update(url_options)), 'data-icon' => 'arrow-l', 'data-iconpos' => 'top', 'data-direction' => 'reverse'))
-          end
-        end %>
-        
-        <%= content_tag(:li, link_to('туда', url_for({ :controller => params[:controller], :action => params[:action], :page => reverse ? (total_pages - next_page + 1) : next_page }.update(url_options)), 'data-icon' => 'arrow-r', 'data-iconpos' => 'top')) if next_page %>
+  		<%=
+  			if previous_page
+  				if previous_page == 1
+  					content_tag(:li, link_to('обратно', url_for({ :controller => params[:controller], :action => params[:action], :page => nil }.update(url_options)), 'data-icon' => 'arrow-l', 'data-iconpos' => 'top', 'data-direction' => 'reverse'))
+   				else
+  					content_tag(:li, link_to('обратно', url_for({:controller => params[:controller], :action => params[:action], :page => reverse ? (total_pages - previous_page + 1) : previous_page}.update(url_options)), 'data-icon' => 'arrow-l', 'data-iconpos' => 'top', 'data-direction' => 'reverse'))
+  				end
+  			end %>
+  			
+  			<%= content_tag(:li, link_to('туда', url_for({ :controller => params[:controller], :action => params[:action], :page => reverse ? (total_pages - next_page + 1) : next_page }.update(url_options)), 'data-icon' => 'arrow-r', 'data-iconpos' => 'top')) if next_page %>
     </ul>
   </div>
 <% end %>

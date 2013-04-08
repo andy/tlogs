@@ -4,30 +4,30 @@
 <!--[if IE 8 ]>    <html class="ie8" lang="ru"> <![endif]-->
 <!--[if (gte IE 9)|!(IE)]><!--> <html lang="ru"> <!--<![endif]-->
 <head>
-  <%= render :partial => 'globals/head' %>
+	<%= render :partial => 'globals/head' %>
 </head>
 <body class="bg_main">
-  <div class='settings'>
-  <div id="wrapper" class="layout_2">
-    <div class="rounded_center">
-      <div class='sidebar_holder'>
-        <div class='rel'>
-          <div class='sidebar_settings'>
-            <%= render :partial => 'admin/menu' %>
-          </div>
-        </div>
-      </div>
-      <div class="content_layout_2">
-        <div class="padd_left">
-          <span class="header"><%= yield :header %></span>
-          <%= flash_div %>
-          <%= yield %>
-        </div>
-      </div>
-    </div>
-  </div>
-  <%= render :partial => 'globals/foot' %>
-  </div>
-  <%= render :partial => 'globals/top_nav' %>
+	<div class='settings'>
+	<div id="wrapper" class="layout_2">
+		<div class="rounded_center">
+			<div class='sidebar_holder'>
+				<div class='rel'>
+					<div class='sidebar_settings'>
+						<%= render :partial => 'admin/menu' %>
+					</div>
+				</div>
+			</div>
+			<div class="content_layout_2">
+				<div class="padd_left">
+					<span class="header"><%= yield :header %></span>
+					<%= flash_div %>
+					<%= yield %>
+				</div>
+			</div>
+		</div>
+	</div>
+	<%= render :partial => 'globals/foot' %>
+	</div>
+	<%= render :partial => 'globals/top_nav' %>
 </body>
 </html>

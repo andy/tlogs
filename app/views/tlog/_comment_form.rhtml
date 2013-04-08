@@ -1,46 +1,46 @@
 <% if !current_user %>
-  <div class='comments_not_available'>
-    <p>Комментарии могут оставлять только зарегистрированные пользователи.</p>
-    <p><%= link_to 'Зарегистрируйтесь', service_url(signup_path) %> или <%= link_to 'войдите', service_url(login_path) %>.</p>
-  </div>
+	<div class='comments_not_available'>
+		<p>Комментарии могут оставлять только зарегистрированные пользователи.</p>
+		<p><%= link_to 'Зарегистрируйтесь', service_url(signup_path) %> или <%= link_to 'войдите', service_url(login_path) %>.</p>
+	</div>
 <% elsif !current_user.is_confirmed? %>
-  <div class='comments_not_available'>
-    <p>Для того чтобы оставить комменатрий, вам осталось лишь подтвердить свой емейл адрес, <%= h current_user.url %>!</p>
-  </div>
+	<div class='comments_not_available'>
+		<p>Для того чтобы оставить комменатрий, вам осталось лишь подтвердить свой емейл адрес, <%= h current_user.url %>!</p>
+	</div>
 <% elsif !@entry.can_be_commented_by?(current_user) %>
   <div class='comments_not_available'>
     <p>К сожалению, вам нельзя оставлять комментарии к этой записи.</p>
     <% if current_user.is_c_banned? %>
-      <p>Бан снимется <b><%= say_time_in_words(current_user.ban_c_till) %></b>.</p>
+    	<p>Бан снимется <b><%= say_time_in_words(current_user.ban_c_till) %></b>.</p>
     <% end %>
   </div>
 <% else %>
-  <div id='comment_preview'></div>
+	<div id='comment_preview'></div>
 
-  <div class='post_comment_form' id='post_comment_form'<%= ' style="display: none;"' if !current_user %>>
-    <% remote_form_for :comment,
-        :url => user_url(@entry.author, entry_comments_path(@entry)).downcase,
-        :before => "$('#{@entry.dom_id(:ajax_spinner)}').show(); remote_request_started('comment_submit_button', 'Отправляем ...');",
-        :complete => "$('#{@entry.dom_id(:ajax_spinner)}').hide(); remote_request_finished('comment_submit_button', 'Отправить комментарий');",
-        :html => { :class => 'small', :id => @entry.dom_id(:form) } do |f| %>
-      <input type='hidden' name='reply_to' id='comment_reply_to' value='' />
-      <input type='hidden' name='utf8' value='✓' />
-      <% if current_user %>
-        <div id='post_comment_form_greeting'>Что скажете, <%= link_to_tlog(current_user) %>?</div>
-      <% end %>
-      <label for='comment_comment' class='comment_comment'>
-        <%= f.text_area :comment, :class => 'comment_body resizable' %>
-        <%= tasty_error_message_on 'comment', 'comment' %>
-      </label>
-      <div id='allowed_html_tags'>разрешенные теги: b, i, a, s и img</div>
-      <%= submit_to_remote "button", "Предпросмотр", :url => user_url(@entry.author, preview_new_entry_comment_path(@entry)).downcase, :before => "$('#{@entry.dom_id(:ajax_spinner)}').show(); remote_request_started('generate_preview', 'Подготавливаем ...');", :complete => "$('#{@entry.dom_id(:ajax_spinner)}').hide(); remote_request_finished('generate_preview', 'Предпросмотр');", :html => { :id => 'generate_preview', :class => 'button' } %>&nbsp;
-      <%= submit_tag 'Отправить комментарий', :id => 'comment_submit_button', :class => 'comment_send' %>
-      <%= image_tag 'ajax-small-loader.gif', :size => '15x15', :style => 'display: none;', :id => @entry.dom_id(:ajax_spinner) %>
-    <% end %>
-  </div>
-  <script type="text/javascript">
-    jQuery(function(){
-      Tasty.mentions.onkeydown('#comment_comment', 'Shift+@', '<%= user_url(current_site, mentions_entry_path(@entry)) %>');
-    });
-  </script>
+	<div class='post_comment_form' id='post_comment_form'<%= ' style="display: none;"' if !current_user %>>
+		<% remote_form_for :comment,
+				:url => user_url(@entry.author, entry_comments_path(@entry)).downcase,
+				:before => "$('#{@entry.dom_id(:ajax_spinner)}').show(); remote_request_started('comment_submit_button', 'Отправляем ...');",
+				:complete => "$('#{@entry.dom_id(:ajax_spinner)}').hide(); remote_request_finished('comment_submit_button', 'Отправить комментарий');",
+				:html => { :class => 'small', :id => @entry.dom_id(:form) } do |f| %>
+			<input type='hidden' name='reply_to' id='comment_reply_to' value='' />
+			<input type='hidden' name='utf8' value='✓' />
+			<% if current_user %>
+				<div id='post_comment_form_greeting'>Что скажете, <%= link_to_tlog(current_user) %>?</div>
+			<% end %>
+			<label for='comment_comment' class='comment_comment'>
+				<%= f.text_area :comment, :class => 'comment_body resizable' %>
+				<%= tasty_error_message_on 'comment', 'comment' %>
+			</label>
+			<div id='allowed_html_tags'>разрешенные теги: b, i, a, s и img</div>
+			<%= submit_to_remote "button", "Предпросмотр", :url => user_url(@entry.author, preview_new_entry_comment_path(@entry)).downcase, :before => "$('#{@entry.dom_id(:ajax_spinner)}').show(); remote_request_started('generate_preview', 'Подготавливаем ...');", :complete => "$('#{@entry.dom_id(:ajax_spinner)}').hide(); remote_request_finished('generate_preview', 'Предпросмотр');", :html => { :id => 'generate_preview', :class => 'button' } %>&nbsp;
+			<%= submit_tag 'Отправить комментарий', :id => 'comment_submit_button', :class => 'comment_send' %>
+			<%= image_tag 'ajax-small-loader.gif', :size => '15x15', :style => 'display: none;', :id => @entry.dom_id(:ajax_spinner) %>
+		<% end %>
+	</div>
+	<script type="text/javascript">
+		jQuery(function(){
+			Tasty.mentions.onkeydown('#comment_comment', 'Shift+@', '<%= user_url(current_site, mentions_entry_path(@entry)) %>');
+		});
+	</script>
 <% end %>

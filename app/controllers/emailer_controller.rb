@@ -1,16 +1,17 @@
 class EmailerController < ApplicationController
   before_filter :preload_mail
 
+
   def index
     render :layout => 'white'
   end
-
+  
   def part
     @part = @mail.parts.select { |part| part.content_type == 'text/html' }.first
-
+    
     render :layout => nil
   end
-
+  
   private
     def preload_mail
       @method_name = params[:method_name]
@@ -44,7 +45,7 @@ class EmailerController < ApplicationController
         user.url = 'andy--x'
         @mail = Emailer.create_rename_yourself(current_service, user, 'andy-x')
       end
-
-      true
+      
+      true 
     end
 end

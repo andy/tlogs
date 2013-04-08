@@ -17,6 +17,7 @@
          },
          klass = [];
 
+
     if (window.head_conf) {
         for (var key in head_conf) {
             if (head_conf[key] !== undefined) {
@@ -79,6 +80,7 @@
         /(msie) ([\w.]+)/.exec( ua ) ||
         !/compatible/.test( ua ) && /(mozilla)(?:.*? rv:([\w.]+))?/.exec( ua ) || [];
 
+
     if (ua[1] == 'msie') {
         ua[1] = 'ie';
         ua[2] = document.documentMode || ua[2];
@@ -103,8 +105,9 @@
         each("abbr|article|aside|audio|canvas|details|figcaption|figure|footer|header|hgroup|mark|meter|nav|output|progress|section|summary|time|video".split("|"), function(el) {
             doc.createElement(el);
         });
-
+                
     }
+    
 
     // CSS "router"
     each(location.pathname.split("/"), function(el, i) {
@@ -123,6 +126,7 @@
             if (!i) { pushClass("root" + conf.section); }
       }
     });
+
 
     // screen resolution: w-100, lt-480, lt-1024 ...
     function screenSize() {
@@ -148,6 +152,7 @@
 
 })(document);
 
+
 /**
     Head JS     The only script in your <HEAD>
     Copyright   Tero Piirainen (tipiirai)
@@ -170,6 +175,7 @@
         https://github.com/Modernizr/Modernizr/blob/master/modernizr.js
     */
 
+
     /* CSS modernizer */
     var el = document.createElement("i"),
          style = el.style,
@@ -179,6 +185,7 @@
          head_var = window.head_conf && head_conf.head || "head",
          api = window[head_var];
 
+
      // Thanks Paul Irish!
     function testProps(props) {
         for (var i in props) {
@@ -187,6 +194,7 @@
             }
         }
     }
+
 
     function testAll(prop) {
         var camel = prop.charAt(0).toUpperCase() + prop.substr(1),
@@ -258,7 +266,7 @@
 
             if (/*@cc_on@if(@_jscript_version>=5)!@end@*/0)
                 return true;
-
+                
             if (parsed = ua.match(/Chrome\/(\d+\.\d+\.\d+\.\d+)/))
                 return parsed[1] >= '4.0.249.4' || 1 * parsed[1].split(".")[0] > 5;
             if ((parsed = ua.match(/Safari\/(\d+\.\d+)/)) && !/iPhone/.test(ua))
@@ -284,6 +292,7 @@
 
 })();
 
+
 /**
     Head JS     The only script in your <HEAD>
     Copyright   Tero Piirainen (tipiirai)
@@ -303,6 +312,7 @@
         scripts = {},      // loadable scripts in different states
         isAsync = doc.createElement("script").async === true || "MozAppearance" in doc.documentElement.style || window.opera;
 
+
     /*** public API ***/
     var head_var = window.head_conf && head_conf.head || "head",
          api = window[head_var] = (window[head_var] || function() { api.ready.apply(null, arguments); });
@@ -312,6 +322,7 @@
         PRELOADING = 2,
         LOADING = 3,
         LOADED = 4;
+
 
     // Method 1: simply load and let browser take care of ordering
     if (isAsync) {
@@ -339,6 +350,7 @@
 
             return api;
         };
+
 
     // Method 2: preload with text/cache hack
     } else {
@@ -372,6 +384,7 @@
                     api.js.apply(null, rest);
                 });
 
+
             // single script
             } else {
                 load(getScript(args[0]));
@@ -394,13 +407,13 @@
         if (isFunc(key)) {
             fn = key;
             key = "ALL";
-        }
+        }    
 
         // make sure arguments are sane
         if (typeof key != 'string' || !isFunc(fn)) { return api; }
 
         var script = scripts[key];
-
+        
         // script already loaded --> execute and return
         if (script && script.state == LOADED || key == 'ALL' && allLoaded() && isDomReady) {
             one(fn);
@@ -412,6 +425,7 @@
         else { arr.push(fn); }
         return api;
     };
+
 
     // perform this when DOM is ready
     api.ready(doc, function() {
@@ -427,14 +441,17 @@
         }
     });
 
-    /*** private functions ***/
 
+    /*** private functions ***/
+    
+    
     // call function once
     function one(fn) {
         if (fn._done) { return; }
         fn();
         fn._done = 1;
     }
+
 
     function toLabel(url) {
         var els = url.split("/"),
@@ -443,6 +460,7 @@
 
         return i != -1 ? name.substring(0, i) : name;
     }
+
 
     function getScript(url) {
 
@@ -465,6 +483,7 @@
         return script;
     }
 
+
     function each(arr, fn) {
         if (!arr) { return; }
 
@@ -486,14 +505,15 @@
         els = els || scripts;
 
         var loaded;
-
+        
         for (var name in els) {
             if (els.hasOwnProperty(name) && els[name].state != LOADED) { return false; }
             loaded = true;
         }
-
+        
         return loaded;
     }
+
 
     function onPreload(script) {
         script.state = PRELOADED;
@@ -554,6 +574,7 @@
         });
     }
 
+
     function scriptTag(src, callback) {
 
         var s = doc.createElement('script');
@@ -606,6 +627,7 @@
             }
         });
 
+
         // avoid frames with different domains issue
         var frameElement = 1;
 
@@ -613,6 +635,7 @@
             frameElement = window.frameElement;
 
         } catch(e) {}
+
 
         if (!frameElement && head.doScroll) {
 
@@ -631,6 +654,7 @@
         // fallback
         window.attachEvent("onload", fireReady);
     }
+
 
     // enable document.readyState for Firefox <= 3.5
     if (!doc.readyState && doc.addEventListener) {

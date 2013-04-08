@@ -4,7 +4,7 @@
   %span.badge.badge-success= User.active.count
   | disabled
   %span.badge.badge-info= User.disabled.count
-
+  
 %table.table.table-striped
   %thead
     %tr
@@ -28,4 +28,4 @@
           = link_to 'view', user_url(user)
 
 = bootstrap_paginate @users
-
+      

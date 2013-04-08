@@ -10,12 +10,12 @@ class AccountController < ApplicationController
   def index
     redirect_to service_path(login_path)
   end
-
+  
   # авторизуем пользователя либо по openid, либо по паре имя/пароль
   def login
     if request.post?
       redirect_to service_path(login_path) and return unless params[:user]
-
+      
       @user = User.authenticate(params[:user][:email], params[:user][:password])
       if @user.nil?
         # keep email
@@ -51,14 +51,14 @@ class AccountController < ApplicationController
       @user = User.find(current_user.id)
       @user.url = params[:user][:url]
       @user.valid?
-
+      
       if !@user.errors.on("url")
         @user.update_attribute(:url, @user.url)
-
+        
         @user.log nil, :rename, "@#{current_user.url} изменил адрес на @#{@user.url}", nil, request.remote_ip
-
+        
         @user.rename! if params['remove_subscribers'] && params['remove_subscribers'] == '1'
-
+        
         current_user.url = @user.url
         flash[:good] = 'Прекрасно! Адрес вашего тлога изменен'
       else
@@ -81,8 +81,8 @@ class AccountController < ApplicationController
         if user.password.blank?
           user.password = SecureRandom.hex(8)
           user.save(false)
-        end
-
+        end        
+        
         if user.crypted_password
           user.log nil, :recover_password, "запросил восстановление пароля (#{user.email})", nil, request.remote_ip
           Emailer.deliver_lost_password(current_service, user)
@@ -102,7 +102,7 @@ class AccountController < ApplicationController
       @email = current_user.email if current_user && current_user.email
     end
   end
-
+  
   def recover_password
     @user = User.active.find(params[:user_id])
     if @user && @user.recover_secret == params[:secret]
@@ -118,22 +118,22 @@ class AccountController < ApplicationController
         end
       end
     else
-
+      
     end
   end
-
+  
   # показывается когда мы действительно высылаем какой-то текст
   def lost_password_sent
     @user = nil
     @user = User.active.find(flash[:lost_user_id]) if flash[:lost_user_id]
   end
-
+  
   # выходим из системы
   def logout
     redirect_to service_url and return unless request.post?
 
     cookies.delete :s, :domain => current_service.cookie_domain
-
+    
     reset_session
 
     if current_service.is_mobile?
@@ -149,7 +149,7 @@ class AccountController < ApplicationController
             redirect_to(:back) rescue redirect_to(service_url)
           else
             redirect_to service_url
-          end
+          end        
         end
         wants.js do
           render :update do |page|
@@ -163,7 +163,7 @@ class AccountController < ApplicationController
       end # respond_to
     end # is_mobile?
   end
-
+  
   def eula
     @title = 'Пользовательское соглашение с сервисом Тейсти'
   end
@@ -171,15 +171,15 @@ class AccountController < ApplicationController
   # регистрация, для новичков
   def signup
     @invitation = Invitation.revokable.find_by_code params[:code]
-
+    
     render :action => 'signup_wall' and return unless @invitation
-
+    
     if request.post?
       @user = User.new :email => @invitation.email, :password => params[:user][:password], :url => params[:user][:url], :openid => nil, :eula => params[:user][:eula]
-
+    
       # проверяем на левые емейл адреса
       @user.errors.add(:email, 'извините, но выбранный вами почтовый сервис находится в черном списке') if @user.email.any? && Disposable::is_disposable_email?(@user.email)
-
+      
       @user.errors.add(:password, 'пожалуйста, укажите пароль') if @user.password.blank?
 
       @user.settings = {}
@@ -199,30 +199,30 @@ class AccountController < ApplicationController
       @user = User.new :email => @invitation.email
     end
   end
-
+  
   # authorize through vk, http://vk.com/developers.php?oid=-1&p=VK.Auth
   def foreign
     vk_valid_fields = %w(expire mid secret sig sid)
     vk_opts         = ::SETTINGS[:social]['vk'].symbolize_keys
     cookie_name     = "vk_app_#{vk_opts[:app_id]}"
-
+    
     # verify that we get auth cookie
     redirect_to :action => 'signup' and return unless
       cookies.has_key? cookie_name
 
     # get session attributes
     vk_sess         = Rack::Utils.parse_nested_query(cookies[cookie_name]) rescue {}
-
+    
     # validate session - check that all and only these fields are present
     foreign_error("Извините, но ваша кука — левая!") and return unless
       vk_valid_fields.sort == vk_sess.keys.sort
-
+    
     # verify signature
     vk_sig          = vk_sess.slice(*(vk_valid_fields - ['sig'])).sort.map { |h| h.join('=') }.join + vk_opts[:secret]
-
+    
     foreign_error("Извините, но ваша кука — ненастоящая!") and return unless
       Digest::MD5.hexdigest(vk_sig) == vk_sess['sig']
-
+    
     # verify expiration that session is still valid
     foreign_error("Извините, но время вашей сессии истекло.") and return unless
       vk_sess['expire'].to_i > Time.now.to_i
@@ -233,28 +233,29 @@ class AccountController < ApplicationController
     foreign_error("Извините, но этот аккаунт ВКонтакте уже использовался для регистрации.") and return if
       User.find_by_vk_id(vk_sess['mid'])
 
+    
     if request.post?
       User.transaction do
         foreign_error("Извините, но этот аккаунт ВКонтакте уже использовался для регистрации.") and return if
           User.find_by_vk_id(vk_sess['mid'])
-
+        
         @user = User.new :email => params[:user][:email], :password => params[:user][:password], :url => params[:user][:url], :eula => params[:user][:eula]
-
+      
         # проверяем на левые емейл адреса
         @user.errors.add(:email, 'извините, но выбранный вами почтовый сервис находится в черном списке') if @user.email.any? && Disposable::is_disposable_email?(@user.email)
-
+      
         @user.errors.add(:password, 'пожалуйста, укажите пароль') if @user.password.blank?
 
         @user.settings      = {}
         @user.vk_id         = vk_sess['mid']
         @user.is_confirmed  = false
         @user.update_confirmation! @user.email
-
+      
         @user.save if @user.errors.empty?
         if @user.errors.empty?
           @user.log nil, :signup, "зарегистрировался через ВКонтакте http://vk.com/id#{@user.vk_id}", nil, request.remote_ip
           Emailer.deliver_foreign(current_service, @user)
-
+        
           login_user @user, :remember => @user.email, :redirect_to => user_url(@user)
         else
           flash[:bad] = 'При регистрации произошли какие-то ошибки'
@@ -265,6 +266,7 @@ class AccountController < ApplicationController
     end
   end
 
+  
   # возвращает статус для имени пользователя
   def update_url_status
     url = params[:url] || ''
@@ -282,7 +284,7 @@ class AccountController < ApplicationController
       page << '}'
     end
   end
-
+  
   def openid_verify
     return_to = service_url(account_path(:only_path => false, :action => 'openid_verify'))
     parameters = params.reject{|k,v| request.path_parameters[k] }
@@ -292,9 +294,9 @@ class AccountController < ApplicationController
     when OpenID::Consumer::SUCCESS
 
       openid = oresponse.endpoint.claimed_id
-
+      
       # если пользователь с таким openid уже сущствует то все что нам нужно сделать
-      # - это залогинить его в систему
+      # - это залогинить его в систему 
       # в противном случае мы выставляем :openid и перебрасываем на signup
       user = User.find_by_openid openid
       if user
@@ -303,7 +305,7 @@ class AccountController < ApplicationController
       else
         flash[:bad] = 'Извините, но регистрация через openid временно отключена.'
         render :action => 'signup'
-
+        
         # session[:openid] = openid
         # @user = User.new :openid => openid, :url => session[:user_url], :email => nil, :password => nil
         # @user.is_confirmed = true
@@ -333,7 +335,7 @@ class AccountController < ApplicationController
 
     redirect_to service_url(login_path)
   end
-
+    
   private
     def login_with_openid(openid)
       begin
@@ -344,13 +346,13 @@ class AccountController < ApplicationController
         redirect_to service_url(signup_path)
         return
       end
-
+      
       # success
       return_to = account_url(:action => 'openid_verify')
       trust_root = account_url
 
       unless User.find_by_openid(oid_req.endpoint.claimed_id)
-        sreg_request = OpenID::SReg::Request.new
+        sreg_request = OpenID::SReg::Request.new        
         sreg_request.request_fields(['nickname', 'fullname', 'email', 'dob', 'gender'], false) # optional
         oid_req.add_extension(sreg_request)
         # oid_req.add_extension_arg('sreg', 'optional', 'nickname,fullname,email,dob,gender')
@@ -369,7 +371,7 @@ class AccountController < ApplicationController
 
       return OpenID::Consumer.new(session, store)
     end
-
+    
     def login_user(user, options = {})
       l_key = current_service.is_mobile? ? 'lm' : 'l'
       cookies[l_key.to_sym] = {
@@ -380,7 +382,7 @@ class AccountController < ApplicationController
       session[:u] = user.id
       update_cookie_sig!(user)
       session[:ip] = request.remote_ip
-
+      
       # log
       if user.id == 65601 || user.id == 1
         Rails.logger.warn "* SESSION INSPECT #{user.id}: #{session.inspect}"
@@ -400,12 +402,12 @@ class AccountController < ApplicationController
         redirect_to redirect || user_url(user)
       end
     end
-
+    
     def redirect_home_if_current_user
       redirect_to user_url(current_user) and return false if current_user
       true
     end
-
+    
     def foreign_error message
       @message = message
       render :action => 'foreign_error'

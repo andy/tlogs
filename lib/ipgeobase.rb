@@ -9,7 +9,7 @@ module Ipgeobase
 
       if res.is_a?(Net::HTTPOK)
         xml = Hpricot::XML(Iconv.iconv('utf-8', 'windows-1251', res.body).to_s)
-
+        
         result = {}
         result[:city] = (xml / :city).first.try(:innerText)
         result[:country] = (xml / :country).first.try(:innerText)
@@ -26,8 +26,8 @@ module Ipgeobase
 
       nil
     end
-
+    
   end
-
+  
   module_function :lookup
 end

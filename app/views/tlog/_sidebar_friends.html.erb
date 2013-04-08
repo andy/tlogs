@@ -1,6 +1,6 @@
 <% if current_site.public_friends.size > 0
-  %><div class='sidebar_section' id='sidebar_public_friends'><%= link_to_function 'Друзья', "sidebar_toggle('public_friends')", :class => 'sidebar_toggle', :id => 'sidebar_public_friends_link' %><div class='sidebar_section_content' id='sidebar_public_friends_content'<%= ' style="display: none"' if !is_robot? && !inline_friends %>><%
+  %><div class='sidebar_section' id='sidebar_public_friends'><%= link_to_function 'Друзья', "sidebar_toggle('public_friends')", :class => 'sidebar_toggle', :id => 'sidebar_public_friends_link' %><div class='sidebar_section_content' id='sidebar_public_friends_content'<%= ' style="display: none"' if !is_robot? && !inline_friends %>><% 
   current_site.public_friends.each do |user| %><%=
-    link_to_tlog(user, nil, :title => user.title, :rel => 'friend') %> <%
+    link_to_tlog(user, nil, :title => user.title, :rel => 'friend') %> <% 
   end %></div></div><%
 end %>

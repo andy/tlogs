@@ -1,8 +1,8 @@
 <% content_for :head do %>
-  <!-- content_for :head -->
-  <%= auto_discovery_link_tag(:rss, tlog_feed_url(:action => :rss)) %>
-  <%= auto_discovery_link_tag(:rss, tlog_feed_url(:action => :photos), { :title => 'только фотографии' }) %>
-  <!-- /content_for :head -->
+	<!-- content_for :head -->
+	<%= auto_discovery_link_tag(:rss, tlog_feed_url(:action => :rss)) %>
+	<%= auto_discovery_link_tag(:rss, tlog_feed_url(:action => :photos), { :title => 'только фотографии' }) %>
+	<!-- /content_for :head -->
 <% end %>
 
 <div class='filter'>
@@ -18,5 +18,5 @@
 <% end %>
 
 <% content_for :sidebar do %>
-  <%= render :partial => 'tlog/sidebar' %>  
+	<%= render :partial => 'tlog/sidebar' %>	
 <% end %>

@@ -6,25 +6,25 @@
 
 /* global */
 .avatar {
-  border: 1px solid #ccc;
+	border: 1px solid #ccc;
 }
 
 /* entries */
 .t-entries {
-  background-color: white;
-  
-  .t-entry {
-    padding-bottom: 20px;
-  }
+	background-color: white;
+	
+	.t-entry {
+	  padding-bottom: 20px;
+	}
 }
 
 /* entry */
 .t-entry {
-  font-size: 0.9em;
-  background-color: white;
-  
-  .t-entry-header {
-    padding: 10px 0;
+	font-size: 0.9em;
+	background-color: white;
+	
+	.t-entry-header {
+  	padding: 10px 0;
   }
 
   .t-entry-code {
@@ -33,104 +33,105 @@
       margin-bottom: 0.5em;
     }
   }
-
+  
   .t-entry-convo {
     .t-entry-convo-header {
       font-size: 150%;
       margin-bottom: 0.5em;
     }
   }
-
+  
   .t-entry-header-avatar {
-    vertical-align: middle;
-    margin-right: 3px;
+  	vertical-align: middle;
+  	margin-right: 3px;
   }
 
   .t-entry-header-author {
-    text-decoration: none;
+  	text-decoration: none;
   }
 
   .t-entry-text {
-    -o-text-overflow: ellipsis-word;
-    text-overflow: ellipsis-word;
-    
-    .t-entry-text-header {
-      font-size: 150%;
-      margin-bottom: 0.5em;
-    }
+  	-o-text-overflow: ellipsis-word;
+  	text-overflow: ellipsis-word;
+  	
+  	.t-entry-text-header {
+  	  font-size: 150%;
+  	  margin-bottom: 0.5em;
+  	}
 
     .t-entry-text-body {
-      border-left: 1px dotted black;
-      padding-left: 10px;  
-      -o-text-overflow: ellipsis-word;
-      text-overflow: ellipsis-word;
-    }    
+    	border-left: 1px dotted black;
+    	padding-left: 10px;	
+    	-o-text-overflow: ellipsis-word;
+    	text-overflow: ellipsis-word;
+    }  	
   }
+  
 
   .t-entry-quote-body {
-    font-size: 150%;
-    display: block;
-    line-height:1.35em;
-    color:#333;
-    letter-spacing:-1px;
-    text-indent:-20px;
-    padding:0 20px;
-    
-    p {
-      display: inline;
+  	font-size: 150%;
+  	display: block;
+  	line-height:1.35em;
+  	color:#333;
+  	letter-spacing:-1px;
+  	text-indent:-20px;
+  	padding:0 20px;
+  	
+  	p {
+    	display: inline;
     }
   }
-
+  
   .t-entry-quote-source {
-    font-size: 100%;
-    font-style: italic;
-    display:block;
-    
-    p {
-      display: inline;
-    }
+  	font-size: 100%;
+  	font-style: italic;
+  	display:block;
+  	
+  	p {
+  	  display: inline;
+  	}
   }
 
   .t-entry-quote-laquo, .t-entry-quote-raquo {
-    display: inline;
-    font-family: 'Times New Roman';
-    font-size: 130%;
-    bottom: -1px;
-    padding: 0 4px;
-    color:#ACACAC;
-    line-height: 0.01em;
+  	display: inline;
+  	font-family: 'Times New Roman';
+  	font-size: 130%;
+  	bottom: -1px;
+  	padding: 0 4px;
+  	color:#ACACAC;
+  	line-height: 0.01em;
   }
 
   .t-entry-link {}
 
   .t-entry-link-href {
-    font-size: 1.5em;
+  	font-size: 1.5em;
   }
 
   .t-entry-footer {
-    margin-top: 10px;
+  	margin-top: 10px;
   }
 
   .t-entry-footer-ctl a, .t-entry-footer-ctl a:visited, .t-entry-footer-ctl a:hover {
 //    -webkit-border-radius: 0px;
 //    -moz-border-radius: 0px;
 //    border-radius: 0px;
-    background-color: #444;
-    padding: 2px 6px;
-    text-decoration: none;
-    color: #eee;
+  	background-color: #444;
+  	padding: 2px 6px;
+  	text-decoration: none;
+  	color: #eee;
 //    font-weight: normal;
-    font-size: 0.8em;
-    text-shadow: none;
+  	font-size: 0.8em;
+  	text-shadow: none;
     // text-shadow: 1px 1px 1px white;
   }
 
   .t-entry-footer-ctl .t-entry-rating {
-    padding: 2px 6px;
-    background-color: #444;
+  	padding: 2px 6px;
+  	background-color: #444;
 //    font-weight: normal;
-    font-size: 0.8em;
-    text-shadow: none;
+  	font-size: 0.8em;
+  	text-shadow: none;
     // text-shadow: 1px 1px 1px white;
   }
 
@@ -138,77 +139,77 @@
 //    -webkit-border-radius: 4px;
 //    -moz-border-radius: 4px;
 //    border-radius: 4px;
-    border-color: #ddd;
-    background-color: #ddd;
-    padding: 4px;
+  	border-color: #ddd;
+  	background-color: #ddd;
+  	padding: 4px;
   }
 
   .t-entry-convo {
     .t-entry-convo-body { }
     .person_1, .person_2, .person_3, .person_4, .person_5, .person_6, .person_7, .person_8, .person_9, .person_10  {
-      padding:8px 15px;
-      color:#404040;
-      font-size:0.85em;
+    	padding:8px 15px;
+    	color:#404040;
+    	font-size:0.85em;
     }
     .person_1 span, .person_2 span, .person_3 span, .person_4 span, .person_5 span, .person_6 span, .person_7 span, .person_8 span, .person_9 span, .person_10 span {
-      font-weight:bold;
-      letter-spacing:2px;
-      font-size:0.8em;
-    }
+    	font-weight:bold;
+    	letter-spacing:2px;
+    	font-size:0.8em;
+    } 
     .person_2 {
-      background:#ccc;
+    	background:#ccc;
     }
     .person_1 {
-      background:#e9e9e9;
+    	background:#e9e9e9;
     }
     .person_3 {
-      background:#ddd;
+    	background:#ddd;
     }
     .person_4 {
-      background:#acacac;
+    	background:#acacac;
     }
   }
 }
 
 /* comments */
 .t-comment {
-  font-size: 80%;
-  margin-bottom: 20px;
-  clear: left;
-  
-  .t-comment-avatar {
-    width: 40px;
-    height: 40px;
-    float: left;
+	font-size: 80%;
+	margin-bottom: 20px;
+	clear: left;
+	
+	.t-comment-avatar {
+  	width: 40px;
+  	height: 40px;
+  	float: left;
 
-    img.avatar {
-      border: 1px solid #aaa;
+  	img.avatar {
+    	border: 1px solid #aaa;
     }
   }
-
+  
   .t-comment-body {
-    margin-left: 40px;
-    margin-bottom: 20px;
-    
-    .t-comment-comment {
-      font-size: 1.2em;
-    }
+  	margin-left: 40px;
+  	margin-bottom: 20px;
+  	
+  	.t-comment-comment {
+  	  font-size: 1.2em;
+  	}
   }
 
   .t-comment-meta {
-    margin-top: 5px;
-    margin-bottom: 5px;
-    
-    .t-comment-username a {
-      text-decoration: none;
+  	margin-top: 5px;
+  	margin-bottom: 5px;
+  	
+  	.t-comment-username a {
+    	text-decoration: none;
     }
     .t-comment-time {
-      color: #999;
+    	color: #999;
     }
   }
 
   .t-comment-by-anonymous .t-comment-username {
-    font-weight: bold;
+  	font-weight: bold;
   }
 }
 

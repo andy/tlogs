@@ -14,7 +14,7 @@ if current_user
   if current_user.can_switch? %><%=
     link_to image_tag('exit.gif', :size => '23x23', :class => 'exit', :title => 'Выход', :alt => 'x'), global_path(:action => 'switch'), :class => 'fancypopup' %><%
   else %><%=
-    link_to image_tag('exit.gif', :size => '23x23', :class => 'exit', :title => 'Выход', :alt => 'x'), '#', :class => 't-act-logout' %><%
+    link_to image_tag('exit.gif', :size => '23x23', :class => 'exit', :title => 'Выход', :alt => 'x'), '#', :class => 't-act-logout' %><% 
   end %></td></tr></table></div><%
 else
 %><div class='unregistered pref_png'><table id='pref_table'><tr><td id='pref_home'><%= link_to image_tag("home.gif", :size => '17x14', :class => 'home'), service_url(main_path(:action => 'live')), :title => 'В прямой эфир', :onclick => 'ga_event("Userbar", "Main", "anonymous");' %></td><td id='pref_unreg_text'>Вы вне системы,&nbsp;</td><td id='pref_login'><%= link_to "войти", service_url(login_path(:ref => (current_site.domain if current_site))), :onclick => 'ga_event("Userbar", "Login", "anonymous");' %></td><td id='pref_signup'><%= link_to 'зарегистрироваться', service_url(signup_path), :onclick => 'ga_event("Userbar", "Signup", "anonymous");' %></td></tr></table></div><%

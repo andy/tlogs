@@ -1,19 +1,19 @@
 <div id='entry_helper'>
-  То, что вы здесь напишете, попадет в раздел <%= link_to 'анонимки', service_url(anonymous_path) %>, без вашего имени и ссылок на ваш тлог. Узнать кто написал анонимку — невозможно.
-  <br/><br/>
-  Вобщем, здесь можно и нужно <span class='highlight'>изливать душу</span>, даже если ваш тлог читают друзья, родители или начальник службы безопасности компании в которой вы работаете.
+	То, что вы здесь напишете, попадет в раздел <%= link_to 'анонимки', service_url(anonymous_path) %>, без вашего имени и ссылок на ваш тлог. Узнать кто написал анонимку — невозможно.
+	<br/><br/>
+	Вобщем, здесь можно и нужно <span class='highlight'>изливать душу</span>, даже если ваш тлог читают друзья, родители или начальник службы безопасности компании в которой вы работаете.
 </div>
 
 <div>
-  <label for='entry_data_part_2'>Заголовок <em>(необязательное поле):</em></label><br/>
-  <%= text_field 'entry', 'data_part_2', { :autocomplete => :off } %>
-  <%= tasty_error_message_on 'entry', 'data_part_2' %>
+	<label for='entry_data_part_2'>Заголовок <em>(необязательное поле):</em></label><br/>
+	<%= text_field 'entry', 'data_part_2', { :autocomplete => :off } %>
+	<%= tasty_error_message_on 'entry', 'data_part_2' %>
 </div>
 
 <div>
-  <label for='entry_data_part_1'>Текст: </label><br/>
-  <%= text_area 'entry', 'data_part_1', :rows => 6, :class => 'resizable' %>
-  <%= tasty_error_message_on 'entry', 'data_part_1' %>
+	<label for='entry_data_part_1'>Текст: </label><br/>
+	<%= text_area 'entry', 'data_part_1', :rows => 6, :class => 'resizable' %>
+	<%= tasty_error_message_on 'entry', 'data_part_1' %>
 </div>
 
 <div class='anon_warning'>

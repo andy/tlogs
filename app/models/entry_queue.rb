@@ -29,37 +29,37 @@ class EntryQueue
     @queue_step   = options.fetch(:queue_step, (@queue_limit * QUEUE_STEP).floor)
     @per_page     = options.fetch(:per_page, PER_PAGE)
   end
-
+  
   def key(postfix = nil)
     ['eq', @name, postfix].compact.join(':')
   end
-
+  
   def push(id)
     @redis.zadd key, id, id
-
+  
     @redis.zremrangebyrank(key, 0, -length_limit) if length > length_limit
   end
-
+  
   def delete(id)
     @redis.zrem key, id
   end
-
+  
   def toggle(id, should_present = nil)
     should_present = !exists?(id) if should_present.nil?
     should_present ? push(id) : delete(id)
   end
-
+  
   def items(start, per_page = nil)
     per_page ||= @per_page
     @redis.zrevrange(key, start, start + per_page - 1).map(&:to_i)
   end
-
+  
   def page(num, per_page = nil)
     per_page ||= @per_page
     num        = 1 if num <= 1
     items (num - 1) * per_page, per_page
   end
-
+  
   def after(id, per_page = nil)
     per_page  ||= @per_page
 
@@ -69,19 +69,19 @@ class EntryQueue
       @redis.zrevrangebyscore(key, "(#{id}", '-inf', :limit => [0, per_page]).map(&:to_i)
     end
   end
-
+  
   def exists?(id)
     !!@redis.zrank(key, id)
   end
-
+  
   def length
     @redis.zcard key
   end
-
+  
   def destroy
     @redis.del key
   end
-
+  
   def paginate(options = {})
     raise ArgumentError, "parameter hash expected (got #{options.inspect})" unless Hash === options
     page     = options[:page] || 1
@@ -92,7 +92,7 @@ class EntryQueue
       pager.replace self.page(pager.current_page, pager.per_page)
     end
   end
-
+  
   def length_limit
     @queue_limit + @queue_step
   end

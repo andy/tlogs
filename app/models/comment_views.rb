@@ -16,11 +16,11 @@
 class CommentViews < ActiveRecord::Base
   belongs_to :entry
   belongs_to :user
-
+  
   validates_presence_of :entry_id
   validates_presence_of :user_id
   validates_presence_of :last_comment_viewed
-
+  
   # Пользователь user просмотрел запись entry
   def self.view(entry, user)
     if entry.comments.size
@@ -39,5 +39,5 @@ class CommentViews < ActiveRecord::Base
     else
       0
     end
-  end
+  end    
 end

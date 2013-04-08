@@ -1,108 +1,108 @@
 body {
-  background: url(/images/bg_bg_new.gif);
-  text-align: left;
-  margin: 0px;
-  padding: 0px;
+	background: url(/images/bg_bg_new.gif);
+	text-align: left;
+	margin: 0px;
+	padding: 0px;
 }
 div {
-  font-family: Georgia;
+	font-family: Georgia;
 }
 
 .big_player {
-  width: 445px;
-  padding: 20px;
-  height: 100px;
+	width: 445px;
+	padding: 20px;
+	height: 100px;
 }
 .big_player .header {
-  height: 40px;
+	height: 40px;
 }
 .big_player .logo_holder {
-  float: left;
+	float: left;
 }
 .big_player .logo_holder .online {
-  color: white;
-  font-style: italic;
-  font-size: 11px;
-  padding-top: 2px;
+	color: white;
+	font-style: italic;
+	font-size: 11px;
+	padding-top: 2px;
 }
 .big_player .desktop_players {
-  float: right;
-  font-weight: bold;
-  font-size: 11px;
-  font-family: Georgia;
-  font-style: italic;
-  color: white;
+	float: right;
+	font-weight: bold;
+	font-size: 11px;
+	font-family: Georgia;
+	font-style: italic;
+	color: white;
 }
 .big_player .desktop_players .first_link {
-  margin-top: 5px;
+	margin-top: 5px;
 }
 .big_player .desktop_players div {
-  font-weight: normal;
+	font-weight: normal;
 }
 .big_player .desktop_players div a {
-  color: white;
-  text-decoration: underline;
+	color: white;
+	text-decoration: underline;
 }
 .big_player .desktop_players div a:hover {
-  text-decoration: none;
+	text-decoration: none;
 }
 
 /* content */
 .big_player .content {
-  padding-top: 40px;
-  height: 120px;
+	padding-top: 40px;
+	height: 120px;
 }
 /* end of content */
 
 /* controls */
 .big_player .content .play_btn {
-  width: 81px;
-  height: 85px;
-  display: block;
-  background-image: url('/images/tastyradio/controls.png');
-  background-position: 0px 0px;
-  cursor: pointer;
-  float: left;
+	width: 81px;
+	height: 85px;
+	display: block;
+	background-image: url('/images/tastyradio/controls.png');
+	background-position: 0px 0px;
+	cursor: pointer;
+	float: left;
 }
 .big_player .content .play_btn:hover { background-position: -81px 0px; }
 .big_player .content .play_btn:active { background-position: 0px 0px; }
 .big_player .content .stop_btn {
-  width: 81px;
-  height: 81px;
-  display: block;
-  background-image: url('/images/tastyradio/controls.png');
-  background-position: 0px -86px;
-  cursor: pointer;
-  float: left;
-  margin-top: 4px;
+	width: 81px;
+	height: 81px;
+	display: block;
+	background-image: url('/images/tastyradio/controls.png');
+	background-position: 0px -86px;
+	cursor: pointer;
+	float: left;
+	margin-top: 4px;
 }
 .big_player .content .stop_btn:hover { background-position: -81px -86px; }
 .big_player .content .stop_btn:active { background-position: 0px -86px; }
 .big_player .content #play_stop {
-  margin-right: 15px;
+	margin-right: 15px;
 }
 /* end of controls */
 
 /* meta */
 .big_player .content .meta {
-  color: white;
-  font-style: italic;
-  font-weight: bold;
-  font-size: 16px;
-  padding-top: 18px;
-  float: left;
-  width: 300px;
+	color: white;
+	font-style: italic;
+	font-weight: bold;
+	font-size: 16px;
+	padding-top: 18px;
+	float: left;
+	width: 300px;
 }
 .big_player .content .song {
-  font-weight: normal;
-  position: absolute;
-  width: 300px;
+	font-weight: normal;
+	position: absolute;
+	width: 300px;
 }
 .big_player .content .song_holder div {
-  font-weight: normal;
+	font-weight: normal;
 }
 .big_player .content .song_holder {
-  position: relative;
+	position: relative;
     overflow: hidden;
     width: 300px;
     height: 19px;
@@ -114,133 +114,133 @@ div {
 
 /* volume */
 .big_player .content .volume {
-  width: 38px;
-  height: 86px;
-  float: right;
+	width: 38px;
+	height: 86px;
+	float: right;
 }
 .big_player .content .icons {
-  float: left;
-  width: 21px;
-  height: 86px;
+	float: left;
+	width: 21px;
+	height: 86px;
 }
 .big_player .content .icons .up {
-  background-image: url('/images/tastyradio/volume.png');
-  background-position: 0px -100px;
-  width: 16px;
-  height: 14px;
-  margin-top: 1px;
-  cursor: pointer;
+	background-image: url('/images/tastyradio/volume.png');
+	background-position: 0px -100px;
+	width: 16px;
+	height: 14px;
+	margin-top: 1px;
+	cursor: pointer;
 }
 .big_player .content .icons .up_none {
-  background: transparent!important;
-  width: 16px;
-  height: 16px;
-  margin-top: 1px;
+	background: transparent!important;
+	width: 16px;
+	height: 16px;
+	margin-top: 1px;
 }
 .big_player .content .icons .down {
-  background-image: url('/images/tastyradio/volume.png');
-  background-position: 0px -116px;
-  width: 16px;
-  height: 9px;
-  margin-top: 56px;
-  cursor: pointer;
+	background-image: url('/images/tastyradio/volume.png');
+	background-position: 0px -116px;
+	width: 16px;
+	height: 9px;
+	margin-top: 56px;
+	cursor: pointer;
 }
 .big_player .content .icons .mute {
-  background-image: url('/images/tastyradio/volume.png');
-  background-position: 0px -125px;
-  width: 16px;
-  height: 16px;
-  margin-top: 51px;
+	background-image: url('/images/tastyradio/volume.png');
+	background-position: 0px -125px;
+	width: 16px;
+	height: 16px;
+	margin-top: 51px;
 }
 .big_player .content .slider {
-  float: left;
-  width: 17px;
-  height: 82px;
-  background-image: url('/images/tastyradio/volume.png');
-  background-position: 0px 0px;
-  position: relative;
-  padding-top: 2px;
-  padding-bottom: 2px;
+	float: left;
+	width: 17px;
+	height: 82px;
+	background-image: url('/images/tastyradio/volume.png');
+	background-position: 0px 0px;
+	position: relative;
+	padding-top: 2px;
+	padding-bottom: 2px;
 }
 .big_player .content .slider .knob {
-  width: 16px;
-  height: 14px;
-  position: absolute;
-  background-image: url('/images/tastyradio/volume.png');
-  background-position: 0px -86px;
-  cursor: pointer;
+	width: 16px;
+	height: 14px;
+	position: absolute;
+	background-image: url('/images/tastyradio/volume.png');
+	background-position: 0px -86px;
+	cursor: pointer;
 }
 /* end of volume */
 
 /* info */
 .big_player .info {
-  font-size: 11px;
-  color: white;
-  width: 100%;
-  text-align: center;
-  font-style: italic;
+	font-size: 11px;
+	color: white;
+	width: 100%;
+	text-align: center;
+	font-style: italic;
 }
 .big_player .info a {
-  text-decoration: underline;
-  color: white;
+	text-decoration: underline;
+	color: white;
 }
 .big_player .info a:hover {
-  text-decoration: none;
+	text-decoration: none;
 }
 /* end of info */
 
 /* styles for small player */
 .small_player {
-  width: 100%;
+	width: 100%;
 }
 /* header section */
 .small_player .header {
-  height: 80px;
+	height: 80px;
 }
 .small_player .logo_holder {
-  padding-top: 20px;
-  margin: 0 auto;
-  width: 200px;
+	padding-top: 20px;
+	margin: 0 auto;
+	width: 200px;
 }
 .small_player .logo_holder .online {
-  color: white;
-  font-style: italic;
-  font-size: 11px;
-  padding-top: 2px;
+	color: white;
+	font-style: italic;
+	font-size: 11px;
+	padding-top: 2px;
 }
 .small_player .desktop_players {
-  display: none;
+	display: none;
 }
 /* end of header section*/
 
 /* content */
 .small_player .content {
-  padding-top: 20px;
-  height: 120px;
+	padding-top: 20px;
+	height: 120px;
 }
 /* end of content */
 
 /* controls */
 .small_player .content .play_btn {
-  width: 81px;
-  height: 85px;
-  display: block;
-  background-image: url('/images/tastyradio/controls.png');
-  background-position: 0px 0px;
-  cursor: pointer;
-  margin: 0 auto;
+	width: 81px;
+	height: 85px;
+	display: block;
+	background-image: url('/images/tastyradio/controls.png');
+	background-position: 0px 0px;
+	cursor: pointer;
+	margin: 0 auto;
 }
 .small_player .content .play_btn:hover { background-position: -81px 0px; }
 .small_player .content .play_btn:active { background-position: 0px 0px; }
 .small_player .content .stop_btn {
-  width: 81px;
-  height: 81px;
-  display: block;
-  background-image: url('/images/tastyradio/controls.png');
-  background-position: 0px -86px;
-  cursor: pointer;
-  margin-top: 4px;
-  margin: 0 auto;
+	width: 81px;
+	height: 81px;
+	display: block;
+	background-image: url('/images/tastyradio/controls.png');
+	background-position: 0px -86px;
+	cursor: pointer;
+	margin-top: 4px;
+	margin: 0 auto;
 }
 .small_player .content .stop_btn:hover { background-position: -81px -86px; }
 .small_player .content .stop_btn:active { background-position: 0px -86px; }
@@ -248,24 +248,24 @@ div {
 
 /* meta */
 .small_player .content .meta {
-  color: white;
-  font-style: italic;
-  font-weight: bold;
-  font-size: 16px;
-  padding-top: 20px;
-  width: 200px;
-  margin: 0 auto;
+	color: white;
+	font-style: italic;
+	font-weight: bold;
+	font-size: 16px;
+	padding-top: 20px;
+	width: 200px;
+	margin: 0 auto;
 }
 .small_player .content .song {
-  font-weight: normal;
-  position: absolute;
-  width: 200px;
+	font-weight: normal;
+	position: absolute;
+	width: 200px;
 }
 .small_player .content .song_holder div {
-  font-weight: normal;
+	font-weight: normal;
 }
 .small_player .content .song_holder {
-  position: relative;
+	position: relative;
     overflow: hidden;
     width: 200px;
     height: 19px;
@@ -277,15 +277,15 @@ div {
 
 /* info */
 .small_player .info {
-  display: none;
+	display: none;
 }
 /* end of info */
 
 /* style for song sizer */
 #song_label_hidden {
-  display: none;
-  color: white;
-  font-style: italic;
-  font-size: 16px;
-  padding-top: 18px;
+	display: none;
+	color: white;
+	font-style: italic;
+	font-size: 16px;
+	padding-top: 18px;
 }

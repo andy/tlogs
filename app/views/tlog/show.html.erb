@@ -1,23 +1,23 @@
 <% @title = @entry.excerpt || @entry.to_russian %>
 <% content_for :head do %>
-  <% cache "#{current_service.domain}/#{current_site.url}/date:#{Date.today.to_s(:db)}/head", :expires_in => 1.day do %>
-    <%= auto_discovery_link_tag(:rss, user_url(current_site, tlog_feed_path(:action => :rss))) %>
-    <%= auto_discovery_link_tag(:rss, user_url(current_site, tlog_feed_path(:action => :photos)), { :title => 'только фоторафии' }) %>
-    <%= tag :link, :rel => 'meta', :type => 'application/rdf+xml', :title => 'FOAF', :href => user_url(current_site, foaf_path) %>
-    <%= tag :meta, :name => 'description', :content => [current_site.url, current_site.tlog_settings.title, @entry.excerpt].compact.reject { |s| s.blank? }.join(', ')%>
+	<% cache "#{current_service.domain}/#{current_site.url}/date:#{Date.today.to_s(:db)}/head", :expires_in => 1.day do %>
+  	<%= auto_discovery_link_tag(:rss, user_url(current_site, tlog_feed_path(:action => :rss))) %>
+  	<%= auto_discovery_link_tag(:rss, user_url(current_site, tlog_feed_path(:action => :photos)), { :title => 'только фоторафии' }) %>
+  	<%= tag :link, :rel => 'meta', :type => 'application/rdf+xml', :title => 'FOAF', :href => user_url(current_site, foaf_path) %>
+  	<%= tag :meta, :name => 'description', :content => [current_site.url, current_site.tlog_settings.title, @entry.excerpt].compact.reject { |s| s.blank? }.join(', ')%>
   <% end %>
-
+  
   <%= tag :meta, :property => 'og:type', :content => 'article' %>
   <%= tag :meta, :property => 'og:locale', :content => 'ru_RU' %>
   <%= tag :meta, :property => 'og:url', :content => user_url(current_site, entry_path(@entry)) %>
   <%= tag :meta, :property => 'og:title', :content => @entry.title %>
   <%= tag :meta, :property => 'og:description', :content => @entry.excerpt %>
   <%= tag :meta, :property => 'og:site_name', :content => 'Тейсти' %>
-  <%= tag :meta, :property => 'article:published_time', :content => @entry.created_at.iso8601 %>
-  <% @entry.tag_list.names.each do |name| %>
-    <%= tag :meta, :property => 'article:tag', :content => name %>
-  <% end %>
-  <%= tag :meta, :property => 'article:author', :content => user_url(current_site) %>
+	<%= tag :meta, :property => 'article:published_time', :content => @entry.created_at.iso8601 %>
+	<% @entry.tag_list.names.each do |name| %>
+	  <%= tag :meta, :property => 'article:tag', :content => name %>
+	<% end %>
+	<%= tag :meta, :property => 'article:author', :content => user_url(current_site) %>
 <% end %>
 
 <% cache "#{current_service.domain}/#{current_site.url}/show:#{@entry.id}/date:#{Date.today.to_s(:db)}/owner:#{is_owner?}/updated_at:#{@entry.updated_at.to_i}", :expires_in => 1.day do %>
@@ -32,41 +32,41 @@
 
 <a name="comments"></a>
 <% if @entry.comments_enabled? || @entry.comments_count > 0 %>
-  <div class="t-post-comments post_comments">
-    <div class="top_comments_text">
-      <% if @entry.comments_count.zero? %>
-        Комментариев еще нет
-      <% else %>
-        Комментарии (<span id='top_comment_number'><%= @entry.comments_count %></span>):
-      <% end %>
-    </div>
-    
-    <% if current_user && current_user.id != current_site.id %>
-      <div class='rel'>
-        <div class='subscribe_controls'>
-          <%= link_to_remote image_tag('letter.gif', :size => '17x15', :alt => 'подписаться'), { :url => user_url(current_site, subscribe_entry_path(@entry)).downcase }, :id => 'subscribe_link', :style => "display: #{!@entry.subscriber_ids.include?(current_user.id) ? 'block' : 'none'}", :title => 'подписаться на новые комментарии' %>
-          <%= link_to_remote image_tag('unletter.gif', :size => '17x15', :alt => 'отписаться'), { :url => user_url(current_site, unsubscribe_entry_path(@entry)).downcase }, :id => 'unsubscribe_link', :style => "display: #{@entry.subscriber_ids.include?(current_user.id) ? 'block' : 'none'}", :title => 'отписаться от комментариев' %>
-        </div>
-      </div>
-    <% end %>
+	<div class="t-post-comments post_comments">
+		<div class="top_comments_text">
+			<% if @entry.comments_count.zero? %>
+				Комментариев еще нет
+			<% else %>
+				Комментарии (<span id='top_comment_number'><%= @entry.comments_count %></span>):
+			<% end %>
+		</div>
+		
+		<% if current_user && current_user.id != current_site.id %>
+			<div class='rel'>
+				<div class='subscribe_controls'>
+					<%= link_to_remote image_tag('letter.gif', :size => '17x15', :alt => 'подписаться'), { :url => user_url(current_site, subscribe_entry_path(@entry)).downcase }, :id => 'subscribe_link', :style => "display: #{!@entry.subscriber_ids.include?(current_user.id) ? 'block' : 'none'}", :title => 'подписаться на новые комментарии' %>
+					<%= link_to_remote image_tag('unletter.gif', :size => '17x15', :alt => 'отписаться'), { :url => user_url(current_site, unsubscribe_entry_path(@entry)).downcase }, :id => 'unsubscribe_link', :style => "display: #{@entry.subscriber_ids.include?(current_user.id) ? 'block' : 'none'}", :title => 'отписаться от комментариев' %>
+				</div>
+			</div>
+		<% end %>
 
-    <%= render :partial => 'comment', :collection => @comments %>
+		<%= render :partial => 'comment', :collection => @comments %>
 
-    <%= render :partial => 'comment_form' if @entry.comments_enabled? %>
-  </div>
-  <% unless @entry.comments_enabled? %>
-    <div class='comments_disabled'>
-      Комментарии были отключены владельцем тлога.
-    </div>  
-  <% end %>
+		<%= render :partial => 'comment_form' if @entry.comments_enabled? %>
+	</div>
+	<% unless @entry.comments_enabled? %>
+		<div class='comments_disabled'>
+			Комментарии были отключены владельцем тлога.
+		</div>	
+	<% end %>
 <% end %>
 
 <div class='return_from_permalink'>
-  <%= link_to "&#x2190; обратно в #{current_site.gender("его", "её")} тлог", tlog_url_for_entry(@entry), :class => 'f56' %>
+	<%= link_to "&#x2190; обратно в #{current_site.gender("его", "её")} тлог", tlog_url_for_entry(@entry), :class => 'f56' %>
 </div>
 
 <% content_for :sidebar do %>
-  <%= render :partial => 'tlog/sidebar' %>
+	<%= render :partial => 'tlog/sidebar' %>
 <% end %>
 
 <script type='text/javascript'>

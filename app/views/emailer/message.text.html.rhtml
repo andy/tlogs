@@ -5,28 +5,28 @@
     "http://www.w3.org/TR/xhtml1/DTD/xhtml-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
   <head></head>
-  <body style="padding:30px 20px 50px 30px; margin:0; background-color: #ffffff;">
-    <div class='new-message notification' style='margin:0; padding:0;'>
+	<body style="padding:30px 20px 50px 30px; margin:0; background-color: #ffffff;">
+	  <div class='new-message notification' style='margin:0; padding:0;'>
     <p style="font-family:Trebuchet MS, Arial, sans serif; font-size:0.95em; width:600px; color:#404040; padding-bottom: 2em;">
       <b>Здравствуйте, <%= h @user.username %>!</b>
     </p>
 
-    <p style="font-family:Trebuchet MS, Arial, sans serif; font-size:0.95em; width:600px; color:#404040; padding-bottom: 1em;">
-      Пользователь <span class='actor vcard'><%= link_to h(@sender.url), user_url(@sender), :class => 'url fn' %></span> отправил вам сообщение:
-    </p>
-    
-    <p style="font-style:italic; font-family:Trebuchet MS, Arial, sans serif; font-size:0.95em; width:600px; color:#404040; padding-bottom: 1em;" class='text'>
-      <%= simple_tasty_format_without_p(auto_link(h(@message.body))) %>
-    </p>
-    
-    <p style="font-family:Trebuchet MS, Arial, sans serif; font-size:0.95em; width:600px; color:#404040; padding-bottom: 2em;">
+		<p style="font-family:Trebuchet MS, Arial, sans serif; font-size:0.95em; width:600px; color:#404040; padding-bottom: 1em;">
+		  Пользователь <span class='actor vcard'><%= link_to h(@sender.url), user_url(@sender), :class => 'url fn' %></span> отправил вам сообщение:
+		</p>
+		
+		<p style="font-style:italic; font-family:Trebuchet MS, Arial, sans serif; font-size:0.95em; width:600px; color:#404040; padding-bottom: 1em;" class='text'>
+		  <%= simple_tasty_format_without_p(auto_link(h(@message.body))) %>
+		</p>
+		
+		<p style="font-family:Trebuchet MS, Arial, sans serif; font-size:0.95em; width:600px; color:#404040; padding-bottom: 2em;">
       <%- convo_link = service_url(conversation_path(@message.conversation)) -%>
       <%= link_to convo_link, convo_link, :class => 'action-link read-link reply-link' %>
-    </p>
-    
-    <p style="font-family:Trebuchet MS, Arial, sans serif; font-size:0.95em; width:600px; color:#404040; text-align:right;">
-      C уважением, <a href="<%= service_url %>" target="_blank" style="border: 0px;"><img src="<%= service_url %>images/letter-logo.gif" width='101' height='27' style="position:relative; bottom:-6px;  margin-left:4px;" /></a>
-    </p>
-    </div>
-  </body>
+		</p>
+		
+		<p style="font-family:Trebuchet MS, Arial, sans serif; font-size:0.95em; width:600px; color:#404040; text-align:right;">
+		  C уважением, <a href="<%= service_url %>" target="_blank" style="border: 0px;"><img src="<%= service_url %>images/letter-logo.gif" width='101' height='27' style="position:relative; bottom:-6px;	margin-left:4px;" /></a>
+		</p>
+		</div>
+	</body>
 </html>

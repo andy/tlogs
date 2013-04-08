@@ -1,28 +1,28 @@
 <!DOCTYPE>
 <html>
-  <body lang="ru" style="padding: 30px 20px 50px 30px; margin: 0; background-color: #ffffff;">
+	<body lang="ru" style="padding: 30px 20px 50px 30px; margin: 0; background-color: #ffffff;">
     <p style="font-family: Trebuchet MS, Arial, sans serif; font-size:0.95em; width:600px; color:#404040; padding-bottom: 2em;">
       <b>Здравствуйте, <%= h @user.username %>!</b>
     </p>
-    
-    <p style="font-family:Trebuchet MS, Arial, sans serif; font-size:0.95em; width:600px; color:#404040; padding-bottom: 1em;">
-      К сожалению, у вас истекла подписка на премиум-функции. Если вам все понравилось, и вы просто забыли продлить подписку, то оплатить тейсти-премиум всегда можно на странице настроек: <%= link_to 'продлить тейсти-премиум', user_url(@user, settings_premium_path) + '#pay' %>.
-    </p>
-    
-    <p style="font-style:italic; font-family:Trebuchet MS, Arial, sans serif; font-size:0.95em; width:600px; color:#404040; padding-bottom: 1em;">
-      Если же вас по какой-то причине не устроил наш сервис или что-то не понравилось, обязательно дайте нам знать, так как мы постоянно работаем над улучшением сервиса и стремимся сделать сайт максимально удобным и комфортным местом для всех наших пользователей.
-    </p>
-    
-    <p style="font-family:Trebuchet MS, Arial, sans serif; font-size:0.95em; width:600px; color:#404040; padding-bottom: 1em;">
-      Спасибо!
-    </p>
+		
+		<p style="font-family:Trebuchet MS, Arial, sans serif; font-size:0.95em; width:600px; color:#404040; padding-bottom: 1em;">
+		  К сожалению, у вас истекла подписка на премиум-функции. Если вам все понравилось, и вы просто забыли продлить подписку, то оплатить тейсти-премиум всегда можно на странице настроек: <%= link_to 'продлить тейсти-премиум', user_url(@user, settings_premium_path) + '#pay' %>.
+		</p>
+		
+		<p style="font-style:italic; font-family:Trebuchet MS, Arial, sans serif; font-size:0.95em; width:600px; color:#404040; padding-bottom: 1em;">
+		  Если же вас по какой-то причине не устроил наш сервис или что-то не понравилось, обязательно дайте нам знать, так как мы постоянно работаем над улучшением сервиса и стремимся сделать сайт максимально удобным и комфортным местом для всех наших пользователей.
+		</p>
+		
+		<p style="font-family:Trebuchet MS, Arial, sans serif; font-size:0.95em; width:600px; color:#404040; padding-bottom: 1em;">
+		  Спасибо!
+		</p>
 
-    <p style="font-family:Trebuchet MS, Arial, sans serif; font-size:0.8em; width:600px; color:#808080; padding-bottom: 2em;">
-      Это автоматическое письмо. В случае проблем с оплатой обращайтесь в службу поддержки по адресу <a href='mailto:premium@<%= @current_service.domain %>'>premium@<%= @current_service.domain %></a>.
-    </p>
-    
-    <p style="font-family:Trebuchet MS, Arial, sans serif; font-size:0.95em; width:600px; color:#404040; text-align:right;">
-      C уважением, <a href="<%= service_url %>" target="_blank" style="border: 0px;"><img src="<%= service_url %>images/letter-logo.gif" width='101' height='27' style="position:relative; bottom:-6px;  margin-left:4px;" /></a>
-    </p>
-  </body>
+		<p style="font-family:Trebuchet MS, Arial, sans serif; font-size:0.8em; width:600px; color:#808080; padding-bottom: 2em;">
+			Это автоматическое письмо. В случае проблем с оплатой обращайтесь в службу поддержки по адресу <a href='mailto:premium@<%= @current_service.domain %>'>premium@<%= @current_service.domain %></a>.
+		</p>
+		
+		<p style="font-family:Trebuchet MS, Arial, sans serif; font-size:0.95em; width:600px; color:#404040; text-align:right;">
+		  C уважением, <a href="<%= service_url %>" target="_blank" style="border: 0px;"><img src="<%= service_url %>images/letter-logo.gif" width='101' height='27' style="position:relative; bottom:-6px;	margin-left:4px;" /></a>
+		</p>
+	</body>
 </html>

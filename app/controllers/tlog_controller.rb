@@ -5,7 +5,7 @@ class TlogController < ApplicationController
 
   # 1 - protect global tlog index
   before_filter :check_if_can_be_viewed, :only => [:index, :daylog]
-
+  
   # 1.1 - check wether url is right
   before_filter :set_time, :only => [:daylog, :next_day, :prev_day]
 
@@ -24,14 +24,15 @@ class TlogController < ApplicationController
 
   helper :comments
 
+
   def index
     current_site.tlog_settings.is_daylog? ? daylog(current_site.last_public_entry_at) : regular
   end
-
+  
   # When enabled as regular tlog
   def regular
     @title = current_site.tlog_settings.title || ''
-
+    
     @cache_key = ['tlog', 'regular', current_service.domain, current_site.id, current_site.url, current_page, is_owner?, current_site.tlog_settings.past_disabled?, current_site.entries_updated_at.to_i, Date.today.to_s(:db)].join(':')
     Rails.logger.debug "* cache key is #{@cache_key}"
 
@@ -41,21 +42,21 @@ class TlogController < ApplicationController
       @past_disabled = true
       @entries = []
     end
-
+    
     @comment_views = User::entries_with_views_for(@entries.map(&:id), current_user)
     @entry_ratings = EntryRating.find_all_by_entry_id(@entries.map(&:id), :select => 'entry_id AS id, value')
-
+    
     render :action => 'regular', :layout => !should_xhr?
   end
-
+  
   # When enabled as daylog
   def daylog(time = nil)
     @title = current_site.tlog_settings.title
 
     @time ||= time
-
+    
     redirect_to user_url(current_site) and return if @time.nil?
-
+    
     @cache_key = ['tlog', 'daylog', current_service.domain, current_site.id, current_site.url, @time.to_date.to_s(:db), is_owner?, current_site.tlog_settings.past_disabled?, current_site.entries_updated_at.to_i, Date.today.to_s(:db)].join(':')
     Rails.logger.debug "* partial cache key is #{@cache_key}"
 
@@ -72,13 +73,13 @@ class TlogController < ApplicationController
 
     render :action => 'daylog'
   end
-
+  
   # Private entries
   def private
     @title = 'ваши скрытые записи'
     @entries = current_site.entries.private.for_view.paginate :page => current_page, :per_page => Entry::PAGE_SIZE
   end
-
+  
   # Anonymous entries
   def anonymous
     @title = 'ваши анонимки'
@@ -92,7 +93,7 @@ class TlogController < ApplicationController
     cache_key = "tlog:show:comments:e#{@entry.id}:c#{@entry.comments_count}:u#{@entry.updated_at.to_i}"
 
     @comments = Rails.cache.fetch(cache_key, :expires_in => 1.day) do
-      @entry.comments.enabled.all(:include => :user, :order => 'comments.id').reject { |comment| comment.user.nil? }
+      @entry.comments.enabled.all(:include => :user, :order => 'comments.id').reject { |comment| comment.user.nil? } 
     end
 
     @last_comment_viewed  = current_user ? CommentViews.view(@entry, current_user) : 0
@@ -103,10 +104,10 @@ class TlogController < ApplicationController
     user_ids    = @entry.comments.enabled.all(:select => 'user_id').map(&:user_id).uniq.reject { |user_id| user_id == current_user.id }
     @mentions   = User.find(user_ids) if user_ids.any?
     @mentions ||= []
-
+    
     render :template => 'mentions/index', :content_type => Mime::JSON
   end
-
+  
   #
   # Helper and AJAX methods
   #
@@ -115,7 +116,7 @@ class TlogController < ApplicationController
   def metadata
     render :partial => 'metadata', :locals => { :entry => @entry }
   end
-
+  
   # show tags cloud
   def tags
     render :partial => 'tags'
@@ -123,34 +124,34 @@ class TlogController < ApplicationController
 
   def relationship
     redirect_to user_url(current_site) and return unless request.post?
-
+    
     redirect_to service_url(login_path) and return unless current_user
 
     relationship = current_user.relationship_with(current_site, true)
-
+    
     # internal error
     if relationship === false
       render :nothing => true
-
+      
       return
     end
 
     # scucess
     if relationship && relationship.new_record?
       new_friendship_status = Relationship::DEFAULT
-
+      
       # Emailer.deliver_relationship(current_site, current_user)
     else
       new_friendship_status = [Relationship::PUBLIC, Relationship::DEFAULT].include?(relationship.friendship_status) ? Relationship::GUESSED : Relationship::DEFAULT
     end
     current_user.set_friendship_status_for(current_site, new_friendship_status)
-
+    
     render :update do |page|
       page.replace :sidebar_relationship, :partial => 'relationship'
       page.visual_effect :highlight, :sidebar_relationship, :duration => 0.3
     end
   end
-
+  
   def subscribe
     render :nothing => true and return unless request.post?
 
@@ -166,7 +167,7 @@ class TlogController < ApplicationController
     end
 
   end
-
+  
   def unsubscribe
     render :nothing => true and return unless request.post?
 
@@ -175,23 +176,23 @@ class TlogController < ApplicationController
       page.toggle('subscribe_link', 'unsubscribe_link')
     end
   end
-
+  
   def next_day
     @entries = current_site.recent_entries(:time => @time)
 
-    d = @entries.first.next.created_at rescue nil
+  	d = @entries.first.next.created_at rescue nil
 
     redirect_to d ? user_url(current_site, day_path(:year => d.year, :month => d.month, :day => d.mday)) : user_url(current_site)
   end
-
+  
   def prev_day
     @entries = current_site.recent_entries(:time => @time, :per_page => 200)
 
-    d = @entries.last.prev.created_at rescue nil
+  	d = @entries.last.prev.created_at rescue nil
 
     redirect_to d ? user_url(current_site, day_path(:year => d.year, :month => d.month, :day => d.mday)) : user_url(current_site)
   end
-
+  
   # удаляет запись из тлога
   def destroy
     url = tlog_url_for_entry(@entry)
@@ -201,62 +202,62 @@ class TlogController < ApplicationController
       # async is not working properly yet
       # @entry.async_destroy!
       @entry.destroy
-
+      
       flash[:good] = 'Запись была удалена'
     end
 
     redirect_to url
   end
-
+  
   def foaf
     response.headers['Content-Type'] = 'application/rdf+xml'
-
+    
     render :layout => false
   end
-
+  
   def style
-    expires_in 1.year, :public => true
+    expires_in 1.year, :public => true    
 
     response.headers['Content-Type'] = 'text/css'
-
+    
     render :layout => false
-
+    
   end
-
+  
   def robots
     expires_in 15.days, :public => true
 
     render :file => 'tlog/robots.txt'
   end
-
+  
   private
     # mark tlog as viewed by current visitor
     def mark_as_viewed
       current_site.mark_as_viewed_by!(current_user, @entry)
-
+      
       true
     end
-
+  
     # protect empty or private tlogs with no public entries from being visited
     def taken_but_empty
       render_tasty_404("Это имя занято, но пользователь еще не сделал ни одной записи.<br/>Загляните, пожалуйста, позже.<br/><br/><a href='#{current_service.url}'>&#x2190; вернуться на главную</a>") and return false if current_site.entries_count_for(current_user).zero? && !is_owner?
-
-      true
+      
+      true      
     end
-
+    
     def set_time
       if (1..12).to_a.include?(params[:month].to_i) && (1..31).to_a.include?(params[:day].to_i)
         @time = [params[:year], params[:month], params[:day]].join('-').to_date.to_time rescue nil
       end
       redirect_to user_url(current_site) and return if @time.nil?
-
+      
       true
     end
 
     def check_if_can_be_viewed
       render :action => 'hidden' and return false unless current_site.can_be_viewed_by?(current_user)
     end
-
+    
     def check_if_entry_can_be_viewed
       render :action => 'hidden' and return false unless @entry.can_be_viewed_by?(current_user)
     end

@@ -8,14 +8,15 @@ class Settings::PremiumController < ApplicationController
   helper :settings
   layout "settings"
 
+
   def index
     @wmid = ::SETTINGS[:billing]['webmoney']['wmid']
   end
-
+  
   def accounts
     @accounts = User.find(current_site.linked_with)
   end
-
+  
   def accounts_popup
     render :layout => false
   end
@@ -24,24 +25,24 @@ class Settings::PremiumController < ApplicationController
     render :nothing => true and return unless request.post?
 
     @user = User.authenticate(params[:email], params[:password])
-
+    
     if @user && !@user.is_openid?
       current_site.link_with(@user)
-
+      
       render :json => true
     else
       render :json => false
     end
   end
-
+  
   def unlink
     render :nothing => true and return unless request.post?
 
     @user = User.find_by_url(params[:url])
     current_site.unlink_from(@user) if @user
-
+    
     current_site.reload
-
+    
     render :update do |page|
       if current_site.can_switch?
         page.visual_effect :highlight, "t-accounts-link-#{@user.url.downcase}", :duration => 0.3
@@ -54,7 +55,7 @@ class Settings::PremiumController < ApplicationController
 
   def background
     ts = current_site.tlog_settings
-
+    
     if request.post?
       if params[:image]
         Background.transaction do
@@ -70,7 +71,7 @@ class Settings::PremiumController < ApplicationController
           bg = Background.find(params[:id], :conditions => "is_public = 1 OR user_id = #{current_site.id}")
           bg.tlog_settings << ts if bg
         end
-
+        
         render :json => {:success => true, :gray_logo => Background.find(params[:id], :conditions => "is_public = 1 OR user_id = #{current_site.id}").gray_logo }
       else
         redirect_to user_url(current_site, settings_premium_path(:action => 'background'))
@@ -82,7 +83,7 @@ class Settings::PremiumController < ApplicationController
         bg.destroy unless bg.is_public?
         ts.update_attribute(:background_id, nil) if bg.id == ts.background_id
       end
-
+      
       render :json => true
     else
       if current_site.tlog_settings.background_id then
@@ -91,7 +92,7 @@ class Settings::PremiumController < ApplicationController
       end
       @backgrounds  = Background.public.all
       @backgrounds += current_site.backgrounds
-
+      
       @backgrounds.uniq!
     end
   end
@@ -99,18 +100,19 @@ class Settings::PremiumController < ApplicationController
   def background_popup
     render :layout => false
   end
-
+    
   def invoices
     @invoices = current_site.invoices.successful.paginate :page => current_page, :per_page => 15, :order => 'created_at DESC'
   end
-
+  
   def grateful
     current_site.settings_will_change!
     current_site.settings[:ng] = (params[:value] && params[:value] == 'true') ? 1 : 0
     current_site.save!
-
+    
     render :json => true
   end
+
 
   #
   # Payment popup
@@ -119,7 +121,7 @@ class Settings::PremiumController < ApplicationController
     @countries      = SmsonlineInvoice.countries_for_select
     @qiwi_options   = QiwiInvoice.options
     @robox_options  = RoboxInvoice.options
-
+    
     @robox_types    = RoboxInvoice.types
 
     # preferences
@@ -130,7 +132,8 @@ class Settings::PremiumController < ApplicationController
 
     render :layout => false
   end
-
+  
+  
   #
   # Billing services
   #
@@ -139,17 +142,17 @@ class Settings::PremiumController < ApplicationController
 
     last_id   = params[:last_id].to_s || 0
     @invoices = SmsonlineInvoice.for_user(current_site).successful.all(:conditions => "invoices.id > #{last_id}")
-
+    
     render :json => @invoices.map { |i| { :id => i.id, :summary => i.summary } }
   end
-
+  
   def qiwi_init_bill
     render :nothing => true and return false unless request.post?
-
+   
     phone   = params[:phone].gsub(/[^0-9]/, '')[0..10]
     user    = current_site
     option  = QiwiInvoice.options_for(params[:option])
-
+    
     @invoice = QiwiInvoice.create!(:user      => user,
                                    :state     => 'pending',
                                    :amount    => option.amount,
@@ -161,16 +164,16 @@ class Settings::PremiumController < ApplicationController
                                                                               :phone => phone
                                                                              )
                                   )
-
+    
     render :json => @invoice.to_json
   end
-
+  
   def robox_init_bill
     render :nothing => true and return unless request.post?
-
-    option = RoboxInvoice.options_for(params[:option])
+    
+    option = RoboxInvoice.options_for(params[:option])    
     type   = RoboxInvoice.type_for(params[:type])
-
+    
     @invoice = RoboxInvoice.create!(:user       => current_user,
                                     :state      => 'pending',
                                     :amount     => option.amount,
@@ -179,10 +182,10 @@ class Settings::PremiumController < ApplicationController
                                     :remote_ip  => request.remote_ip,
                                     :metadata   => HashWithIndifferentAccess.new(:option => option.name, :type => type.try(:key))
                                   )
-
+    
     redirect_to @invoice.payment_url(option, type)
   end
-
+  
   protected
     def require_premium
       redirect_to user_url(current_site, settings_premium_path) unless is_premium?

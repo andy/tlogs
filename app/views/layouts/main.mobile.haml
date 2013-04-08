@@ -2,13 +2,13 @@
 %html
   %head
     = render :partial => 'globals/head'
-
+  
   %body{ :lang => 'ru' }
     %div{ :data => { :role => 'page' } }
 
       -# <div data-role="content" data-theme="d"> ... </div>
       = yield
-
+            
     = yield :extra
 
   = render :partial => 'globals/counters' if Rails.env.production?

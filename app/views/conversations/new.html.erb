@@ -5,18 +5,18 @@
     <h3><%= @title %></h3>
 
     <div class='rel'>
-      <div class='conversation_subscribe_controls'>
-        <%= link_to_function image_tag('letter.gif', :size => '17x15'), :id => 'subscribe_link', :style => @send_notifications ? "display: none" : "display: block", :title => 'подписаться на уведомления по почте' do |page|
-          page << '$("message_send_notifications").value = "1";'
-          page.toggle('subscribe_link', 'unsubscribe_link')
-        end
-        %>
-        <%= link_to_function image_tag('unletter.gif', :size => '17x15'), :id => 'unsubscribe_link', :style => @send_notifications ? "display: block" : "display: none", :title => 'отписаться от уведомления по почте' do |page|
-          page << '$("message_send_notifications").value = "0";'
-          page.toggle('subscribe_link', 'unsubscribe_link')
-        end
-        %>
-      </div>
+    	<div class='conversation_subscribe_controls'>
+    		<%= link_to_function image_tag('letter.gif', :size => '17x15'), :id => 'subscribe_link', :style => @send_notifications ? "display: none" : "display: block", :title => 'подписаться на уведомления по почте' do |page|
+    		  page << '$("message_send_notifications").value = "1";'
+    		  page.toggle('subscribe_link', 'unsubscribe_link')
+  		  end
+    		%>
+    		<%= link_to_function image_tag('unletter.gif', :size => '17x15'), :id => 'unsubscribe_link', :style => @send_notifications ? "display: block" : "display: none", :title => 'отписаться от уведомления по почте' do |page|
+    		  page << '$("message_send_notifications").value = "0";'
+    		  page.toggle('subscribe_link', 'unsubscribe_link')
+  	    end
+    		%>
+    	</div>
     </div>
   </div>
 
@@ -28,17 +28,17 @@
       <div class='message_recipient_block'>
         <label for='message_recipient_url'>Кому:</label>
 
-        <div class='rel'>
-          <div class='message_sender' id='message_recipient' style='display: none'><a href='#' class='no_visited'></a></div>
-        </div>
-      
-        <div class='rel'>
-          <%= image_tag 'ajax-smaller-loader.gif', :size => '16x16', :alt => '', :title => '', :style => 'display: none', :id => 'verifying' %>
-        </div>
-
+      	<div class='rel'>
+      	  <div class='message_sender' id='message_recipient' style='display: none'><a href='#' class='no_visited'></a></div>
+      	</div>
+    	
+      	<div class='rel'>
+      	  <%= image_tag 'ajax-smaller-loader.gif', :size => '16x16', :alt => '', :title => '', :style => 'display: none', :id => 'verifying' %>
+      	</div>
+    
         <div class='message_recipient'>
           <%= f.text_field :recipient_url, :style => 'width: 450px;', :tabindex => '1' %>
-
+      
           <div class='subtext' id='message_recipient_subtext'>
             <span class='neutral' id='subtext_message'>Укажите имя пользователя которому хотите написать сообщение</span>
           </div>
@@ -48,9 +48,9 @@
       <div class='message_body_block'>
         <label for='message_body'>Сообщение:</label>
 
-        <div class='rel'>
-          <div class='message_sender'><%= link_to_tlog current_user %></div>
-        </div>
+      	<div class='rel'>
+      	  <div class='message_sender'><%= link_to_tlog current_user %></div>
+      	</div>
 
         <div class='rel'>
           <%= image_tag 'ajax-smaller-loader.gif', :size => '16x16', :alt => '', :title => '', :style => 'display: none', :id => 'submitting' %>
@@ -59,6 +59,7 @@
         <%= f.text_area :body, :style => 'width: 450px; height: 6em', :tabindex => '2' %>
         <%= tasty_error_message_on :message, :body %>
       </div>
+
 
       <div class='message_submit'>
         <span>Теги запрещены, ссылки выделяются автоматически</span>
@@ -83,12 +84,12 @@
     jQuery('#submitting').show();
     jQuery('.submit_button input').attr('disabled', 'disabled');
   }
-
+  
   function submit_failure() {
     jQuery('#submitting').hide();
     jQuery('.submit_button input').removeAttr('disabled');
     error_message_on('message_body', 'К сожалению, случилась серверная ошибка и ваше сообщение не было отправлено. Попробуйте повторить свою попытку позже.');
-  }
+  }  
 
   function observe_message_recipient_url(element, value) {
     <%= remote_function(:url => service_url(verify_recipient_conversations_path).downcase, :with => "'url=' + encodeURIComponent(value)", :before => 'jQuery("#verifying").show();', :complete => 'jQuery("#verifying").hide();') %>
@@ -97,7 +98,7 @@
   <% if params[:url] %>
     jQuery(document).ready(function() { jQuery('#message_body').focus(); });
     observe_message_recipient_url($('message_recipient_url'), jQuery('#message_recipient_url').val());
-  <% else %>
+  <% else %>  
     jQuery(document).ready(function() { jQuery('#message_recipient_url').focus(); });
   <% end %>
 </script>
@@ -105,6 +106,6 @@
 <%= observe_field 'message_recipient_url', :function => 'observe_message_recipient_url(element, value)' %>
 
 <% content_for :sidebar_right do %>
-  <%= render :partial => 'main/my_sidebar_right' %>  
+  <%= render :partial => 'main/my_sidebar_right' %>	
   <%= render :partial => 'conversations/sidebar' %>
 <% end %>

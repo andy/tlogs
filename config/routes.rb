@@ -19,12 +19,12 @@ tlog_settings = lambda do |tlog|
   tlog.connect 'convos/:id', :controller => 'conversations', :action => 'legacy_show'
 
   # 'static' files
-  tlog.style 'style/:revision.css', :action => 'style', :requirements => { :revision => /\d+/ }
+  tlog.style 'style/:revision.css', :action => 'style', :requirements => { :revision => /\d+/ }  
   tlog.robots 'robots.txt', :controller => 'tlog', :action => 'robots'
   tlog.foaf 'foaf.rdf', :controller => 'tlog', :action => 'foaf'
-
+  
   tlog.day ':year/:month/:day', :controller => 'tlog', :action => 'daylog', :requirements => { :year => /\d{4}/, :month => /\d{1,2}/, :day => /\d{1,2}/ }
-
+  
   tlog.next_day ':year/:month/:day/next', :controller => 'tlog', :action => 'next_day', :requirements => { :year => /\d{4}/, :month => /\d{1,2}/, :day => /\d{1,2}/ }
   tlog.prev_day ':year/:month/:day/prev', :controller => 'tlog', :action => 'prev_day', :requirements => { :year => /\d{4}/, :month => /\d{1,2}/, :day => /\d{1,2}/ }
 
@@ -42,7 +42,7 @@ tlog_settings = lambda do |tlog|
   tlog.resources :faves, :controller => 'faves'
 end
 
-www_settings = lambda do |www|
+www_settings = lambda do |www|  
   www.connect '', :controller => 'main', :action => 'index'
 
   www.connect 'premium', :controller => 'main', :action => 'premium'
@@ -88,7 +88,7 @@ www_settings = lambda do |www|
   www.search 'search/:action/:id', :controller => 'search'
   www.tag_view 'tag/*tags', :controller => 'tags', :action => 'view'
   www.tags 'tags/:action/:id', :controller => 'tags'
-
+  
   # console, administration controller
   www.namespace :console do |console|
     console.resources :users, :member => { :disable => :post, :destroy => :post, :invitations => :post, :mprevoke => :post, :mpgrant => :post, :restore => :post, :wipeout => :post, :suspect => :get, :reporter => :get, :changeall => :get, :changelogs => :get, :changeauth => :get, :confirm => :post, :acchange => :post, :cchange => :post }
@@ -98,7 +98,7 @@ www_settings = lambda do |www|
     console.index 'index/:action/:id', :controller => 'index'
     console.root :controller => 'index', :action => 'index'
   end
-
+  
   # www.resources :tastyradio, :controller => 'tastyradio', :collection => { :all => :get, :data => :get }
 
   www.bookmarklet 'bookmarklet/:action', :controller => 'bookmarklet'
@@ -114,7 +114,7 @@ ActionController::Routing::Routes.draw do |map|
   map.vote 'vote/:entry_id/:action', :controller => 'vote'
   map.global_fave 'global/fave/:id', :controller => 'faves', :action => 'create'
   map.global 'global/:action.:format', :controller => 'global'
-
+  
   # Assets packages, used only in development
   if Rails.env.development?
     map.css_packages 'packages/css/:name.css', :controller => 'packages', :action => 'css'
@@ -125,14 +125,14 @@ ActionController::Routing::Routes.draw do |map|
     map.with_options :conditions => { :subdomain => /^(www|m|)$/, :domain => Regexp.new(Tlogs::Domains::CONFIGURATION.domains.join('|').gsub('.', '\.')) }, &www_settings
 
     map.with_options :controller => 'tlog', :conditions => { :subdomain => /^(www|m|)$/, :domain => Regexp.new(Tlogs::Domains::CONFIGURATION.domains.join('|').gsub('.', '\.')) }, :path_prefix => 'users/:current_site', :name_prefix => 'current_site_', &tlog_settings
-
+  
     # это домены пользователей: andy.mmm-tasty.ru, genue.mmm-tasty.ru и так далее
     map.with_options :controller => 'tlog', &tlog_settings
   # else
   #   map.with_options :controller => 'main', &www_settings
-  #
+  # 
   #   map.with_options :controller => 'tlog', &tlog_settings
-  #
+  # 
   #   map.with_options :controller => 'tlog', :path_prefix => 'users/:current_site', :name_prefix => 'current_site_', &tlog_settings
   # end
 

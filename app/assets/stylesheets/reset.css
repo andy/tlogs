@@ -1,12 +1,12 @@
-/* --------------------------------------------------------------
-
+/* -------------------------------------------------------------- 
+  
    Reset.css
    * Version:   0.5 (28/8/2007)
    * Website:   http://code.google.com/p/blueprintcss/
-
+   
    Original by Eric Meyer:
    * meyerweb.com/eric/thoughts/2007/05/01/reset-reloaded/
-
+   
 -------------------------------------------------------------- */
 
 html, body, div, span, applet, object, iframe,
@@ -17,14 +17,14 @@ strike, strong, sub, sup, tt, var,
 dl, dt, dd, ol, ul, li,
 fieldset, form, label, legend,
 table, caption, tbody, tfoot, thead, tr, th, td {
-  margin: 0;
-  padding: 0;
-  border: 0;
-  font-weight: inherit;
-  font-style: inherit;
-  font-size: 100%;
-  font-family: inherit;
-  vertical-align: baseline;
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-weight: inherit;
+	font-style: inherit;
+	font-size: 100%;
+	font-family: inherit;
+	vertical-align: baseline;
 }
 
 body { line-height: 1; color: #333; background: white; }

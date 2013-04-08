@@ -5,19 +5,20 @@ module UrlHelper
   def get_current_service
     @current_service || current_service
   end
-
+  
   def get_current_site
     @current_site || nil
   end
-
+  
   def get_current_user
     @current_user || nil
   end
-
+  
   def get_request
     request || nil
   end
-
+  
+  
   def user_path(user, path = '/')
     host = request.host.gsub(/^www\./, '') # rescue current_service.domain
 
@@ -26,7 +27,7 @@ module UrlHelper
       path
     else
       user_url(user, path)
-    end
+    end    
   end
 
   def user_url(user, path = '/')
@@ -39,7 +40,7 @@ module UrlHelper
 
   def service_url(path = '/')
     if get_request
-      host = request.host.gsub(/^www\./, '')
+      host = request.host.gsub(/^www\./, '') 
       if get_current_service.domain == host
         path
       else
@@ -73,9 +74,9 @@ module UrlHelper
       options[:month] = date.month
       options[:day] = date.mday
       fragment = options.delete(:fragment) || nil
-      fragment = ((date == Date.today) ? '/#' : '#') + fragment if fragment
+      fragment = ((date == Date.today) ? '/#' : '#') + fragment if fragment 
       (date == Date.today) ? user_url(user, fragment) : user_url(user, day_path(options) + (fragment || ''))
-    else
+    else 
       if entry.is_anonymous?
         user_url(user, anonymous_entries_path)
       elsif entry.is_private?

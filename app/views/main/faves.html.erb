@@ -5,11 +5,11 @@
       <p>Знаете, скорее всего это потому, что ваши друзья не пользуются избранным.</p>
     </div>
   <% else %>
-    <% @entries.each do |entry| %>
-      <%= render :partial => 'entries/entry_display', :locals => { :entry => entry, :show_comments_bubble => true, :show_username => true, :show_tags => false, :comment_views => @comment_views } %>
-    <% end %>
+  	<% @entries.each do |entry| %>
+  		<%= render :partial => 'entries/entry_display', :locals => { :entry => entry, :show_comments_bubble => true, :show_username => true, :show_tags => false, :comment_views => @comment_views } %>
+  	<% end %>
 
-    <%= paginate @entry_ids %>
+  	<%= paginate @entry_ids %>
   <% end %>
 </div>
 

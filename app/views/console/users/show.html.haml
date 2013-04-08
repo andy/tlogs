@@ -27,14 +27,14 @@
 
       %dt email
       %dd= hide_email @user.email
-
+      
       %dt registered
       %dd
         = @user.created_at.to_s(:db)
         = surround '(', ')' do
           = time_ago_in_words @user.created_at
           ago
-
+    
       %dt updated
       %dd
         - if @user.entries_updated_at
@@ -52,7 +52,7 @@
         = @user.is_premium?
         -# %em
         -#   %a{:href => '#'} gift 1 month
-
+  
       - if @user.is_premium?
         %dt till
         %dd
@@ -66,7 +66,7 @@
       - if @user.invitation
         %dt invited by
         %dd= link_to '@' + @user.invitation.user.url, console_user_path(@user.invitation.user)
-
+  
       %dt invitations
       %dd
         %span.badge#c-invitations-cnt{:class => @user.invitations_left.zero? ? nil : 'badge-success'}= @user.invitations_left
@@ -74,7 +74,7 @@
         %a.c-act.c-act-invitations-inc{:href => '#', :data => { :id => @user.id }} inc
         |
         %a.c-act.c-act-invitations-dec{:href => '#', :data => { :id => @user.id }} dec
-
+  
       %dt invitees
       %dd
         - if @user.invitations.count.nonzero?
@@ -84,7 +84,7 @@
             - else
               = invitation.email
         - else
-          —
+          —  
 
     %h5 relations
     %dl.dl-horizontal
@@ -98,10 +98,10 @@
 
       %dt subscribed to
       %dd= @user.all_friend_ids.count
-
+  
       %dt subscribers
       %dd= @user.listed_me_as_all_friend_light_ids.count
-
+  
       %dt blacklist
       %dd
         -if @user.blacklist.any?
@@ -109,7 +109,7 @@
             = link_to '@' + user.url, console_user_path(user)
         - else
           —
-
+  
       %dt blacklised by
       %dd
         -if @user.listed_me_as_blacklist_light.any?
@@ -118,6 +118,7 @@
             = link_to '@' + user.url, console_user_path(user)
         - else
           —
+    
 
     %h5 status
     %dl.dl-horizontal
@@ -136,6 +137,7 @@
               = @user.disabled_at.to_s(:db)
             = time_ago_in_words @user.disabled_at
             назад
+    
 
       %dt mainpageable?
       %dd
@@ -146,21 +148,22 @@
           - else
             %a.c-act{:href => '#mpgrant', :data => {:toggle => 'modal'}} unban
 
+
       %dt c clean?
       %dd
         - if @user.is_c_banned?
           %span.label.label-important banned
-          осталось:
+          осталось: 
           %span{:title => @user.ban_c_till.to_s(:db)}= @user.c_ban_days_left.pluralize('день', 'дня', 'дней', true)
         - elsif @user.ban_c_till
           %span.label.label-warning was banned
           = surround '(', ')' do
             = time_ago_in_words @user.ban_c_till
             ago
-
+    
         - else
           %span.label.label-success true
-
+      
         %em
           %a.c-act{:href => '#c-change', :data => {:toggle => 'modal'}} change
 
@@ -168,17 +171,17 @@
       %dd
         - if @user.is_ac_banned?
           %span.label.label-important banned
-          осталось:
+          осталось: 
           %span{:title => @user.ban_ac_till.to_s(:db)}= @user.ac_ban_days_left.pluralize('день', 'дня', 'дней', true)
         - elsif @user.ban_ac_till
           %span.label.label-warning was banned
           = surround '(', ')' do
             = time_ago_in_words @user.ban_ac_till
             ago
-
+      
         - else
           %span.label.label-success true
-
+        
         %em
           %a.c-act{:href => '#ac-change', :data => {:toggle => 'modal'}} change
 
@@ -199,13 +202,13 @@
         = surround '(', ')' do
           = @user.private_entries_count
           private
-
+      
       %dt convos
       %dd= @user.conversations_count
-
+      
       %dt faves
       %dd= @user.faves_count
-
+      
       %dt comments
       %dd
         = @comments_enabled_count
@@ -216,20 +219,21 @@
           %a.btn.btn-danger.btn-mini{:href => '#wipeout', :data => {:toggle => 'modal'}}
             %i.icon-trash.icon-white
             wipe out
-
+            
+      
       %dt suspect
       %dd
         - if @suspect_count.zero?
           innocent
         - else
           = link_to "on #{@suspect_count.pluralize('comment', 'comments', 'comments', true)}", suspect_console_user_path(@user), :class => 'c-act'
-
+        
       %dt reporter
       %dd
         - if @reports_count.zero?
           innocent
         - else
-          = link_to "on #{@reports_count.pluralize('comment', 'comments', 'comments', true)}", reporter_console_user_path(@user), :class => 'c-act'
+          = link_to "on #{@reports_count.pluralize('comment', 'comments', 'comments', true)}", reporter_console_user_path(@user), :class => 'c-act' 
 
     %h5
       changelog
@@ -256,13 +260,13 @@
 .row
   .span12
     %hr
-
+  
 .row
   - unless @user.is_disabled?
     .span10
       %strong Note:
       disabling usually takes some time. Comments and entries are not removed.
-
+    
     .span2.pull-right
       %a.btn.btn-danger{:href => '#disableAccount', :data => {:toggle => 'modal'}}
         Disable
@@ -272,14 +276,15 @@
       %a.btn.btn-success{:href => '#restore', :data => {:toggle => 'modal'}}
         %i.icon-repeat.icon-white
         Restore
-
+      
     .span8
       &nbsp;
-
+    
     .span2.pull-right
       %a.btn.btn-danger{:href => '#removeAccount', :data => {:toggle => 'modal'}}
         %i.icon-trash.icon-white
         Remove account
+
 
 .modal.hide.fade#c-change
   .modal-header
@@ -313,6 +318,7 @@
       - else
         Установить
 
+
 .modal.hide.fade#ac-change
   .modal-header
     %button.close{:type => 'button', :data => {:dismiss => 'modal'}} ×
@@ -344,11 +350,12 @@
       - else
         Установить
 
+
 .modal.hide.fade#confirm
   .modal-header
     %button.close{:type => 'button', :data => {:dismiss => 'modal'}} ×
     %h3 Подтвердить аккаунт
-
+  
   .modal-body
     %p Пожалуйста, убедитесь, что указанный пользователем емейл — правильный. А когда смените пароль, не забудьте сообщить пользователю его новое значение.
 
@@ -361,7 +368,7 @@
       %label{:for => 'confirm-password'} Введите новый пароль:
 
       %input.span4#confirm-password{:type => 'password'}
-
+  
   .modal-footer
     %a.btn{:href => '#', :data => {:dismiss => 'modal'}} Отменить
     %a.btn.btn-success.c-act-user-confirm{:href => '#', :data => { :id => @user.id, 'loading-text' => 'Подтверждаем ...' }}
@@ -375,7 +382,7 @@
 
   .modal-body
     %p Все существующие посты будут удалены их главных лент сайта, прямого эфира, лучшего и пр.
-
+    
     %p Записи пользователя будут видеть только заходящие к нему в тлог или подписанные на него.
 
     .alert.alert-error.hide
@@ -392,7 +399,7 @@
     %a.btn{:href => '#', :data => {:dismiss => 'modal'}} Отменить
     %a.btn.btn-danger.c-act-user-mprevoke{:href => '#', :data => { :id => @user.id, 'loading-text' => 'Запрещаем ...' }}
       %i.icon-remove.icon-white
-      Запретить
+      Запретить      
 
 .modal.hide.fade#mpgrant
   .modal-header
@@ -402,7 +409,7 @@
   .modal-body
     %p
       Снимает ограничение на доступ к главной странице
-
+    
     %p
       %strong Важно.
       Старые посты не будут заново добавлены в ленту и ограничение не будет распространяться только на новые записи.
@@ -421,14 +428,14 @@
     %a.btn{:href => '#', :data => {:dismiss => 'modal'}} Отменить
     %a.btn.btn-success.c-act-user-mpgrant{:href => '#', :data => { :id => @user.id, 'loading-text' => 'Снимаем ограничение ...' }}
       %i.icon-ok.icon-white
-      Снять ограничение
+      Снять ограничение      
 
 - if @user.is_disabled?
   .modal.hide.fade#restore
     .modal-header
       %button.close{:type => 'button', :data => {:dismiss => 'modal'}} ×
       %h3 Confirm restore
-
+  
     .modal-body
       .alert.alert-error.hide
         %a.close{:href => '#', :data => {:dismiss => 'alert'}} ×
@@ -436,9 +443,9 @@
 
       %fieldset.control-group
         %label{:for => 'restore-comment'} Please, provide reason for restoring:
-
+      
         %textarea.comment#restore-comment
-
+  
     .modal-footer
       %a.btn{:href => '#', :data => {:dismiss => 'modal'}} Close
       %a.btn.btn-success.c-act-user-restore{:href => '#', :data => { :id => @user.id, 'loading-text' => 'Restoring ...' }}
@@ -449,38 +456,39 @@
     .modal-header
       %button.close{:type => 'button', :data => {:dismiss => 'modal'}} ×
       %h3 Confirm comments wipeout
-
+    
     .modal-body
       %p
         This will disable all comments created by @#{@user.url} during his lifetime.
-
+      
       %p
         In total, we will remove #{@comments_enabled_count} comments, but will start with reported ones first.
-
+    
     .modal-footer
       %a.btn{:href => '#', :data => {:dismiss => 'modal'}} Close
       %a.btn.btn-danger.c-act-user-wipeout{:href => '#', :data => { :id => @user.id, 'loading-text' => 'Running ...' }}
         %i.icon-trash.icon-white
         Confirm wipeout
+    
 
   .modal.hide.fade#removeAccount
     .modal-header
       %button.close{:type => 'button', :data => {:dismiss => 'modal'}} ×
       %h3 Please, confirm removal
-
+    
     .modal-body
       %p
         %strong Please note
         that removing account will destroy everything related to this account without
         a single change of being restored.
-
+      
       %p
         By clicking "confirm removal" you approve that you understand the consequences of
         this action and you are sure this user deserves complete removal from our system.
-
+      
       %p
         Amen.
-
+      
       .alert.alert-error.hide
         %a.close{:href => '#', :data => {:dismiss => 'alert'}} ×
         %strong You need to type something here.
@@ -489,7 +497,8 @@
         %label{:for => 'removeAccount-comment'} Please, provide reason for disabling:
 
         %textarea.comment#removeAccount-comment
-
+      
+    
     .modal-footer
       %a.btn{:href => '#', :data => {:dismiss => 'modal'}} Close
       %a.btn.btn-danger.c-act-user-destroy{:href => '#', :data => { :id => @user.id, 'loading-text' => 'Removing ...' }}
@@ -501,25 +510,26 @@
     .modal-header
       %button.close{:type => 'button', :data => {:dismiss => 'modal'}} ×
       %h3 Please, confirm disabling
-
+    
     .modal-body
       %p
         %strong Please, confirm
         that you want to disable account of
         %strong= '@' + @user.url
         without him being able to restore or complain.
-
+      
       %p Note: no user content is removed during this step.
-
+        
       .alert.alert-error.hide
         %a.close{:href => '#', :data => {:dismiss => 'alert'}} ×
         %strong You need to type something here.
 
       %fieldset.control-group
         %label{:for => 'disableAccount-comment'} Please, provide reason for disabling:
-
+      
         %textarea.comment#disableAccount-comment
-
+      
+    
     .modal-footer
       %a.btn{:href => '#', :data => {:dismiss => 'modal'}} Close
       %a.btn.btn-danger.c-act-user-disable{:href => '#', :data => { :id => @user.id, 'loading-text' => 'Disabling ...' }}

@@ -6,51 +6,51 @@
     </div>
   <% end %>
 
-  <% previous_date = nil -%>
-  <% @entries.each_with_index do |entry, index| -%>
-    <%= render :partial => 'entries/entry_display', :locals => { :entry => entry, :show_comments_bubble => true, :show_datetime => (previous_date.nil? || previous_date != entry.created_at.to_date), :index => index, :show_tags => is_owner? } %>
-    <% previous_date = entry.created_at.to_date -%>
-  <% end %>
+	<% previous_date = nil -%>
+	<% @entries.each_with_index do |entry, index| -%>
+		<%= render :partial => 'entries/entry_display', :locals => { :entry => entry, :show_comments_bubble => true, :show_datetime => (previous_date.nil? || previous_date != entry.created_at.to_date), :index => index, :show_tags => is_owner? } %>
+		<% previous_date = entry.created_at.to_date -%>
+	<% end %>
 
   <%# показываем навигационные элементы если прошлое не выключено или если это владелец тлога %>
   <% if is_owner? || !current_site.tlog_settings.past_disabled? %>
-    <% if params[:action] == 'daylog' || current_site.tlog_settings.is_daylog? && params[:action] == 'index' %>
-      <%= render :partial => 'globals/day_pagination', :locals => { :entries => @entries }  %>
-    <% else %>
-      <%= paginate @entries %>
-    <% end %>
+  	<% if params[:action] == 'daylog' || current_site.tlog_settings.is_daylog? && params[:action] == 'index' %>
+  		<%= render :partial => 'globals/day_pagination', :locals => { :entries => @entries }  %>
+  	<% else %>
+  		<%= paginate @entries %>
+  	<% end %>
   <% end %>
-  
+	
 <% else %>
-  <% if params[:action] == 'daylog' %>
-    <div class='help_intro'>
-      <% if @past_disabled %>
-        <h2>Пользователь предпочел скрыть свои старые записи</h2>
+	<% if params[:action] == 'daylog' %>
+		<div class='help_intro'>
+		  <% if @past_disabled %>
+		    <h2>Пользователь предпочел скрыть свои старые записи</h2>
+		  <% else %>
+  			<h2>За этот день записей не найдено</h2>
+			<% end %>
+		</div>
+	<% elsif is_owner? %>
+		<div class='help_intro'>
+			<h2>Здравствуйте, <%= h current_site.url %>!</h2>
+			<p>Добро пожаловать на тейсти!</p>
+			<p>Ваш тлог уже полностью готов для того, чтобы вы могли сделать <%= link_to 'первую запись', user_url(current_site, publish_path) %>.</p>
+			<p>Если же у вас пока нет идеи о чем можно было бы написать, или вы из тех людей кто сначала любит навести порядок, а уже потом приступать к развлечениям, то мы можем предложить вам несколько вещей, которые, в любом случае, будет полезно сделать:
+				<ul>
+					<li>Настроить внешний вид тлога, <%= link_to 'здесь', user_url(current_site, settings_path(:action => :design)) %></li>
+					<li>Добавить свой аватар и рассказать что-нибудь о себе, <%= link_to 'здесь', user_url(current_site, settings_path(:action => :user_common)) %></li>
+					<li>Почитать и настроить свой <%= link_to 'прямой эфир', service_url(main_path(:action => :my)) %>, который доступен только зарегистрированным пользователям.</li>
+				</ul>
+			</p>
+			<p>Если у Вас есть какие-то вопросы, пишите нам по адресу <a href='mailto:feedback@<%= current_service.domain %>'>feedback@<%= current_service.domain %></a>, мы постараемся помочь.</p>
+		</div>
+	<% else %>
+	  <div class='help_intro'>
+		  <% if @past_disabled %>
+		    <h2>Пользователь предпочел скрыть свои старые записи</h2>
       <% else %>
-        <h2>За этот день записей не найдено</h2>
-      <% end %>
-    </div>
-  <% elsif is_owner? %>
-    <div class='help_intro'>
-      <h2>Здравствуйте, <%= h current_site.url %>!</h2>
-      <p>Добро пожаловать на тейсти!</p>
-      <p>Ваш тлог уже полностью готов для того, чтобы вы могли сделать <%= link_to 'первую запись', user_url(current_site, publish_path) %>.</p>
-      <p>Если же у вас пока нет идеи о чем можно было бы написать, или вы из тех людей кто сначала любит навести порядок, а уже потом приступать к развлечениям, то мы можем предложить вам несколько вещей, которые, в любом случае, будет полезно сделать:
-        <ul>
-          <li>Настроить внешний вид тлога, <%= link_to 'здесь', user_url(current_site, settings_path(:action => :design)) %></li>
-          <li>Добавить свой аватар и рассказать что-нибудь о себе, <%= link_to 'здесь', user_url(current_site, settings_path(:action => :user_common)) %></li>
-          <li>Почитать и настроить свой <%= link_to 'прямой эфир', service_url(main_path(:action => :my)) %>, который доступен только зарегистрированным пользователям.</li>
-        </ul>
-      </p>
-      <p>Если у Вас есть какие-то вопросы, пишите нам по адресу <a href='mailto:feedback@<%= current_service.domain %>'>feedback@<%= current_service.domain %></a>, мы постараемся помочь.</p>
-    </div>
-  <% else %>
-    <div class='help_intro'>
-      <% if @past_disabled %>
-        <h2>Пользователь предпочел скрыть свои старые записи</h2>
-      <% else %>
-        <h2>Тут, пока, пусто.</h2>
-      <% end %>
-    </div>
-  <% end %>
+  	    <h2>Тут, пока, пусто.</h2>
+  	  <% end %>
+	  </div>
+	<% end %>
 <% end %>

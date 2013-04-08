@@ -1,3 +1,4 @@
+
 (function ($) {
 
   /**
@@ -271,7 +272,7 @@
     // minimum top is 0, maximum is the track height
     var y = Math.min(Math.max(pos, 0), trackWidth - barWidth)
 
-    innerEl.scrollLeft = (innerEl.scrollWidth - this.pane.el.width())
+    innerEl.scrollLeft = (innerEl.scrollWidth - this.pane.el.width()) 
       * y / (trackWidth - barWidth)
   };
 
@@ -282,8 +283,8 @@
    */
 
   Scrollbar.Horizontal.prototype.mousewheel = function (ev, delta, x, y) {
-    if ((x < 0 && 0 == this.pane.inner.get(0).scrollLeft) ||
-        (x > 0 && (this.innerEl.scrollLeft + this.pane.el.width()
+    if ((x < 0 && 0 == this.pane.inner.get(0).scrollLeft) || 
+        (x > 0 && (this.innerEl.scrollLeft + this.pane.el.width() 
           == this.innerEl.scrollWidth))) {
       ev.preventDefault();
       return false;
@@ -339,7 +340,7 @@
     // minimum top is 0, maximum is the track height
     var y = Math.min(Math.max(pos, 0), trackHeight - barHeight)
 
-    innerEl.scrollTop = (innerEl.scrollHeight - paneHeight)
+    innerEl.scrollTop = (innerEl.scrollHeight - paneHeight) 
       * y / (trackHeight - barHeight)
   };
 
@@ -350,8 +351,8 @@
    */
 
   Scrollbar.Vertical.prototype.mousewheel = function (ev, delta, x, y) {
-    if ((y > 0 && 0 == this.innerEl.scrollTop) ||
-        (y < 0 && (this.innerEl.scrollTop + this.pane.el.height()
+    if ((y > 0 && 0 == this.innerEl.scrollTop) || 
+        (y < 0 && (this.innerEl.scrollTop + this.pane.el.height() 
           == this.innerEl.scrollHeight))) {
       ev.preventDefault();
       return false;

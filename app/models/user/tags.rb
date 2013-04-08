@@ -3,6 +3,7 @@ class User
   DEFAULT_CATEGORY_OPTIONS = {:include_private => false, :max_rows => 10}.freeze
   DEFAULT_FIND_OPTIONS = {:owner => nil, :include_private => false}.freeze
 
+
   ## associations
   ## plugins
   ## named_scopes
@@ -19,14 +20,14 @@ class User
   def tag_count
     sql = <<-GO
     SELECT DISTINCT tags.id
-    FROM users
-    INNER JOIN entries
-    on users.id = entries.user_id
-    INNER JOIN taggings
-    ON entries.id = taggings.taggable_id and 'Entry' = taggings.taggable_type
-    INNER JOIN tags
-    ON taggings.tag_id = tags.id
-    WHERE users.id = #{self.id}
+    FROM users 
+    INNER JOIN entries 
+    on users.id = entries.user_id 
+    INNER JOIN taggings 
+    ON entries.id = taggings.taggable_id and 'Entry' = taggings.taggable_type 
+    INNER JOIN tags 
+    ON taggings.tag_id = tags.id 
+    WHERE users.id = #{self.id}  
 
     GO
     result = connection.execute(sql.gsub("\n", ' ').squeeze(' '))
@@ -38,24 +39,24 @@ class User
     options = DEFAULT_CATEGORY_OPTIONS.merge(options)
 
     sql = <<-GO
-    SELECT tags.name, COUNT(*) number
-    FROM users
-    INNER JOIN entries
-    ON users.id = entries.user_id
-    INNER JOIN taggings
-    ON entries.id = taggings.taggable_id and 'Entry' = taggings.taggable_type
-    INNER JOIN tags
-    ON taggings.tag_id = tags.id
-    WHERE users.id = #{self.id}
+    SELECT tags.name, COUNT(*) number 
+    FROM users 
+    INNER JOIN entries 
+    ON users.id = entries.user_id 
+    INNER JOIN taggings 
+    ON entries.id = taggings.taggable_id and 'Entry' = taggings.taggable_type 
+    INNER JOIN tags 
+    ON taggings.tag_id = tags.id 
+    WHERE users.id = #{self.id}  
     #{' AND entries.is_private = 0 ' unless options[:include_private] == true}
-    GROUP BY tags.name
+    GROUP BY tags.name 
     ORDER BY number DESC, tags.name ASC
     #{"limit %d " % options[:max_rows] unless options[:max_rows] == 0}
     GO
 
     result = connection.execute(sql.gsub("\n", ' ').squeeze(' '))
     tags = []
-    result.each {|row| tags << [row[0], row[1].to_i]}
+    result.each {|row| tags << [row[0], row[1].to_i]} 
     tags
   end
 
@@ -63,12 +64,12 @@ class User
     options = DEFAULT_FIND_OPTIONS.merge(options)
     sql = <<-GO
       SELECT entries.*
-      FROM entries
-      INNER JOIN taggings
-      ON entries.id = taggings.taggable_id and 'Entry' = taggings.taggable_type
-      INNER JOIN tags
+      FROM entries 
+      INNER JOIN taggings 
+      ON entries.id = taggings.taggable_id and 'Entry' = taggings.taggable_type 
+      INNER JOIN tags 
       ON taggings.tag_id = tags.id
-      WHERE  #{'entries.is_private = 0 and' unless options[:include_private]}
+      WHERE  #{'entries.is_private = 0 and' unless options[:include_private]} 
       entries.user_id = #{self.id} and tags.name IN (#{tags.to_query})
     GO
     result = connection.execute(sql.gsub("\n", ' ').squeeze(' '))
@@ -79,12 +80,12 @@ class User
     options = DEFAULT_FIND_OPTIONS.merge(options)
     sql = <<-GO
       SELECT count(distinct entries.id) count_all
-      FROM entries
-      INNER JOIN taggings
-      ON entries.id = taggings.taggable_id and 'Entry' = taggings.taggable_type
-      INNER JOIN tags
+      FROM entries 
+      INNER JOIN taggings 
+      ON entries.id = taggings.taggable_id and 'Entry' = taggings.taggable_type 
+      INNER JOIN tags 
       ON taggings.tag_id = tags.id
-      WHERE  #{'entries.is_private = 0 and' unless options[:include_private]}
+      WHERE  #{'entries.is_private = 0 and' unless options[:include_private]} 
       entries.user_id = #{self.id} and tags.name IN (#{tags.to_query})
     GO
     result = connection.execute(sql.gsub("\n", ' ').squeeze(' '))
@@ -96,6 +97,8 @@ class User
     Tag.cloud { self.top_categories(options) }
   end
 
-  ## private methods
+
+  ## private methods  
+
 
 end

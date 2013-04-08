@@ -1,6 +1,6 @@
 .well
   %h3= h @title
-
+  
   = link_to_unless_current 'вся', changeall_console_user_path(@user)
   %span.badge.badge-info= @user.changelogs.count
   |

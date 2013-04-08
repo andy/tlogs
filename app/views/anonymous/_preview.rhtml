@@ -5,26 +5,26 @@
 %>
 
 <div id='post_comment_preview'>
-  <h2>предпросмотр
-    <span><%= button_to_function 'Отправить комментарий', "$('#{@entry.dom_id(:form)}').submit(); return false;", :class => 'button' %></span>
-  </h2>
-  <div class="t-post-comment t-post-comment-new post_comment post_comment_new" id="<%= dom_id(@comment) %>">        
-    <div class='rel'>
-      <div class='post_comment_avatar<%= ' post_comment_avatar_anonymous' if is_anonymous_author %>'>
-        <% if !is_anonymous_author && !@comment.user.nil? %>
-          <%= link_to_tlog @comment.user, :link => :userpic %>
-        <% end %>
-      </div>
-      <div class="post_comment_controls">
-        <%= image_tag('blank.gif', :size => '12x13') %>
-      </div>
-    </div>
-    <div class='comment_text'>
-      <div class='post_comment_author'><%= is_anonymous_author ? 'аноним' : link_to_tlog(@comment.user) %></div>
-      <a class='post_comment_time'>предпросмотр</a>
-      <div class='post_comment_text'>
-        <%= @comment.fetch_cached_or_run_block { |text| white_list_comment text } %>
-      </div>
-    </div>
-  </div>
+	<h2>предпросмотр
+		<span><%= button_to_function 'Отправить комментарий', "$('#{@entry.dom_id(:form)}').submit(); return false;", :class => 'button' %></span>
+	</h2>
+	<div class="t-post-comment t-post-comment-new post_comment post_comment_new" id="<%= dom_id(@comment) %>">				
+		<div class='rel'>
+			<div class='post_comment_avatar<%= ' post_comment_avatar_anonymous' if is_anonymous_author %>'>
+				<% if !is_anonymous_author && !@comment.user.nil? %>
+					<%= link_to_tlog @comment.user, :link => :userpic %>
+				<% end %>
+			</div>
+			<div class="post_comment_controls">
+				<%= image_tag('blank.gif', :size => '12x13') %>
+			</div>
+		</div>
+		<div class='comment_text'>
+			<div class='post_comment_author'><%= is_anonymous_author ? 'аноним' : link_to_tlog(@comment.user) %></div>
+			<a class='post_comment_time'>предпросмотр</a>
+			<div class='post_comment_text'>
+				<%= @comment.fetch_cached_or_run_block { |text| white_list_comment text } %>
+			</div>
+		</div>
+	</div>
 </div>

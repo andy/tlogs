@@ -1,13 +1,15 @@
 class User
   ## included modules & attr_*
-  serialize :settings
+	serialize :settings
+
 
   ## associations
   ## plugins
   ## named_scopes
   ## validations
   ## callbacks
-  before_create :set_default_settings
+	before_create :set_default_settings
+
 
   ## class methods
   ## public methods
@@ -23,14 +25,15 @@ class User
     end
   end
 
+
   ## private methods
-  private
+  private  
     def set_default_settings
       begin
-        self.settings ||= Hash.new
-      rescue ActiveRecord::SerializationTypeMismatch
-        self.settings = Hash.new
+  	    self.settings ||= Hash.new
+  	  rescue ActiveRecord::SerializationTypeMismatch
+  	    self.settings = Hash.new
       end
-      true
+  	  true
     end
 end

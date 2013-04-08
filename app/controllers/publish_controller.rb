@@ -1,11 +1,11 @@
 class PublishController < ApplicationController
   before_filter :require_current_user, :require_confirmed_current_user, :require_owner, :filter_entry
-
+  
   # protect_from_forgery :except => [:index]
 
   def index
   end
-
+  
   def preview
     render :nothing => true and return unless request.post?
 
@@ -15,7 +15,7 @@ class PublishController < ApplicationController
       @entry = Entry.find_by_id_and_user_id(params[:entry][:id], current_user.id)
       @entry.has_attachment = !@entry.attachments.empty? if @entry
     end
-
+    
     if @entry.nil?
       type = params[:entry][:type] rescue 'TextEntry'
       @entry = type.constantize.new
@@ -26,7 +26,7 @@ class PublishController < ApplicationController
     @entry.valid?
     render :update do |page|
       page.call :clear_all_errors
-
+      
       if @entry.errors.size > 0
         page.replace_html 'preview_holder', ''
         @entry.errors.each do |element, message|
@@ -41,39 +41,39 @@ class PublishController < ApplicationController
   def text
     process_entry_request 'TextEntry'
   end
-
+  
   def link
     process_entry_request 'LinkEntry'
   end
-
+  
   def quote
     process_entry_request 'QuoteEntry'
   end
-
+  
   def image
     process_entry_request 'ImageEntry'
   end
-
+  
   def song
     # @new_record = true
     # @entry = SongEntry.new
     # render :action => 'limit_song' and return
-    #
+    # 
     process_entry_request 'SongEntry'
   end
-
+  
   def video
     process_entry_request 'VideoEntry'
   end
-
+  
   def convo
     process_entry_request 'ConvoEntry'
   end
-
+  
   def code
     process_entry_request 'CodeEntry'
   end
-
+  
   def anonymous
     process_entry_request 'AnonymousEntry'
   end
@@ -84,21 +84,21 @@ class PublishController < ApplicationController
 
     render :template => 'mentions/index', :content_type => Mime::JSON
   end
-
+  
   private
     # страница для произвольной записи
     def process_entry_request(type)
       klass = type.constantize
       @new_record = true
       @attachment = nil
-
+      
       @reason = current_user.can_create?(klass)
       if @reason && !params[:id]
         @entry = klass.new
         render :action => 'limit_exceeded'
         return
       end
-
+      
       # запрашивается уже существующая запись
       if params[:id]
         @entry = Entry.find_by_id_and_user_id(params[:id], current_user.id)
@@ -108,7 +108,7 @@ class PublishController < ApplicationController
           redirect_to user_url(current_user, publish_path(:id => nil))
           return
         end
-
+        
         # set this virtual attribute
         @entry.has_attachment = !@entry.attachments.empty?
       end
@@ -121,17 +121,17 @@ class PublishController < ApplicationController
           @entry.visibility = @entry.is_anonymous? ? 'private' : current_user.tlog_settings.default_visibility
           Rails.logger.info "creating new entry of type #{type}" if @entry.new_record?
         end
-
+        
         @new_record = @entry.new_record?
-        # TODO: update only with data_part_[1..3]
+        # TODO: update only with data_part_[1..3] 
         @entry.attributes = params[:entry].slice(:data_part_1, :data_part_2, :data_part_3)
         if @entry.visibility != 'voteable' || @new_record
           @entry.visibility = params[:entry][:visibility] || current_user.tlog_settings.default_visibility
         end unless @entry.is_anonymous?
-
+        
         # inherit commenting options, but always enable for anonymous entries
         @entry.comments_enabled = @entry.is_anonymous? ? true : current_user.tlog_settings.comments_enabled?
-
+        
         # set tag lists
         @entry.metadata ||= {}
         @entry.nsfw     = params[:entry][:nsfw].to_i rescue false
@@ -140,7 +140,7 @@ class PublishController < ApplicationController
         Entry.transaction do
           @new_record = @entry.new_record?
           @entry.save!
-
+        
           if @entry.can_have_attachments? && @entry.has_attachment && @new_record
             @attachment = @entry.attachment_class.new params[:attachment]
             Rails.logger.info "adding attachment to entry id = #{@entry.id}"
@@ -184,13 +184,13 @@ class PublishController < ApplicationController
       #   :backtrace      => ex.backtrace,
       #   :parameters     => params
       # )
-
+      
       begin
         @attachment.valid? unless @attachment.nil? # force error checking
       rescue MiniMagick::Error => ex
         @attachment.errors.add(:uploaded_data, 'плохой файл с картинкой, не удалось распознать')
       end
-
+      
       render :action => 'edit'
     rescue Exception => ex
       Airbrake.notify(
@@ -199,7 +199,7 @@ class PublishController < ApplicationController
         :backtrace      => ex.backtrace,
         :parameters     => params
       )
-
+      
       raise ex if Rails.env.development?
 
       begin
@@ -217,12 +217,12 @@ class PublishController < ApplicationController
       render :text => 'oops, bad entry type', :status => 403
       false
     end
-
+    
     def in_bookmarklet?
       !!params[:bm]
     end
     helper_method :in_bookmarklet?
-
+    
     def in_flash?
       !!params[:fl]
     end

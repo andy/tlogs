@@ -31,7 +31,7 @@ class ImageSize
 
   # image type list
   def ImageSize.type_list
-    Type.constants
+    Type.constants 
   end
 
   # receive image & make size
@@ -57,7 +57,7 @@ class ImageSize
     else
       raise "argument class error!! #{img_data.type}"
     end
-
+    
     if @img_type.nil?
       @img_type = check_type(img_top)
     else
@@ -71,7 +71,7 @@ class ImageSize
     else
       @img_width, @img_height = [nil, nil]
     end
-
+    
     if @img_data.is_a?(String)
       img_io.close
     end
@@ -80,32 +80,33 @@ class ImageSize
   # get image type
   # ex. "GIF", "PNG", "JPEG"
   def get_type; @img_type; end
-
+  
   # get image height
   def get_height
     if @img_type == Type::OTHER then nil else @img_height end
   end
-
+  
   # get image width
   def get_width
     if @img_type == Type::OTHER then nil else @img_width end
   end
-
+  
   # get image width and height(Array)
   def get_size
     [self.get_width, self.get_height]
   end
-
+  
   alias :height :get_height
   alias :h :get_height
-
+  
   alias :width :get_width
   alias :w :get_width
-
+  
   alias :size :get_size
-
+  
+  
   private
-
+  
   # define read_o
   def def_read_o(io)
     io.seek(0, 0)
@@ -185,7 +186,7 @@ class ImageSize
 
   alias :measure_PGM :measure_PPM
   alias :measure_PBM :measure_PPM
-
+  
   def measure_XBM(img_io)
     img_io.read_o(1024) =~ /^\#define\s*\S*\s*(\d+)\s*\n\#define\s*\S*\s*(\d+)/mi
     [$1.to_i, $2.to_i]
@@ -261,7 +262,7 @@ class ImageSize
 
   def measure_SWF(img_io)
     header = img_io.read_o(9)
-
+    
     sig1 = header[0,1]
     sig2 = header[1,1]
     sig3 = header[2,1]
@@ -283,6 +284,7 @@ class ImageSize
     [width, height]
   end
 end
+
 
 if __FILE__ == $0
   print "TypeList: #{ImageSize.type.inspect}\n"

@@ -2,23 +2,23 @@
   <div class='ui-bar ui-bar-a'>
     <h1>Вход</h1>
   </div>
-
+  
   <div class='ui-body'>
-    <% form_for :user, @user, :html => { :class => 't-form-login' } do |f| %>
+  	<% form_for :user, @user, :html => { :class => 't-form-login' } do |f| %>
       <div class='t-account-login-email ui-hide-label' data-role="fieldcontain">
-        <label for="user_email">email:</label>
-        <%= f.text_field :email, :placeholder => 'email', 'data-mini' => 'true' %>
-        <%= tasty_error_message_on('user', 'email') %>
+      	<label for="user_email">email:</label>
+    		<%= f.text_field :email, :placeholder => 'email', 'data-mini' => 'true' %>
+    		<%= tasty_error_message_on('user', 'email') %>
       </div>
       <div class='t-account-login-password ui-hide-label' data-role="fieldcontain">
-        <label for="user_password">пароль:</label>
-        <%= f.password_field :password, :placeholder => 'пароль', 'data-mini' => 'true' %>
-        <%= tasty_error_message_on('user', 'password') %>
+      	<label for="user_password">пароль:</label>
+    		<%= f.password_field :password, :placeholder => 'пароль', 'data-mini' => 'true' %>
+    		<%= tasty_error_message_on('user', 'password') %>
       </div>
 
       <div>
-        <input type="submit" value="Войти" data-icon='arrow-r' data-iconpos='right' />
-      </div>
-    <% end %>
-  </div>
+    		<input type="submit" value="Войти" data-icon='arrow-r' data-iconpos='right' />
+    	</div>
+  	<% end %>
+	</div>
 </div>

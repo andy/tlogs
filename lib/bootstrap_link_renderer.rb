@@ -1,6 +1,6 @@
 class BootstrapLinkRenderer < WillPaginate::LinkRenderer
   protected
-
+  
   def page_link(page, text, attributes = {})
     @template.content_tag :li do
       @template.link_to text, url_for(page), attributes

@@ -1,6 +1,6 @@
 <%
-  mini ||= false unless local_assigns.has_key?(:mini) && mini
-  text = entry.data_part_2.blank? ? (h(truncate(entry.data_part_1, :length => (mini ? 25 : 30)))) : h(entry.data_part_2)
+	mini ||= false unless local_assigns.has_key?(:mini) && mini
+	text = entry.data_part_2.blank? ? (h(truncate(entry.data_part_1, :length => (mini ? 25 : 30)))) : h(entry.data_part_2)
 %>
 <% if embed %>
   <%= content_tag(:h2, link_to(text, entry.data_part_1, :rel => 'nofollow', :target => '_blank')) %>

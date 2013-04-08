@@ -1,6 +1,6 @@
 class ApiController < ApplicationController
   before_filter :require_current_user, :only => [:simple_auth]
-
+  
   rescue_from ActiveRecord::RecordNotFound, :with => :api_error_not_found
 
   ALLOWED_API_HOSTS = %w(31.31.197.29 127.0.0.1)
@@ -14,9 +14,9 @@ class ApiController < ApplicationController
   def user_details
     user   = User.active.find_by_url! params[:url] if params[:url]
     user ||= User.active.find params[:id] if params[:id]
-
+    
     api_error(400, 'User ID or URL missing') and return unless user
-
+    
     render :json => make_user_details(user)
   end
 
@@ -73,7 +73,7 @@ class ApiController < ApplicationController
     def api_error(code, message = 'Internal API error')
       render :json => { :status => :error, :code => code, :message => message }, :status => code
     end
-
+    
     def api_error_not_found
       api_error(404, 'Not found')
     end

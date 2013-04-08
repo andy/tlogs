@@ -9,20 +9,20 @@ class CreateBackgrounds < ActiveRecord::Migration
 
       # paperclip-meta plugin
       t.text      :image_meta
-
+      
       t.boolean   :is_public, :default => false, :null => false
-
+      
       t.timestamps
     end
-
+    
     add_column :tlog_settings, :background_id, :integer
-
+    
     add_index :backgrounds, :user_id
   end
 
   def self.down
     drop_table :backgrounds
-
+    
     remove_column :tlog_settings, :background_id
   end
 end

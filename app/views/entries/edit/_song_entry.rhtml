@@ -1,26 +1,26 @@
 <div id='entry_helper'>
-  Пожалуйста, заливайте только файлы которыми действительно можно делиться. Потому что все нелегально залитое мы обязательно сотрем.<br/><br/>
+	Пожалуйста, заливайте только файлы которыми действительно можно делиться. Потому что все нелегально залитое мы обязательно сотрем.<br/><br/>
 </div>
 
 <% if entry.new_record? || entry.attachments.empty? %>
-  <div>
-    <label for='attachment_uploaded_data'>Файл с музыкой <em>(.mp3 или другой формат)</em>: </label><br/>
-    <%= file_field 'attachment', :uploaded_data %>
-    <%= tasty_error_message_on 'attachment', 'uploaded_data' %>
-  </div>
+	<div>
+		<label for='attachment_uploaded_data'>Файл с музыкой <em>(.mp3 или другой формат)</em>: </label><br/>
+		<%= file_field 'attachment', :uploaded_data %>
+		<%= tasty_error_message_on 'attachment', 'uploaded_data' %>
+	</div>
 <% end %>
 
 <!-- label for='entry_data_part_1' style='display: none'>Ссылка на файл: <br/>
-  <%= text_area 'entry', 'data_part_1' %>
-  <%= tasty_error_message_on 'entry', 'data_part_1' %>
+	<%= text_area 'entry', 'data_part_1' %>
+	<%= tasty_error_message_on 'entry', 'data_part_1' %>
 </label-->
 
 <div>
-  <label for='entry_data_part_2'>Описание или комментарий <em>(необязательное поле)</em>: </label><br/>
-  <%= text_area 'entry', 'data_part_2', :rows => 6, :class => 'resizable' %>
-  <%= tasty_error_message_on 'entry', 'data_part_2' %>
+	<label for='entry_data_part_2'>Описание или комментарий <em>(необязательное поле)</em>: </label><br/>
+	<%= text_area 'entry', 'data_part_2', :rows => 6, :class => 'resizable' %>
+	<%= tasty_error_message_on 'entry', 'data_part_2' %>
 </div>
 
 <script type='text/javascript'>
-  Event.observe ( window, 'load', function(event) { $("generate_preview").disable(); } );
+	Event.observe ( window, 'load', function(event) { $("generate_preview").disable(); } );
 </script>

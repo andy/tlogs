@@ -4,7 +4,7 @@
 
 .t-premium-backgrounds
   %p С этой страницы вы можете установить один из предложенных нами вариантов фона, либо загрузить и установить свой, а также выбрать цвет логотипа на главной странице.
-
+  
   %h2 Выберите фон
   .backgrounds
     - @backgrounds.each do |b|
@@ -25,7 +25,7 @@
       = image_tag @gray_logo ? current_service.logo : current_service.logo(:white), :alt => 'тейсти'
       %div{:class => classes('subtitle', ['gray', @gray_logo])}
         Будьте собой, %username%!
-
+    
     .menu
       %span Новости
       %span Лучшее
@@ -39,14 +39,14 @@
             %span genue
         %h4 Заголовок
         %p примерно так будет выглядеть главная если отойти от монитора на 10 метров
-
+      
       .entry.image
         .rel
           .author
             %span andy
         %h4 Картинка
         %p= image_tag 'sleepy_hollow_by_spookyme.jpg'
-
+      
       .entry.link
         .rel
           .author
@@ -54,7 +54,7 @@
         %h4 Ссылка
         %p
           %a{:href => 'http://www.mmm-tasty.ru/', :target => '_blank'} www.mmm-tasty.ru
-
+        
       .entry.quote
         .rel
           .author
@@ -64,17 +64,18 @@
           %span &laquo;
           То, что долго живет, растет медленно
           %span &raquo;
-
+      
+  
 :javascript
   var t_bg_clicked = null;
-
+  
   jQuery('.backgrounds .t-act-background-change').find('.note-current').hide().end().find('.note-set').show();
   jQuery('.backgrounds .selected').find('.note-current').show().end().find('.note-set').hide();
 
   jQuery('.t-premium-backgrounds .backgrounds .t-act-background-change').live('click', function() {
     jQuery.fancybox.showActivity();
     t_bg_clicked = jQuery(this);
-
+  
     jQuery.ajax({
       url: jQuery(this).data('action'),
       type: 'post',
@@ -105,7 +106,7 @@
     });
     return false;
   });
-
+  
   jQuery('.t-premium-backgrounds .backgrounds .delete').click(function() {
     jQuery.fancybox.showActivity();
     t_bg_clicked = jQuery(this).parent();
@@ -128,7 +129,7 @@
     });
     return false;
   });
-
+  
   jQuery('.t-premium-backgrounds .backgrounds .selected').each(function() {
     jQuery('.preview').css({ backgroundImage: 'url(' + jQuery(this).data('image') + ')' });
   });

@@ -3,40 +3,40 @@
 <div class="main_info_holder"><p class="main_info"><%= link_to "<i>Тейсти</i>", main_url(:action => 'about') %> &mdash; <span class="main_hightlight">это пространство для самовыражения, наполненное дружелюбными и интересными людьми.</span></p></div>
 
 <div class='onair'>
-</div>
+</div>  
 
 <div class='onair main_quotes'>
-  <% Feedback.published.random.all(:include => [:user], :limit => 10).each do |feedback|
-    feedback = QuoteEntry.new :data_part_1 => feedback.message, :data_part_2 => link_to_tlog(feedback.user)
-  %>
-    <%= render :partial => 'entries/entry_display', :locals => { :entry => feedback, :show_username => false } %>
-  <% end %>
+	<% Feedback.published.random.all(:include => [:user], :limit => 10).each do |feedback|
+		feedback = QuoteEntry.new :data_part_1 => feedback.message, :data_part_2 => link_to_tlog(feedback.user)
+	%>
+		<%= render :partial => 'entries/entry_display', :locals => { :entry => feedback, :show_username => false } %>
+	<% end %>
 </div>
 
 <% content_for :sidebar_left do %>
-  <h2 class='center'><span>Популярные</span></h2>
-  <div class='users'>
-    <% User.active_for(current_user, :limit => 6).each do |user| %>
-      <div>
-        <%= link_to_tlog user, :link => :userpic, :empty => :blank %>
-        <p><%= link_to_tlog user %></p>
-      </div>
-    <% end %>  
-  </div>
+	<h2 class='center'><span>Популярные</span></h2>
+	<div class='users'>
+		<% User.active_for(current_user, :limit => 6).each do |user| %>
+			<div>
+				<%= link_to_tlog user, :link => :userpic, :empty => :blank %>
+				<p><%= link_to_tlog user %></p>
+			</div>
+		<% end %>	
+	</div>
 <% end %>
 <% content_for :head do %>
   <%= tag :meta, :name => :description, :content => 'тейсти — это пространство для самовыражения, зарегистрируйтесь и будьте собой' %>
 <% end %>
 <% if false # content_for :sidebar_right_below do %>
-  <h2><span>Тейстяне</span></h2>
-  <div class='users_mosaic' id='users_mosaic'>
+	<h2><span>Тейстяне</span></h2>
+	<div class='users_mosaic' id='users_mosaic'>
     <% User.active_for(current_user, :limit => 32).each do |user| %>
       <% content_tag :div, :class => 'image', :title => h(user.url) do %>
         <%= link_to userpic_tag(user, :width => 32, :height => 32, :blank => true), user_url(user) %>
       <% end %>
     <% end %>
   </div>
-
+  
   <div class='users_nav'>
     <%= link_to 'посмотреть на всех &rarr;', { :action => :users } %>
   </div>
@@ -51,5 +51,5 @@
       });
     });
   </script>
-
+  
 <% end if in_beta? %>

@@ -7,7 +7,7 @@ class DropBadIndexesOnEntries < ActiveRecord::Migration
     execute "ALTER TABLE entries DROP INDEX tmpindex2"
     execute "ALTER TABLE entries DROP INDEX index_entries_on_is_mainpageable_and_is_private_and_id"
     execute "ALTER TABLE entries DROP INDEX index_entries_on_is_mainpageable_and_id"
-
+    
     add_index :entries, :user_id
     add_index :entries, :is_private
     add_index :entries, :is_voteable

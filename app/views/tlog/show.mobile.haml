@@ -1,7 +1,7 @@
 %div{:data => {:role => 'content', :theme => 'd'}}
   .t-entries
     = render :partial => 'entries/entry_display', :locals => { :entry => @entry, :show_datetime => true, :hide_comments => true }
-
+  
   .t-entry-comments
     %h4
       - if @entry.comments_count.zero?

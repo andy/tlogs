@@ -63,7 +63,7 @@ class QiwiInvoice < Invoice
       :discount   => 5,
       :amount     => ((DAILY_RATE * 93) * 0.95).ceil,
       :position   => 2
-
+      
     },
     'large' => {
       :days       => 365,
@@ -73,7 +73,7 @@ class QiwiInvoice < Invoice
       :position   => 3
     }
   }
-
+  
   ## validations
   ## callbacks
   ## class methods
@@ -84,11 +84,11 @@ class QiwiInvoice < Invoice
   def self.login
     settings['login']
   end
-
+  
   def self.password
     settings['password']
   end
-
+  
   def self.options
     @@options ||= OPTIONS.map do |name, opts|
       text = "#{opts[:days_text] || opts[:days].pluralize('день', 'дня', 'дней', true)} за #{opts[:amount].pluralize('рубль', 'рубля', 'рублей', true)}"
@@ -103,19 +103,19 @@ class QiwiInvoice < Invoice
                     )
     end
   end
-
+  
   def self.options_for(key)
     options.find { |opt| opt.name.to_s == key.to_s } || options.sort_by(&:position).first
   end
 
   # def self.create_soap_bill(user, phone, amount = 149)
   #   require 'savon'
-  #
+  # 
   #   invoice = nil
-  #
+  # 
   #   QiwiInvoice.transaction do
   #     invoice = QiwiInvoice.create! :user => user.id, :state => 'pending', :amount => amount, :revenue => amount, :days => 29, :metadata => { :protocol => 'soap', :phone => phone, :expires => EXPIRES_IN.from_now.to_s(:db) }
-  #
+  #       
   #     body = {
   #       :login      => invoice.login,
   #       :password   => invoice.password,
@@ -124,20 +124,21 @@ class QiwiInvoice < Invoice
   #       :comment    => "Подписка на Тейсти-Премиум для аккаунта #{user.url}",
   #       :txn        => invoice.txn_id,
   #       :lifetime   => EXPIRES_IN.from_now.beginning_of_day.strftime('%d.%m.%Y %H:%M:%S'),
-  #       :alarm      => 0,
+  #       :alarm      => 0, 
   #       :create     => true
   #     }
-  #
+  #     
   #     client = Savon::Client.new 'http://ishop.qiwi.ru/services/ishop?wsdl'
   #     response = client.create_bill { |soap| soap.body = body }
-  #
+  #     
   #     raise 'Incorrect response' if response.to_hash[:create_bill_response][:create_bill_result].to_i != 0
   #   end
-  #
+  #   
   #   invoice
   # end
 
-  ## public methods
+
+  ## public methods  
   def check_bill
     require 'savon'
 
@@ -155,23 +156,23 @@ class QiwiInvoice < Invoice
 
     answer[:status].to_i == 60 && answer[:amount].to_f == self.amount
   end
-
+  
   def login
     self.class.login.to_s
   end
-
+  
   def password
     self.class.password.to_s
   end
-
+  
   def secured_password
     ::Digest::MD5.hexdigest(self.txn_id.to_s + ::Digest::MD5.hexdigest(self.password).upcase).upcase
   end
-
+  
   def qiwi_success!
     expand_premium_for_user! && success! if is_pending?
   end
-
+  
   def qiwi_failed!
     fail! if is_pending?
   end
@@ -179,32 +180,33 @@ class QiwiInvoice < Invoice
   def summary
     "Платеж через QIWI-кошелек на сумму #{self.amount.pluralize('рубль', 'рубля', 'рублей', true)}"
   end
-
+  
   def extra_summary
     "Сервис #{self.is_successful? ? '' : 'не '}продлен на #{self.days.pluralize('день', 'дня', 'дней', true)}"
   end
-
+  
   def pref_key
     'qiwi'
   end
-
+  
   def pref_options
     self.metadata[:phone]
   end
-
+  
   def txn_id
     "qiwi-#{self.id}"
   end
-
+  
   def to_json
     {
       :to     => self.metadata[:phone],
       :summ   => self.amount,
       :com    => "Подписка на Тейсти-премиум для аккаунта #{self.user.url} на #{self.days.pluralize('день', 'дня', 'дней', true)}",
       :txn_id => self.txn_id
-    }.to_json
+    }.to_json    
   end
 
+  
   ## protected
   protected
 end

@@ -1,6 +1,6 @@
 <% content_for :head do %>
   <%= render :partial => 'tlog/head' %>
-  <%= render :partial => 'tlog/meta' %>
+  <%= render :partial => 'tlog/meta' %>  
 <% end %>
 
 <% cache @cache_key do %>
@@ -8,11 +8,11 @@
 <% end %>
 <script type='text/javascript'>
 // <[!CDATA[
-  <%= "var comments_views_update = #{@comment_views.to_json(:only => [:id, :comments_count], :methods => [:last_comment_viewed])};" if @comment_views %>
-  <%= "var entry_ratings_update = #{@entry_ratings.to_json};" if @entry_ratings %>
-//  ]]>
+	<%= "var comments_views_update = #{@comment_views.to_json(:only => [:id, :comments_count], :methods => [:last_comment_viewed])};" if @comment_views %>
+	<%= "var entry_ratings_update = #{@entry_ratings.to_json};" if @entry_ratings %>
+//	]]>
 </script>
 
 <% content_for :sidebar do %>
-  <%= render :partial => 'tlog/sidebar' %>  
+	<%= render :partial => 'tlog/sidebar' %>	
 <% end %>

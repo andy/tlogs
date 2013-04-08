@@ -2,10 +2,10 @@ class ConfirmController < ApplicationController
   before_filter :require_current_user, :only => [:required, :resend]
   before_filter :redirect_home_if_current_user_is_confirmed, :except => [:code]
   layout 'account'
-
+  
   def required
   end
-
+  
   def resend
     if request.post?
       current_user.update_confirmation!(current_user.email)
@@ -13,13 +13,13 @@ class ConfirmController < ApplicationController
       flash[:good] = "Загляните, пожалуйста, в почтовый ящик #{current_user.email}, там должно быть письмо с кодом подтверждения."
     end
     redirect_to service_url(confirm_path(:action => :required))
-  end
+  end  
 
   # /confirm/code/13_4efeb9ce
   def code
     user = User.find(params[:code].split(/_/)[0].to_i) rescue nil
     render_tasty_404('Ошибка. Указанный код подтверждения не был найден') and return unless user
-
+    
     render_tasty_404('Ошибка. Ваш аккаунт заблокирован') and return if user.is_disabled?
 
     email = user.validate_confirmation(params[:code])
@@ -38,7 +38,7 @@ class ConfirmController < ApplicationController
         } unless user.is_openid?
     end
     flash[:good] = "Вы успешно подтвердили свой емейл, #{user.username}!"
-
+    
     if current_user
       if was_confirmed
         redirect_to :action => 'email'
@@ -51,7 +51,7 @@ class ConfirmController < ApplicationController
       redirect_to service_url(login_path)
     end
   end
-
+  
   private
     def redirect_home_if_current_user_is_confirmed
       redirect_to user_url(current_user, settings_path) and return false if current_user.is_confirmed?

@@ -1,13 +1,13 @@
 <% content_tag_for :div, message do %>
   <%= content_tag :a, nil, :name => dom_id(message) %>
 
-  <div class='rel'>
-    <div class='message_sender'>
-      <div class='message_sender_link'><%= link_to_tlog(message.user) %></div>
-      <%= timeago message.created_at %>
-    </div>
-  </div>
-
+	<div class='rel'>
+	  <div class='message_sender'>
+	    <div class='message_sender_link'><%= link_to_tlog(message.user) %></div>
+	    <%= timeago message.created_at %>
+	  </div>
+	</div>
+  
   <div class='message_controls showonhover'>
     <div class='delete'>
       <%= link_to_remote image_tag('delete.gif', :size => '9x11', :alt => '[x]'), { :url => service_url(message_path(message)).downcase, :method => :delete }, :title => 'Удалить сообщение' %>
@@ -17,6 +17,6 @@
   </div>
 
   <%= content_tag :div, simple_tasty_format(auto_link(h(message.body))), :class => 'body' %>
-
-  <div class='clear'><div></div></div>
+  
+  <div class='clear'><div></div></div>  
 <% end %>

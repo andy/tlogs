@@ -19,7 +19,7 @@ if @message.valid?
     else
       page.insert_html :before, 'new_message_placeholder', :partial => 'message_spacer'
       page.insert_html :before, 'new_message_placeholder', :partial => 'message', :locals => { :message => @message }
-
+      
       page << "jQuery('##{dom_id(msg)}').find('abbr.timeago').timeago();"
     end
   else
@@ -28,7 +28,7 @@ if @message.valid?
 else
   # re-enable submit button
   page << "jQuery('.submit_button input').removeAttr('disabled');"
-
+  
   page.call :emulate_rails_flash, 'bad', 'Ошибка! Похоже, что не все поля были заполнены корректно.' unless @disable_flash
 
   # check wether recipient is ok
@@ -38,7 +38,7 @@ else
     page << "jQuery('#message_recipient_url').addClass('input_error');"
 
     # update the status value
-    if @message.recipient.nil? && params[:message][:recipient_url]
+    if @message.recipient.nil? && params[:message][:recipient_url] 
       page << "jQuery('#subtext_message').attr('class', 'failure').html('указанный вами пользователь не найден');"
     else
       page << "jQuery('#subtext_message').attr('class', 'neutral').html('Укажите имя пользователя которому хотите написать сообщение');"

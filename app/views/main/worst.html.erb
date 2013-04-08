@@ -10,6 +10,6 @@
       <%= render :partial => 'entries/entry_display', :locals => { :entry => entry, :show_comments_bubble => true, :show_username => true, :show_tags => false, :comment_views => @comment_views } %>
     <% end %>
 
-    <%= paginate @pager, :url_options => { :kind => @kind } %>
+    <%= paginate @pager, :url_options => { :kind => @kind } %>  
   </div>
 <% end %>

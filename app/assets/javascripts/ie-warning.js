@@ -99,7 +99,7 @@ document.body.clientHeight ) ) {
     _dl.style.width = _width + "px";
     _dl.style.height = _height + "px";
     _dl.style.position = "absolute";
-    _dl.style.zIndex = '1000';
+		_dl.style.zIndex = '1000';
     _dl.style.top = "0px";
     _dl.style.left = "0px";
     _dl.style.filter = "alpha(opacity=50)";
@@ -110,7 +110,7 @@ document.body.clientHeight ) ) {
     _dd.style.width = _ddw + "px";
     _dd.style.height = _ddh + "px";
     _dd.style.position = "absolute";
-    _dd.style.zIndex = '1001';
+		_dd.style.zIndex = '1001';
     _dd.style.top = ((_height - _ddh) / 2) + "px";
     _dd.style.left = ((_width - _ddw) / 2) + "px";
     _dd.style.padding = "20px";

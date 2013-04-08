@@ -14,7 +14,7 @@
         <% next if entry.nil? %>
         <%= render :partial => 'entries/entry_display', :locals => { :entry => entry, :show_comments_bubble => true, :show_username => true, :comment_views => @comment_views } %>
       <% end %>
-
+      
       <%= paginate @pager %>
     <% end %>
     <script type='text/javascript'>

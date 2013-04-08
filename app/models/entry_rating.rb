@@ -34,9 +34,9 @@
 
 class EntryRating < ActiveRecord::Base
   belongs_to :entry
-
+  
   DAY_LIMIT = 2000.0
-
+  
   RATINGS = {
     :great => { :select => 'Прекрасное (+50 и круче)', :header => 'Прекрасное', :filter => 'entry_ratings.is_great = 1', :order => 1 },
     :good => { :select => 'Интересное (+15 и выше)', :header => 'Интересное', :filter => 'entry_ratings.is_good = 1', :order => 2 },
@@ -48,15 +48,16 @@ class EntryRating < ActiveRecord::Base
   validates_presence_of :user_id
   validates_presence_of :entry_id
   validates_presence_of :entry_type
-
+  
   before_save :update_filter_value
-
+  
   before_save :update_hotness
-
+  
   after_create  :enqueue
   after_destroy :dequeue
   after_update  :requeue
-
+  
+  
   protected
     def rebuild
       # console version
@@ -70,7 +71,7 @@ class EntryRating < ActiveRecord::Base
 
       self.save
     end
-
+  
     def update_filter_value
       if self.entry.is_mainpageable?
         self.is_great       = self.value >= 50
@@ -81,10 +82,10 @@ class EntryRating < ActiveRecord::Base
       else
         self.is_great = self.is_good = self.is_everything = self.is_fine = false
       end
-
+      
       true
     end
-
+    
     def update_hotness
       require 'bigdecimal'
 
@@ -100,43 +101,43 @@ class EntryRating < ActiveRecord::Base
       end
 
       self.hotness = BigDecimal.new((order + (sign * self.entry_id / DAY_LIMIT)).to_s).round(7).to_f
-
+      
       true
     end
-
+    
     def type_queue(name)
       [name, entry_type.underscore].join(':')
     end
-
+    
     def enqueue
       EntryQueue.new('everything').push(entry_id)
       EntryQueue.new(type_queue('everything')).push(entry_id)
 
       true
     end
-
+    
     def dequeue
       %w(everything fine good great).each do |name|
         EntryQueue.new(name).delete(entry_id)
         EntryQueue.new(type_queue(name)).delete(entry_id)
-
+        
         EntryQueue.new('worst').delete(entry_id) if name == 'everything'
       end
-
+      
       true
     end
-
+    
     def requeue(force = false)
       %w(great good fine everything).each do |name|
         next unless changes.keys.include?("is_#{name}") || force
-
+        
         should_present = entry.is_mainpageable? && send("is_#{name}?")
         EntryQueue.new(name).toggle(entry_id, should_present)
         EntryQueue.new(type_queue(name)).toggle(entry_id, should_present)
-
+                
         EntryQueue.new('worst').toggle(entry_id, !should_present) if name == 'everything'
       end
-
+      
       true
     end
 end

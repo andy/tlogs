@@ -19,7 +19,7 @@ a:hover{color:#fff;text-decoration:none}
 /* -- STRUCTURE -- */
 body,html{height:100%;background:url(/images/specials/surfingbird/bg.png) repeat 0 0; }
 #wrapper{width:100%;min-width:1160px;text-align:left;position:relative;z-index:10}
-  .w-outer{width:872px;padding:0 30px;margin:auto}
+	.w-outer{width:872px;padding:0 30px;margin:auto}
 
 /* -- SPECIAL CLASSES -- */
 .ico{position:absolute;display:block;overflow:hidden;font-size:1px;line-height:normal}
@@ -27,80 +27,80 @@ a .ico{cursor:pointer}
 
 /* -- Top -- */
 .top{width:100%;position:relative;background:#618997;font-weight:bold;text-shadow:1px 1px 0 #456b7a}
-  .top .btm-sh-top{width:100%;height:20px;position:absolute;top:100%;left:0;background:url(/images/specials/surfingbird/sh_top.png) repeat-x 0 0}
-  .top-i{width:1100px;padding:16px 30px 11px;margin:auto}
-    .top a{text-decoration:none}
-    .top a:hover{text-decoration:underline}
-    .top .b-logotype{width:163px;margin-right:62px;float:left}
+	.top .btm-sh-top{width:100%;height:20px;position:absolute;top:100%;left:0;background:url(/images/specials/surfingbird/sh_top.png) repeat-x 0 0}
+	.top-i{width:1100px;padding:16px 30px 11px;margin:auto}
+		.top a{text-decoration:none}
+		.top a:hover{text-decoration:underline}
+		.top .b-logotype{width:163px;margin-right:62px;float:left}
 
 /* -- Who -- */
 .b-who{padding:5px 0;float:right;font-size:1.25em;line-height:1.267em}
-  .b-who a{color:#d8e7ec}
-  .b-who a:hover{color:#d8e7ec}
+	.b-who a{color:#d8e7ec}
+	.b-who a:hover{color:#d8e7ec}
 
 /* -- Main navigation -- */
 .b-navigation{width:750px;margin-right:-15%;float:left;font-size:1.167em;line-height:1.429em}
-  .b-navigation li{padding:5px 13px;float:left}
-    .b-navigation li a{color:#d2dde1}
-    .b-navigation li a:hover{color:#d2dde1}
+	.b-navigation li{padding:5px 13px;float:left}
+		.b-navigation li a{color:#d2dde1}
+		.b-navigation li a:hover{color:#d2dde1}
 
 /* -- Middle -- */
 .middle{padding:52px 0;text-shadow:1px 1px 0 #5b8392;letter-spacing:-0.016em}
 
 /* -- Main block -- */
 .b-main{text-align:center}
-  .b-main .b-company-logotype{padding:0 96px 42px 0;position:relative;z-index:2}
-  .b-main .b-image{margin:0 36px 28px 0;position:relative;zoom:1}
-    .b-main .b-image .lighting-img{width:494px;height:518px;margin-left:-247px;position:absolute;display:block;top:-165px;left:50%;background:url(/images/specials/surfingbird/lighting_main_image.png) no-repeat 0 0}
-    .b-main .b-image img{position:relative}
-  .b-main h2{margin:0 0 1.429em;position:relative;font-size:2.333em;line-height:normal}
-  .b-main .see-examples{padding:0 0 73px}
+	.b-main .b-company-logotype{padding:0 96px 42px 0;position:relative;z-index:2}
+	.b-main .b-image{margin:0 36px 28px 0;position:relative;zoom:1}
+		.b-main .b-image .lighting-img{width:494px;height:518px;margin-left:-247px;position:absolute;display:block;top:-165px;left:50%;background:url(/images/specials/surfingbird/lighting_main_image.png) no-repeat 0 0}
+		.b-main .b-image img{position:relative}
+	.b-main h2{margin:0 0 1.429em;position:relative;font-size:2.333em;line-height:normal}
+	.b-main .see-examples{padding:0 0 73px}
 
 /* -- Reasons -- */
 .b-reasons{position:relative;background:url(/images/specials/surfingbird/bg_reasons.png) repeat 0 0;overflow:hidden}
-  .b-reasons .w-outer{padding-top:50px}
-    .b-reasons-list{margin-right:-148px;word-spacing:-1ex}
-      .b-reasons-list li{width:255px;padding:0 85px 50px 0;display:-moz-inline-stack;display:inline-block;word-spacing:normal;vertical-align:top}
-        .b-reasons-list .img{margin-bottom:20px;position:relative;text-align:center;zoom:1}
-          .b-reasons-list .lighting-img{width:252px;height:244px;margin:-122px 0 0 -126px;position:absolute;display:block;top:50%;left:50%;background:url(/images/specials/surfingbird/lighting_reasons_items.png) no-repeat 0 0}
-          .b-reasons-list .img img{position:relative}
-        .b-reasons-list .description{position:relative}
-          .b-reasons-list h3{margin:0 0 .778em;font-size:1.5em;line-height:1.333em}
-          .b-reasons-list p{font-size:1.25em;line-height:1.313em}
-        .b-reasons-list .b-reasons-item-1 .img{margin-right:48px}
-        .b-reasons-list .b-reasons-item-2 .img{margin-right:90px}
-        .b-reasons-list .b-reasons-item-3 .img{margin-right:92px}
-          /*.b-reasons-list .b-reasons-item-1 .lighting-img{-moz-opacity:0.6;opacity:0.6;filter:alpha(opacity=60)}
-          .b-reasons-list .b-reasons-item-2 .lighting-img{-moz-opacity:0.4;opacity:0.4;filter:alpha(opacity=40)}*/
-          .b-reasons-list .b-reasons-item-1 .lighting-img{background-position:-252px 0}
-          .b-reasons-list .b-reasons-item-2 .lighting-img{background-position:-504px 0}
+	.b-reasons .w-outer{padding-top:50px}
+		.b-reasons-list{margin-right:-148px;word-spacing:-1ex}
+			.b-reasons-list li{width:255px;padding:0 85px 50px 0;display:-moz-inline-stack;display:inline-block;word-spacing:normal;vertical-align:top}
+				.b-reasons-list .img{margin-bottom:20px;position:relative;text-align:center;zoom:1}
+					.b-reasons-list .lighting-img{width:252px;height:244px;margin:-122px 0 0 -126px;position:absolute;display:block;top:50%;left:50%;background:url(/images/specials/surfingbird/lighting_reasons_items.png) no-repeat 0 0}
+					.b-reasons-list .img img{position:relative}
+				.b-reasons-list .description{position:relative}
+					.b-reasons-list h3{margin:0 0 .778em;font-size:1.5em;line-height:1.333em}
+					.b-reasons-list p{font-size:1.25em;line-height:1.313em}
+				.b-reasons-list .b-reasons-item-1 .img{margin-right:48px}
+				.b-reasons-list .b-reasons-item-2 .img{margin-right:90px}
+				.b-reasons-list .b-reasons-item-3 .img{margin-right:92px}
+					/*.b-reasons-list .b-reasons-item-1 .lighting-img{-moz-opacity:0.6;opacity:0.6;filter:alpha(opacity=60)}
+					.b-reasons-list .b-reasons-item-2 .lighting-img{-moz-opacity:0.4;opacity:0.4;filter:alpha(opacity=40)}*/
+					.b-reasons-list .b-reasons-item-1 .lighting-img{background-position:-252px 0}
+					.b-reasons-list .b-reasons-item-2 .lighting-img{background-position:-504px 0}
 
 /* -- Items - sites -- */
 .b-items .w-outer{padding-top:64px}
-  .b-items h1{margin:0 0 2.222em;font-size:3em;line-height:1.194em;text-align:center}
-  .b-items .b-items-list{margin-right:-64px;word-spacing:-1ex}
-    .b-items .b-item{width:404px;margin:0 64px 45px 0;position:relative;display:-moz-inline-stack;display:inline-block;background:#fff;vertical-align:top;word-spacing:normal;-webkit-box-shadow:0px 0px 13px rgba(72, 102, 112, 0.75);-moz-box-shadow:0px 0px 13px rgba(72, 102, 112, 0.75);box-shadow:0px 0px 13px rgba(72, 102, 112, 0.75)}
-      .b-items .b-item-i{margin:12px;position:relative;zoom:1}
-      /* -- Caption -- */
-      .b-items .b-item .caption{width:100%;position:absolute;display:block;bottom:0;left:0;background:url(/images/specials/surfingbird/bg_caption.png) repeat 0 0;font-size:1.333em;line-height:1.25em;font-weight:bold;text-shadow:none;letter-spacing:-0.08em}
-        .b-items .b-item .caption span{padding:12px;display:block}
-  .b-items .start-surfing{padding:68px 0 73px;text-align:center}
+	.b-items h1{margin:0 0 2.222em;font-size:3em;line-height:1.194em;text-align:center}
+	.b-items .b-items-list{margin-right:-64px;word-spacing:-1ex}
+		.b-items .b-item{width:404px;margin:0 64px 45px 0;position:relative;display:-moz-inline-stack;display:inline-block;background:#fff;vertical-align:top;word-spacing:normal;-webkit-box-shadow:0px 0px 13px rgba(72, 102, 112, 0.75);-moz-box-shadow:0px 0px 13px rgba(72, 102, 112, 0.75);box-shadow:0px 0px 13px rgba(72, 102, 112, 0.75)}
+			.b-items .b-item-i{margin:12px;position:relative;zoom:1}
+			/* -- Caption -- */
+			.b-items .b-item .caption{width:100%;position:absolute;display:block;bottom:0;left:0;background:url(/images/specials/surfingbird/bg_caption.png) repeat 0 0;font-size:1.333em;line-height:1.25em;font-weight:bold;text-shadow:none;letter-spacing:-0.08em}
+				.b-items .b-item .caption span{padding:12px;display:block}
+	.b-items .start-surfing{padding:68px 0 73px;text-align:center}
 
 /* -- Buttons -- */
 .button{display:-moz-inline-stack;display:inline-block}
 a.button,a.button:hover{text-decoration:none;cursor:pointer}
-  .button span{display:-moz-inline-stack;display:inline-block;background:url(/images/specials/surfingbird/sprite_buttons.png) no-repeat 0 0}
-    .button span span{position:relative;display:-moz-inline-stack;display:inline-block;background:url(/images/specials/surfingbird/sprite_buttons.png) no-repeat 100% 0}
-      .button img,.button .ico{cursor:pointer}
+	.button span{display:-moz-inline-stack;display:inline-block;background:url(/images/specials/surfingbird/sprite_buttons.png) no-repeat 0 0}
+		.button span span{position:relative;display:-moz-inline-stack;display:inline-block;background:url(/images/specials/surfingbird/sprite_buttons.png) no-repeat 100% 0}
+			.button img,.button .ico{cursor:pointer}
 /* -- Button-grey-1 -- */
 .button-grey-1,.button-grey-1:hover{font-size:23.77px;line-height:25px;color:#586e76;font-weight:bold;text-shadow:none}
-  .button-grey-1 span{padding:0 36px 0 0;background-position:100% -80px}
-    .button-grey-1 span span{height:24px;padding:21px 41px 23px 37px;background-position:0 0}
-    /* -- Arrays -- */
-    .button-grey-1 .i-arr{width:46px;height:46px;margin-top:-24px;top:50%;right:-23px;background:url(/images/specials/surfingbird/sprite.png) no-repeat 0 0}
-    .button-grey-1 .i-arr-b{background-position:0 -52px}
-    .button-grey-1 .i-arr-r{background-position:-52px -52px}
-    /* -- Text image -- */
-    .button-grey-1 .txt-see-examples{width:246px;height:25px;background:url(/images/specials/surfingbird/sprite.png) no-repeat -104px 0}
-    .button-grey-1 .txt-start-surfing{width:182px;height:25px;background:url(/images/specials/surfingbird/sprite.png) no-repeat -104px -28px}
+	.button-grey-1 span{padding:0 36px 0 0;background-position:100% -80px}
+		.button-grey-1 span span{height:24px;padding:21px 41px 23px 37px;background-position:0 0}
+		/* -- Arrays -- */
+		.button-grey-1 .i-arr{width:46px;height:46px;margin-top:-24px;top:50%;right:-23px;background:url(/images/specials/surfingbird/sprite.png) no-repeat 0 0}
+		.button-grey-1 .i-arr-b{background-position:0 -52px}
+		.button-grey-1 .i-arr-r{background-position:-52px -52px}
+		/* -- Text image -- */
+		.button-grey-1 .txt-see-examples{width:246px;height:25px;background:url(/images/specials/surfingbird/sprite.png) no-repeat -104px 0}
+		.button-grey-1 .txt-start-surfing{width:182px;height:25px;background:url(/images/specials/surfingbird/sprite.png) no-repeat -104px -28px}
 

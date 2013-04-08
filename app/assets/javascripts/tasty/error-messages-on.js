@@ -19,7 +19,7 @@ function error_message_on ( element, message, is_tip ) {
   remove_me = is_tip ? 'error' : 'not_really_big_error'
   element_error.removeClassName(remove_me);
   element_error.addClassName(add_me);
-
+  
   is_tip ? element.removeClassName('input_error') : element.addClassName('input_error');
   is_tip ? element.addClassName('input_succeed') : element.removeClassName('input_succeed');
 

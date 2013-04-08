@@ -2,12 +2,12 @@
   link_to_function 'Теги', "sidebar_toggle('tag_cloud')", :id => 'sidebar_tag_cloud_link', :style => inline_tags ? nil : 'display: none', :class => "sidebar_toggle#{' highlight' if inline_tags}" %><%
   unless inline_tags %><%=
     link_to_remote('Теги', {
-        :update => 'sidebar_tag_cloud_content',
-        :url => user_url(current_site, tags_entries_path),
-        :before => 'blink("sidebar_tag_cloud_remote"); ga_event("Sidebar", "Tags");',
-        :success => 'new Effect.BlindDown("sidebar_tag_cloud_content", { duration: 0.3 }); $("sidebar_tag_cloud_remote").hide(); Element.addClassName("sidebar_tag_cloud_link", "highlight"); $("sidebar_tag_cloud_link").show();',
-        :complete => 'unblink("sidebar_tag_cloud_remote")',
-        :method => 'get'
-      }, :id => 'sidebar_tag_cloud_remote', :class => 'sidebar_toggle') %><%
-  end
+				:update => 'sidebar_tag_cloud_content',
+				:url => user_url(current_site, tags_entries_path),
+				:before => 'blink("sidebar_tag_cloud_remote"); ga_event("Sidebar", "Tags");',
+				:success => 'new Effect.BlindDown("sidebar_tag_cloud_content", { duration: 0.3 }); $("sidebar_tag_cloud_remote").hide(); Element.addClassName("sidebar_tag_cloud_link", "highlight"); $("sidebar_tag_cloud_link").show();',
+				:complete => 'unblink("sidebar_tag_cloud_remote")',
+				:method => 'get'
+			}, :id => 'sidebar_tag_cloud_remote', :class => 'sidebar_toggle') %><%
+	end
 %><div class='sidebar_section_content' id='sidebar_tag_cloud_content'<%= ' style="display: none"' unless inline_tags %>><%= render(:partial => 'tlog/tags', :locals => { :highlight_tags => inline_tags }) if inline_tags %></div></div>

@@ -24,16 +24,18 @@
 
 class Changelog < ActiveRecord::Base
   belongs_to :object, :polymorphic => true
-
+  
   belongs_to :owner, :class_name => 'User'
-
+  
   belongs_to :actor, :class_name => 'User'
 
+
   validates_presence_of :owner
-
+  
   validates_presence_of :action
-
+  
+  
   named_scope :noauth, { :conditions => 'action != "login" AND action != "session"' }
 
-  named_scope :auth, { :conditions => 'action = "login" OR action = "session"' }
+  named_scope :auth, { :conditions => 'action = "login" OR action = "session"' }  
 end

@@ -1,6 +1,6 @@
 <% @title = 'удаление тлога — подтверждение' %>
 <% content_for :header do %>
-  Подтверждение удаления
+	Подтверждение удаления
 <% end %>
 
 <p class='settings_warning'><span>Удаление нельзя отменить</span>. При удалении тлога все ваши записи и комментарии будут удалены с сайта безвозвратно. Вернуть назад ничего нельзя.</p>
@@ -10,7 +10,7 @@
 <form method='post' class='destroy_form' class='big'>
   <%= tag :input, :type => 'hidden', :name => 'destory_code', :value => params[:destroy_code] %>
   <%= tag :input, :type => 'hidden', :name => 'authenticity_token', :value => form_authenticity_token %>
-
+  
   <div class='submit_button'>
     <input type='submit' value='Действительно удалить мой тлог, навсегда' class='button dangerous' />
   </div>

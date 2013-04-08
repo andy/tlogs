@@ -8,7 +8,7 @@
   </div>
 
   <div id='new_radio_schedule_block'>
-
+    
     <%= link_to_function 'Добавить новую передачу', "Tasty.radio.new_schedule();", :id => 'new_radio_schedule_showform' %>
     <%= render :partial => 'form' %>
   </div>
@@ -23,7 +23,7 @@
 
     last_end_at = schedule.end_at
   end
-
+  
   @radio_schedules.each_with_index do |schedule, index| %>
     <%= render :partial => 'schedule_blank' if emptyslot && emptyslot == index %>
     <%= render :partial => 'schedule', :locals => { :schedule => schedule } %>
@@ -37,36 +37,36 @@
 
 <script type='text/javascript'>
   jQuery(document).ready(function() {
-    // hover on conversations to show delete
+    // hover on conversations to show delete 
     jQuery(".radio_schedule").hover(
         function() { jQuery(this).find('.showonhover').show(); },
         function() { jQuery(this).find('.showonhover').hide(); }
       );
-
+  
     jQuery('abbr.timeago').timeago();
   });
 </script>
 
 <% content_for :sidebar_right do %>
   <div class='section'>
-    <h2><span>Что это?</span></h2>
-    
-    <div>
-      <p>Это админка для эфирной информации по тейсти радио. Все программы, добавленные на этой странице, будут показываться в боковой панели на сайте.</p> <br/><br/>
-      <p>Сюда имеют доступ все пользователи, которых @radio добавил к себе в друзья.</p> <br/><br/>
-      <p><span class='strong'>Зеленый блок</span> означает программу, которая сейчас идет в эфире.</p> <br/><br/>
-      <p>Вы можете <span class='strong'>удалять</span> только программы добавленные вами.</p> <br/><br/>
-      <p><span class='strong'>Время</span> нужно указывать московское. К сожалению, пока только так.</p>
-    </div>
-  </div>
-  
-  <%= render :partial => 'globals/tastyradio' %>
+		<h2><span>Что это?</span></h2>
+		
+		<div>
+		  <p>Это админка для эфирной информации по тейсти радио. Все программы, добавленные на этой странице, будут показываться в боковой панели на сайте.</p> <br/><br/>
+		  <p>Сюда имеют доступ все пользователи, которых @radio добавил к себе в друзья.</p> <br/><br/>
+		  <p><span class='strong'>Зеленый блок</span> означает программу, которая сейчас идет в эфире.</p> <br/><br/>
+		  <p>Вы можете <span class='strong'>удалять</span> только программы добавленные вами.</p> <br/><br/>
+		  <p><span class='strong'>Время</span> нужно указывать московское. К сожалению, пока только так.</p>
+		</div>
+	</div>
+	
+	<%= render :partial => 'globals/tastyradio' %> 
 <% end %>
 
 <% content_for :sidebar_left do %>
   <div class='section sidebar_others'>
     <h2><span>Кто мы?</span></h2>
-
+    
     <% @radio.public_friends.each do |user| %>
       <%= link_to h(user.url), user_url(user), :class => (current_user.id == user.id) ? 'highlight' : nil %>
     <% end %>

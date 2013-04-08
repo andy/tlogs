@@ -18,7 +18,7 @@ module SettingsHelper
       content_tag :li, link_to(name, url, link_options)
     end
   end
-
+  
   # sidebar_check_box(:is_open)
   # sidebar_check_box(:hide_tags)
   # sidebar_check_box(:hide_search)

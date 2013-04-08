@@ -1,7 +1,7 @@
 <% content_for :head do %>
-  <!-- content_for :head -->
-  <%= auto_discovery_link_tag(:rss, user_url(current_user, tlog_feed_protected_path(:key => current_user.last_personalized_key, :action => :last_personalized))) %>
-  <!-- /content_for :head -->
+	<!-- content_for :head -->
+	<%= auto_discovery_link_tag(:rss, user_url(current_user, tlog_feed_protected_path(:key => current_user.last_personalized_key, :action => :last_personalized))) %>
+	<!-- /content_for :head -->
 <% end %>
 <div class='onair t-iscrollable' data-iscroll-name='my'>
   <% if @entries.blank? %>
@@ -11,11 +11,11 @@
       <p>Скорее всего это потому, что вы ни на кого не подписаны.</p>
     </div>
   <% else %>
-    <% @entries.each do |entry| %>
-      <%= render :partial => 'entries/entry_display', :locals => { :entry => entry, :show_comments_bubble => true, :show_username => true, :show_tags => false, :comment_views => @comment_views } %>
-    <% end %>
+  	<% @entries.each do |entry| %>
+  		<%= render :partial => 'entries/entry_display', :locals => { :entry => entry, :show_comments_bubble => true, :show_username => true, :show_tags => false, :comment_views => @comment_views } %>
+  	<% end %>
 
-    <%= paginate @entries %>
+  	<%= paginate @entries %>
   <% end %>
 </div>
 

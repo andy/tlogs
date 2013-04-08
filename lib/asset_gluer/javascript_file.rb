@@ -8,14 +8,14 @@ module AssetGluer
       contents = File.read(@absolute_path)
 
       contents = process_with_coffee(contents) if @absolute_path.ends_with?('.coffee')
-
+      
       contents
     end
-
+    
     def self.process(contents)
       # uglifier requires special care, disabled
       contents = self.process_with_uglifier(contents) if Rails.env.production?
-
+      
       contents
     end
 
@@ -24,7 +24,7 @@ module AssetGluer
 
       Uglifier.compile contents, TASTY_ASSETS[:compressor_options].symbolize_keys!
     end
-
+    
     protected
       def process_with_coffee(contents)
         Rails.cache.fetch "gluer:js:coffee:#{Digest::SHA1.hexdigest(contents)}", :expires_in => 1.day do
@@ -35,6 +35,6 @@ module AssetGluer
           end
         end
       end
-
+      
   end
 end

@@ -1,5 +1,5 @@
 class Entry
-
+  
   def vote(user, rating)
     return unless user.can_vote?(self)
 
@@ -8,22 +8,22 @@ class Entry
     EntryRating.transaction do
       entry_rating = EntryRating.find_by_entry_id(self.id)
       return false unless entry_rating
-
+      
       value = rating * user.vote_power
       entry_rating.value += value
       entry_rating.ups += 1 if value > 0
       entry_rating.downs += 1 if value < 0
-
+      
       entry_rating.save(false)
-
+      
       return true
     end if user.is_admin?
-
+    
     # находим существующую запись
     begin
       EntryRating.transaction do
         entry_rating = EntryRating.find_by_entry_id(self.id) or return
-
+    
         # голос пользователя: нам его нужно либо создать, либо использвовать уже имющийся
         user_vote = EntryVote.find_or_initialize_by_entry_id_and_user_id(self.id, user.id)
         # новая запись или пользователь поменял свое мнение?
@@ -34,7 +34,7 @@ class Entry
             entry_rating.ups -= 1 if user_vote.value > 0
             entry_rating.downs -= 1 if user_vote.value < 0
           end
-
+          
           user_vote.value = rating * user.vote_power
           entry_rating.value += user_vote.value
           entry_rating.ups += 1 if user_vote.value > 0
@@ -42,7 +42,7 @@ class Entry
 
           # сохраняем новое в базу
           user_vote.save(false) && entry_rating.save(false)
-
+          
           # insert / remove watcher
           # rating > 0 ? try_insert_watcher(user.id) : try_remove_watcher(user.id)
 
@@ -53,11 +53,11 @@ class Entry
       # ActiveRecord::StatementInvalid (Mysql::Error: Duplicate entry '547460-13108' for key 2: INSERT INTO `entry_votes` (`entry_id`, `value`, `user_id`) VALUES(547460, -1, 13108))
     end
   end
-
+  
   def voted?(user)
     EntryVote.find_by_entry_id_and_user_id(self.id, user.id).value rescue 0
   end
-
+  
   # в чем глубокий смысл этого кода?
   def make_voteable(enable=true)
     entry_rating = EntryRating.find_or_initialize_by_entry_id(self.id)
@@ -69,5 +69,5 @@ class Entry
       self.rating = nil
     end
   end
-
+  
 end

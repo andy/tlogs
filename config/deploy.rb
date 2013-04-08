@@ -54,6 +54,7 @@ ssh_options[:port] = 22
 # narrow the set of servers to a subset of a role by specifying options, which
 # must match the options given for the servers to select (like :primary => true)
 
+
 namespace :deploy do
   desc "Update and restart web server"
   task :default do

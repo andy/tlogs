@@ -8,7 +8,7 @@ module Tlogs
       def initialize
         @domains = YAML.load_file(File.join(RAILS_ROOT, 'config/tlogs/domains.yml')) rescue {}
       end
-
+    
       def options_for(name, request)
         name = name[4..-1] if name.starts_with?('www.')
         domain = nil
@@ -18,9 +18,9 @@ module Tlogs
           domain = name if @domains.has_key?(name)
         else
           name.split('.').size.times do |length|
-            domain = name.split('.', length).last
+            domain = name.split('.', length).last          
             break if @domains.has_key?(domain)
-
+          
             domain = nil
           end
         end
@@ -30,14 +30,14 @@ module Tlogs
         options = @domains[domain]
         Tlogs::Domains::Options.new domain, options.merge(:protocol => request.try(:protocol), :port => request.try(:port))
       end
-
+      
       def default
         options_for(@domains.keys.first, nil)
       end
-
+      
       def domains
         @domains.keys
-      end
+      end      
     end
 
     class Options
@@ -53,32 +53,32 @@ module Tlogs
         @name = @options[:name] || 'tlogs'
         @url = "#{protocol}#{domain_prefix}#{domain_with_port}"
       end
-
+      
       def domain_prefix
         # is_inline? ? '' : 'www.'
         ''
       end
-
+      
       def port_postfix
         @port == 80 ? '' : ":#{@port}"
       end
-
+      
       def domain_with_port
         @domain + port_postfix
       end
-
+      
       def is_mobile?
         !!@options[:mobile]
       end
-
+    
       def is_inline?
         @options[:users] == 'inline'
       end
-
+    
       def is_external?
         !is_inline?
       end
-
+      
       # возвращает полный урл до пользователя сервиса
       def user_url(name)
         if self.is_inline?
@@ -88,15 +88,15 @@ module Tlogs
           "#{protocol}#{name}.#{domain_with_port}"
         end
       end
-
+      
       def logo(style = nil)
         @options[:logo] || "logos/default#{style ? "_#{style}" : ''}.png"
       end
-
+      
       # Домен для добавления глобальной куки
       def cookie_domain
         is_inline? ? @domain : ('.' + @domain)
-      end
+      end      
     end
   end
 end

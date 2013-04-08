@@ -18,6 +18,7 @@
  * limitations under the License.
  * ========================================================== */
 
+
 !function( $ ) {
 
   "use strict"
@@ -40,15 +41,16 @@
     if ( $.support.transition ) {
       transitionEnd = "TransitionEnd"
       if ( $.browser.webkit ) {
-        transitionEnd = "webkitTransitionEnd"
+      	transitionEnd = "webkitTransitionEnd"
       } else if ( $.browser.mozilla ) {
-        transitionEnd = "transitionend"
+      	transitionEnd = "transitionend"
       } else if ( $.browser.opera ) {
-        transitionEnd = "oTransitionEnd"
+      	transitionEnd = "oTransitionEnd"
       }
     }
 
   })
+
 
  /* TWIPSY PUBLIC CLASS DEFINITION
   * ============================== */
@@ -194,6 +196,7 @@
     }
 
   }
+
 
  /* TWIPSY PRIVATE METHODS
   * ====================== */

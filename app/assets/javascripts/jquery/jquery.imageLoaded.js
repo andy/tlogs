@@ -13,11 +13,11 @@
     var elems = this.filter('img'),
         len   = elems.length,
         blank = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==";
-
+      
     elems.bind('load.imgloaded',function(){
-        if (--len <= 0 && this.src !== blank){
+        if (--len <= 0 && this.src !== blank){ 
           elems.unbind('load.imgloaded');
-          callback.call(elems,this);
+          callback.call(elems,this); 
         }
     }).each(function(){
        // cached images don't fire load sometimes, so we reset src.
@@ -27,8 +27,8 @@
           // data uri bypasses webkit log warning (thx doug jones)
           this.src = blank;
           this.src = src;
-       }
-    });
+       }  
+    }); 
 
     return this;
   };

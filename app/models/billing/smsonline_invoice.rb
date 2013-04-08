@@ -55,7 +55,7 @@ class SmsonlineInvoice < Invoice
     'kz' => 'Казахстан',
     'md' => 'Молдова'
   }
-
+  
   COUNTRIES = {
     'ru' => 1,
     'ua' => 2,
@@ -63,14 +63,14 @@ class SmsonlineInvoice < Invoice
     'kz' => 4,
     'md' => 5
   }
-
+  
   OPERATORS = {
     'beeline' => 1,
     'mts'     => 2,
     'mf'      => 3,
     'tele2'   => 4
   }
-
+  
   CURRENCIES = {
     'RUB'     => 'руб.',
     'USD'     => 'дол.',
@@ -82,21 +82,23 @@ class SmsonlineInvoice < Invoice
 
   validate :check_signature
 
+
   ## callbacks
   before_validation :export_attributes
-
+  
+  
   ## class methods
   def self.settings
     ::SETTINGS[:billing]['smsonline']
   end
-
+  
   def self.duration(net)
     (settings['duration'][net.country][net.shortnumber] || 1) rescue 1
   end
-
+  
   def self.networks
     doc = Hpricot.XML(File.read(File.join(Rails.root, settings['prices'])))
-
+    
     result = []
     (doc/:network).each do |network|
       result << OpenStruct.new(:country => (network/:country).text,
@@ -114,7 +116,7 @@ class SmsonlineInvoice < Invoice
 
     result
   end
-
+  
   def self.countries_for_select
     result = []
 
@@ -123,13 +125,13 @@ class SmsonlineInvoice < Invoice
                                :value => COUNTRY_NAMES[c_nets.first.country] || c_nets.first.country,
                                :position => COUNTRIES[c_nets.first.country] || (COUNTRIES.values.max + 1),
                                :operators => [])
-
+      
       c_nets.group_by(&:operator_id).each do |o_name, o_nets|
         operator = OpenStruct.new(:name => [o_nets.first.country, o_nets.first.operator_code].join('_'),
                                   :value => o_nets.first.operator_name,
                                   :position => OPERATORS[o_nets.first.operator_code] || (OPERATORS.values.max + 1),
                                   :numbers => [])
-
+        
         o_nets.each do |net|
           number = OpenStruct.new(:name => [net.country, net.operator_code, net.shortnumber].join('_'),
                                   :value => "#{duration(net).pluralize('день', 'дня', 'дней', true)}\t(#{net.sms_cost_vat.to_f.to_s} #{CURRENCIES[net.currency] || net.currency} с НДС)",
@@ -139,32 +141,34 @@ class SmsonlineInvoice < Invoice
 
           operator.numbers << number if settings['numbers'][net.country].include?(net.shortnumber)
         end
-
+        
         country.operators << operator if operator.numbers.any?
       end if settings['countries'].include?(country.name)
 
       result << country if country.operators.any?
     end
-
+    
     result
   end
-
+  
+  
   ## public methods
   def summary
     "SMS на номер #{self.metadata[:sn]} (#{self.amount} #{self.metadata[:currency]} с НДС)"
   end
-
+  
   def extra_summary
     "оплачено с номера #{self.metadata[:phone]} (#{self.metadata[:op]}), доход #{self.revenue} руб., срок #{self.days.pluralize('день', 'дня', 'дней', true)}"
   end
-
+  
   def pref_key
     'sms'
   end
-
+  
   def pref_options
     [self.metadata[:cn], self.metadata[:op], self.metadata[:sn]].join('_')
   end
+  
 
   ## protected
   protected
@@ -182,10 +186,10 @@ class SmsonlineInvoice < Invoice
 
       errors.add_to_base 'неправильная подпись' unless Digest::MD5.hexdigest(str) == metadata[:md5]
     end
-
+    
     def export_attributes
       net            = SmsonlineInvoice.networks.find { |n| n.country == self.metadata[:cn] && n.shortnumber == self.metadata[:sn].to_i }
-
+      
       if net
         self.metadata_will_change!
         self.metadata[:currency] = net.currency

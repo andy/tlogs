@@ -1,12 +1,14 @@
 class User
   ## included modules & attr_*
   USER_AND_RELATIONSHIP_COLUMNS = 'u.*,r.title,r.friendship_status,r.read_count,r.comment_count,r.position,r.last_viewed_entries_count,r.last_viewed_at,r.id AS relationship_id'
-
+  
   REQUIRED_RELATIONSHIP_METHODS = %w(public_friends friends all_friends all_friend_r blacklist listed_me_as_blacklist_light listed_me_as_all_friend_light)
+
 
   ## associations
   has_many :relationships, :dependent => :destroy
 
+    
   # лишь хорошие друзья
   {
     :public_friends   => { :filter => '= 2', :order => 'r.position' },
@@ -18,7 +20,7 @@ class User
   }.each do |name, params|
     param_filter    = params[:filter] ? " AND r.friendship_status #{params[:filter]}" : ''
     param_order     = params[:order] ? " ORDER BY #{params[:order]}" : ''
-
+    
     has_many name.to_sym, :class_name => 'User', :finder_sql => "SELECT #{USER_AND_RELATIONSHIP_COLUMNS} FROM relationships AS r LEFT JOIN users AS u ON u.id = r.user_id WHERE r.reader_id = \#{id} #{param_filter} #{param_order}" if REQUIRED_RELATIONSHIP_METHODS.include?(name.to_s)
 
     # e.g. public_friend_r (- relationship model)
@@ -38,17 +40,18 @@ class User
     has_many str.to_sym, :class_name => 'Relationship', :finder_sql => "SELECT r.* FROM relationships AS r WHERE r.user_id = \#{id} #{param_filter}" if REQUIRED_RELATIONSHIP_METHODS.include?(str)
   end
 
+
   ## plugins
   ## named_scopes
   ## validations
   ## callbacks
   ## class methods
-  ## public methods
+  ## public methods  
   # Пользователь user читает текущего пользователя
   def reads(user)
     return if self.id == user.id
 
-    relationship = relationship_with(user, false)
+    relationship = relationship_with(user, false)        
     do_save = relationship.new_record?
     relationship.friendship_status = Relationship::GUESSED if relationship.new_record?
 
@@ -78,7 +81,7 @@ class User
     relationship.position = 0 if relationship && relationship.new_record?
     relationship
   end
-
+  
   # то же самое что и relationship_with, но возвращает объект User с
   #  дополнительными полями из relationships
   def relationship_as_user_with(user)
@@ -86,13 +89,13 @@ class User
     result = User.find_by_sql "SELECT #{USER_AND_RELATIONSHIP_COLUMNS} FROM relationships AS r LEFT JOIN users AS u ON u.id = r.user_id WHERE r.user_id = #{user.id} AND r.reader_id = #{self.id} LIMIT 1"
     result[0] if result
   end
-
+  
   def set_friendship_status_for(user, to = Relationship::DEFAULT)
     relationship = relationship_with(user, true)
     relationship.update_attributes!({ :friendship_status => to }) if relationship && relationship.friendship_status != to
     relationship
   end
-
+  
   # Подписан ли на ленту пользоваетля user? Возвращает true / false
   def subscribed_to?(user)
     return false unless user
@@ -107,23 +110,23 @@ class User
   #   relationship.last_comment_at = Time.now
   #   relationship.save!
   # end
-
-  # Возвращает user_id пользователей, на тлоги которых подписан текущий пользователь и
+  
+  # Возвращает user_id пользователей, на тлоги которых подписан текущий пользователь и 
   # которые он может читать (т.е. они не закрытые и т.п.)
   def readable_friend_ids
     @readable_friend_ids ||= Rails.cache.fetch("u:rel:rfi:#{self.id}", :expires_in => 1.hour) do
       ids = self.all_friend_r.map(&:user_id)
       if ids.any?
         ts  = TlogSettings.all(:select => 'id, user_id, privacy', :conditions => "user_id IN (#{ids.join(',')}) AND privacy != 'me'")
-
+      
         # выбрасываем тех, у кого закрытый тлог и кто на нас не подписан
         ids = ts.reject { |t| t.privacy == 'fr' && !t.user.subscribed_to?(self) }.map(&:user_id)
       end
-
+      
       ids
     end
   end
-
+  
   #
   # current_site.mark_as_viewed_by! current_user
   #
@@ -133,23 +136,23 @@ class User
 
     # is_owner?
     return if user.id == self.id
-
+    
     Rails.logger.debug "** mark_as_viewed_by #{self.url} by #{user.url}, entry #{entry.try(:id) || 'nil'}"
-
+    
     # get relationship between the two
     Relationship.transaction do
       relationship = user.relationship_with(self, true)
       relationship.friendship_status = Relationship::GUESSED if relationship.new_record?
-
+      
       Rails.logger.debug "** mark_as_viewed_by relationship #{relationship.try(:id) || 'nil'}, #{relationship.new_record? ? 'new' : 'existing'}"
-
+      
       # positive relationship is one when user is explicitly or implicitly following another
       if relationship.positive?
         actual_entries_count = self.entries_count_for(user)
         viewed_entries_count = relationship.last_viewed_entries_count
-
+        
         Rails.logger.debug "** mark_as_viewed_by aec #{actual_entries_count} vec #{viewed_entries_count}"
-
+      
         if actual_entries_count != viewed_entries_count
           # if user is looking at specific entry, act a bit differently:
           if entry
@@ -161,28 +164,28 @@ class User
             # otherwise act as if only one record has been viewed out of all unviewed
             elsif entry.created_at > relationship.last_viewed_at && actual_entries_count > viewed_entries_count
               Rails.logger.debug "** mark_as_viewed_by increment (soft)"
-
+              
               relationship.increment :last_viewed_entries_count
             end
-
+        
           # if we are looking at tlog as a whole, without any specific entry, then just
-          # update the timestamps and counters
+          # update the timestamps and counters  
           else
             Rails.logger.debug "** mark_as_viewed_by stamp to #{actual_entries_count}"
             relationship.stamp actual_entries_count
-          end
+          end        
         else
           Rails.logger.debug "** mark_as_viewed_by counters unchanged"
         end
-
+    
       # negative relationship is when user is explicitly or implicitly ignoring another user
       else
         Rails.logger.debug "** mark_as_viewed_by negative, ignored"
-
+    
       end # if/else relationship.positive?
-
+      
       Rails.logger.debug "** mark_as_viewed_by save!"
-
+      
       # for some mys
       begin
         relationship.save!
@@ -190,15 +193,18 @@ class User
         Rails.logger.debug "** mark_as_viewed_by save failed, ignoring. Error: #{ex.message}"
       end
     end # Relationship.transaction
-
+    
     Rails.logger.debug "** mark_as_viewed_by done"
   end
-
+  
   # this removes all people that are subscribed to my tlog
   def remove_subscribers!
     Relationship.delete_all ["user_id = ?", self.id]
   end
 
-  ## private methods
+  
+  ## private methods  
+  
+
 
 end

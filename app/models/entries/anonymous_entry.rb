@@ -43,11 +43,12 @@
 #   data_part_2 - заголовок
 class AnonymousEntry < Entry
   ANONYMOUS_COMMENTS_DEPLOY_TIME = Time.parse("Tue Jul 07 10:30:00 +0400 2009")
-
+  
   validates_presence_of :data_part_1, :on => :save
   validates_presence_of :data_part_2, :on => :save, :message => 'это обязательное поле'
   validates_length_of :data_part_1, :within => 1..ENTRY_MAX_LENGTH, :on => :save, :too_long => 'это поле слишком длинное'
   validates_length_of :data_part_2, :within => 2..140, :on => :save, :too_long => 'это поле слишком длинное'
+
 
   BAD_WORDS = %w(хуи хуиня хуище хуило хер херня нахуи нихуя хуя похуям xuy иух нахуя похуи пох похер
                 ебать ебло ебало ебаться ебут ебанул ебануть ебли выебать ебнуть
@@ -73,11 +74,11 @@ class AnonymousEntry < Entry
                 )
 
   validates_each :data_part_1, :data_part_2 do |record, attr, value|
-    value.split(/(,|\ |:|\.)/).each do |word|
+    value.split(/(,|\ |:|\.)/).each do |word|      
       word = word.mb_chars.downcase.gsub(/(\s|\d)+/, '').squeeze
-
+      
       next if word.blank?
-
+      
       word = word.mb_chars \
               .sub('ё', 'е') \
               .sub('й', 'и') \
@@ -90,18 +91,18 @@ class AnonymousEntry < Entry
               .sub('b', 'б') \
               .sub('p', 'р') \
               .sub('ъ', 'ь') \
-              .sub('i', 'и')
+              .sub('i', 'и') 
 
       if BAD_WORDS.include?(word)
         record.errors.add(attr, 'Бранные слова запрещены. В случае использования нецензурной лексики<br/> или намека на неё, Ваш тлог может быть <b>удален</b>.')
         break
       end
-    end unless value.blank?
+    end unless value.blank?    
   end
 
   def entry_russian_dict; { :who => 'анонимка', :whom => 'анонимку' } end
   def excerpt
-    if self.data_part_2.to_s.length > 0
+    if self.data_part_2.to_s.length > 0 
       self.data_part_2.to_s.gsub(/<object.*?<\/object>/i, ' ').truncate(150).to_s
     else
       self.data_part_1.to_s.gsub(/<object.*?<\/object>/i, ' ').truncate(150).to_s

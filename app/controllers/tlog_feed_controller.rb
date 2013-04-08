@@ -9,14 +9,14 @@ class TlogFeedController < ApplicationController
 
     response.headers['Content-Type'] = 'application/rss+xml'
   end
-
+  
   def photos
     @entries = current_site.recent_entries(:type => 'ImageEntry', :page => current_page)
 
     response.headers['Content-Type'] = 'application/rss+xml'
     render :action => 'media'
   end
-
+  
   def last_personalized
     render(:text => 'invalid key, sorry', :status => 403) and return if current_site.last_personalized_key != params[:key]
 
@@ -35,7 +35,7 @@ class TlogFeedController < ApplicationController
       # rss is disabled for all non-public tlogs
       render(:text => 'Извините, но RSS выключен для всех закрытых тлогов', :status => 403) and return false if current_site.tlog_settings.privacy != 'open'
     end
-
+  
     def require_current_site
       render(:text => 'тлога по этому адресу не существует', :status => 404) and return false unless current_site
       render(:text => 'пользователь не подтвержден', :status => 403) and return false unless current_site.is_confirmed?

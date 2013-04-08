@@ -13,7 +13,7 @@
     <% @entries.each do |entry| %>
       <%= render :partial => 'entries/entry_display', :locals => { :entry => entry, :show_comments_bubble => true, :show_username => true, :show_tags => false, :comment_views => @comment_views } %>
     <% end %>
-
+    
     <%= infinite_paginate @entries.last.id %>
   <% end %>
 </div>
