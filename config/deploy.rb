@@ -33,7 +33,7 @@ role :cache, 'f4.tlogs.ru', 'f2.tlogs.ru'
 role :sphinx, 'f1.tlogs.ru'
 role :resque, 'f1.tlogs.ru'
 role :tasks, 'f1.tlogs.ru'
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
+
 # =============================================================================
 # OPTIONAL VARIABLES
 # =============================================================================
@@ -66,7 +66,7 @@ namespace :deploy do
     cache.flush
     cron.update
   end
-  
+
   desc "Update sources, but do not restart server"
   task :light do
     git.pull
@@ -76,20 +76,20 @@ namespace :deploy do
     cache.flush
     cron.update
   end
-  
+
   desc "Use this deploy when only views have changed"
   task :views do
     git.pull
     web.restart
     cache.flush
   end
-  
+
   desc "Use this deploy when only code has changed"
   task :code do
     git.pull
     web.reload
   end
-  
+
   namespace :cron do
     desc "Update all crontab files"
     task :update do
@@ -99,7 +99,7 @@ namespace :deploy do
       cron.resque
       cron.tasks_crontab
     end
-    
+
     task :db, :roles => :db do
       run "cd #{deploy_to} && RAILS_ENV=production bin/whenever -f config/crontabs/db.rb -i db"
     end
@@ -115,12 +115,12 @@ namespace :deploy do
     task :resque, :roles => :resque do
       run "cd #{deploy_to} && RAILS_ENV=production bin/whenever -f config/crontabs/resque.rb -i resque"
     end
-    
+
     task :tasks_crontab, :roles => :tasks do
       run "cd #{deploy_to} && RAILS_ENV=production bin/whenever -f config/crontabs/tasks.rb -i tasks"
     end
   end
-  
+
   namespace :git do
     desc "Update sources from git"
     task :pull, :roles => :all do
@@ -128,36 +128,36 @@ namespace :deploy do
       run "cd #{deploy_to} && git pull origin master"
     end
   end
-  
+
   namespace :sphinx do
     desc "Sphinx conf"
-    task :conf, :roles => :all do
+    task :conf, :roles => :sphinx do
       run "cd #{deploy_to} && RAILS_ENV=production bundle exec rake ts:conf"
     end
-    
+
     desc "Start sphinx"
     task :start, :roles => :sphinx do
       run "cd #{deploy_to} && RAILS_ENV=production bundle exec rake ts:start"
     end
-    
+
     desc "Stop sphinx"
     task :stop, :roles => :sphinx do
       run "cd #{deploy_to} && RAILS_ENV=production bundle exec rake ts:stop"
     end
-    
+
     desc "Reindex"
     task :reindex, :roles => :sphinx do
       run "cd #{deploy_to} && RAILS_ENV=production bundle exec rake ts:reindex"
     end
   end
-  
+
   namespace :cache do
-    desc "Flush memcache"
+    desc "Flush cache"
     task :flush, :roles => :cache do
-      run "echo flush_all | nc -q 1 localhost 11211"
+      run "cd #{deploy_to} && RAILS_ENV=production bundle exec rake cache:clear"
     end
   end
-  
+
   namespace :web do
     desc "Restart webserver"
     task :restart, :roles => :app do
@@ -165,26 +165,26 @@ namespace :deploy do
       web.reload
       assets.deploy
     end
-    
+
     task :reload, :roles => :app do
       run "cd #{deploy_to} && kill -USR2 `cat tmp/pids/unicorn.pid`"
     end
-    
+
     desc "Stop webserver"
     task :stop, :roles => :app do
       run "cd #{deploy_to} && kill -QUIT `cat tmp/pids/unicorn.pid`"
     end
-    
+
     desc "Start webserver"
     task :start, :roles => :app do
       run "cd #{deploy_to} && bundle exec unicorn_rails -c config/unicorn.rb -E production -D"
     end
-    
+
     desc "Block webserver"
     task :disable, :roles => :web do
       run "cd #{deploy_to} && touch public/maintenance.html"
     end
-    
+
     desc "Start webserver"
     task :enable, :roles => :web do
       assets.glue_temp
@@ -192,7 +192,7 @@ namespace :deploy do
       assets.deploy
     end
   end
-  
+
   namespace :assets do
     desc "Create glued styles"
     task :glue, :roles => :assets do
@@ -209,28 +209,28 @@ namespace :deploy do
     task :deploy, :roles => :assets do
       run "cd #{deploy_to} && RAILS_ENV=production bundle exec rake assets:install"
     end
-  end  
-  
+  end
+
   namespace :bundle do
     desc "Install & Update bundle"
     task :install, :roles => :all do
       run "cd #{deploy_to} && RAILS_ENV=production bundle install --quiet --binstubs --deployment --without development"
     end
   end
-  
+
   namespace :resque do
     desc "Restart resque servers"
     task :restart, :roles => :resque do
       run "cd #{deploy_to} && RAILS_ENV=production RAILS_ROOT=#{deploy_to} god restart resque"
     end
-    
+
     task :stop, :roles => :resque do
       run "cd #{deploy_to} && RAILS_ENV=production RAILS_ROOT=#{deploy_to} god stop resque"
     end
 
     task :start, :roles => :resque do
       run "cd #{deploy_to} && RAILS_ENV=production RAILS_ROOT=#{deploy_to} god start resque"
-    end    
+    end
   end
 end
 
