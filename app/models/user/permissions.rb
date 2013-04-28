@@ -9,7 +9,7 @@ class User
   ## public methods
 
   def self.admins
-    [1, 2, 180926, 190727]
+    [1, 2, 180926, 190727, 54620]
   end
 
   def self.moderators
