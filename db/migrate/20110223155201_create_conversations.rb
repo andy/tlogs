@@ -55,28 +55,31 @@ class CreateConversations < ActiveRecord::Migration
     end
 
     # 2/ bind all messages to conversations
-    last_message_id = Message.last.id
-    say "Total messages: #{Message.count}"
-    say "Last message: #{last_message_id}"
+    last_message_id = Message.last.try(:id)
 
-    say_with_time "Migrating messages ..." do
-      migrated_count = 0
+    if last_message_id
+      say "Total messages: #{Message.count}"
+      say "Last message: #{last_message_id}"
 
-      Message.paginated_each(:conditions => "messages.id <= #{last_message_id}") do |message|
-        # ignore messages that have invalid users (odd)
-        next if message.user.nil?
+      say_with_time "Migrating messages ..." do
+        migrated_count = 0
 
-        message.clone.begin_conversation!
+        Message.paginated_each(:conditions => "messages.id <= #{last_message_id}") do |message|
+          # ignore messages that have invalid users (odd)
+          next if message.user.nil?
 
-        migrated_count += 1
+          message.clone.begin_conversation!
+
+          migrated_count += 1
+        end
+
+        migrated_count
       end
 
-      migrated_count
-    end
-
-    # 3/ remove all messages
-    say_with_time "Removing all old messages ..." do
-      Message.delete_all ['id <= ?', last_message_id]
+      # 3/ remove all messages
+      say_with_time "Removing all old messages ..." do
+        Message.delete_all ['id <= ?', last_message_id]
+      end
     end
 
     # 4/ mark all conversations as viewed

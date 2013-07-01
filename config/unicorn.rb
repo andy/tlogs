@@ -4,6 +4,7 @@
 #
 # Taken from http://github.com/blog/517-unicorn
 #
+require 'yaml'
 
 rails_env = ENV['RAILS_ENV'] || 'production'
 
