@@ -46,3 +46,13 @@ a, div.sidebar p, div.sidebar span, .messages_other, #message_is_private_label {
 .entry_rating {
   color:#FFFFFF!important;
 }
+
+.share_buttons {
+  margin: 8px 56px;
+}
+
+.share_buttons li {
+  display: block;
+  float: left;
+  margin: 0 8px 0 0 !important;
+}

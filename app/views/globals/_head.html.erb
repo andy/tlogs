@@ -60,13 +60,16 @@
   <%= tasty_include_stylesheets :application %>
   <%- if current_site && %w(tlog conversations faves tags search).include?(params[:controller]) -%>
     <%= tasty_include_stylesheets :tlog %>
-    <%= tag :link, :rel => 'stylesheet', :type => 'text/css', :href => user_url(current_site, style_path(:revision => current_site.tlog_settings.css_revision)) if current_site.tlog_settings %>  
+    <%= tag :link, :rel => 'stylesheet', :type => 'text/css', :href => user_url(current_site, style_path(:revision => current_site.tlog_settings.css_revision)) if current_site.tlog_settings %>
 <%-   end
     end
     unless disable_js -%>
   <%= tasty_include_javascripts :application %>
   <!--[if (gte IE 6)&(lte IE 8)]><%= tasty_include_javascripts :selectivizr %><![endif]-->
 <%- end -%>
+
+<!-- vk/fb -->
+<script type="text/javascript" src="http://vk.com/js/api/share.js?85" charset="windows-1251"></script>
 
 <%= application_title %>
 

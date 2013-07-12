@@ -30,6 +30,17 @@
   </script>
 <% end %>
 
+<ul class="share_buttons clearfix">
+  <li>
+    <script type="text/javascript">
+      document.write(VK.Share.button(false,{type: "button", text: "Поделиться"}));
+    </script>
+  </li>
+  <li>
+    <div class="fb-like" data-href="http://mmm-tasty.ru" data-send="false" data-layout="button_count" data-width="200" data-show-faces="false" data-font="arial"></div>
+  </li>
+</ul>
+
 <a name="comments"></a>
 <% if @entry.comments_enabled? || @entry.comments_count > 0 %>
   <div class="t-post-comments post_comments">
@@ -40,7 +51,7 @@
         Комментарии (<span id='top_comment_number'><%= @entry.comments_count %></span>):
       <% end %>
     </div>
-    
+
     <% if current_user && current_user.id != current_site.id %>
       <div class='rel'>
         <div class='subscribe_controls'>
@@ -57,7 +68,7 @@
   <% unless @entry.comments_enabled? %>
     <div class='comments_disabled'>
       Комментарии были отключены владельцем тлога.
-    </div>  
+    </div>
   <% end %>
 <% end %>
 
