@@ -381,6 +381,8 @@ class AccountController < ApplicationController
       update_cookie_sig!(user)
       session[:ip] = request.remote_ip
 
+      user.update_attribute(:last_login_at, Time.now.utc)
+
       # log
       if user.id == 65601 || user.id == 1
         Rails.logger.warn "* SESSION INSPECT #{user.id}: #{session.inspect}"
