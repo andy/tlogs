@@ -40,6 +40,7 @@ class ApplicationController < ActionController::Base
   before_filter :preload_current_service
   before_filter :preload_current_site # loads @current_site
   before_filter :preload_current_user # loads @current_user
+  before_filter :redirect_from_blocked_ips!
 
   # after_filter  :log_memory_usage if Rails.env.production?
 
@@ -317,6 +318,12 @@ class ApplicationController < ActionController::Base
       options[:status] ||= 404
       options[:text] = text
       render options
+    end
+
+    def redirect_from_blocked_ips!
+      if request.remote_ip == '93.92.204.130'
+        redirect_to 'http://en.wikipedia.org/wiki/Get_a_life'
+      end
     end
 
     include UrlHelper
